@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "rootDir": "./scripts",
+        "outDir": "./scripts/js",
+        "target": "ES2022",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "removeComments": true,
+        "noEmitOnError": true,
+        "sourceMap": true,
+        "noUncheckedIndexedAccess": true,
+        "exactOptionalPropertyTypes": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strict": true,
+        "verbatimModuleSyntax": true,
+        "isolatedModules": true,
+        "noUncheckedSideEffectImports": true,
+        "moduleDetection": "force",
+        "skipLibCheck": true
+    },
+    "include": ["scripts/**/*"],
+    "exclude": ["scripts/js/**/*"]
+}
