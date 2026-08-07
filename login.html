@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>chores-sync</title>
+        <link rel="stylesheet" href="styles.css" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+
+    <body class="login">
+        <h1>chores-sync</h1>
+        <form>
+            <div>
+                <div>
+                    <label for="access-key">Name</label>
+                    <input type="text" name="name" />
+                </div>
+                <div>
+                    <label for="access-key">Access key</label>
+                    <input type="text" name="access-key" />
+                </div>
+            </div>
+            <button type="submit">
+                <span class="icon">login</span>
+                <span>Log in</span>
+            </button>
+        </form>
+
+        <script>
+            const form = document.querySelector("form");
+            const input = document.querySelector("input[name='access-key']");
+
+            form.addEventListener("submit", e => {
+                e.preventDefault();
+                localStorage.setItem("access-key", input.value);
+                location.replace("index.html");
+            });
+        </script>
+    </body>
+</html>
