@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>chores-sync login</title>
+        <link rel="stylesheet" href="../styles/global.css" />
+        <link rel="stylesheet" href="../styles/login.css" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script>
+            if (localStorage.getItem("access-key") && localStorage.getItem("name"))
+                location.replace("today.html");
+        </script>
+    </head>
+    <body>
+        <h1>chores-sync</h1>
+        <form>
+            <div>
+                <div>
+                    <label for="access-key">Name</label>
+                    <input type="text" name="name" required />
+                </div>
+                <div>
+                    <label for="access-key">Access key</label>
+                    <input type="text" name="access-key" required />
+                </div>
+            </div>
+            <button type="submit" class="filled">
+                <span class="icon">login</span>
+                <span>Log in</span>
+            </button>
+        </form>
+        <script src="../scripts/process-login.js"></script>
+    </body>
+</html>

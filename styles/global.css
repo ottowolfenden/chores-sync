@@ -1,0 +1,113 @@
+@media (prefers-color-scheme: light) {
+    :root {
+        --accent: #0057ca;
+        --bg: #fafafa;
+        --bg2: #eee;
+        --fg: #444;
+        --fg2: #999;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --accent: #b5d2ff;
+        --bg: #333;
+        --bg2: #444;
+        --fg: #eee;
+        --fg2: #888;
+    }
+}
+
+@font-face {
+    font-family: "Google Sans Flex";
+    src: url(../fonts/google-sans-flex.ttf);
+}
+
+@font-face {
+    font-family: "Inconsolata";
+    src: url(../fonts/inconsolata.ttf);
+}
+
+@font-face {
+    font-family: "Material Symbols";
+    src: url(../fonts/material-symbols.ttf);
+}
+
+* {
+    font-family: "Google Sans Flex", sans-serif;
+
+    &::selection {
+        color: var(--bg);
+        background-color: var(--accent);
+    }
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--fg);
+}
+
+h1 {
+    text-align: center;
+    font-variation-settings: "wght" 500;
+    font-size: min(50px, 13vw);
+    user-select: none;
+}
+
+.icon {
+    font-family: "Material Symbols";
+}
+
+input[type="text"] {
+    background-color: var(--bg2);
+    color: var(--fg);
+    font-size: 16px;
+    border: solid var(--fg) 2px;
+    border-radius: 5px;
+    padding: 5px;
+    outline-offset: 2px;
+    width: 150px;
+    height: 20px;
+
+    &:hover {
+        outline: dashed var(--fg2) 2px;
+    }
+
+    &:focus {
+        outline: solid var(--accent) 2px;
+    }
+}
+
+button.filled {
+    font-size: 17px;
+    border-radius: 5px;
+    color: var(--bg);
+    background-color: var(--fg);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    padding-right: 7px;
+    user-select: none;
+    outline-offset: 2px;
+    width: fit-content;
+
+    .icon {
+        font-size: 20px;
+        margin: 7px;
+    }
+
+    &:hover {
+        outline: dashed var(--fg2) 2px;
+    }
+
+    &:focus {
+        outline: solid var(--accent) 2px;
+    }
+
+    &:active {
+        background-color: var(--accent);
+    }
+}

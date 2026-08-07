@@ -1,0 +1,24 @@
+form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    div {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+
+        div {
+            label {
+                font-size: 17px;
+                margin-bottom: 4px;
+                user-select: none;
+            }
+
+            input[name="access-key"] {
+                font-family: "Inconsolata", monospace;
+                width: min(60ch, 100vw - 70px);
+            }
+        }
+    }
+}
