@@ -1,5 +1,5 @@
 import { checkSecret } from "../modules/cloudflare.js";
-if (await checkSecret()) location.replace("today.html");
+if ((await checkSecret()) && localStorage.getItem("name")) location.replace("today.html");
 
 const showInvalid = (inputName: string) => {
     const input = document.querySelector(`form input[name="${inputName}"]`);
@@ -22,11 +22,5 @@ document.querySelector("form")?.addEventListener("submit", async e => {
         localStorage.setItem("name", name);
         localStorage.setItem("login-secret", guess);
         location.replace("today.html");
-    } else {
-        const input = document.querySelector(
-            "input[name='login-secret']"
-        ) as HTMLInputElement;
-        input.setAttribute("data-invalid", "");
-        input.addEventListener("keydown", () => input.removeAttribute("data-invalid"));
-    }
+    } else showInvalid("login-secret");
 });
