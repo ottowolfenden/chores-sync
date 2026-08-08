@@ -39,6 +39,7 @@
 
 * {
     font-family: "Google Sans Flex", sans-serif;
+    -webkit-tap-highlight-color: transparent;
 
     &::selection {
         color: var(--bg);
