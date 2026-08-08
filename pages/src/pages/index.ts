@@ -18,5 +18,11 @@ document.querySelector("form")?.addEventListener("submit", async e => {
         localStorage.setItem("name", name);
         localStorage.setItem("login-secret", loginSecret);
         location.replace("today.html");
-    } else console.log("incorrect");
+    } else {
+        const input = document.querySelector(
+            "input[name='login-secret']"
+        ) as HTMLInputElement;
+        input.setAttribute("data-invalid", "");
+        input.addEventListener("keydown", () => input.removeAttribute("data-invalid"));
+    }
 });
