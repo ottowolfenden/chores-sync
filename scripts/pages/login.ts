@@ -1,6 +1,3 @@
-if (localStorage.getItem("login-secret") && localStorage.getItem("name"))
-    location.replace("today.html");
-
 const form = document.querySelector("form");
 
 form?.addEventListener("submit", async e => {
