@@ -1,0 +1,34 @@
+[
+    {
+        "name": "Cooking supper",
+        "icon": "restaurant"
+    },
+    {
+        "name": "Washing up",
+        "icon": "faucet"
+    },
+    {
+        "name": "Drying up",
+        "icon": "air"
+    },
+    {
+        "name": "Emptying dishwasher",
+        "icon": "dishwasher"
+    },
+    {
+        "name": "Folding washing",
+        "icon": "apparel"
+    },
+    {
+        "name": "Hanging out clothes",
+        "icon": "dry_cleaning"
+    },
+    {
+        "name": "Taking in clothes",
+        "icon": "shopping_basket"
+    },
+    {
+        "name": "Hoovering",
+        "icon": "vacuum"
+    }
+]
