@@ -1,0 +1,14 @@
+{
+    "name": "chores-sync",
+    "short_name": "chores",
+    "start_url": "/",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/assets/icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
