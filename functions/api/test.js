@@ -1,5 +1,9 @@
-export async function onRequestGet(context) {
-    return new Response(JSON.stringify({ message: "test" }), {
+export async function onRequest(context) {
+    const guess = context.request.headers.get("Authorization")?.replace("Bearer ", "");
+    if (!guess || userPassphrase != context.env["login-secret"])
+        return Response.json({ error: "Unauthorised" }, { status: 401 });
+
+    return new Response(JSON.stringify({ message: "authorised" }), {
         headers: { "Content-Type": "application/json" }
     });
 }
