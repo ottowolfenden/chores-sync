@@ -18,3 +18,5 @@ type Chore = {
     assignments: Assignment[];
     date: Date;
 };
+
+export type { Person, Assignment, Chore };

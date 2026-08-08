@@ -1,6 +1,4 @@
-const form = document.querySelector("form");
-
-form?.addEventListener("submit", async e => {
+document.querySelector("form")?.addEventListener("submit", async e => {
     e.preventDefault();
     const data = new FormData(e.currentTarget as HTMLFormElement);
     const name = data.get("name") as string;
@@ -12,7 +10,7 @@ form?.addEventListener("submit", async e => {
     localStorage.setItem("login-secret", loginSecret);
 
     const response = await fetch("/api/test", {
-        headers: { Authorization: `Bearer ${loginSecret}` }
+        headers: { "X-Login-Secret": loginSecret }
     });
 
     if (response.status == 401) {
@@ -20,7 +18,6 @@ form?.addEventListener("submit", async e => {
         localStorage.removeItem("login-secret");
         return;
     }
-
-    console.log(await response.text());
+    if (response.status != 200) console.log("error");
+    else location.replace("today.html");
 });
-// location.replace("../index.html");

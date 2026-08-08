@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "rootDir": "scripts",
-        "outDir": "js",
+        "rootDir": "pages/src",
+        "outDir": "pages/dist",
         "target": "ES2022",
         "module": "esnext",
         "moduleResolution": "bundler",

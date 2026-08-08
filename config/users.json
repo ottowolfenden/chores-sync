@@ -1,5 +1,0 @@
-[
-    { "name": "Otto", "canEditToday": true, "canEditHistory": true },
-    { "name": "Emily", "canEditToday": true, "canEditHistory": true },
-    { "name": "Ivo", "canEditToday": true, "canEditHistory": false }
-]

@@ -17,7 +17,7 @@ form {
 
             input[name="login-secret"] {
                 font-family: "Inconsolata", monospace;
-                width: min(60ch, 100vw - 70px);
+                width: min(44ch, 100vw - 70px);
             }
         }
     }
