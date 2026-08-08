@@ -2,7 +2,9 @@ import { checkSecret } from "../modules/cloudflare.js";
 if (await checkSecret())
     location.replace("today.html");
 const showInvalid = (inputName) => {
-    const input = document.querySelector(`input[name="${inputName}"]`);
+    const input = document.querySelector(`form input[name="${inputName}"]`);
+    if (!(input instanceof HTMLInputElement))
+        return;
     input.setAttribute("data-invalid", "");
     input.addEventListener("keydown", () => input.removeAttribute("data-invalid"));
 };

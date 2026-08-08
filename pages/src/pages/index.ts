@@ -2,9 +2,8 @@ import { checkSecret } from "../modules/cloudflare.js";
 if (await checkSecret()) location.replace("today.html");
 
 const showInvalid = (inputName: string) => {
-    const input = document.querySelector(
-        `form input[name="${inputName}"]`
-    ) as HTMLInputElement;
+    const input = document.querySelector(`form input[name="${inputName}"]`);
+    if (!(input instanceof HTMLInputElement)) return;
     input.setAttribute("data-invalid", "");
     input.addEventListener("keydown", () => input.removeAttribute("data-invalid"));
 };
