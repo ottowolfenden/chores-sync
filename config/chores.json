@@ -1,34 +1,42 @@
 [
     {
         "name": "Cooking supper",
-        "icon": "restaurant"
+        "icon": "restaurant",
+        "daily": true
     },
     {
         "name": "Washing up",
-        "icon": "faucet"
+        "icon": "faucet",
+        "daily": true
     },
     {
         "name": "Drying up",
-        "icon": "air"
+        "icon": "air",
+        "daily": false
     },
     {
         "name": "Emptying dishwasher",
-        "icon": "dishwasher"
+        "icon": "dishwasher",
+        "daily": false
     },
     {
         "name": "Folding washing",
-        "icon": "apparel"
+        "icon": "apparel",
+        "daily": false
     },
     {
         "name": "Hanging out clothes",
-        "icon": "dry_cleaning"
+        "icon": "dry_cleaning",
+        "daily": false
     },
     {
         "name": "Taking in clothes",
-        "icon": "shopping_basket"
+        "icon": "shopping_basket",
+        "daily": false
     },
     {
         "name": "Hoovering",
-        "icon": "vacuum"
+        "icon": "vacuum",
+        "daily": false
     }
 ]
