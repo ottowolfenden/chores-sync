@@ -10,7 +10,7 @@ form?.addEventListener("submit", async (e) => {
         return;
     localStorage.setItem("name", name);
     localStorage.setItem("login-secret", loginSecret);
-    const response = await fetch("/api/data", {
+    const response = await fetch("/api/test", {
         headers: { Authorization: `Bearer ${loginSecret}` }
     });
     if (response.status == 401) {

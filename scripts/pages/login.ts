@@ -14,7 +14,7 @@ form?.addEventListener("submit", async e => {
     localStorage.setItem("name", name);
     localStorage.setItem("login-secret", loginSecret);
 
-    const response = await fetch("/api/data", {
+    const response = await fetch("/api/test", {
         headers: { Authorization: `Bearer ${loginSecret}` }
     });
 
@@ -23,6 +23,5 @@ form?.addEventListener("submit", async e => {
         localStorage.removeItem("login-secret");
         return;
     }
-
-    // location.replace("../index.html");
 });
+// location.replace("../index.html");
