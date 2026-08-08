@@ -14,10 +14,10 @@ form?.addEventListener("submit", async (e) => {
         headers: { Authorization: `Bearer ${loginSecret}` }
     });
     if (response.status == 401) {
+        localStorage.removeItem("name");
         localStorage.removeItem("login-secret");
         return;
     }
-    location.replace("../index.html");
 });
 export {};
 //# sourceMappingURL=login.js.map

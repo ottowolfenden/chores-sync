@@ -19,9 +19,10 @@ form?.addEventListener("submit", async e => {
     });
 
     if (response.status == 401) {
+        localStorage.removeItem("name");
         localStorage.removeItem("login-secret");
         return;
     }
 
-    location.replace("../index.html");
+    // location.replace("../index.html");
 });
