@@ -9,7 +9,7 @@ document.querySelector("form")?.addEventListener("submit", async e => {
     localStorage.setItem("name", name);
     localStorage.setItem("login-secret", loginSecret);
 
-    const response = await fetch("/api/test", {
+    const response = await fetch("/api/dist/test", {
         headers: { "X-Login-Secret": loginSecret }
     });
 
