@@ -21,6 +21,6 @@ form?.addEventListener("submit", async e => {
         return;
     }
 
-    console.log(JSON.stringify(response));
+    console.log(await response.text());
 });
 // location.replace("../index.html");

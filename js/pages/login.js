@@ -16,7 +16,7 @@ form?.addEventListener("submit", async (e) => {
         localStorage.removeItem("login-secret");
         return;
     }
-    console.log(JSON.stringify(response));
+    console.log(await response.text());
 });
 export {};
 //# sourceMappingURL=login.js.map
