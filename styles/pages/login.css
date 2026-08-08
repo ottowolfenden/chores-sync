@@ -15,7 +15,7 @@ form {
                 user-select: none;
             }
 
-            input[name="access-key"] {
+            input[name="login-secret"] {
                 font-family: "Inconsolata", monospace;
                 width: min(60ch, 100vw - 70px);
             }
