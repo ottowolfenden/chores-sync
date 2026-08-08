@@ -17,16 +17,11 @@ form {
             input[name="login-secret"] {
                 font-family: "Inconsolata", monospace;
                 width: min(44ch, 100vw - 70px);
-
-                &[data-invalid] {
-                    color: var(--fg-err);
-                    background-color: var(--bg-err);
-                }
             }
         }
     }
 
-    button {
+    button[type="submit"] {
         margin-bottom: 20px;
     }
 }

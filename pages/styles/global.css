@@ -1,24 +1,24 @@
 @media (prefers-color-scheme: light) {
     :root {
         --accent: #0057ca;
-        --bg: #fafafa;
-        --bg2: #eee;
-        --bgerr: #fbb0a9;
         --fg: #444;
         --fg2: #999;
-        --fgerr: #bd2f22;
+        --fg-err: #bd2f22;
+        --bg: #fafafa;
+        --bg2: #eee;
+        --bg-err: rgb(from var(--fg-err) r g b / 0.05);
     }
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --accent: #b5d2ff;
-        --bg: #333;
-        --bg2: #444;
-        --bg-err: #4b1c1e;
         --fg: #eee;
         --fg2: #888;
-        --fg-err: #f07178;
+        --fg-err: #fda3a8;
+        --bg: #333;
+        --bg2: #444;
+        --bg-err: rgb(from var(--fg-err) r g b / 0.15);
     }
 }
 
@@ -88,12 +88,22 @@ input[type="text"] {
     &:focus {
         outline: solid var(--accent) 2px;
     }
+
+    &[data-invalid] {
+        border-color: var(--fg-err);
+        background-color: var(--bg-err);
+    }
 }
 
 label:has(input[type="text"]) span {
     margin-bottom: 2px;
+
     &[data-font-descender] {
         margin-bottom: 4px;
+    }
+
+    &:has(+ input[data-invalid]) {
+        color: var(--fg-err);
     }
 }
 

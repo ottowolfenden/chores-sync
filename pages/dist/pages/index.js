@@ -1,17 +1,25 @@
-const checkSecret = async (loginSecret) => (await fetch("/api/dist/check-secret", {
-    headers: { "X-Login-Secret": loginSecret }
-})).status == 200;
-const loginSecret = localStorage.getItem("login-secret");
-if (loginSecret && (await checkSecret(loginSecret)))
+import { checkSecret } from "../modules/cloudflare.js";
+if (await checkSecret())
     location.replace("today.html");
+const showInvalid = (inputName) => {
+    const input = document.querySelector(`input[name="${inputName}"]`);
+    input.setAttribute("data-invalid", "");
+    input.addEventListener("keydown", () => input.removeAttribute("data-invalid"));
+};
 document.querySelector("form")?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const name = data.get("name");
-    const loginSecret = data.get("login-secret");
-    if (await checkSecret(loginSecret)) {
+    const guess = data.get("login-secret");
+    if (!name)
+        showInvalid("name");
+    if (!guess)
+        showInvalid("login-secret");
+    if (!name || !guess)
+        return;
+    if (await checkSecret(guess)) {
         localStorage.setItem("name", name);
-        localStorage.setItem("login-secret", loginSecret);
+        localStorage.setItem("login-secret", guess);
         location.replace("today.html");
     }
     else {
@@ -20,5 +28,4 @@ document.querySelector("form")?.addEventListener("submit", async (e) => {
         input.addEventListener("keydown", () => input.removeAttribute("data-invalid"));
     }
 });
-export {};
 //# sourceMappingURL=index.js.map
