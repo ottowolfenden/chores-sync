@@ -1,6 +1,5 @@
 import { checkSecret } from "./modules/cloudflare.js";
-if (!location.pathname.endsWith("/index.html") && !(await checkSecret()))
-    location.replace("index.html");
+console.log(location);
 import { get } from "./modules/neon.js";
 import { startAnim, stopAnim } from "./modules/sync-button.js";
 const button = document.querySelector("button#sync");
