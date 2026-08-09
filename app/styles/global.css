@@ -46,7 +46,7 @@ nav {
         align-items: center;
         justify-content: center;
         width: 100%;
-        border-radius: 15px;
+        border-radius: 10px;
         user-select: none;
         margin-right: 10px;
         &:last-child {
