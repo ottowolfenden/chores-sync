@@ -2,7 +2,9 @@ import { checkAccess } from "../services/cloudflare.js";
 const login = document.querySelector("section#login");
 login.addEventListener("open", async () => {
     console.log("login");
-    if (await checkAccess())
+    const access = await checkAccess();
+    console.log("outer");
+    if (access)
         location.replace("#today");
     const showInvalid = (inputName) => {
         const input = login.querySelector(`form input[name="${inputName}"]`);

@@ -1,11 +1,9 @@
 import { get } from "./services/neon.js";
 import { checkAccess } from "./services/cloudflare.js";
 
+if (!(await checkAccess())) location.replace("login.html");
+
 const openSection = async (targetId: string) => {
-    if ((location.hash == "#login") == (await checkAccess())) {
-        history.back();
-        return;
-    }
     document.querySelectorAll("section").forEach(s => {
         const isTarget = s.id == targetId;
         s.hidden = !isTarget;
@@ -21,11 +19,6 @@ const openSection = async (targetId: string) => {
 const handleRoute = async () => await openSection(location.hash.replace("#", ""));
 window.addEventListener("hashchange", handleRoute);
 document.addEventListener("DOMContentLoaded", handleRoute);
-
-console.log(await checkAccess());
-if (location.hash != "#login" && !(await checkAccess())) {
-    location.replace("#login");
-} else if (!location.hash) location.replace("#today");
 
 const syncButton = document.querySelector("button#sync") as HTMLButtonElement;
 const label = syncButton.querySelector("span.label") as HTMLSpanElement;
