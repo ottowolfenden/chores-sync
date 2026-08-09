@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>chores-sync</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="assets/icons/favicon.ico" sizes="any" />
+        <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+        <link rel="manifest" href="assets/site.webmanifest" />
+        <link rel="stylesheet" href="assets/fonts/fonts.css" />
+        <link rel="stylesheet" href="styles/colours.css" />
+        <link rel="stylesheet" href="styles/index.css" />
+        <link rel="stylesheet" href="styles/sections/login.css" />
+        <link rel="stylesheet" href="styles/sections/today.css" />
+        <link rel="stylesheet" href="styles/sections/history.css" />
+        <link rel="stylesheet" href="styles/sections/count.css" />
+        <link rel="stylesheet" href="styles/sections/settings.css" />
+        <script type="module" src="dist/index.js"></script>
+        <script type="module" src="dist/sections/today.js"></script>
+        <script type="module" src="dist/sections/history.js"></script>
+        <script type="module" src="dist/sections/count.js"></script>
+        <script type="module" src="dist/sections/settings.js"></script>
+    </head>
+    <body>
+        <header>
+            <h2>chores-sync</h2>
+            <button class="filled" id="sync">
+                <span class="icon">sync</span>
+                <span class="label">Sync</span>
+            </button>
+        </header>
+
+        <main>
+            <section id="login" hidden>
+                <script type="module" src="dist/sections/login.js"></script>
+                <h1>chores-sync</h1>
+                <form>
+                    <div>
+                        <label>
+                            <span>Name</span>
+                            <input type="text" name="name" autocomplete="name" />
+                        </label>
+                        <label>
+                            <span data-font-descender>Login secret</span>
+                            <input type="text" name="login-secret" />
+                        </label>
+                    </div>
+                    <button type="submit" class="filled">
+                        <span class="icon">login</span>
+                        <span class="label">Log in</span>
+                    </button>
+                </form>
+            </section>
+
+            <section id="today" hidden>
+                <p>today</p>
+            </section>
+
+            <section id="history" hidden>
+                <p>history</p>
+            </section>
+
+            <section id="count" hidden>
+                <p>count</p>
+            </section>
+
+            <section id="settings" hidden>
+                <p>settings</p>
+            </section>
+        </main>
+
+        <nav>
+            <a href="#today">
+                <span class="icon">today</span>
+                <span class="label">Today</span>
+            </a>
+            <a href="#history">
+                <span class="icon">history</span>
+                <span class="label">History</span>
+            </a>
+            <a href="#count">
+                <span class="icon">bar_chart</span>
+                <span class="label">Count</span>
+            </a>
+            <a href="#settings">
+                <span class="icon">settings</span>
+                <span class="label">Settings</span>
+            </a>
+        </nav>
+    </body>
+</html>

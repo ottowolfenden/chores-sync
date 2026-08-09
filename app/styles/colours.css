@@ -1,0 +1,23 @@
+@media (prefers-color-scheme: light) {
+    :root {
+        --accent: #0057ca;
+        --fg: #444;
+        --fg2: #999;
+        --fg-err: #bd2f22;
+        --bg: #fafafa;
+        --bg2: #f2f2f2;
+        --bg-err: rgb(from var(--fg-err) r g b / 0.05);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --accent: #b5d2ff;
+        --fg: #eee;
+        --fg2: #888;
+        --fg-err: #fda3a8;
+        --bg: #333;
+        --bg2: #444;
+        --bg-err: rgb(from var(--fg-err) r g b / 0.15);
+    }
+}

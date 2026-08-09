@@ -1,0 +1,190 @@
+* {
+    font-family: "Google Sans Flex", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+
+    &::selection {
+        color: var(--bg);
+        background-color: var(--accent);
+    }
+}
+
+body {
+    display: flex;
+    margin: 0;
+    flex-direction: column;
+    background-color: var(--bg);
+    color: var(--fg);
+    height: 100dvh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+
+    h2 {
+        font-variation-settings: "wght" 600;
+        margin: 16px;
+        font-size: 27px;
+    }
+}
+
+main {
+    padding: 20px;
+    padding-top: 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.icon {
+    font-family: "Material Symbols";
+    font-variation-settings:
+        "FILL" 0,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 24;
+    transition: font-variation-settings 100ms ease-in;
+}
+
+input[type="text"] {
+    background-color: var(--bg2);
+    color: var(--fg);
+    font-size: 16px;
+    border: solid var(--fg) 2px;
+    border-radius: 5px;
+    padding: 5px;
+    outline-offset: 2px;
+    width: 150px;
+    height: 20px;
+
+    &:hover {
+        outline: dashed var(--fg2) 2px;
+    }
+
+    &:focus {
+        outline: solid var(--accent) 2px;
+    }
+
+    &[data-invalid] {
+        border-color: var(--fg-err);
+        background-color: var(--bg-err);
+    }
+}
+
+label:has(input[type="text"]) span {
+    margin-bottom: 2px;
+
+    &[data-font-descender] {
+        margin-bottom: 4px;
+    }
+
+    &:has(+ input[data-invalid]) {
+        color: var(--fg-err);
+    }
+}
+
+button.filled {
+    font-size: 17px;
+    border-radius: 5px;
+    color: var(--bg);
+    background-color: var(--fg);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    padding-right: 8px;
+    user-select: none;
+    outline-offset: 2px;
+    width: fit-content;
+
+    .icon {
+        font-size: 21px;
+        margin: 7px;
+    }
+
+    &:hover:not(:disabled):not(:active) {
+        outline: dashed var(--fg2) 2px;
+    }
+
+    &:focus {
+        outline: solid var(--accent) 2px;
+    }
+
+    &:active:not(:disabled) {
+        background-color: var(--accent);
+    }
+
+    &:disabled {
+        cursor: default;
+        background-color: var(--fg2);
+    }
+}
+
+nav {
+    background-color: var(--bg2);
+    display: flex;
+    justify-content: space-around;
+    height: 80px;
+    flex-shrink: 0;
+
+    a {
+        color: var(--fg);
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        .icon {
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .label {
+            font-size: 15px;
+            transition: font-weight 100ms ease-in;
+        }
+
+        &.active {
+            .icon {
+                font-variation-settings:
+                    "FILL" 1,
+                    "wght" 400,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+            .label {
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+@keyframes spin {
+    from {
+        rotate: 0;
+    }
+    to {
+        rotate: 2turn;
+    }
+}
+
+button#sync {
+    margin: 16px;
+
+    .icon {
+        animation: 2s linear spin;
+        animation-iteration-count: 0;
+    }
+
+    &.syncing {
+        background-color: var(--accent) !important;
+
+        .icon {
+            animation-iteration-count: infinite;
+        }
+    }
+}
