@@ -8,9 +8,7 @@
 }
 
 sync-button {
-    position: fixed;
-    right: 20px;
-    top: 20px;
+    margin: 20px;
 
     button .icon {
         animation: 2s linear spin;

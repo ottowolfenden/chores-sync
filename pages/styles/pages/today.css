@@ -1,0 +1,46 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--bg2);
+    align-items: center;
+    flex-shrink: 0;
+}
+
+main {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+nav {
+    background-color: var(--bg2);
+    display: flex;
+    justify-content: space-around;
+    height: 80px;
+    flex-shrink: 0;
+
+    a {
+        color: var(--fg);
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        .icon {
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .label {
+            font-size: 15px;
+        }
+    }
+}
