@@ -143,24 +143,4 @@ button.filled {
         cursor: default;
         background-color: var(--fg2);
     }
-
-    &#sync {
-        position: fixed;
-        right: 20px;
-        top: 20px;
-
-        .icon {
-            animation: 2s linear rotate;
-            animation-iteration-count: 0;
-        }
-    }
-}
-
-@keyframes rotate {
-    from {
-        rotate: 0;
-    }
-    to {
-        rotate: 2turn;
-    }
 }

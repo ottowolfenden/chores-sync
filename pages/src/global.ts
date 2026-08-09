@@ -4,14 +4,12 @@ if (!isLoginPage && (!(await checkSecret()) || !localStorage.getItem("name")))
     location.replace("index.html");
 
 import { get } from "./modules/neon.js";
-import { startAnim, stopAnim } from "./modules/sync-button.js";
+import "./web-components/sync-button.js";
 
-const button = document.querySelector("button#sync");
-if (button instanceof HTMLButtonElement) {
-    button.addEventListener("click", async () => {
-        startAnim();
-        await get();
-        stopAnim();
-    });
-    button.click();
-}
+const syncButton = document.querySelector("sync-button");
+syncButton?.addEventListener("click", async () => {
+    syncButton.syncing = true;
+    await get();
+    syncButton.syncing = false;
+});
+syncButton?.click();
