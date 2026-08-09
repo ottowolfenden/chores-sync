@@ -23,7 +23,3 @@
         --bg-err: rgb(from var(--fg-err) r g b / 0.15);
     }
 }
-
-:root {
-    --transition-duration: 150ms;
-}

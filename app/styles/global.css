@@ -48,7 +48,10 @@ nav {
         width: 100%;
         border-radius: 10px;
         user-select: none;
+        scale: 0.95;
+        transition: scale 100ms ease-in;
         margin-right: 10px;
+
         &:last-child {
             margin-right: 0;
         }
@@ -66,6 +69,7 @@ nav {
             color: var(--fg-accent);
             background-color: var(--bg-accent);
             pointer-events: none;
+            scale: 1;
 
             .icon {
                 font-variation-settings:
@@ -74,6 +78,7 @@ nav {
                     "GRAD" 0,
                     "opsz" 24;
             }
+
             .label {
                 font-weight: 600;
             }
@@ -100,6 +105,7 @@ nav {
             height: 100%;
             margin-right: 0;
             margin-bottom: 10px;
+
             &:last-child {
                 margin-bottom: 0;
             }
@@ -110,6 +116,7 @@ nav {
         body {
             background-color: var(--bg);
         }
+
         nav {
             height: auto;
             margin: 20px 0 20px 20px;
@@ -190,6 +197,7 @@ button.filled {
     padding-right: 8px;
     user-select: none;
     width: fit-content;
+    transition: scale 100ms ease-in;
 
     .icon {
         font-size: 21px;
@@ -198,10 +206,28 @@ button.filled {
 
     &:active:not(:disabled) {
         background-color: var(--fg-accent);
+        scale: 0.95;
     }
 
     &:disabled {
         cursor: default;
         background-color: var(--fg2);
+    }
+}
+
+@media (hover: hover) {
+    nav a:hover {
+        background-color: hsl(from var(--bg2) h s calc(l * 1.2));
+    }
+
+    button.filled:hover {
+        background-color: hsl(from var(--fg) h s calc(l * 0.9));
+    }
+
+    input[type="text"]:hover {
+        background-color: hsl(from var(--bg) h s calc(l * 1.2));
+        &[data-invalid] {
+            background-color: hsl(from var(--bg-err) h s calc(l * 1.1));
+        }
     }
 }
