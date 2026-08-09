@@ -1,6 +1,5 @@
 import { checkSecret } from "../modules/cloudflare.js";
-// if ((await checkSecret()) && localStorage.getItem("name")) location.replace("today.html");
-location.replace("today.html");
+if ((await checkSecret()) && localStorage.getItem("name")) location.replace("today.html");
 const showInvalid = (inputName: string) => {
     const input = document.querySelector(`form input[name="${inputName}"]`);
     if (!(input instanceof HTMLInputElement)) return;

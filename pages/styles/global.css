@@ -48,9 +48,32 @@
 }
 
 body {
+    display: flex;
     margin: 0;
+    flex-direction: column;
     background-color: var(--bg);
     color: var(--fg);
+    height: 100dvh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+
+    h2 {
+        font-variation-settings: "wght" 600;
+        margin: 16px;
+        font-size: 27px;
+    }
+}
+
+main {
+    padding: 20px;
+    padding-top: 0;
+    flex: 1;
+    overflow-y: auto;
 }
 
 h1 {
@@ -58,12 +81,6 @@ h1 {
     font-variation-settings: "wght" 500;
     font-size: min(50px, 13vw);
     user-select: none;
-}
-
-h2 {
-    font-variation-settings: "wght" 600;
-    margin: 20px;
-    font-size: 30px;
 }
 
 .icon {
