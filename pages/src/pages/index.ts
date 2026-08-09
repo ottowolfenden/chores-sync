@@ -5,7 +5,7 @@ const showInvalid = (inputName: string) => {
     const input = document.querySelector(`form input[name="${inputName}"]`);
     if (!(input instanceof HTMLInputElement)) return;
     input.setAttribute("data-invalid", "");
-    input.addEventListener("keydown", () => input.removeAttribute("data-invalid"));
+    input.addEventListener("input", () => input.removeAttribute("data-invalid"));
 };
 
 document.querySelector("form")?.addEventListener("submit", async e => {
