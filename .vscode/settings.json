@@ -1,0 +1,12 @@
+{
+    "files.watcherExclude": {
+        ".vscode/**": true,
+        "functions/**": true,
+        "pages/src/**": true,
+        "pages/tsconfig.json": true,
+        ".gitignore": true,
+        "README.md": true,
+        "schema.sql": true,
+        "todo.txt": true
+    }
+}
