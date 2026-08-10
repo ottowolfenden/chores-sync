@@ -1,3 +1,7 @@
+import "./sections/count.js";
+import "./sections/history.js";
+import "./sections/settings.js";
+import "./sections/today.js";
 import { checkAccess } from "./services/cloudflare.js";
 
 if (!(await checkAccess())) location.replace("login.html");
