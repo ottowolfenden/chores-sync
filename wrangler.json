@@ -1,0 +1,6 @@
+{
+    "$schema": "./node_modules/wrangler/config-schema.json",
+    "name": "chores-sync",
+    "pages_build_output_dir": "app/dist",
+    "compatibility_date": "2026-08-08"
+}
