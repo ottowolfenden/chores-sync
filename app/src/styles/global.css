@@ -29,7 +29,7 @@ main {
 }
 
 nav {
-    background-color: var(--bg2);
+    background-color: var(--bg3);
     display: flex;
     justify-content: space-around;
     height: 65px;
@@ -160,7 +160,6 @@ input[type="text"] {
 
     &[data-invalid] {
         border-color: var(--fg-err);
-        background-color: var(--bg-err);
     }
 }
 
@@ -209,17 +208,14 @@ button.filled {
 
 @media (hover: hover) {
     nav a:hover {
-        background-color: hsl(from var(--bg2) h s calc(l * 1.2));
+        background-color: hsl(from var(--bg3) h s calc(l * var(--hover-l-mult)));
     }
 
     button.filled:hover {
-        background-color: hsl(from var(--fg) h s calc(l * 0.9));
+        background-color: hsl(from var(--fg) h s calc(l * var(--hover-l-mult-inv)));
     }
 
     input[type="text"]:hover {
-        background-color: hsl(from var(--bg) h s calc(l * 1.2));
-        &[data-invalid] {
-            background-color: hsl(from var(--bg-err) h s calc(l * 1.1));
-        }
+        background-color: hsl(from var(--bg) h s calc(l * var(--hover-l-mult)));
     }
 }
