@@ -17,6 +17,5 @@ const openSection = async (targetId: string) => {
 
 const handleRoute = async () => await openSection(location.hash.replace("#", ""));
 window.addEventListener("hashchange", handleRoute);
-document.addEventListener("DOMContentLoaded", handleRoute);
-
 if (!location.hash) location.replace("#today");
+handleRoute();
