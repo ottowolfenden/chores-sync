@@ -1,5 +1,4 @@
-app/node_modules
+node_modules
 app/dist
-functions/api/node_modules
-functions/api/dist
+functions/api/*.js
 todo.txt

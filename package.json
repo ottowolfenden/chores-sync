@@ -1,6 +1,9 @@
 {
+    "scripts": {
+        "build": "tsc -p app/tsconfig.json"
+    },
     "dependencies": {
-        "@cloudflare/workers-types": "^5.20260808.1",
+        "@cloudflare/workers-types": "^5.20260810.1",
         "@neondatabase/serverless": "^1.1.0",
         "dotenv": "^17.4.2",
         "typescript": "^7.0.2"
