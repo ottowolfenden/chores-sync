@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "build": "tsc -p app/tsconfig.json"
+        "build": "tsc -p app/tsconfig.json && cp -r app/src/*.html app/src/assets app/src/styles app/dist/"
     },
     "dependencies": {
         "@cloudflare/workers-types": "^5.20260810.1",
