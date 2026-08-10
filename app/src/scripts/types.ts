@@ -4,9 +4,6 @@ type Member = {
     isActive: boolean;
     canEditToday: boolean;
     canEditHistory: boolean;
-    canSetMemberActiveState: boolean;
-    canAddMembers: boolean;
-    canEditPossibleChores: boolean;
 };
 
 type Chore = {
