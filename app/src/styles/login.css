@@ -35,4 +35,5 @@ h1 {
     font-variation-settings: "wght" 500;
     font-size: min(50px, 13vw);
     user-select: none;
+    color: var(--primary);
 }

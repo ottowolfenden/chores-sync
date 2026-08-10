@@ -3,13 +3,8 @@
     -webkit-tap-highlight-color: transparent;
 
     &:focus-visible {
-        outline: solid var(--fg-accent) 2px;
-        outline-offset: 2px;
-    }
-
-    &::selection {
-        color: var(--bg);
-        background-color: var(--fg-accent);
+        outline: solid var(--primary) 2px;
+        outline-offset: -2px;
     }
 }
 
@@ -17,8 +12,8 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    background-color: var(--bg);
-    color: var(--fg);
+    background-color: var(--surface-container-lowest);
+    color: var(--on-background);
     height: 100dvh;
 }
 
@@ -29,7 +24,7 @@ main {
 }
 
 nav {
-    background-color: var(--bg3);
+    background-color: var(--surface-container-low);
     display: flex;
     justify-content: space-around;
     height: 65px;
@@ -38,7 +33,7 @@ nav {
     border-radius: 15px 15px 0 0;
 
     a {
-        color: var(--fg);
+        color: var(--on-surface-variant);
         text-decoration: none;
         display: flex;
         flex-direction: column;
@@ -48,7 +43,10 @@ nav {
         border-radius: 10px;
         user-select: none;
         scale: 0.95;
-        transition: scale 100ms ease-in;
+        transition:
+            scale 100ms ease-in,
+            background-color 100ms,
+            color 100ms;
         margin-right: 10px;
 
         &:last-child {
@@ -65,9 +63,8 @@ nav {
         }
 
         &.active {
-            color: var(--fg-accent);
-            background-color: var(--bg-accent);
-            pointer-events: none;
+            color: var(--on-secondary-container);
+            background-color: var(--secondary-container);
             scale: 1;
 
             .icon {
@@ -81,6 +78,15 @@ nav {
             .label {
                 font-weight: 600;
             }
+        }
+
+        &:active,
+        &:focus-visible {
+            background-color: color-mix(
+                in srgb,
+                var(--on-surface-variant) 10%,
+                var(--surface-container-low)
+            );
         }
     }
 }
@@ -140,6 +146,7 @@ nav {
 
 .icon {
     font-family: "Material Symbols";
+    user-select: none;
     font-variation-settings:
         "FILL" 0,
         "wght" 400,
@@ -149,21 +156,22 @@ nav {
 }
 
 input[type="text"] {
-    background-color: var(--bg);
-    color: var(--fg);
+    background-color: var(--surface-container-highest);
+    color: var(--on-surface);
     font-size: 16px;
-    border: solid var(--fg2) 2px;
+    border: solid var(--outline) 2px;
     border-radius: 5px;
     padding: 5px;
     width: 150px;
     height: 20px;
 
     &[data-invalid] {
-        border-color: var(--fg-err);
+        border-color: var(--error);
     }
 }
 
 label:has(input[type="text"]) span {
+    color: var(--on-surface);
     margin-bottom: 2px;
 
     &[data-font-descender] {
@@ -171,15 +179,15 @@ label:has(input[type="text"]) span {
     }
 
     &:has(+ input[data-invalid]) {
-        color: var(--fg-err);
+        color: var(--error);
     }
 }
 
 button.filled {
     font-size: 17px;
     border-radius: 5px;
-    color: var(--bg);
-    background-color: var(--fg);
+    background-color: var(--primary);
+    color: var(--on-primary);
     border: none;
     cursor: pointer;
     display: flex;
@@ -188,34 +196,58 @@ button.filled {
     padding-right: 8px;
     user-select: none;
     width: fit-content;
-    transition: scale 100ms ease-in;
+    transition:
+        scale 100ms ease-in,
+        background-color 100ms,
+        color 100ms;
 
     .icon {
         font-size: 21px;
         margin: 7px;
     }
 
-    &:active:not(:disabled) {
-        background-color: var(--fg-accent);
+    &:active {
         scale: 0.95;
     }
 
-    &:disabled {
-        cursor: default;
-        background-color: var(--fg2);
+    &:focus-visible,
+    &:active {
+        background-color: color-mix(in srgb, var(--on-primary) 10%, var(--primary));
     }
 }
 
 @media (hover: hover) {
-    nav a:hover {
-        background-color: hsl(from var(--bg3) h s calc(l * var(--hover-l-mult)));
+    nav a {
+        &:hover:not(:active) {
+            background-color: color-mix(
+                in srgb,
+                var(--on-surface-variant) 8%,
+                var(--surface-container-low)
+            );
+        }
+
+        &:hover.active {
+            background-color: color-mix(
+                in srgb,
+                var(--on-surface-variant) 10%,
+                var(--secondary-container)
+            );
+        }
     }
 
     button.filled:hover {
-        background-color: hsl(from var(--fg) h s calc(l * var(--hover-l-mult-inv)));
+        background-color: color-mix(in srgb, var(--on-primary) 8%, var(--primary));
     }
+}
 
-    input[type="text"]:hover {
-        background-color: hsl(from var(--bg) h s calc(l * var(--hover-l-mult)));
-    }
+section {
+    font-size: 17px;
+}
+
+h2 {
+    margin: 0;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 20px;
+    user-select: none;
 }

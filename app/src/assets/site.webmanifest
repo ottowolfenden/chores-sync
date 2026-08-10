@@ -1,6 +1,6 @@
 {
-    "name": "chores-sync",
-    "short_name": "chores",
+    "name": "Chores Sync",
+    "short_name": "Chores",
     "start_url": "/",
     "display": "standalone",
     "icons": [
