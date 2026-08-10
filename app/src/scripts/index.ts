@@ -19,3 +19,7 @@ const handleRoute = async () => await openSection(location.hash.replace("#", "")
 window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
+
+document
+    .querySelectorAll("button, a, input[type='checkbox']")
+    .forEach(el => el.addEventListener("click", () => navigator.vibrate(5)));
