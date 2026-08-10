@@ -9,7 +9,7 @@ const checkAccess = async (
         guess != undefined &&
         (localStorage.getItem("name") != undefined || !checkName) &&
         (
-            await fetch("/api/dist/check-secret", {
+            await fetch("/api/check-secret", {
                 headers: { "X-Login-Secret": guess }
             })
         ).status == 200
