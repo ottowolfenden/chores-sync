@@ -1,0 +1,18 @@
+.icon {
+    font-family: "Material Symbols";
+    font-variation-settings:
+        "FILL" 0,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 24;
+    transition: font-variation-settings 100ms ease-in;
+
+    .active &,
+    :active & {
+        font-variation-settings:
+            "FILL" 1,
+            "wght" 400,
+            "GRAD" 0,
+            "opsz" 24;
+    }
+}

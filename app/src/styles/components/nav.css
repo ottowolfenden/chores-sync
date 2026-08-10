@@ -1,0 +1,59 @@
+nav {
+    background-color: var(--surface-container-low);
+
+    a {
+        color: var(--on-surface-variant);
+        scale: 0.95;
+        transition:
+            scale 100ms ease-in,
+            background-color 100ms,
+            color 100ms;
+
+        .icon {
+            font-size: 25px;
+        }
+
+        .label {
+            font-size: 15px;
+            margin-top: 5px;
+            transition: font-weight 100ms ease-in;
+        }
+
+        &.active {
+            color: var(--on-secondary-container);
+            background-color: var(--secondary-container);
+            scale: 1;
+
+            .label {
+                font-weight: 600;
+            }
+        }
+
+        &:active,
+        &:focus-visible {
+            background-color: color-mix(
+                in srgb,
+                var(--on-surface-variant) 14%,
+                var(--surface-container-low)
+            );
+        }
+
+        @media (hover: hover) {
+            &:hover:not(:active) {
+                background-color: color-mix(
+                    in srgb,
+                    var(--on-surface-variant) 8%,
+                    var(--surface-container-low)
+                );
+            }
+
+            &:hover.active {
+                background-color: color-mix(
+                    in srgb,
+                    var(--on-surface-variant) 14%,
+                    var(--secondary-container)
+                );
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+input[type="text"] {
+    background-color: var(--surface-container-highest);
+    color: var(--on-surface);
+    font-size: 16px;
+    border: solid var(--outline) 2px;
+    border-radius: 10px;
+    padding: 8px;
+    width: 150px;
+    height: 20px;
+    transition:
+        background-color 200ms,
+        color 200ms,
+        border-color 200ms;
+
+    &[data-invalid] {
+        border-color: var(--error);
+    }
+}
+
+label:has(input[type="text"]) span {
+    color: var(--on-surface);
+    margin-bottom: 2px;
+
+    &[data-font-descender] {
+        margin-bottom: 4px;
+    }
+
+    &:has(+ input[data-invalid]) {
+        color: var(--error);
+    }
+}
