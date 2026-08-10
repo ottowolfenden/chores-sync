@@ -4,7 +4,10 @@ CREATE TABLE
         member_name TEXT NOT NULL UNIQUE,
         is_active BOOLEAN NOT NULL DEFAULT TRUE,
         can_edit_today BOOLEAN NOT NULL DEFAULT TRUE,
-        can_edit_history BOOLEAN NOT NULL DEFAULT TRUE
+        can_edit_history BOOLEAN NOT NULL DEFAULT TRUE,
+        can_set_member_active_state BOOLEAN NOT NULL DEFAULT TRUE,
+        can_add_members BOOLEAN NOT NULL DEFAULT TRUE,
+        can_edit_possible_chores BOOLEAN NOT NULL DEFAULT TRUE,
     );
 
 CREATE TABLE
