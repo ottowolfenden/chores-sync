@@ -27,6 +27,13 @@ nav {
             .label {
                 font-weight: 600;
             }
+            .icon {
+                font-variation-settings:
+                    "FILL" 1,
+                    "wght" 400,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
         }
 
         &:active,
