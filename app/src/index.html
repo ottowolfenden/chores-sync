@@ -13,12 +13,80 @@
     </head>
     <body>
         <main>
-            <section id="today" hidden>today</section>
+            <section id="today" hidden>
+                <div id="your-chores">
+                    <div>
+                        <h2>Your chores</h2>
+                        <button class="tonal" id="dismiss-all">
+                            <span class="icon">done_all</span>
+                            <span>Dismiss all</span>
+                        </button>
+                    </div>
+                    <ul>
+                        <li>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Washing up</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Drying up</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div id="all-chores">
+                    <div><h2>All chores</h2></div>
+                    <table>
+                        <tr>
+                            <td class="chore-name">Washing up</td>
+                            <td class="member-name">Ivo</td>
+                            <td class="assignment">
+                                <button>
+                                    <span class="icon">assignment</span>
+                                    <span class="label">Assign</span>
+                                </button>
+                            </td>
+                            <td class="edit">
+                                <button><span class="icon">edit</span></button>
+                            </td>
+                        </tr>
+
+                        <tr data-assigned>
+                            <td class="chore-name">Drying up</td>
+                            <td class="member-name">Otto</td>
+                            <td class="assignment">
+                                <button>
+                                    <span class="icon">assignment</span>
+                                    <span class="label">Assign</span>
+                                </button>
+                            </td>
+                            <td class="edit">
+                                <button><span class="icon">edit</span></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="chore-name">Folding washing</td>
+                            <td class="member-name">Emily</td>
+                            <td class="assignment">
+                                <button>
+                                    <span class="icon">assignment</span>
+                                    <span class="label">Assign</span>
+                                </button>
+                            </td>
+                            <td class="edit">
+                                <button><span class="icon">edit</span></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
             <section id="history" hidden>history</section>
             <section id="count" hidden>count</section>
-            <section id="settings" hidden>
-                <div></div>
-            </section>
+            <section id="settings" hidden>settings</section>
         </main>
 
         <nav>
