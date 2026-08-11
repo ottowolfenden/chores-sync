@@ -10,7 +10,7 @@ nav {
             color 100ms;
 
         .icon {
-            font-size: 25px;
+            font-size: 27px;
 
             & + span {
                 font-size: 15px;
@@ -37,16 +37,17 @@ nav {
             }
         }
 
-        &:active,
-        &:focus-visible {
-            background-color: color-mix(
-                in srgb,
-                var(--on-surface-variant) 14%,
-                var(--surface-container-low)
-            );
-        }
-
         @media (hover: hover) {
+            &:active,
+            &:focus-visible {
+                scale: 0.96;
+                background-color: color-mix(
+                    in srgb,
+                    var(--on-surface-variant) 14%,
+                    var(--surface-container-low)
+                );
+            }
+
             &:hover:not(:active) {
                 background-color: color-mix(
                     in srgb,
