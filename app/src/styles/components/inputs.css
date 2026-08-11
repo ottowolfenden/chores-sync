@@ -7,10 +7,8 @@ input[type="text"] {
     padding: 8px;
     width: 150px;
     height: 20px;
-    transition:
-        background-color 200ms,
-        color 200ms,
-        border-color 200ms;
+    transition: background-color, color, border-color;
+    transition-duration: 200ms;
 
     &[data-invalid] {
         border-color: var(--error);
@@ -40,10 +38,8 @@ input[type="checkbox"] {
     display: grid;
     place-content: center;
     cursor: pointer;
-    transition:
-        background-color 200ms,
-        color 200ms,
-        border-color 200ms;
+    transition: background-color, color, border-color;
+    transition-duration: 200ms;
 
     &:checked {
         background-color: var(--primary);

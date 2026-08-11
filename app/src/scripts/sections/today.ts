@@ -20,6 +20,9 @@ section.addEventListener("open", () => {
 
     dismissAllButton.addEventListener("click", () => {
         checkboxes.forEach(c => ((c as HTMLInputElement).checked = true));
-        dismissAllButton.disabled = true;
+        setTimeout(
+            () => (dismissAllButton.disabled = true),
+            parseFloat(getComputedStyle(dismissAllButton).transitionDuration) * 1000
+        );
     });
 });

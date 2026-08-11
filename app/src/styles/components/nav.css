@@ -6,10 +6,8 @@ nav {
         color: var(--on-surface-variant);
         scale: 0.95;
         border-radius: 10px;
-        transition:
-            scale 100ms ease-in,
-            background-color 100ms,
-            color 100ms;
+        transition: scale, background-color, color;
+        transition-duration: 100ms;
 
         .icon {
             font-size: 27px;

@@ -10,10 +10,8 @@ button {
     padding: calc(var(--size) * 0.4);
     padding-left: calc(var(--size) * 0.4 + (var(--size) * 0.4 * (1 - var(--collapse))));
     padding-right: calc(var(--size) * 0.4 + (var(--size) * 0.7 * (1 - var(--collapse))));
-    transition:
-        scale 100ms ease-in,
-        background-color 100ms,
-        color 100ms;
+    transition: scale, background-color, color;
+    transition-duration: 100ms;
 
     .icon {
         font-size: calc(var(--size) * 1.3);
