@@ -21,6 +21,10 @@ section#today {
 
             button#dismiss-all {
                 --size: 15px;
+
+                @media (width <= 350px) {
+                    --collapse: 1;
+                }
             }
         }
 
@@ -104,6 +108,18 @@ section#today {
             width: 100%;
             padding: 10px;
             font-size: 17px;
+
+            td.assignment button {
+                @media (width <= 400px) {
+                    --collapse: 1;
+                }
+            }
+
+            td.edit button {
+                @media (((width >= 550px) and (width <= 670px)) or (width <= 490px)) {
+                    --collapse: 1;
+                }
+            }
         }
     }
 }
