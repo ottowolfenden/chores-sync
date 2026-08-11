@@ -28,13 +28,13 @@ section#today {
         table {
             background-color: var(--surface);
             color: var(--on-surface);
-            padding: 15px;
             border-radius: 3px 3px 17px 17px;
         }
 
         ul {
             margin: 0;
             list-style: none;
+            padding: 15px;
 
             &:not(:has(li)) {
                 margin-bottom: 0;
@@ -62,11 +62,14 @@ section#today {
                     padding: 5px 0;
 
                     span {
-                        transition: opacity 300ms;
+                        transition:
+                            opacity 300ms,
+                            color 300ms;
                     }
 
                     input[type="checkbox"]:checked + span {
                         opacity: 50%;
+                        color: var(--primary);
                         text-decoration: line-through;
                     }
                 }
@@ -94,6 +97,7 @@ section#today {
 
         table {
             width: 100%;
+            padding: 10px;
             font-size: 17px;
         }
     }
