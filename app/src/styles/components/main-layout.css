@@ -74,7 +74,7 @@ nav {
     }
 }
 
-@media ((width >= 1500px) and (height >= 430px)) {
+@media ((width >= 1300px) and (height >= 430px)) {
     body {
         justify-content: center;
     }
@@ -89,7 +89,7 @@ nav {
     nav {
         height: 50px;
 
-        a .label {
+        a .icon + span {
             display: none;
         }
     }
@@ -99,7 +99,7 @@ nav {
     nav {
         width: 50px;
 
-        a .label {
+        a .icon + span {
             display: none;
         }
     }
