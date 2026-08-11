@@ -1,11 +1,13 @@
-document.querySelector("section#today")?.addEventListener("open", () => {
+const section = document.querySelector("section#today")!;
+
+section.addEventListener("open", () => {
     console.log("today");
 
-    const checkboxes = document.querySelectorAll(
+    const checkboxes = section.querySelectorAll(
         "#your-chores input[type='checkbox']"
     ) as NodeListOf<HTMLInputElement>;
 
-    const dismissAllButton = document.querySelector(
+    const dismissAllButton = section.querySelector(
         "button#dismiss-all"
     ) as HTMLButtonElement;
 
