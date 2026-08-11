@@ -1,9 +1,11 @@
 nav {
     background-color: var(--surface-container-low);
+    border-radius: 15px;
 
     a {
         color: var(--on-surface-variant);
         scale: 0.95;
+        border-radius: 10px;
         transition:
             scale 100ms ease-in,
             background-color 100ms,
