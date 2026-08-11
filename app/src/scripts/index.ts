@@ -26,4 +26,4 @@ handleRoute();
 
 document
     .querySelectorAll("button, a, input[type='checkbox']")
-    .forEach(el => el.addEventListener("click", () => navigator.vibrate(5)));
+    .forEach(el => el.addEventListener("click", () => navigator.vibrate(1)));
