@@ -1,0 +1,64 @@
+input[type="text"] {
+    background-color: var(--surface-container-highest);
+    color: var(--on-surface);
+    font-size: 16px;
+    border: solid var(--outline) 2px;
+    border-radius: 10px;
+    padding: 8px;
+    width: 150px;
+    height: 20px;
+    transition:
+        background-color 200ms,
+        color 200ms,
+        border-color 200ms;
+
+    &[data-invalid] {
+        border-color: var(--error);
+    }
+}
+
+label:has(input[type="text"]) span {
+    color: var(--on-surface);
+    margin-bottom: 2px;
+
+    &[data-font-descender] {
+        margin-bottom: 4px;
+    }
+
+    &:has(+ input[data-invalid]) {
+        color: var(--error);
+    }
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    margin-right: 15px;
+    width: 19px;
+    height: 19px;
+    border: 2px solid var(--outline);
+    border-radius: 3px;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition:
+        background-color 200ms,
+        color 200ms,
+        border-color 200ms;
+
+    &:checked {
+        background-color: var(--primary);
+        border-color: var(--primary);
+
+        &::before {
+            content: "check";
+            color: var(--on-primary);
+            font-family: "Material Symbols";
+            font-size: 20px;
+            font-variation-settings:
+                "FILL" 0,
+                "wght" 550,
+                "GRAD" 0,
+                "opsz" 20;
+        }
+    }
+}

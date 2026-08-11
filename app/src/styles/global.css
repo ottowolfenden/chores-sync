@@ -1,9 +1,8 @@
-@import "components/button-filled.css";
+@import "components/buttons.css";
 @import "components/colours.css";
 @import "components/fonts.css";
 @import "components/icon.css";
-@import "components/input-checkbox.css";
-@import "components/input-text.css";
+@import "components/inputs.css";
 @import "components/main-layout.css";
 @import "components/nav.css";
 
@@ -27,4 +26,8 @@ body {
     margin: 0;
     background-color: var(--surface-container-lowest);
     color: var(--on-surface);
+}
+
+section {
+    font-size: 19px;
 }

@@ -1,2 +1,86 @@
 section#today {
+    > div + div {
+        margin-top: 40px;
+    }
+
+    div div {
+        background-color: var(--surface);
+        color: var(--on-surface);
+        padding: 15px 20px;
+        border-radius: 17px 17px 3px 3px;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h2 {
+            margin: 0;
+            font-weight: 500;
+            font-size: 22px;
+        }
+    }
+
+    ul {
+        background-color: var(--surface);
+        color: var(--on-surface);
+        padding: 15px;
+        border-radius: 3px 3px 17px 17px;
+        margin: 0;
+        list-style: none;
+
+        &:not(:has(li)) {
+            margin-bottom: 0;
+        }
+    }
+
+    li {
+        background-color: var(--surface);
+        border-radius: 9.5px;
+        transition:
+            background-color 200ms,
+            color 200ms;
+
+        & + li {
+            margin-top: 7px;
+        }
+
+        input[type="checkbox"] {
+            margin-left: 8px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px 0;
+
+            span {
+                transition: opacity 300ms;
+            }
+
+            input[type="checkbox"]:checked + span {
+                opacity: 50%;
+                text-decoration: line-through;
+            }
+        }
+
+        @media (hover: hover) {
+            &:hover {
+                background-color: color-mix(
+                    in srgb,
+                    var(--on-surface) 8%,
+                    var(--surface)
+                );
+            }
+        }
+
+        &:active,
+        &:focus-visible {
+            background-color: color-mix(in srgb, var(--on-surface) 14%, var(--surface));
+        }
+    }
+
+    button#dismiss-all {
+        --size: 15px;
+    }
 }
