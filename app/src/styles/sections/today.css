@@ -19,7 +19,7 @@ section#today {
                 font-size: 22px;
             }
 
-            button#dismiss-all {
+            h2 + button {
                 --size: 15px;
 
                 @media (width <= 350px) {
@@ -47,9 +47,8 @@ section#today {
             li {
                 background-color: var(--surface);
                 border-radius: 9.5px;
-                transition:
-                    background-color 200ms,
-                    color 200ms;
+                transition: background-color, color;
+                transition-duration: 200ms;
 
                 & + li {
                     margin-top: 7px;
@@ -77,9 +76,8 @@ section#today {
                         overflow: hidden;
                         white-space: nowrap;
                         padding-right: 5px;
-                        transition:
-                            opacity 300ms,
-                            color 300ms;
+                        transition: opacity, color;
+                        transition-duration: 200ms;
                     }
                 }
 
@@ -107,16 +105,37 @@ section#today {
         table {
             width: 100%;
             padding: 10px;
-            font-size: 17px;
+            font-size: 16px;
 
-            td.assignment button {
-                @media (width <= 400px) {
-                    --collapse: 1;
-                }
+            td.chore-name {
+                opacity: 0.7;
+                transition: opacity, font-weight;
+                transition-duration: 100ms;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100px;
+                padding-right: 12px;
             }
 
-            td.edit button {
-                @media (((width >= 550px) and (width <= 670px)) or (width <= 490px)) {
+            tr[data-assigned] td.chore-name {
+                opacity: 1;
+                font-weight: 470;
+            }
+
+            td.member-name {
+                font-size: 18px;
+                width: 20%;
+                padding-right: 12px;
+            }
+
+            td.add,
+            td.edit {
+                width: 0;
+            }
+
+            @media (width <= 650px) {
+                td button {
                     --collapse: 1;
                 }
             }
