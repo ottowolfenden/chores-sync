@@ -6,13 +6,10 @@
         "GRAD" 0,
         "opsz" 24;
     transition: font-variation-settings 70ms ease-in;
-
-    &:not(:has(+ span)) {
-        display: inline-block;
-        text-align: center;
-        line-height: inherit;
-        margin-right: 0;
-        width: 1.2em;
-        height: 1.2em;
-    }
+    display: inline-block;
+    text-align: center;
+    line-height: inherit;
+    margin-right: 0;
+    width: 1.2em;
+    height: 1.2em;
 }
