@@ -51,26 +51,31 @@ section#today {
                     margin-top: 7px;
                 }
 
-                input[type="checkbox"] {
-                    margin-left: 8px;
-                }
-
                 label {
                     display: flex;
                     align-items: center;
                     cursor: pointer;
                     padding: 5px 0;
 
+                    input[type="checkbox"] {
+                        margin-left: 8px;
+                        flex-shrink: 0;
+
+                        &:checked + span {
+                            opacity: 50%;
+                            color: var(--primary);
+                            text-decoration: line-through;
+                        }
+                    }
+
                     span {
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        padding-right: 5px;
                         transition:
                             opacity 300ms,
                             color 300ms;
-                    }
-
-                    input[type="checkbox"]:checked + span {
-                        opacity: 50%;
-                        color: var(--primary);
-                        text-decoration: line-through;
                     }
                 }
 
