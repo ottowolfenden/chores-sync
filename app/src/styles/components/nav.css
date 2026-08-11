@@ -40,7 +40,6 @@ nav {
         @media (hover: hover) {
             &:active,
             &:focus-visible {
-                scale: 0.96;
                 background-color: color-mix(
                     in srgb,
                     var(--on-surface-variant) 14%,
