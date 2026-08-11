@@ -2,27 +2,22 @@ type Member = {
     id: number;
     name: string;
     isActive: boolean;
-    canEditToday: boolean;
     canEditHistory: boolean;
-    canSetMemberActiveState: boolean;
-    canAddMembers: boolean;
-    canEditPossibleChores: boolean;
 };
 
 type Chore = {
     id: number;
     name: string;
-    icon: string;
     daily: boolean;
+    maxPerDay: number;
 };
 
 type Assignment = {
     id: number;
+    date: Date;
+    quantity: number;
     chore: Chore;
     member: Member;
-    date: Date;
-    quantity: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-    completed: boolean;
 };
 
 export type { Member, Assignment, Chore };
