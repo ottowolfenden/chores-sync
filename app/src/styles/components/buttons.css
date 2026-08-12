@@ -56,7 +56,7 @@ button {
         }
     }
 
-    &.square {
+    &.small {
         --size: 15px;
         border-radius: 7px;
         padding: calc(var(--size) * 0.3);
