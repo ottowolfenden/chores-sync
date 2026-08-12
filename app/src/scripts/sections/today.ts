@@ -5,6 +5,11 @@ section.addEventListener("open", () => {
 
     const editButton = section.querySelector("button#edit") as HTMLButtonElement;
     const assignedList = section.querySelector("#assigned > ul") as HTMLUListElement;
+    const listItems = assignedList.querySelectorAll("li");
+    const dropdownButtons = section.querySelectorAll(
+        ".name-dropdown > button"
+    ) as NodeListOf<HTMLButtonElement>;
+
     editButton.addEventListener(
         "click",
         () => {
@@ -22,9 +27,13 @@ section.addEventListener("open", () => {
         { signal: controller.signal }
     );
 
-    const dropdownButtons = section.querySelectorAll(
-        ".name-dropdown > button"
-    ) as NodeListOf<HTMLButtonElement>;
+    listItems.forEach(li => {
+        const removeButton = li.querySelector("button.remove");
+        removeButton?.addEventListener("click", () => assignedList.removeChild(li), {
+            signal: controller.signal
+        });
+    });
+
     dropdownButtons.forEach((db, i) => {
         const popover = db.nextElementSibling as HTMLDivElement;
         const dropdownIcon = db.querySelector(".icon") as HTMLSpanElement;
