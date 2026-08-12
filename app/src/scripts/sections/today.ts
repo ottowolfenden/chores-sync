@@ -23,24 +23,36 @@ section.addEventListener("open", () => {
     );
 
     const dropdownButtons = section.querySelectorAll(
-        ".member-name-dropdown > button"
+        ".name-dropdown > button"
     ) as NodeListOf<HTMLButtonElement>;
-    dropdownButtons.forEach((b, i) => {
-        const popover = b.nextElementSibling;
-        const anchorName = `--dropdown-anchor-${i}`;
-        const icon = b.querySelector(".icon");
-        if (!(popover instanceof HTMLElement && icon instanceof HTMLElement)) return;
+    dropdownButtons.forEach((db, i) => {
+        const popover = db.nextElementSibling as HTMLDivElement;
+        const dropdownIcon = db.querySelector(".icon") as HTMLSpanElement;
+        const memberName = db.querySelector(".member-name") as HTMLSpanElement;
+        const popoverButtons = popover.querySelectorAll("button");
 
-        b.popoverTargetElement = popover;
-        b.style.anchorName = anchorName;
-        popover.style.positionAnchor = anchorName;
+        db.popoverTargetElement = popover;
+        db.style.anchorName = popover.style.positionAnchor = `--dropdown-anchor-${i}`;
 
         popover.addEventListener(
             "toggle",
             e =>
-                (icon.textContent =
+                (dropdownIcon.textContent =
                     e.newState == "open" ? "arrow_drop_up" : "arrow_drop_down"),
             { signal: controller.signal }
+        );
+        popoverButtons.forEach(pb =>
+            pb.addEventListener(
+                "click",
+                () => {
+                    popover.hidePopover();
+                    [pb.textContent, memberName.textContent] = [
+                        memberName.textContent,
+                        pb.textContent
+                    ];
+                },
+                { signal: controller.signal }
+            )
         );
     });
 

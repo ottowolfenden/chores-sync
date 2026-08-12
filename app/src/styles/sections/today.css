@@ -17,7 +17,6 @@ section#today {
                 margin: 5px;
                 font-weight: 500;
                 font-size: 22px;
-                font-stretch: semi-expanded;
             }
         }
     }
@@ -46,7 +45,7 @@ section#today {
                 gap: 12px;
                 width: 100%;
                 background-color: var(--surface-container-low);
-                color: var(--on-surface-container-low);
+                color: var(--on-surface);
                 border-radius: 6px;
                 box-sizing: border-box;
                 padding: 0;
@@ -63,8 +62,8 @@ section#today {
                     margin-left: 6px;
                 }
                 .chore-quantity {
-                    background-color: var(--tertiary-container);
-                    color: var(--on-tertiary-container);
+                    background-color: var(--surface-container-highest);
+                    color: var(--on-surface);
                     padding: 4px 9px;
                     border-radius: calc(infinity * 1px);
                     font-weight: 550;
@@ -76,7 +75,7 @@ section#today {
                 .swapped.icon {
                     display: none;
                 }
-                .member-name-dropdown {
+                .name-dropdown {
                     margin-left: auto;
                     width: 30%;
                     flex-shrink: 0;
@@ -89,6 +88,21 @@ section#today {
                         justify-content: space-between;
                         height: 32px;
                         width: 100%;
+                        scale: 1;
+                        @media not (hover: hover) {
+                            background-color: var(--primary-container);
+                            color: var(--on-primary-container);
+                            &:has(+ :popover-open) {
+                                color: var(--on-tertiary-container);
+                                background-color: var(--tertiary-container);
+                            }
+                        }
+
+                        &:has(+ :popover-open) {
+                            border-radius: 16px 16px 6px 6px;
+                            --color: var(--on-tertiary-container);
+                            --background-color: var(--tertiary-container);
+                        }
 
                         .member-name {
                             margin-left: 12px;
@@ -100,12 +114,41 @@ section#today {
                     }
                     [popover] {
                         position-area: bottom;
+                        width: anchor-size(width);
+                        background-color: var(--surface-container-low);
+                        border: none;
+                        padding: 0 6px 6px 6px;
+                        border-radius: 0 0 8px 8px;
+                        margin-top: 4px;
+                        list-style: none;
+
+                        button {
+                            height: 32px;
+                            width: 100%;
+                            --background-color: var(--tertiary-container);
+                            --color: var(--on-tertiary-container);
+                            border-radius: 6px;
+                            scale: 1;
+                            margin-bottom: 4px;
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+
+                            span {
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                overflow: hidden;
+                                font-weight: 470;
+                                margin-left: 4.5px;
+                            }
+                        }
                     }
                 }
+
                 button.remove {
                     --size: 14px;
-                    --background-color: var(--error-container);
-                    --color: var(--on-error-container);
+                    --background-color: var(--primary-container);
+                    --color: var(--on-primary-container);
                 }
             }
 
@@ -120,11 +163,11 @@ section#today {
                     }
                 }
 
-                .swapped.icon:not([data-enabled]) + .member-name-dropdown {
+                .swapped.icon:not([data-enabled]) + .name-dropdown {
                     margin-left: auto;
                 }
 
-                .member-name-dropdown {
+                .name-dropdown {
                     margin-left: 0;
                     pointer-events: none;
                     max-width: 40%;
@@ -142,7 +185,7 @@ section#today {
                             width: 100%;
                             text-align: right;
                         }
-                        .dropdown.icon {
+                        .icon {
                             display: none;
                         }
                     }
