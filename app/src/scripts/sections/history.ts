@@ -1,5 +1,7 @@
 const section = document.querySelector("section#history")!;
 
 section.addEventListener("open", () => {
-    console.log("history");
+    const controller = new AbortController();
+
+    section.addEventListener("close", () => controller.abort(), { once: true });
 });

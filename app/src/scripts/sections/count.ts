@@ -1,5 +1,7 @@
 const section = document.querySelector("section#count")!;
 
 section.addEventListener("open", () => {
-    console.log("count");
+    const controller = new AbortController();
+
+    section.addEventListener("close", () => controller.abort(), { once: true });
 });

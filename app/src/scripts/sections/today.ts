@@ -1,20 +1,30 @@
 const section = document.querySelector("section#today")!;
 
 section.addEventListener("open", () => {
-    console.log("today");
+    const controller = new AbortController();
 
-    const disableAfterTransition = (button: HTMLButtonElement) => {
-        const duration: string = getComputedStyle(button).transitionDuration;
-        setTimeout(
-            () => (button.disabled = true),
-            parseFloat(duration) * (duration.endsWith("ms") ? 1 : 1000)
-        );
-    };
+    const editButton = section.querySelector("button#edit") as HTMLButtonElement;
+    const assignedList = section.querySelector("#assigned > ul") as HTMLUListElement;
+    editButton.addEventListener(
+        "click",
+        () => {
+            const icon = editButton.querySelector(".icon") as HTMLSpanElement;
+            const label = editButton.querySelector(".icon + span") as HTMLSpanElement;
+            assignedList.toggleAttribute("data-edit-mode");
+            if (assignedList.hasAttribute("data-edit-mode")) {
+                icon.textContent = "check";
+                label.textContent = "Save";
+            } else {
+                label.textContent = "Edit";
+                icon.textContent = "edit";
+            }
+        },
+        { signal: controller.signal }
+    );
 
     const dropdownButtons = section.querySelectorAll(
         ".member-name-dropdown > button"
     ) as NodeListOf<HTMLButtonElement>;
-
     dropdownButtons.forEach((b, i) => {
         const popover = b.nextElementSibling;
         const anchorName = `--dropdown-anchor-${i}`;
@@ -29,7 +39,10 @@ section.addEventListener("open", () => {
             "toggle",
             e =>
                 (icon.textContent =
-                    e.newState == "open" ? "arrow_drop_up" : "arrow_drop_down")
+                    e.newState == "open" ? "arrow_drop_up" : "arrow_drop_down"),
+            { signal: controller.signal }
         );
     });
+
+    section.addEventListener("close", () => controller.abort(), { once: true });
 });

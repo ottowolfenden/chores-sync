@@ -1,5 +1,7 @@
 const section = document.querySelector("section#settings")!;
 
 section.addEventListener("open", () => {
-    console.log("settings");
+    const controller = new AbortController();
+
+    section.addEventListener("close", () => controller.abort(), { once: true });
 });
