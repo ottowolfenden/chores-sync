@@ -71,37 +71,18 @@ button {
     }
 
     &.filled {
+        --background-color: var(--primary);
+        --color: var(--on-primary);
         border: none;
-        background-color: var(--primary);
-        color: var(--on-primary);
-
-        &:focus-visible,
-        &:active {
-            background-color: color-mix(in srgb, var(--on-primary) 14%, var(--primary));
-        }
-
-        @media (hover: hover) {
-            &:hover:not(:active) {
-                background-color: color-mix(
-                    in srgb,
-                    var(--on-primary) 8%,
-                    var(--primary)
-                );
-            }
-        }
-    }
-
-    &.tonal {
-        border: none;
-        background-color: var(--secondary-container);
-        color: var(--on-secondary-container);
+        background-color: var(--background-color);
+        color: var(--color);
 
         &:focus-visible,
         &:active {
             background-color: color-mix(
                 in srgb,
-                var(--on-secondary-container) 14%,
-                var(--secondary-container)
+                var(--color) 14%,
+                var(--background-color)
             );
         }
 
@@ -109,8 +90,35 @@ button {
             &:hover:not(:active) {
                 background-color: color-mix(
                     in srgb,
-                    var(--on-secondary-container) 8%,
-                    var(--secondary-container)
+                    var(--color) 8%,
+                    var(--background-color)
+                );
+            }
+        }
+    }
+
+    &.tonal {
+        border: none;
+        --background-color: var(--secondary-container);
+        --color: var(--on-secondary-container);
+        background-color: var(--background-color);
+        color: var(--color);
+
+        &:focus-visible,
+        &:active {
+            background-color: color-mix(
+                in srgb,
+                var(--color) 14%,
+                var(--background-color)
+            );
+        }
+
+        @media (hover: hover) {
+            &:hover:not(:active) {
+                background-color: color-mix(
+                    in srgb,
+                    var(--color) 8%,
+                    var(--background-color)
                 );
             }
         }

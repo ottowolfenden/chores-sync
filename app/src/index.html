@@ -14,22 +14,23 @@
     <body>
         <main>
             <section id="today" hidden>
-                <div id="assigned-chores">
+                <div id="assigned">
                     <div>
-                        <h2>Assigned chores</h2>
+                        <h2>Assigned</h2>
                         <button class="filled" id="edit">
                             <span class="icon">edit</span>
                             <span>Edit</span>
                         </button>
                     </div>
-                    <ul data-edit-mode>
+                    <ul>
                         <li>
                             <span class="chore-name">Drying up</span>
                             <span class="chore-quantity">×2</span>
+                            <span class="swapped icon" data-enabled>autorenew</span>
                             <div class="member-name-dropdown">
                                 <button class="tonal">
                                     <span class="member-name">Ivo</span>
-                                    <span class="icon">arrow_drop_down</span>
+                                    <span class="dropdown icon">arrow_drop_down</span>
                                 </button>
                                 <ul popover>
                                     <li><button>Otto</button></li>
@@ -43,11 +44,12 @@
 
                         <li>
                             <span class="chore-name">Washing up</span>
-                            <!-- <span class="chore-quantity">×3</span> -->
+                            <span class="chore-quantity" data-enabled>×300</span>
+                            <span class="swapped icon">autorenew</span>
                             <div class="member-name-dropdown">
                                 <button class="tonal">
                                     <span class="member-name">Otto</span>
-                                    <span class="icon">arrow_drop_down</span>
+                                    <span class="dropdown icon">arrow_drop_down</span>
                                 </button>
                                 <ul popover>
                                     <li><button>Emily</button></li>
@@ -61,11 +63,12 @@
 
                         <li>
                             <span class="chore-name">Emptying dishwasher</span>
-                            <span class="chore-quantity">×3</span>
+                            <span class="chore-quantity" data-enabled>×3</span>
+                            <span class="swapped icon" data-enabled>autorenew</span>
                             <div class="member-name-dropdown">
                                 <button class="tonal">
                                     <span class="member-name">Emily</span>
-                                    <span class="icon">arrow_drop_down</span>
+                                    <span class="dropdown icon">arrow_drop_down</span>
                                 </button>
                                 <ul popover>
                                     <li><button>Otto</button></li>
