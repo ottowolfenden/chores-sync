@@ -14,89 +14,98 @@
     <body>
         <main>
             <section id="today" hidden>
-                <div id="your-chores">
+                <div id="assigned-chores">
                     <div>
-                        <h2>Your chores</h2>
-                        <button class="tonal" id="dismiss-all">
-                            <span class="icon">done_all</span>
-                            <span>Dismiss all</span>
-                        </button>
-                    </div>
-                    <ul>
-                        <li>
-                            <label>
-                                <input type="checkbox" />
-                                <span>Washing up</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label>
-                                <input type="checkbox" />
-                                <span>Drying up</span>
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-                <div id="all-chores">
-                    <div>
-                        <h2>All chores</h2>
-                        <button class="tonal" id="Edit">
+                        <h2>Assigned chores</h2>
+                        <button class="tonal" id="edit">
                             <span class="icon">edit</span>
                             <span>Edit</span>
                         </button>
                     </div>
-                    <table>
-                        <tr>
-                            <td class="chore-name">Washing up</td>
-                            <td class="member-name">Ivo</td>
-                            <td class="add">
-                                <button class="tonal square">
-                                    <span class="icon">add</span>
-                                    <span>Add</span>
+                    <ul data-edit-mode>
+                        <li>
+                            <span class="chore-attrs">
+                                <span class="name">Drying up</span>
+                                <span class="quantity">×2</span>
+                                <span class="swapped icon">autorenew</span>
+                            </span>
+                            <div class="member-name-dropdown">
+                                <button class="tonal">
+                                    <span class="member-name">Ivo</span>
+                                    <span class="icon">arrow_drop_down</span>
                                 </button>
-                            </td>
-                            <td class="edit">
-                                <button class="tonal square">
-                                    <span class="icon">tune</span>
-                                    <span>Edit</span>
-                                </button>
-                            </td>
-                        </tr>
+                                <ul popover>
+                                    <li><button>Otto</button></li>
+                                    <li><button>Emily</button></li>
+                                </ul>
+                            </div>
+                            <button class="remove tonal small">
+                                <span class="icon">remove</span>
+                            </button>
+                        </li>
 
-                        <tr>
-                            <td class="chore-name">Drying up</td>
-                            <td class="member-name">Otto</td>
-                            <td class="add">
-                                <button class="tonal square">
-                                    <span class="icon">add</span>
-                                    <span>Add</span>
+                        <li>
+                            <span class="chore-attrs">
+                                <span class="name">Washing up</span>
+                                <span class="quantity">×3</span>
+                                <!-- <span class="swapped icon">autorenew</span> -->
+                            </span>
+                            <div class="member-name-dropdown">
+                                <button class="tonal">
+                                    <span class="member-name">Otto</span>
+                                    <span class="icon">arrow_drop_down</span>
                                 </button>
-                            </td>
-                            <td class="edit">
-                                <button class="tonal square">
-                                    <span class="icon">tune</span>
-                                    <span>Edit</span>
-                                </button>
-                            </td>
-                        </tr>
+                                <ul popover>
+                                    <li><button>Emily</button></li>
+                                    <li><button>Ivo</button></li>
+                                </ul>
+                            </div>
+                            <button class="remove tonal small">
+                                <span class="icon">remove</span>
+                            </button>
+                        </li>
 
-                        <tr>
-                            <td class="chore-name">Emptying dishwasher</td>
-                            <td class="member-name">Emily</td>
-                            <td class="add">
-                                <button class="tonal square">
-                                    <span class="icon">add</span>
-                                    <span>Add</span>
+                        <li>
+                            <span class="chore-attrs">
+                                <span class="name">Emptying dishwasher</span>
+                                <!-- <span class="quantity">×2</span>
+                                <span class="swapped icon">autorenew</span> -->
+                            </span>
+                            <div class="member-name-dropdown">
+                                <button class="tonal">
+                                    <span class="member-name">Emily</span>
+                                    <span class="icon">arrow_drop_down</span>
                                 </button>
-                            </td>
-                            <td class="edit">
-                                <button class="tonal square">
-                                    <span class="icon">tune</span>
-                                    <span>Edit</span>
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
+                                <ul popover>
+                                    <li><button>Otto</button></li>
+                                    <li><button>Ivo</button></li>
+                                </ul>
+                            </div>
+                            <button class="remove tonal small">
+                                <span class="icon">remove</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div id="turns">
+                    <div><h2>Turns</h2></div>
+                    <ul>
+                        <li>
+                            <span class="chore-name">Washing up</span>
+                            <span class="member-name">Otto</span>
+                            <button><span class="icon">add</span></button>
+                        </li>
+                        <li>
+                            <span class="chore-name">Emptying dishwasher</span>
+                            <span class="member-name">Ivo</span>
+                            <button><span class="icon">add</span></button>
+                        </li>
+                        <li>
+                            <span class="chore-name">Take in washing</span>
+                            <span class="member-name">Otto</span>
+                            <button><span class="icon">add</span></button>
+                        </li>
+                    </ul>
                 </div>
             </section>
             <section id="history" hidden>history</section>

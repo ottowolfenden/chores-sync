@@ -11,41 +11,25 @@ section.addEventListener("open", () => {
         );
     };
 
-    const refreshYourChoresState = () => {
-        const checkboxes = section.querySelectorAll(
-            "#your-chores input[type='checkbox']"
-        ) as NodeListOf<HTMLInputElement>;
-        const dismissAllButton = section.querySelector(
-            "button#dismiss-all"
-        ) as HTMLButtonElement;
+    const dropdownButtons = section.querySelectorAll(
+        ".member-name-dropdown > button"
+    ) as NodeListOf<HTMLButtonElement>;
 
-        checkboxes.forEach(c =>
-            c.addEventListener("change", () => {
-                if ([...checkboxes].every(c => c.checked))
-                    dismissAllButton.disabled = true;
-                else dismissAllButton.disabled = false;
-            })
+    dropdownButtons.forEach((b, i) => {
+        const popover = b.nextElementSibling;
+        const anchorName = `--dropdown-anchor-${i}`;
+        const icon = b.querySelector(".icon");
+        if (!(popover instanceof HTMLElement && icon instanceof HTMLElement)) return;
+
+        b.popoverTargetElement = popover;
+        b.style.anchorName = anchorName;
+        popover.style.positionAnchor = anchorName;
+
+        popover.addEventListener(
+            "toggle",
+            e =>
+                (icon.textContent =
+                    e.newState == "open" ? "arrow_drop_up" : "arrow_drop_down")
         );
-        dismissAllButton.addEventListener("click", () => {
-            checkboxes.forEach(c => ((c as HTMLInputElement).checked = true));
-            disableAfterTransition(dismissAllButton);
-        });
-    };
-    const refreshAllChoresState = () => {
-        const rows = section.querySelectorAll("#all-chores tr");
-        rows.forEach(r => {
-            const button = r.querySelector(".assignment button") as HTMLButtonElement;
-            button?.addEventListener("click", () => {
-                const icon = button.querySelector(".icon");
-                const label = button.querySelector(".icon + span");
-                if (icon) icon.textContent = "check";
-                if (label) label.textContent = "Assigned";
-                r.toggleAttribute("data-assigned", true);
-                disableAfterTransition(button);
-            });
-        });
-    };
-
-    refreshYourChoresState();
-    refreshAllChoresState();
+    });
 });
