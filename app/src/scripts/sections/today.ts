@@ -10,13 +10,13 @@ section.addEventListener("open", () => {
         () => {
             const icon = editButton.querySelector(".icon") as HTMLSpanElement;
             const label = editButton.querySelector(".icon + span") as HTMLSpanElement;
-            assignedList.toggleAttribute("data-edit-mode");
-            if (assignedList.hasAttribute("data-edit-mode")) {
-                icon.textContent = "check";
-                label.textContent = "Save";
-            } else {
+            assignedList.toggleAttribute("inert");
+            if (assignedList.hasAttribute("inert")) {
                 label.textContent = "Edit";
                 icon.textContent = "edit";
+            } else {
+                icon.textContent = "check";
+                label.textContent = "Save";
             }
         },
         { signal: controller.signal }

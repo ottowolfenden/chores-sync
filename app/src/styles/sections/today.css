@@ -78,6 +78,9 @@ section#today {
                 }
                 .member-name-dropdown {
                     margin-left: auto;
+                    width: 30%;
+                    flex-shrink: 0;
+
                     & > button {
                         --background-color: var(--primary-container);
                         --color: var(--on-primary-container);
@@ -85,7 +88,7 @@ section#today {
                         display: flex;
                         justify-content: space-between;
                         height: 32px;
-                        width: 120px;
+                        width: 100%;
 
                         .member-name {
                             margin-left: 12px;
@@ -106,7 +109,7 @@ section#today {
                 }
             }
 
-            &:not([data-edit-mode]) > li {
+            &[inert] > li {
                 .swapped.icon {
                     margin-left: auto;
                     display: inline-block;
@@ -125,6 +128,7 @@ section#today {
                     margin-left: 0;
                     pointer-events: none;
                     max-width: 40%;
+                    width: auto;
 
                     & > button {
                         max-width: 100%;
