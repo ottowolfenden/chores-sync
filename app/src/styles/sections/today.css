@@ -156,7 +156,8 @@ section#today {
                 .swapped.icon {
                     margin-left: auto;
                     display: inline-block;
-                    color: var(--primary);
+                    color: var(--on-surface-variant);
+                    opacity: 0.8;
                     font-size: 20px;
                     &:not([data-enabled]) {
                         display: none;
