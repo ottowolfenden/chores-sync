@@ -1,9 +1,9 @@
 nav {
-    background-color: var(--surface-container-low);
+    background-color: var(--primary-container);
     border-radius: 15px;
 
     a {
-        color: var(--on-surface-variant);
+        color: var(--on-primary-container);
         scale: 0.95;
         border-radius: 10px;
         transition: scale, background-color, color;
@@ -20,9 +20,10 @@ nav {
         }
 
         &.active {
-            color: var(--on-secondary-container);
-            background-color: var(--secondary-container);
+            color: var(--on-primary);
+            background-color: var(--primary);
             scale: 1;
+            pointer-events: none;
 
             .icon {
                 font-variation-settings:
@@ -42,24 +43,24 @@ nav {
             &:focus-visible {
                 background-color: color-mix(
                     in srgb,
-                    var(--on-surface-variant) 14%,
-                    var(--surface-container-low)
+                    var(--on-primary-container) 14%,
+                    var(--primary-container)
                 );
             }
 
             &:hover:not(:active) {
                 background-color: color-mix(
                     in srgb,
-                    var(--on-surface-variant) 8%,
-                    var(--surface-container-low)
+                    var(--on-primary-container) 8%,
+                    var(--primary-container)
                 );
             }
 
             &:hover.active {
                 background-color: color-mix(
                     in srgb,
-                    var(--on-surface-variant) 14%,
-                    var(--secondary-container)
+                    var(--on-primary-container) 14%,
+                    var(--primary)
                 );
             }
         }
