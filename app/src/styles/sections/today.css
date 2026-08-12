@@ -1,144 +1,98 @@
 section#today {
-    #your-chores,
-    #all-chores {
+    #assigned-chores,
+    #turns {
         padding-bottom: 40px;
 
-        div {
-            background-color: var(--surface);
-            color: var(--on-surface);
+        h2 {
+            margin: 5px;
+            font-weight: 500;
+            font-size: 22px;
+        }
+
+        & > div {
+            background-color: var(--surface-container-low);
+            color: var(--on-surface-container-low);
             padding: 12px;
-            border-radius: 17px 17px 3px 3px;
+            border-radius: 17px 17px 6px 6px;
             margin-bottom: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+    }
 
-            h2 {
-                margin: 5px;
-                font-weight: 500;
-                font-size: 22px;
-            }
-
-            h2 + button {
-                --size: 15px;
-
-                @media (width <= 350px) {
-                    --collapse: 1;
-                }
+    #assigned-chores {
+        h2 + button {
+            --size: 15px;
+            @media (width <= 350px) {
+                --collapse: 1;
             }
         }
 
-        ul,
-        table {
-            background-color: var(--surface);
-            color: var(--on-surface);
-            border-radius: 3px 3px 17px 17px;
-        }
-
-        ul {
+        & > ul[data-edit-mode] {
             margin: 0;
+            padding: 0;
             list-style: none;
-            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
 
-            &:not(:has(li)) {
-                margin-bottom: 0;
-            }
-
-            li {
+            & > li {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                width: 100%;
                 background-color: var(--surface);
-                border-radius: 9.5px;
-                transition: background-color, color;
-                transition-duration: 200ms;
+                color: var(--on-surface);
+                border-radius: 6px;
+                box-sizing: border-box;
+                padding: 6px;
 
-                & + li {
-                    margin-top: 7px;
+                .chore-name {
+                    flex-grow: 0;
+                    flex-shrink: 1;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    color: var(--on-surface-variant);
+                    font-size: 17px;
+                    margin-left: 6px;
                 }
+                .chore-quantity {
+                    background-color: var(--surface-container);
+                    color: var(--on-surface);
+                    padding: 4px 9px;
+                    border-radius: calc(infinity * 1px);
+                    font-weight: 550;
+                    font-size: 14px;
+                }
+                .member-name-dropdown {
+                    flex-grow: 1;
 
-                label {
-                    display: flex;
-                    align-items: center;
-                    cursor: pointer;
-                    padding: 5px 0;
+                    & > button {
+                        justify-self: end;
+                        padding: 0;
+                        display: flex;
+                        justify-content: space-between;
+                        width: 90px;
 
-                    input[type="checkbox"] {
-                        margin-left: 8px;
-                        flex-shrink: 0;
-
-                        &:checked + span {
-                            opacity: 50%;
-                            color: var(--primary);
-                            text-decoration: line-through;
+                        span:not(.icon) {
+                            margin-left: 12px;
                         }
                     }
-
-                    span {
-                        text-overflow: ellipsis;
-                        overflow: hidden;
-                        white-space: nowrap;
-                        padding-right: 5px;
-                        transition: opacity, color;
-                        transition-duration: 200ms;
+                    [popover] {
+                        position-area: bottom;
                     }
                 }
-
-                @media (hover: hover) {
-                    &:hover {
-                        background-color: color-mix(
-                            in srgb,
-                            var(--on-surface) 8%,
-                            var(--surface)
-                        );
-                    }
-                }
-
-                &:active,
-                &:focus-visible {
-                    background-color: color-mix(
-                        in srgb,
-                        var(--on-surface) 14%,
-                        var(--surface)
-                    );
+                button.remove {
                 }
             }
         }
+    }
 
-        table {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-
-            td.chore-name {
-                opacity: 0.7;
-                transition: opacity, font-weight;
-                transition-duration: 100ms;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: 100px;
-                padding-right: 12px;
-            }
-
-            tr[data-assigned] td.chore-name {
-                opacity: 1;
-                font-weight: 470;
-            }
-
-            td.member-name {
-                font-size: 18px;
-                width: 20%;
-                padding-right: 12px;
-            }
-
-            td.add,
-            td.edit {
-                width: 0;
-            }
-
-            @media (width <= 650px) {
-                td button {
-                    --collapse: 1;
-                }
-            }
-        }
+    #turns ul {
+        background-color: var(--surface);
+        color: var(--on-surface);
+        border-radius: 6px;
     }
 }
