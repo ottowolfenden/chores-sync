@@ -31,3 +31,9 @@ body {
 section {
     font-size: 19px;
 }
+
+a,
+a:link,
+a:visited {
+    color: var(--primary);
+}

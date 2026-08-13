@@ -2,7 +2,9 @@ nav {
     background-color: var(--primary-container);
     border-radius: 15px;
 
-    a {
+    a,
+    a:link,
+    a:visited {
         color: var(--on-primary-container);
         scale: 0.95;
         border-radius: 10px;
