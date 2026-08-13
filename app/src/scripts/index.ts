@@ -11,7 +11,10 @@ const openSection = async (targetId: string) => {
         if (!s.hidden) s.dispatchEvent(new CustomEvent("close"));
         const isTarget = s.id == targetId;
         s.hidden = !isTarget;
-        if (isTarget) s.dispatchEvent(new CustomEvent("open"));
+        if (isTarget) {
+            s.dispatchEvent(new CustomEvent("open"));
+            document.querySelector("main")?.scroll(0, 0);
+        }
     });
     document
         .querySelectorAll("nav > a")
