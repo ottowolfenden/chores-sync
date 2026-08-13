@@ -3,6 +3,7 @@ import "./sections/history.js";
 import "./sections/settings.js";
 import "./sections/today.js";
 import { checkAccess } from "./services/cloudflare.js";
+import { addHapticsAll } from "./services/haptics.js";
 
 if (!(await checkAccess())) location.replace("login.html");
 
@@ -28,6 +29,4 @@ window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
 
-document
-    .querySelectorAll("button, a, input[type='checkbox']")
-    .forEach(el => el.addEventListener("click", () => navigator.vibrate(1)));
+addHapticsAll(["button", "a"]);
