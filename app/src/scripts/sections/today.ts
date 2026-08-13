@@ -29,9 +29,20 @@ section.addEventListener("open", () => {
 
     listItems.forEach(li => {
         const removeButton = li.querySelector("button.remove");
-        removeButton?.addEventListener("click", () => assignedList.removeChild(li), {
-            signal: controller.signal
-        });
+        removeButton?.addEventListener(
+            "click",
+            () => {
+                li.style.height = li.style.opacity = "0";
+                const duration = getComputedStyle(li).transitionDuration;
+                setTimeout(
+                    () => assignedList.removeChild(li),
+                    parseFloat(duration) * (duration.endsWith("ms") ? 1 : 1000)
+                );
+            },
+            {
+                signal: controller.signal
+            }
+        );
     });
 
     dropdownButtons.forEach((db, i) => {

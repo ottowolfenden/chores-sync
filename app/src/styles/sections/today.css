@@ -48,8 +48,11 @@ section#today {
                 color: var(--on-surface);
                 border-radius: 6px;
                 box-sizing: border-box;
-                padding: 0;
-                padding: 8px;
+                padding: 0 8px;
+                height: 48px;
+                transition: height, opacity;
+                transition-duration: 200ms;
+                transition-timing-function: ease-out;
 
                 .chore-name {
                     flex-grow: 0;
