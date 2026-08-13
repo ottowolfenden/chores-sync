@@ -1,7 +1,10 @@
-const section = document.querySelector("section#today")!;
+import { getChores } from "../services/chores.js";
 
-section.addEventListener("open", () => {
+const section = document.querySelector("section#today")!;
+section.addEventListener("open", async () => {
     const controller = new AbortController();
+
+    console.log(await getChores());
 
     const editButton = section.querySelector("button#edit") as HTMLButtonElement;
     const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
