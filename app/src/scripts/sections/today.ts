@@ -1,14 +1,29 @@
 import { getChores } from "../services/chores.js";
+import { setTexts, hideAfterTransition } from "../services/element-utils.js";
+import { addHaptics } from "../services/haptics.js";
 
 const section = document.querySelector("section#today")!;
 section.addEventListener("open", async () => {
     const controller = new AbortController();
 
-    console.log(await getChores());
+    const allChoresList = section.querySelector("#all-chores > ul") as HTMLUListElement;
+    const template = allChoresList.querySelector("template") as HTMLTemplateElement;
+    const chores = await getChores();
+    const newNodes = chores.map(c => {
+        const clone = template?.content.cloneNode(true) as DocumentFragment;
+        const addButton = clone.querySelector("button") as HTMLButtonElement;
+        setTexts(clone, { ".chore-name": c.name, ".member-name": "temp" });
+        addButton.addEventListener("click", () => console.log("assign " + c.name), {
+            signal: controller.signal
+        });
+        addHaptics(addButton);
+        return clone;
+    });
+    allChoresList.replaceChildren(template, ...newNodes);
 
     const editButton = section.querySelector("button#edit") as HTMLButtonElement;
     const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
-    const listItems = assignedList.querySelectorAll("li");
+    const assignedListItems = assignedList.querySelectorAll("li");
     const dropdownButtons = section.querySelectorAll(
         ".name-dropdown > button"
     ) as NodeListOf<HTMLButtonElement>;
@@ -30,17 +45,13 @@ section.addEventListener("open", async () => {
         { signal: controller.signal }
     );
 
-    listItems.forEach(li => {
+    assignedListItems.forEach(li => {
         const removeButton = li.querySelector("button.remove");
         removeButton?.addEventListener(
             "click",
             () => {
                 li.style.height = li.style.opacity = "0";
-                const duration = getComputedStyle(li).transitionDuration;
-                setTimeout(
-                    () => assignedList.removeChild(li),
-                    parseFloat(duration) * (duration.endsWith("ms") ? 1 : 1000)
-                );
+                hideAfterTransition(li);
             },
             {
                 signal: controller.signal
