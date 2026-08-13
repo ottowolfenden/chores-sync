@@ -206,11 +206,22 @@ section#today {
                 }
             }
         }
+        &:not(:has(li)) {
+            button#edit {
+                display: none;
+            }
+            ul {
+                display: none;
+                & + .empty-message {
+                    display: flex;
+                }
+            }
+        }
     }
 
     #all-chores ul {
         background-color: var(--surface-container-low);
-        color: var(--on-surface-container-low);
+        color: var(--on-surface);
         border-radius: 6px;
         list-style: none;
         margin: 0;
@@ -247,5 +258,24 @@ section#today {
                 --size: 16px;
             }
         }
+
+        &:not(:has(li)) {
+            display: none;
+            & + .empty-message {
+                display: flex;
+            }
+        }
+    }
+
+    .empty-message {
+        display: none;
+        background-color: var(--surface-container-low);
+        color: var(--on-surface-variant);
+        justify-content: center;
+        margin: 0;
+        padding: 25px;
+        align-items: center;
+        border-radius: 6px;
+        text-align: center;
     }
 }
