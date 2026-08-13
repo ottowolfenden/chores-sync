@@ -224,7 +224,7 @@ section#today {
             grid-template-columns: subgrid;
             grid-column: 1 / -1;
             align-items: center;
-            border-bottom: 1px solid rgb(from var(--primary) r g b / 0.1);
+            border-bottom: 2px solid rgb(from var(--secondary) r g b / 0.05);
             &:last-child {
                 border-bottom: none;
             }
