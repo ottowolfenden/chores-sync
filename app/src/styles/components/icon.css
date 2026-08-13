@@ -12,4 +12,11 @@
     margin-right: 0;
     width: 1.2em;
     height: 1.2em;
+
+    &.large {
+        display: block;
+        font-size: 50px;
+        width: auto;
+        height: auto;
+    }
 }
