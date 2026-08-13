@@ -8,18 +8,23 @@ section.addEventListener("open", async () => {
 
     const allChoresList = section.querySelector("#all-chores > ul") as HTMLUListElement;
     const template = allChoresList.querySelector("template") as HTMLTemplateElement;
+    // allChoresList.toggleAttribute("loading", true);
     const chores = await getChores();
-    const newNodes = chores.map(c => {
-        const clone = template?.content.cloneNode(true) as DocumentFragment;
-        const addButton = clone.querySelector("button") as HTMLButtonElement;
-        setTexts(clone, { ".chore-name": c.name, ".member-name": "temp" });
-        addButton.addEventListener("click", () => console.log("assign " + c.name), {
-            signal: controller.signal
+    allChoresList.toggleAttribute("loading", false);
+    allChoresList.toggleAttribute("error", chores == null);
+    if (chores != null) {
+        const newNodes = chores.map(c => {
+            const clone = template?.content.cloneNode(true) as DocumentFragment;
+            const addButton = clone.querySelector("button") as HTMLButtonElement;
+            setTexts(clone, { ".chore-name": c.name, ".member-name": "temp" });
+            addButton.addEventListener("click", () => console.log("assign " + c.name), {
+                signal: controller.signal
+            });
+            addHaptics(addButton);
+            return clone;
         });
-        addHaptics(addButton);
-        return clone;
-    });
-    allChoresList.replaceChildren(template, ...newNodes);
+        allChoresList.replaceChildren(template, ...newNodes);
+    }
 
     const editButton = section.querySelector("button#edit") as HTMLButtonElement;
     const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
@@ -53,9 +58,7 @@ section.addEventListener("open", async () => {
                 li.style.height = li.style.opacity = "0";
                 hideAfterTransition(li);
             },
-            {
-                signal: controller.signal
-            }
+            { signal: controller.signal }
         );
     });
 

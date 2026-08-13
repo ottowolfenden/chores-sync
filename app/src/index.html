@@ -80,16 +80,18 @@
                             </button>
                         </li>
                     </ul>
-                    <p class="empty-message">
-                        <span>
+                    <p class="status-message">
+                        <span class="empty">
                             No chores assigned.<br />
                             Assign chores with the plus buttons.
                         </span>
+                        <span class="loading">Loading...</span>
+                        <span class="error">Failed to fetch data.<br />Try reloading.</span>
                     </p>
                 </div>
                 <div id="all-chores">
                     <div><h2>All chores</h2></div>
-                    <ul>
+                    <ul loading>
                         <template>
                             <li>
                                 <span class="chore-name"></span>
@@ -100,11 +102,13 @@
                             </li>
                         </template>
                     </ul>
-                    <p class="empty-message">
-                        <span>
+                    <p class="status-message">
+                        <span class="empty">
                             No chores to show.<br />
                             Create chores in <a href="#settings">Settings</a>.
                         </span>
+                        <span class="loading">Loading...</span>
+                        <span class="error">Failed to fetch data.<br />Try reloading.</span>
                     </p>
                 </div>
             </section>
