@@ -3,7 +3,7 @@ section#today {
     #all-chores {
         padding-bottom: 40px;
 
-        & > div {
+        & > div:has(h2) {
             background-color: var(--secondary-container);
             color: var(--on-secondary-container);
             padding: 12px;
@@ -17,6 +17,43 @@ section#today {
                 margin: 5px;
                 font-weight: 500;
                 font-size: 22px;
+            }
+        }
+
+        .status-message {
+            display: none;
+            background-color: var(--surface-container-low);
+            color: var(--on-surface-variant);
+            justify-content: center;
+            margin: 0;
+            padding: 25px;
+            align-items: center;
+            border-radius: 6px;
+            text-align: center;
+
+            & > * {
+                display: none;
+                .icon.large {
+                    margin-bottom: 10px;
+                }
+            }
+
+            &[status="loading"] .loading,
+            &[status="empty"] .empty,
+            &[status="error"] .error {
+                display: block;
+            }
+
+            &[status="error"] {
+                background-color: var(--error-container);
+                color: var(--on-error-container);
+            }
+        }
+
+        &:has(.status-message[status]) ul {
+            display: none;
+            & + .status-message {
+                display: flex;
             }
         }
     }
@@ -206,19 +243,6 @@ section#today {
                 }
             }
         }
-
-        &:not(:has(ul > li)),
-        &:has(ul[loading]) {
-            button#edit {
-                display: none;
-            }
-            ul {
-                display: none;
-                & + .status-message {
-                    display: flex;
-                }
-            }
-        }
     }
 
     #all-chores ul {
@@ -259,64 +283,6 @@ section#today {
                 grid-column: 5;
                 --size: 16px;
             }
-        }
-
-        &:not(:has(li)),
-        &[loading] {
-            display: none;
-            & + .status-message {
-                display: flex;
-            }
-        }
-    }
-
-    /* #assigned-chores > ul[loading] + .status-message,
-    #all-chores > ul[loading] + .status-message {
-        .loading {
-            display: block;
-        }
-        .empty {
-            display: none;
-        }
-    }
-    #assigned-chores > ul:not(:has(li)) + .status-message,
-    #all-chores > ul:not(:has(li)) + .status-message {
-        .loading {
-            display: none;
-        }
-        .empty {
-            display: block;
-        }
-    } */
-
-    .status-message {
-        display: none;
-        background-color: var(--surface-container-low);
-        color: var(--on-surface-variant);
-        justify-content: center;
-        margin: 0;
-        padding: 25px;
-        align-items: center;
-        border-radius: 6px;
-        text-align: center;
-
-        & > * {
-            display: none;
-        }
-    }
-
-    ul[loading] + .status-message .loading {
-        display: block;
-    }
-    ul:not(:has(li)):not([loading]):not([error]) + .status-message .empty {
-        display: block;
-    }
-    ul[error]:not([loading]) + .status-message {
-        background-color: var(--error-container);
-        color: var(--error);
-
-        .error {
-            display: block;
         }
     }
 }

@@ -80,18 +80,26 @@
                             </button>
                         </li>
                     </ul>
-                    <p class="status-message">
+                    <div class="status-message" status="loading">
                         <span class="empty">
-                            No chores assigned.<br />
+                            <span class="icon large">celebration</span>
+                            Nothing to do!<br />
+                            There are no chores assigned.<br />
                             Assign chores with the plus buttons.
                         </span>
-                        <span class="loading">Loading...</span>
-                        <span class="error">Failed to fetch data.<br />Try reloading.</span>
-                    </p>
+                        <span class="loading">
+                            <span class="icon large">cloud_sync</span>
+                            Loading, please wait.
+                        </span>
+                        <span class="error">
+                            <span class="icon large">error</span>
+                            Failed to fetch data.<br />Try reloading.
+                        </span>
+                    </div>
                 </div>
                 <div id="all-chores">
                     <div><h2>All chores</h2></div>
-                    <ul loading>
+                    <ul>
                         <template>
                             <li>
                                 <span class="chore-name"></span>
@@ -102,14 +110,21 @@
                             </li>
                         </template>
                     </ul>
-                    <p class="status-message">
+                    <div class="status-message" status="loading">
                         <span class="empty">
+                            <span class="icon large">sentiment_dissatisfied</span>
                             No chores to show.<br />
                             Create chores in <a href="#settings">Settings</a>.
                         </span>
-                        <span class="loading">Loading...</span>
-                        <span class="error">Failed to fetch data.<br />Try reloading.</span>
-                    </p>
+                        <span class="loading">
+                            <span class="icon large">cloud_sync</span>
+                            Loading, please wait.
+                        </span>
+                        <span class="error">
+                            <span class="icon large">error</span>
+                            Failed to fetch data.<br />Try again later.
+                        </span>
+                    </div>
                 </div>
             </section>
             <section id="history" hidden>history</section>

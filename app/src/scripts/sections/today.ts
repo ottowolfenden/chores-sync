@@ -3,16 +3,21 @@ import { setTexts, hideAfterTransition } from "../services/element-utils.js";
 import { addHaptics } from "../services/haptics.js";
 
 const section = document.querySelector("section#today")!;
+
 section.addEventListener("open", async () => {
     const controller = new AbortController();
 
     const allChoresList = section.querySelector("#all-chores > ul") as HTMLUListElement;
     const template = allChoresList.querySelector("template") as HTMLTemplateElement;
-    // allChoresList.toggleAttribute("loading", true);
+    const allChoresStatus = section.querySelector(
+        "#all-chores > .status-message"
+    ) as HTMLDivElement;
+    // allChoresStatus.setAttribute("status", "loading");
     const chores = await getChores();
-    allChoresList.toggleAttribute("loading", false);
-    allChoresList.toggleAttribute("error", chores == null);
-    if (chores != null) {
+    if (chores == null) allChoresStatus.setAttribute("status", "error");
+    else if (chores.length == 0) allChoresStatus.setAttribute("status", "empty");
+    else {
+        allChoresStatus.removeAttribute("status");
         const newNodes = chores.map(c => {
             const clone = template?.content.cloneNode(true) as DocumentFragment;
             const addButton = clone.querySelector("button") as HTMLButtonElement;
@@ -25,6 +30,11 @@ section.addEventListener("open", async () => {
         });
         allChoresList.replaceChildren(template, ...newNodes);
     }
+
+    const assignedChoresStatus = section.querySelector(
+        "#assigned-chores > .status-message"
+    ) as HTMLDivElement;
+    assignedChoresStatus.removeAttribute("status");
 
     const editButton = section.querySelector("button#edit") as HTMLButtonElement;
     const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
@@ -57,6 +67,7 @@ section.addEventListener("open", async () => {
             () => {
                 li.style.height = li.style.opacity = "0";
                 hideAfterTransition(li);
+                assignedChoresStatus.setAttribute("status", "");
             },
             { signal: controller.signal }
         );
