@@ -1,6 +1,7 @@
 body {
     margin: 0;
     flex-direction: column;
+    justify-content: flex-start;
 }
 
 h1 {
@@ -8,6 +9,7 @@ h1 {
     font-variation-settings: "wght" 500;
     font-size: min(50px, 13vw);
     color: var(--on-primary-container);
+    margin-top: 10svh;
 }
 
 form {
