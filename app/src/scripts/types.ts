@@ -9,7 +9,7 @@ type Chore = {
     id: number;
     name: string;
     daily: boolean;
-    maxPerDay: number;
+    maxOnePerDay: boolean;
 };
 
 type Assignment = {

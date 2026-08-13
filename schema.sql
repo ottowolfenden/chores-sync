@@ -9,7 +9,7 @@ CREATE TABLE chores (
     chore_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     chore_name TEXT NOT NULL UNIQUE,
     daily BOOLEAN NOT NULL DEFAULT FALSE,
-    max_per_day INT NOT NULL CHECK (max_per_day >= 1) DEFAULT 1
+    max_one_per_day BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE assignments (
