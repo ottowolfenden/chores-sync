@@ -1,5 +1,5 @@
 section#today {
-    #assigned,
+    #assigned-chores,
     #all-chores {
         padding-bottom: 40px;
 
@@ -36,7 +36,7 @@ section#today {
         white-space: nowrap;
     }
 
-    #assigned {
+    #assigned-chores {
         h2 + button {
             --size: 15px;
             --background-color: var(--secondary);
@@ -66,7 +66,7 @@ section#today {
                 padding: 0 8px;
                 height: 48px;
                 transition: height, opacity;
-                transition-duration: 200ms;
+                transition-duration: 150ms, 100ms;
                 transition-timing-function: ease-out;
 
                 .chore-name {

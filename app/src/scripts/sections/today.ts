@@ -4,7 +4,7 @@ section.addEventListener("open", () => {
     const controller = new AbortController();
 
     const editButton = section.querySelector("button#edit") as HTMLButtonElement;
-    const assignedList = section.querySelector("#assigned > ul") as HTMLUListElement;
+    const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
     const listItems = assignedList.querySelectorAll("li");
     const dropdownButtons = section.querySelectorAll(
         ".name-dropdown > button"
