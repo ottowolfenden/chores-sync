@@ -9,7 +9,6 @@ type UiChore = {
     id: number;
     name: string;
     daily: boolean;
-    maxOnePerDay: boolean;
 };
 
 type UiAssignment = {

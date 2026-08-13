@@ -9,7 +9,6 @@ type DbChore = {
     chore_id: number;
     chore_name: string;
     daily: boolean;
-    max_one_per_day: boolean;
 };
 
 type DbAssignment = {
