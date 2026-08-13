@@ -19,5 +19,3 @@ type Assignment = {
     chore: Chore;
     member: Member;
 };
-
-export type { Member, Assignment, Chore };

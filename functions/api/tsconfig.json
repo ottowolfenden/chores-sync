@@ -15,7 +15,7 @@
         "noUncheckedSideEffectImports": true,
         "moduleDetection": "force",
         "skipLibCheck": true,
-        "types": ["@cloudflare/workers-types"],
+        "types": ["@cloudflare/workers-types", "./types.d.ts"],
         "lib": ["ESNext"]
     }
 }
