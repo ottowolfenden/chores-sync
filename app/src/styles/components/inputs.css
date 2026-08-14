@@ -55,6 +55,11 @@ input[type="checkbox"] {
     }
 }
 
+div:has(> input[type="number"]) {
+    display: flex;
+    gap: 3px;
+}
+
 input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
