@@ -17,6 +17,6 @@
         "noUncheckedSideEffectImports": true,
         "moduleDetection": "force",
         "skipLibCheck": true,
-        "types": ["./src/scripts/types/ui.d.ts", "./src/scripts/types/db.d.ts"]
+        "types": ["./src/scripts/types/ui-types.d.ts", "./src/scripts/types/db-types.d.ts"]
     }
 }
