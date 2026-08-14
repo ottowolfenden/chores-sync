@@ -6,12 +6,11 @@ const setTexts = (rootEl: DocumentFragment, selectorToText: Record<string, strin
     });
 };
 
-const hideAfterTransition = (el: HTMLElement) => {
+const withTransition = (el: HTMLElement, before: () => void, after: () => void) => {
+    before();
     const duration = getComputedStyle(el).transitionDuration;
-    setTimeout(
-        () => (el.style.display = "none"),
-        parseFloat(duration) * (duration.endsWith("ms") ? 1 : 1000)
-    );
+    const delay = parseFloat(duration) * (duration.endsWith("ms") ? 1 : 1000);
+    setTimeout(() => after(), delay);
 };
 
-export { setTexts, hideAfterTransition };
+export { setTexts, withTransition };

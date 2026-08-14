@@ -1,5 +1,5 @@
 import { getChores } from "../services/chores.js";
-import { setTexts, hideAfterTransition } from "../services/element-utils.js";
+import { setTexts, withTransition } from "../services/element-utils.js";
 import { addHaptics } from "../services/haptics.js";
 
 const section = document.querySelector("section#today")!;
@@ -12,6 +12,7 @@ section.addEventListener("open", async () => {
     const allChoresStatus = section.querySelector(
         "#all-chores > .status-message"
     ) as HTMLDivElement;
+
     // allChoresStatus.setAttribute("status", "loading");
     const chores = await getChores();
     if (chores == null) allChoresStatus.setAttribute("status", "error");
@@ -31,17 +32,18 @@ section.addEventListener("open", async () => {
         allChoresList.replaceChildren(template, ...newNodes);
     }
 
-    const assignedChoresStatus = section.querySelector(
-        "#assigned-chores > .status-message"
-    ) as HTMLDivElement;
-    assignedChoresStatus.removeAttribute("status");
-
     const editButton = section.querySelector("button#edit") as HTMLButtonElement;
     const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
     const assignedListItems = assignedList.querySelectorAll("li");
     const dropdownButtons = section.querySelectorAll(
         ".name-dropdown > button"
     ) as NodeListOf<HTMLButtonElement>;
+    const assignedChoresStatus = section.querySelector(
+        "#assigned-chores > .status-message"
+    ) as HTMLDivElement;
+    assignedChoresStatus.removeAttribute("status");
+    if (assignedList.querySelector(":scope > li") == null)
+        assignedChoresStatus.setAttribute("status", "empty");
 
     editButton.addEventListener(
         "click",
@@ -65,9 +67,15 @@ section.addEventListener("open", async () => {
         removeButton?.addEventListener(
             "click",
             () => {
-                li.style.height = li.style.opacity = "0";
-                hideAfterTransition(li);
-                assignedChoresStatus.setAttribute("status", "");
+                withTransition(
+                    li,
+                    () => (li.style.height = li.style.opacity = li.style.marginTop = "0"),
+                    () => {
+                        li.remove();
+                        if (assignedList.querySelector(":scope > li") == null)
+                            assignedChoresStatus.setAttribute("status", "empty");
+                    }
+                );
             },
             { signal: controller.signal }
         );
