@@ -20,7 +20,7 @@ section#count {
 
             &[data-edit-mode] {
                 ul.details {
-                    grid-template-columns: fit-content(30%) 1fr auto 1fr fit-content(30%);
+                    grid-template-columns: fit-content(30%) 1fr auto 1fr fit-content(50%);
 
                     li .count-input {
                         display: none;
