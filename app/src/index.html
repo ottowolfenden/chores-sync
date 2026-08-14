@@ -132,7 +132,18 @@
             </section>
 
             <section id="count" hidden>
-                <div><h2>Count</h2></div>
+                <div>
+                    <h2>Count</h2>
+                    <button class="filled" id="collapse-all">
+                        <span class="icon">collapse_content</span>
+                        <span>Collapse all</span>
+                    </button>
+                    <button class="filled" id="expand-all">
+                        <span class="icon">expand_content</span>
+                        <span>Expand all</span>
+                    </button>
+                </div>
+
                 <ul>
                     <li>
                         <div class="chore">
@@ -140,17 +151,26 @@
                             <button class="tonal small edit">
                                 <span class="icon">edit</span><span>Edit</span>
                             </button>
+                            <button class="tonal small save">
+                                <span class="icon">check</span><span>Save</span>
+                            </button>
                             <span class="total-count"
                                 ><span class="num">88</span><span class="suffix"> total</span>
                             </span>
-                            <button class="expand transparent">
+                            <button
+                                class="expand transparent"
+                                onclick="
+                                    document
+                                        .querySelectorAll('.details')
+                                        .forEach(d => (d.inert = !d.inert))
+                                ">
                                 <span class="icon">keyboard_arrow_down</span>
                             </button>
                         </div>
                         <ul class="details" inert>
                             <li>
                                 <span class="member-name">Otto</span>
-                                <div class="count">
+                                <div class="count-input">
                                     <button class="minus tonal small">
                                         <span class="icon">remove</span>
                                     </button>
@@ -159,6 +179,10 @@
                                         <span class="icon">add</span>
                                     </button>
                                 </div>
+                                <span class="count-text"
+                                    ><span class="num">20</span
+                                    ><span class="suffix"> times</span>
+                                </span>
                                 <span class="offset">
                                     (<span class="num">+5</span
                                     ><span class="suffix"> offset</span>)
@@ -166,7 +190,7 @@
                             </li>
                             <li>
                                 <span class="member-name">Ivo</span>
-                                <div class="count">
+                                <div class="count-input">
                                     <button class="minus tonal small">
                                         <span class="icon">remove</span>
                                     </button>
@@ -175,6 +199,10 @@
                                         <span class="icon">add</span>
                                     </button>
                                 </div>
+                                <span class="count-text"
+                                    ><span class="num">20</span
+                                    ><span class="suffix"> times</span>
+                                </span>
                                 <span class="offset">
                                     (<span class="num">+5</span
                                     ><span class="suffix"> offset</span>)
@@ -182,7 +210,7 @@
                             </li>
                             <li>
                                 <span class="member-name">Emily</span>
-                                <div class="count">
+                                <div class="count-input">
                                     <button class="minus tonal small">
                                         <span class="icon">remove</span>
                                     </button>
@@ -191,6 +219,10 @@
                                         <span class="icon">add</span>
                                     </button>
                                 </div>
+                                <span class="count-text"
+                                    ><span class="num">20</span
+                                    ><span class="suffix"> times</span>
+                                </span>
                                 <span class="offset">
                                     (<span class="num">+5</span
                                     ><span class="suffix"> offset</span>)
@@ -198,25 +230,32 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li data-edit-mode>
                         <div class="chore">
-                            <span class="chore-name"
-                                >Emptying dishwasheradfasdfasdfasdfasdf</span
-                            >
+                            <span class="chore-name">Emptying dishwasher</span>
                             <button class="tonal small edit">
                                 <span class="icon">edit</span><span>Edit</span>
+                            </button>
+                            <button class="tonal small save">
+                                <span class="icon">check</span><span>Save</span>
                             </button>
                             <span class="total-count">
                                 <span class="num">888</span><span class="suffix"> total</span>
                             </span>
-                            <button class="expand transparent">
+                            <button
+                                class="expand transparent"
+                                onclick="
+                                    document
+                                        .querySelectorAll('.details')
+                                        .forEach(d => (d.inert = !d.inert))
+                                ">
                                 <span class="icon">keyboard_arrow_down</span>
                             </button>
                         </div>
                         <ul class="details" inert>
                             <li>
                                 <span class="member-name">Otto</span>
-                                <div class="count">
+                                <div class="count-input">
                                     <button class="minus tonal small">
                                         <span class="icon">remove</span>
                                     </button>
@@ -225,14 +264,18 @@
                                         <span class="icon">add</span>
                                     </button>
                                 </div>
+                                <span class="count-text"
+                                    ><span class="num">0000</span
+                                    ><span class="suffix"> times</span>
+                                </span>
                                 <span class="offset">
-                                    (<span class="num">+5</span
+                                    (<span class="num">+000</span
                                     ><span class="suffix"> offset</span>)
                                 </span>
                             </li>
                             <li>
                                 <span class="member-name">Ivo</span>
-                                <div class="count">
+                                <div class="count-input">
                                     <button class="minus tonal small">
                                         <span class="icon">remove</span>
                                     </button>
@@ -241,6 +284,10 @@
                                         <span class="icon">add</span>
                                     </button>
                                 </div>
+                                <span class="count-text"
+                                    ><span class="num">20</span
+                                    ><span class="suffix"> times</span>
+                                </span>
                                 <span class="offset">
                                     (<span class="num">+5</span
                                     ><span class="suffix"> offset</span>)
@@ -248,7 +295,7 @@
                             </li>
                             <li>
                                 <span class="member-name">Emily</span>
-                                <div class="count">
+                                <div class="count-input">
                                     <button class="minus tonal small">
                                         <span class="icon">remove</span>
                                     </button>
@@ -257,6 +304,10 @@
                                         <span class="icon">add</span>
                                     </button>
                                 </div>
+                                <span class="count-text"
+                                    ><span class="num">20</span
+                                    ><span class="suffix"> times</span>
+                                </span>
                                 <span class="offset">
                                     (<span class="num">+5</span
                                     ><span class="suffix"> offset</span>)

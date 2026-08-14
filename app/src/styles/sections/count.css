@@ -1,4 +1,9 @@
 section#count {
+    &:has(ul.details[inert]) div:has(> h2) button#collapse-all,
+    &:not(:has(ul.details[inert])) div:has(> h2) button#expand-all {
+        display: none;
+    }
+
     & > ul {
         display: flex;
         flex-direction: column;
@@ -12,6 +17,31 @@ section#count {
             margin-top: 5px;
             display: flex;
             flex-direction: column;
+
+            &[data-edit-mode] {
+                ul.details {
+                    grid-template-columns: fit-content(30%) 1fr auto 1fr fit-content(30%);
+
+                    li .count-input {
+                        display: none;
+                    }
+
+                    @media (width >= 410px) {
+                        li .offset .suffix {
+                            display: inline;
+                        }
+                    }
+                }
+
+                div.chore button.save {
+                    display: none;
+                }
+            }
+
+            &:not([data-edit-mode]) div.chore button.edit,
+            &:not([data-edit-mode]) li .count-text {
+                display: none;
+            }
         }
     }
 
@@ -32,19 +62,13 @@ section#count {
             white-space: nowrap;
         }
 
-        button.edit {
-            display: none;
+        button.edit,
+        button.save,
+        .total-count {
             margin-left: auto;
-        }
-
-        button.expand {
-            --size: 16px;
-            --color: var(--secondary);
-            padding: 4px;
         }
 
         .total-count {
-            margin-left: auto;
             font-weight: 470;
             color: var(--on-secondary-container);
             text-overflow: ellipsis;
@@ -59,6 +83,21 @@ section#count {
                 }
             }
         }
+
+        &:has(+ ul[inert]) button.edit,
+        &:has(+ ul[inert]) button.save {
+            display: none;
+        }
+
+        &:not(:has(+ ul[inert])) .total-count {
+            display: none;
+        }
+
+        button.expand {
+            --size: 16px;
+            --color: var(--secondary);
+            padding: 4px;
+        }
     }
 
     ul.details {
@@ -69,7 +108,11 @@ section#count {
         margin: 0 8px 8px 8px;
         display: grid;
         grid-template-columns: fit-content(30%) 1fr auto 1fr fit-content(30%);
-        gap: 5px 15px;
+        gap: 10px 15px;
+
+        &[inert] {
+            display: none;
+        }
 
         li {
             display: grid;
@@ -84,12 +127,19 @@ section#count {
                 white-space: nowrap;
             }
 
-            .count {
+            .count-text,
+            .count-input {
                 grid-column: 3;
+            }
 
-                @media (width <= 410px) {
-                    input[type="number"] {
-                        width: 2.1em;
+            .count-text {
+                font-weight: 500;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                @media (width<=370px) {
+                    .suffix {
+                        display: none;
                     }
                 }
             }
@@ -105,6 +155,12 @@ section#count {
                     .suffix {
                         display: none;
                     }
+                }
+            }
+
+            @media (width <= 410px) {
+                input[type="number"] {
+                    width: 2.1em;
                 }
             }
         }
