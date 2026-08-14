@@ -21,6 +21,11 @@
         outline: solid var(--primary) 2px;
         outline-offset: -2px;
     }
+
+    &::selection {
+        background-color: var(--primary);
+        color: var(--on-primary);
+    }
 }
 
 body {
