@@ -1,6 +1,8 @@
 node_modules
 app/dist
+.wrangler
+
 todo.txt
 .env
-.wrangler
 functions/.reload
+temp-insert.sql
