@@ -9,7 +9,8 @@ const getChores = async (): Promise<UiChore[] | null> => {
         (d): UiChore => ({
             id: d["chore_id"],
             name: d["chore_name"],
-            daily: d["daily"]
+            isDaily: d["is_daily"],
+            limitPerDay: d["limit_per_day"]
         })
     );
 };

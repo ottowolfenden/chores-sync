@@ -1,21 +1,29 @@
+DROP SCHEMA public CASCADE; CREATE schema public;
+
 CREATE TABLE members (
     member_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     member_name TEXT NOT NULL UNIQUE,
-    is_active BOOLEAN NOT NULL DEFAULT TRUE,
-    can_edit_history BOOLEAN NOT NULL DEFAULT TRUE
+    is_active BOOLEAN NOT NULL DEFAULT true,
+    is_admin BOOLEAN NOT NULL DEFAULT true
 );
 
 CREATE TABLE chores (
     chore_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     chore_name TEXT NOT NULL UNIQUE,
-    daily BOOLEAN NOT NULL DEFAULT FALSE
+    is_daily BOOLEAN NOT NULL DEFAULT false,
+    limit_per_day INT DEFAULT NULL,
+    CHECK (limit_per_day >= 1)
 );
 
 CREATE TABLE assignments (
     assignment_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    assign_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    quantity INT NOT NULL CHECK (quantity >= 1) DEFAULT 1,
+    assign_timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    quantity INT NOT NULL DEFAULT 1,
+    is_offset BOOLEAN NOT NULL DEFAULT false,
     chore_id INT NOT NULL REFERENCES chores (chore_id) ON DELETE CASCADE,
     member_id INT NOT NULL REFERENCES members (member_id) ON DELETE CASCADE,
-    CONSTRAINT unique_member_chore_date UNIQUE (member_id, chore_id, assign_date)
+    UNIQUE (member_id, chore_id, assign_timestamp),
+    CHECK ((is_offset AND assign_timestamp = '-infinity')
+        OR (NOT is_offset AND quantity >= 1)
+    )
 );

@@ -2,19 +2,27 @@ type UiMember = {
     id: number;
     name: string;
     isActive: boolean;
-    canEditHistory: boolean;
+    isAdmin: boolean;
 };
 
 type UiChore = {
     id: number;
     name: string;
-    daily: boolean;
+    isDaily: boolean;
+    limitPerDay: number?;
 };
 
 type UiAssignment = {
     id: number;
-    date: Date;
+    datetime: Date;
     quantity: number;
+    chore: Chore;
+    member: Member;
+};
+
+type UiOffset = {
+    id: number;
+    value: number;
     chore: Chore;
     member: Member;
 };
