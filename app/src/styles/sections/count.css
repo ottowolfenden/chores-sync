@@ -17,6 +17,8 @@ section#count {
             margin-top: 5px;
             display: flex;
             flex-direction: column;
+            transition: background-color, color;
+            transition-duration: 100ms;
 
             &[data-edit-mode] {
                 ul.details {
@@ -42,6 +44,25 @@ section#count {
             &:not([data-edit-mode]) li .count-text {
                 display: none;
             }
+
+            &:has(div.chore:focus-visible),
+            &:has(div.chore:active) {
+                background-color: color-mix(
+                    in srgb,
+                    var(--on-surface) 14%,
+                    var(--surface-container-low)
+                );
+            }
+
+            @media (hover: hover) {
+                &:has(div.chore:hover:not(:active)) {
+                    background-color: color-mix(
+                        in srgb,
+                        var(--on-surface) 8%,
+                        var(--surface-container-low)
+                    );
+                }
+            }
         }
     }
 
@@ -50,8 +71,8 @@ section#count {
         justify-content: space-between;
         align-items: center;
         gap: 12px;
-        border-radius: 6px;
         padding: 12px;
+        cursor: pointer;
 
         .chore-name {
             color: var(--on-surface-variant);
@@ -85,10 +106,7 @@ section#count {
         }
 
         &:has(+ ul[inert]) button.edit,
-        &:has(+ ul[inert]) button.save {
-            display: none;
-        }
-
+        &:has(+ ul[inert]) button.save,
         &:not(:has(+ ul[inert])) .total-count {
             display: none;
         }
@@ -137,7 +155,8 @@ section#count {
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
-                @media (width<=370px) {
+
+                @media (width <= 370px) {
                     .suffix {
                         display: none;
                     }
