@@ -9,8 +9,18 @@ section.addEventListener("open", async () => {
 
     const allChoresList = section.querySelector("#all-chores > ul") as HTMLUListElement;
     const template = allChoresList.querySelector("template") as HTMLTemplateElement;
+    const editButton = section.querySelector("button#edit") as HTMLButtonElement;
+    const saveButton = section.querySelector("button#save") as HTMLButtonElement;
+    const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
+    const assignedListItems = assignedList.querySelectorAll("li");
     const allChoresStatus = section.querySelector(
         "#all-chores > .status-message"
+    ) as HTMLDivElement;
+    const dropdownButtons = section.querySelectorAll(
+        ".name-dropdown > button"
+    ) as NodeListOf<HTMLButtonElement>;
+    const assignedChoresStatus = section.querySelector(
+        "#assigned-chores > .status-message"
     ) as HTMLDivElement;
 
     // allChoresStatus.dataset.status = "loading";
@@ -32,17 +42,7 @@ section.addEventListener("open", async () => {
         allChoresList.replaceChildren(template, ...newNodes);
     }
 
-    const editButton = section.querySelector("button#edit") as HTMLButtonElement;
-    const saveButton = section.querySelector("button#save") as HTMLButtonElement;
-    const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
-    const assignedListItems = assignedList.querySelectorAll("li");
-    const dropdownButtons = section.querySelectorAll(
-        ".name-dropdown > button"
-    ) as NodeListOf<HTMLButtonElement>;
-    const assignedChoresStatus = section.querySelector(
-        "#assigned-chores > .status-message"
-    ) as HTMLDivElement;
-    assignedChoresStatus.removeAttribute("data-status");
+    assignedChoresStatus.removeAttribute("data-status"); // TEMPORARY
     if (assignedList.querySelector(":scope > li") == null)
         assignedChoresStatus.dataset.status = "empty";
 
