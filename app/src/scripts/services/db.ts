@@ -2,10 +2,10 @@ export class Db {
     private constructor() {}
 
     static getChores = async (): Promise<UiChore[] | null> => {
-        const guess = localStorage.getItem("login-secret");
+        const guess = localStorage.getItem("secret");
         if (!guess) return null;
         const response = await fetch("/api/get-chores", {
-            headers: { "X-Login-Secret": guess }
+            headers: { "Authorization": guess }
         });
         if (!response.ok) return null;
 

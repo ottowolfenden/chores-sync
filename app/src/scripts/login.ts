@@ -13,15 +13,15 @@ document.querySelector("form")?.addEventListener("submit", async e => {
     e.preventDefault();
     const data = new FormData(e.currentTarget as HTMLFormElement);
     const name = data.get("name") as string;
-    const guess = data.get("login-secret") as string;
+    const guess = data.get("secret") as string;
 
     if (!name) showInvalid("name");
-    if (!guess) showInvalid("login-secret");
+    if (!guess) showInvalid("secret");
     if (!name || !guess) return;
 
     if (await Cloudflare.checkAccess(guess, false)) {
         localStorage.setItem("name", name);
-        localStorage.setItem("login-secret", guess);
+        localStorage.setItem("secret", guess);
         location.replace("index.html#today");
-    } else showInvalid("login-secret");
+    } else showInvalid("secret");
 });

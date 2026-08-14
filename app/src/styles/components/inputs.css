@@ -19,10 +19,6 @@ label:has(input[type="text"]) span {
     color: var(--on-surface);
     margin-bottom: 2px;
 
-    &[data-font-descender] {
-        margin-bottom: 4px;
-    }
-
     &:has(+ input[data-invalid]) {
         color: var(--error);
     }
