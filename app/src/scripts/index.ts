@@ -2,10 +2,10 @@ import "./sections/count.js";
 import "./sections/history.js";
 import "./sections/settings.js";
 import "./sections/today.js";
-import { checkAccess } from "./services/cloudflare.js";
-import { addHapticsAll } from "./services/haptics.js";
+import { Cloudflare } from "./services/cloudflare.js";
+import { Haptics } from "./services/haptics.js";
 
-if (!(await checkAccess())) location.replace("login.html");
+if (!(await Cloudflare.checkAccess())) location.replace("login.html");
 
 const openSection = async (targetId: string) => {
     document.querySelectorAll("section").forEach(s => {
@@ -29,4 +29,4 @@ window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
 
-addHapticsAll(["button", "a"]);
+Haptics.addAll(["button", "a"]);

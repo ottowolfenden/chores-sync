@@ -1,6 +1,6 @@
-import { getChores } from "../services/chores.js";
-import { setTexts, withTransition } from "../services/element-utils.js";
-import { addHaptics } from "../services/haptics.js";
+import { Db } from "../services/db.js";
+import { ElementUtils } from "../services/element-utils.js";
+import { Haptics } from "../services/haptics.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -14,7 +14,7 @@ section.addEventListener("open", async () => {
     ) as HTMLDivElement;
 
     // allChoresStatus.dataset.status = "loading";
-    const chores = await getChores();
+    const chores = await Db.getChores();
     if (chores == null) allChoresStatus.dataset.status = "error";
     else if (chores.length == 0) allChoresStatus.dataset.status = "empty";
     else {
@@ -22,11 +22,11 @@ section.addEventListener("open", async () => {
         const newNodes = chores.map(c => {
             const clone = template?.content.cloneNode(true) as DocumentFragment;
             const addButton = clone.querySelector("button") as HTMLButtonElement;
-            setTexts(clone, { ".chore-name": c.name, ".member-name": "temp" });
+            ElementUtils.setTexts(clone, { ".chore-name": c.name, ".member-name": "temp" });
             addButton.addEventListener("click", () => console.log("assign " + c.name), {
                 signal: controller.signal
             });
-            addHaptics(addButton);
+            Haptics.add(addButton);
             return clone;
         });
         allChoresList.replaceChildren(template, ...newNodes);
@@ -67,7 +67,7 @@ section.addEventListener("open", async () => {
         removeButton?.addEventListener(
             "click",
             () => {
-                withTransition(
+                ElementUtils.withTransition(
                     li,
                     () => (li.style.height = li.style.opacity = li.style.marginTop = "0"),
                     () => {
