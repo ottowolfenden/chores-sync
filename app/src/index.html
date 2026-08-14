@@ -111,7 +111,7 @@
                     </ul>
                     <div class="status-message" data-status="loading">
                         <span class="empty">
-                            <span class="icon large">sentiment_dissatisfied</span>
+                            <span class="icon large">grid_off</span>
                             No chores to show.<br />
                             Create chores in <a href="#settings">Settings</a>.
                         </span>
@@ -126,9 +126,135 @@
                     </div>
                 </div>
             </section>
-            <section id="history" hidden>history</section>
-            <section id="count" hidden>test test</section>
-            <section id="settings" hidden>settings</section>
+
+            <section id="history" hidden>
+                <div><h2>History</h2></div>
+            </section>
+
+            <section id="count" hidden>
+                <div><h2>Count</h2></div>
+                <ul>
+                    <li>
+                        <div class="chore">
+                            <span class="chore-name">Washing up</span>
+                            <span class="total-count">88</span>
+                            <button class="expand tonal">
+                                <span class="icon">keyboard_arrow_down</span>
+                            </button>
+                        </div>
+                        <ul class="details">
+                            <li>
+                                <span class="member-name">Otto</span>
+                                <div class="total-num">
+                                    <button class="minus tonal small">
+                                        <span class="icon">remove</span>
+                                    </button>
+                                    <span>30</span>
+                                    <button class="plus tonal small">
+                                        <span class="icon">add</span>
+                                    </button>
+                                </div>
+                                <span class="offset-num">(5)</span>
+                            </li>
+                            <li>
+                                <span class="member-name">Ivo</span>
+                                <div class="total-num">
+                                    <button class="minus tonal small">
+                                        <span class="icon">remove</span>
+                                    </button>
+                                    <span>58</span>
+                                    <button class="plus tonal small">
+                                        <span class="icon">add</span>
+                                    </button>
+                                </div>
+                                <span class="offset-num">(50)</span>
+                            </li>
+                            <li>
+                                <span class="member-name">Emily</span>
+                                <div class="total-num">
+                                    <button class="minus tonal small">
+                                        <span class="icon">remove</span>
+                                    </button>
+                                    <span>0</span>
+                                    <button class="plus tonal small">
+                                        <span class="icon">add</span>
+                                    </button>
+                                </div>
+                                <span class="offset-num"></span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="chore">
+                            <span class="chore-name">Emptying dishwasher</span>
+                            <span class="total-count">88</span>
+                            <button class="expand tonal">
+                                <span class="icon">keyboard_arrow_down</span>
+                            </button>
+                        </div>
+                        <ul class="details">
+                            <li>
+                                <span class="member-name">Otto</span>
+                                <div class="total-num">
+                                    <button class="minus tonal small">
+                                        <span class="icon">remove</span>
+                                    </button>
+                                    <span>30</span>
+                                    <button class="plus tonal small">
+                                        <span class="icon">add</span>
+                                    </button>
+                                </div>
+                                <span class="offset-num">(-5)</span>
+                            </li>
+                            <li>
+                                <span class="member-name">Ivo</span>
+                                <div class="total-num">
+                                    <button class="minus tonal small">
+                                        <span class="icon">remove</span>
+                                    </button>
+                                    <span>58</span>
+                                    <button class="plus tonal small">
+                                        <span class="icon">add</span>
+                                    </button>
+                                </div>
+                                <span class="offset-num">(50)</span>
+                            </li>
+                            <li>
+                                <span class="member-name">Emily</span>
+                                <div class="total-num">
+                                    <button class="minus tonal small">
+                                        <span class="icon">remove</span>
+                                    </button>
+                                    <span>2000</span>
+                                    <button class="plus tonal small">
+                                        <span class="icon">add</span>
+                                    </button>
+                                </div>
+                                <span class="offset-num">(-20)</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="status-message" data-status="loading">
+                    <span class="empty">
+                        <span class="icon large">grid_off</span>
+                        No chores to show.<br />
+                        Create chores in <a href="#settings">Settings</a>.
+                    </span>
+                    <span class="loading">
+                        <span class="icon large">cloud_sync</span>
+                        Loading, please wait.
+                    </span>
+                    <span class="error">
+                        <span class="icon large">error</span>
+                        Failed to fetch data.<br />Try again later.
+                    </span>
+                </div>
+            </section>
+
+            <section id="settings" hidden>
+                <div><h2>Settings</h2></div>
+            </section>
         </main>
 
         <nav>
