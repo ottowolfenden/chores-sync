@@ -13,12 +13,12 @@ section.addEventListener("open", async () => {
         "#all-chores > .status-message"
     ) as HTMLDivElement;
 
-    // allChoresStatus.setAttribute("status", "loading");
+    // allChoresStatus.dataset.status = "loading";
     const chores = await getChores();
-    if (chores == null) allChoresStatus.setAttribute("status", "error");
-    else if (chores.length == 0) allChoresStatus.setAttribute("status", "empty");
+    if (chores == null) allChoresStatus.dataset.status = "error";
+    else if (chores.length == 0) allChoresStatus.dataset.status = "empty";
     else {
-        allChoresStatus.removeAttribute("status");
+        allChoresStatus.removeAttribute("data-status");
         const newNodes = chores.map(c => {
             const clone = template?.content.cloneNode(true) as DocumentFragment;
             const addButton = clone.querySelector("button") as HTMLButtonElement;
@@ -41,9 +41,9 @@ section.addEventListener("open", async () => {
     const assignedChoresStatus = section.querySelector(
         "#assigned-chores > .status-message"
     ) as HTMLDivElement;
-    assignedChoresStatus.removeAttribute("status");
+    assignedChoresStatus.removeAttribute("data-status");
     if (assignedList.querySelector(":scope > li") == null)
-        assignedChoresStatus.setAttribute("status", "empty");
+        assignedChoresStatus.dataset.status = "empty";
 
     editButton.addEventListener(
         "click",
@@ -73,7 +73,7 @@ section.addEventListener("open", async () => {
                     () => {
                         li.remove();
                         if (assignedList.querySelector(":scope > li") == null)
-                            assignedChoresStatus.setAttribute("status", "empty");
+                            assignedChoresStatus.dataset.status = "empty";
                     }
                 );
             },
