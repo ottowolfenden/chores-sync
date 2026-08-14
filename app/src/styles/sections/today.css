@@ -29,9 +29,6 @@ section#today {
 
     #assigned-chores {
         h2 + button {
-            --size: 15px;
-            --background-color: var(--secondary);
-            --color: var(--on-secondary);
             @media (width <= 300px) {
                 --collapse: 1;
             }
