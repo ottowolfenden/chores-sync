@@ -28,10 +28,15 @@ section#today {
     }
 
     #assigned-chores {
-        h2 + button {
+        div:has(h2) button {
             @media (width <= 300px) {
                 --collapse: 1;
             }
+        }
+
+        &:has(> ul[inert]) button#save,
+        &:not(:has(> ul[inert])) button#edit {
+            display: none;
         }
 
         & > ul {

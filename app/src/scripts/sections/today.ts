@@ -33,6 +33,7 @@ section.addEventListener("open", async () => {
     }
 
     const editButton = section.querySelector("button#edit") as HTMLButtonElement;
+    const saveButton = section.querySelector("button#save") as HTMLButtonElement;
     const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
     const assignedListItems = assignedList.querySelectorAll("li");
     const dropdownButtons = section.querySelectorAll(
@@ -45,21 +46,10 @@ section.addEventListener("open", async () => {
     if (assignedList.querySelector(":scope > li") == null)
         assignedChoresStatus.dataset.status = "empty";
 
-    editButton.addEventListener(
-        "click",
-        () => {
-            const icon = editButton.querySelector(".icon") as HTMLSpanElement;
-            const label = editButton.querySelector(".icon + span") as HTMLSpanElement;
-            assignedList.toggleAttribute("inert");
-            if (assignedList.hasAttribute("inert")) {
-                label.textContent = "Edit";
-                icon.textContent = "edit";
-            } else {
-                icon.textContent = "check";
-                label.textContent = "Save";
-            }
-        },
-        { signal: controller.signal }
+    [editButton, saveButton].forEach(b =>
+        b.addEventListener("click", () => assignedList.toggleAttribute("inert"), {
+            signal: controller.signal
+        })
     );
 
     assignedListItems.forEach(li => {
