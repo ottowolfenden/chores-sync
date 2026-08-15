@@ -9,7 +9,11 @@ export class ElementUtils {
         });
     };
 
-    static withTransition = (el: HTMLElement, before: () => void, after: () => void) => {
+    static withTransition = (
+        el: HTMLElement,
+        before: () => void = () => {},
+        after: () => void = () => {}
+    ) => {
         before();
         const duration = getComputedStyle(el).transitionDuration;
         const delay = parseFloat(duration) * (duration.endsWith("ms") ? 1 : 1000);
