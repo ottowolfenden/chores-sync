@@ -1,9 +1,4 @@
 section#count {
-    &:has(ul.details[inert]) div:has(> h2) button#collapse-all,
-    &:not(:has(ul.details[inert])) div:has(> h2) button#expand-all {
-        display: none;
-    }
-
     & > ul {
         display: flex;
         flex-direction: column;
@@ -40,7 +35,6 @@ section#count {
                 }
             }
 
-            &[data-edit-mode] div.chore button.edit,
             &[data-edit-mode] li .count-text {
                 display: none;
             }
@@ -49,7 +43,7 @@ section#count {
             &:has(div.chore:active):not(:has(button:hover)) {
                 background-color: color-mix(
                     in srgb,
-                    var(--on-surface) 14%,
+                    var(--on-surface) 5%,
                     var(--surface-container-low)
                 );
             }
@@ -58,7 +52,7 @@ section#count {
                 &:has(div.chore:hover:not(:active)):not(:has(button:hover)) {
                     background-color: color-mix(
                         in srgb,
-                        var(--on-surface) 8%,
+                        var(--on-surface) 3%,
                         var(--surface-container-low)
                     );
                 }
@@ -84,7 +78,6 @@ section#count {
         }
 
         button.edit,
-        button.save,
         .total-count {
             margin-left: auto;
         }
@@ -106,7 +99,6 @@ section#count {
         }
 
         &:has(+ ul[inert]) button.edit,
-        &:has(+ ul[inert]) button.save,
         &:not(:has(+ ul[inert])) .total-count {
             display: none;
         }

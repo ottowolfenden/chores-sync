@@ -6,44 +6,80 @@ section.addEventListener("open", () => {
     const controller = new AbortController();
 
     const expandAllButton = section.querySelector("#expand-all") as HTMLButtonElement;
-    const collapseAllButton = section.querySelector("#collapse-all") as HTMLButtonElement;
     const listItems = section.querySelectorAll(
         ":scope > ul > li"
     ) as NodeListOf<HTMLLIElement>;
+    const detailsLists = [...listItems].flatMap(li => li.querySelector("ul.details"));
 
-    const setCollapseState = (li: HTMLLIElement, collapse?: boolean) => {
+    const refreshEditButtonState = (li: HTMLLIElement) => {
+        const choreItem = li.querySelector("div.chore") as HTMLDivElement;
+        const editButton = choreItem.querySelector("button.edit") as HTMLButtonElement;
+        const icon = editButton.querySelector(".icon") as HTMLSpanElement;
+        const label = editButton.querySelector(".icon + span") as HTMLSpanElement;
+        if (li.hasAttribute("data-edit-mode")) {
+            label.textContent = "Save";
+            icon.textContent = "check";
+        } else {
+            label.textContent = "Edit";
+            icon.textContent = "edit";
+        }
+    };
+
+    const toggleCollapse = (li: HTMLLIElement, collapse?: boolean) => {
         const detailsList = li.querySelector("ul.details") as HTMLUListElement;
         const icon = li.querySelector(".chore .expand .icon") as HTMLSpanElement;
         collapse ??= detailsList.inert;
         detailsList.toggleAttribute("inert", !collapse);
         icon.textContent = `keyboard_arrow_${detailsList.inert ? "down" : "up"}`;
         if (collapse) li.toggleAttribute("data-edit-mode", false);
+        refreshEditButtonState(li);
     };
 
-    [expandAllButton, collapseAllButton].forEach(b =>
-        b.addEventListener(
-            "click",
-            () => listItems.forEach(li => setCollapseState(li, b.id == "expand-all")),
-            { signal: controller.signal }
-        )
+    const refreshExpandAllButtonState = () => {
+        const icon = expandAllButton.querySelector(".icon") as HTMLSpanElement;
+        const label = expandAllButton.querySelector(".icon + span") as HTMLSpanElement;
+        if (!detailsLists.every(ul => ul?.hasAttribute("inert"))) {
+            label.textContent = "Collapse all";
+            icon.textContent = "collapse_content";
+        } else {
+            label.textContent = "Expand all";
+            icon.textContent = "expand_content";
+        }
+    };
+
+    expandAllButton.addEventListener(
+        "click",
+        () => {
+            const label = expandAllButton.querySelector(".icon + span") as HTMLSpanElement;
+            listItems.forEach(li => toggleCollapse(li, label.textContent == "Expand all"));
+            refreshExpandAllButtonState();
+        },
+        { signal: controller.signal }
     );
 
     listItems.forEach(li => {
         const choreItem = li.querySelector("div.chore") as HTMLDivElement;
+        const editButton = choreItem.querySelector("button.edit") as HTMLButtonElement;
+
         Haptics.add(choreItem);
-        choreItem?.addEventListener("click", () => setCollapseState(li), {
-            signal: controller.signal
-        });
-        choreItem?.querySelectorAll("button").forEach(b =>
-            b.addEventListener(
-                "click",
-                e => {
-                    if (b.classList.contains("expand")) return;
-                    e.stopPropagation();
-                    li.toggleAttribute("data-edit-mode", b.classList.contains("edit"));
-                },
-                { signal: controller.signal }
-            )
+        choreItem?.addEventListener(
+            "click",
+            () => {
+                toggleCollapse(li);
+                refreshExpandAllButtonState();
+            },
+            {
+                signal: controller.signal
+            }
+        );
+        editButton.addEventListener(
+            "click",
+            e => {
+                e.stopPropagation();
+                li.toggleAttribute("data-edit-mode");
+                refreshEditButtonState(li);
+            },
+            { signal: controller.signal }
         );
         const detailsListItems = li.querySelectorAll(
             "ul.details > li"
