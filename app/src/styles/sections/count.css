@@ -45,8 +45,8 @@ section#count {
                 display: none;
             }
 
-            &:has(div.chore:focus-visible),
-            &:has(div.chore:active) {
+            &:has(div.chore:focus-visible):not(:has(.chore > button:hover)),
+            &:has(div.chore:active):not(:has(.chore > button:hover)) {
                 background-color: color-mix(
                     in srgb,
                     var(--on-surface) 14%,
@@ -55,7 +55,7 @@ section#count {
             }
 
             @media (hover: hover) {
-                &:has(div.chore:hover:not(:active)) {
+                &:has(div.chore:hover:not(:active)):not(:has(.chore > button:hover)) {
                     background-color: color-mix(
                         in srgb,
                         var(--on-surface) 8%,
