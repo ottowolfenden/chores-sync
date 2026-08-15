@@ -10,7 +10,6 @@ section.addEventListener("open", async () => {
     const allChoresList = section.querySelector("#all-chores > ul") as HTMLUListElement;
     const template = allChoresList.querySelector("template") as HTMLTemplateElement;
     const editButton = section.querySelector("button#edit") as HTMLButtonElement;
-    const saveButton = section.querySelector("button#save") as HTMLButtonElement;
     const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
     const assignedListItems = assignedList.querySelectorAll("li");
     const allChoresStatus = section.querySelector(
@@ -23,33 +22,21 @@ section.addEventListener("open", async () => {
         "#assigned-chores > .status-message"
     ) as HTMLDivElement;
 
-    // allChoresStatus.dataset.status = "loading";
-    const chores = await Db.getChores();
-    if (chores == null) allChoresStatus.dataset.status = "error";
-    else if (chores.length == 0) allChoresStatus.dataset.status = "empty";
-    else {
-        allChoresStatus.removeAttribute("data-status");
-        const newNodes = chores.map(c => {
-            const clone = template?.content.cloneNode(true) as DocumentFragment;
-            const addButton = clone.querySelector("button") as HTMLButtonElement;
-            ElementUtils.setTexts(clone, { ".chore-name": c.name, ".member-name": "temp" });
-            addButton.addEventListener("click", () => console.log("assign " + c.name), {
-                signal: controller.signal
-            });
-            Haptics.add(addButton);
-            return clone;
-        });
-        allChoresList.replaceChildren(template, ...newNodes);
-    }
-
-    assignedChoresStatus.removeAttribute("data-status"); // TEMPORARY
-    if (assignedList.querySelector(":scope > li") == null)
-        assignedChoresStatus.dataset.status = "empty";
-
-    [editButton, saveButton].forEach(b =>
-        b.addEventListener("click", () => assignedList.toggleAttribute("inert"), {
-            signal: controller.signal
-        })
+    editButton.addEventListener(
+        "click",
+        () => {
+            const icon = editButton.querySelector(".icon") as HTMLSpanElement;
+            const label = editButton.querySelector(".icon + span") as HTMLSpanElement;
+            assignedList.toggleAttribute("inert");
+            if (assignedList.inert) {
+                label.textContent = "Edit";
+                icon.textContent = "edit";
+            } else {
+                icon.textContent = "check";
+                label.textContent = "Save";
+            }
+        },
+        { signal: controller.signal }
     );
 
     assignedListItems.forEach(li => {
@@ -101,6 +88,29 @@ section.addEventListener("open", async () => {
             )
         );
     });
+
+    assignedChoresStatus.removeAttribute("data-status"); // TEMPORARY
+    if (assignedList.querySelector(":scope > li") == null)
+        assignedChoresStatus.dataset.status = "empty";
+
+    allChoresStatus.dataset.status = "loading";
+    const chores = await Db.getChores();
+    if (chores == null) allChoresStatus.dataset.status = "error";
+    else if (chores.length == 0) allChoresStatus.dataset.status = "empty";
+    else {
+        allChoresStatus.removeAttribute("data-status");
+        const newNodes = chores.map(c => {
+            const clone = template?.content.cloneNode(true) as DocumentFragment;
+            const addButton = clone.querySelector("button") as HTMLButtonElement;
+            ElementUtils.setTexts(clone, { ".chore-name": c.name, ".member-name": "temp" });
+            addButton.addEventListener("click", () => console.log("assign " + c.name), {
+                signal: controller.signal
+            });
+            Haptics.add(addButton);
+            return clone;
+        });
+        allChoresList.replaceChildren(template, ...newNodes);
+    }
 
     section.addEventListener("close", () => controller.abort(), { once: true });
 });

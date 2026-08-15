@@ -34,11 +34,6 @@ section#today {
             }
         }
 
-        &:has(> ul[inert]) button#save,
-        &:not(:has(> ul[inert])) button#edit {
-            display: none;
-        }
-
         & > ul {
             display: flex;
             flex-direction: column;
