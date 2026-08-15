@@ -20,7 +20,7 @@ section#count {
             transition: background-color, color;
             transition-duration: 100ms;
 
-            &[data-edit-mode] {
+            &:not([data-edit-mode]) {
                 ul.details {
                     grid-template-columns: fit-content(30%) 1fr auto 1fr fit-content(50%);
 
@@ -40,13 +40,13 @@ section#count {
                 }
             }
 
-            &:not([data-edit-mode]) div.chore button.edit,
-            &:not([data-edit-mode]) li .count-text {
+            &[data-edit-mode] div.chore button.edit,
+            &[data-edit-mode] li .count-text {
                 display: none;
             }
 
-            &:has(div.chore:focus-visible):not(:has(.chore > button:hover)),
-            &:has(div.chore:active):not(:has(.chore > button:hover)) {
+            &:has(div.chore:focus-visible):not(:has(button:hover)),
+            &:has(div.chore:active):not(:has(button:hover)) {
                 background-color: color-mix(
                     in srgb,
                     var(--on-surface) 14%,
@@ -55,7 +55,7 @@ section#count {
             }
 
             @media (hover: hover) {
-                &:has(div.chore:hover:not(:active)):not(:has(.chore > button:hover)) {
+                &:has(div.chore:hover:not(:active)):not(:has(button:hover)) {
                     background-color: color-mix(
                         in srgb,
                         var(--on-surface) 8%,
