@@ -1,4 +1,18 @@
 section#count {
+    &:has(.status-message[data-status]) {
+        & > ul {
+            display: none;
+        }
+
+        .status-message {
+            display: flex;
+        }
+
+        button#expand-all {
+            display: none;
+        }
+    }
+
     & > ul {
         display: flex;
         flex-direction: column;
