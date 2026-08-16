@@ -37,8 +37,8 @@ export class Db {
                 const records = data.filter(
                     d => d["member_name"] == mn && d["chore_name"] == cn
                 );
-                const offsetCount = records?.find(r => r["is_offset"])?.total ?? 0;
-                const nonOffsetCount = records?.find(r => !r["is_offset"])?.total ?? 0;
+                const offsetCount = Number(records?.find(r => r["is_offset"])?.total ?? 0);
+                const nonOffsetCount = Number(records?.find(r => !r["is_offset"])?.total ?? 0);
                 return {
                     memberName: mn,
                     total: offsetCount + nonOffsetCount,
