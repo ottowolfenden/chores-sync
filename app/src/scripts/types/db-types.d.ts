@@ -20,3 +20,10 @@ type DbAssignment = {
     chore_id: number;
     member_id: number;
 };
+
+type DbCount = {
+    chore_name: string;
+    member_name: string;
+    is_offset: boolean;
+    total: number;
+};

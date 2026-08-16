@@ -20,9 +20,11 @@ type UiAssignment = {
     member: Member;
 };
 
-type UiOffset = {
-    id: number;
-    value: number;
-    chore: Chore;
-    member: Member;
+type UiCount = {
+    choreName: string;
+    memberCounts: {
+        memberName: string;
+        total: number;
+        offset: number;
+    }[];
 };
