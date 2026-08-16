@@ -1,11 +1,14 @@
 export class ElementUtils {
     private constructor() {}
 
-    static setTexts = (rootEl: HTMLElement, selectorToText: Record<string, string>) => {
+    static setTexts = (
+        rootEl: HTMLElement,
+        selectorToText: Record<string, string | number>
+    ) => {
         if (!rootEl) return;
         Object.entries(selectorToText).forEach(([selector, text]) => {
             const target = rootEl.querySelector(selector);
-            if (target) target.textContent = text;
+            if (target) target.textContent = text.toString();
         });
     };
 
