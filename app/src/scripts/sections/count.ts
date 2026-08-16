@@ -93,10 +93,10 @@ section.addEventListener("open", async () => {
         refreshEditState(li);
     };
 
-    const refreshExpandAllButtonState = () => {
+    const refreshExpandAllButtonState = (collapse?: boolean) => {
         const icon = expandAllButton.querySelector(".icon") as HTMLSpanElement;
         const label = expandAllButton.querySelector(".icon + span") as HTMLSpanElement;
-        if (!detailsLists.every(ul => ul?.hasAttribute("inert"))) {
+        if (!detailsLists.every(ul => ul?.hasAttribute("inert")) && (collapse ?? true)) {
             label.textContent = "Collapse all";
             icon.textContent = "collapse_content";
         } else {
@@ -210,6 +210,10 @@ section.addEventListener("open", async () => {
                 { signal: controller.signal }
             );
         });
+    });
+
+    section.addEventListener("close", () => refreshExpandAllButtonState(false), {
+        signal: controller.signal
     });
 
     section.addEventListener("close", () => controller.abort(), { once: true });
