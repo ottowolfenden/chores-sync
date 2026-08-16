@@ -1,15 +1,12 @@
 section#count {
     &:has(.status-message[data-status]) {
-        & > ul {
+        & > ul,
+        button#expand-all {
             display: none;
         }
 
         .status-message {
             display: flex;
-        }
-
-        button#expand-all {
-            display: none;
         }
     }
 
@@ -31,7 +28,6 @@ section#count {
             transition-duration: 100ms;
 
             &:not([data-edit-mode]) ul.details li .count-input,
-            &:not([data-edit-mode]) div.chore button.save,
             &[data-edit-mode] li .count-text {
                 display: none;
             }
@@ -52,6 +48,29 @@ section#count {
                         var(--on-surface) 3%,
                         var(--surface-container-low)
                     );
+                }
+            }
+
+            @media (((width <= 615px) and (width >= 550px)) or (width <= 430px)) {
+                grid-template-columns: 2fr 5fr 3fr;
+
+                ul.details li .offset .suffix {
+                    display: none;
+                }
+
+                div.chore {
+                    &:not(:has(+ ul[inert])) {
+                        button.edit {
+                            margin-left: 10px;
+                        }
+
+                        .total-count {
+                            display: none;
+                        }
+                        button.edit {
+                            margin-left: auto;
+                        }
+                    }
                 }
             }
         }
@@ -95,9 +114,12 @@ section#count {
             }
         }
 
-        &:has(+ ul[inert]) button.edit,
-        &:not(:has(+ ul[inert])) .total-count {
+        &:has(+ ul[inert]) button.edit {
             display: none;
+        }
+
+        &:not(:has(+ ul[inert])) button.edit {
+            margin-left: 10px;
         }
 
         button.expand {
@@ -141,6 +163,10 @@ section#count {
 
             .count-input {
                 justify-content: center;
+
+                input[type="number"] {
+                    width: min(4em, 13vw);
+                }
             }
 
             .count-text {
@@ -167,20 +193,6 @@ section#count {
                 &:has(.num:empty) {
                     display: none;
                 }
-            }
-
-            @media (width <= 410px) {
-                input[type="number"] {
-                    width: 2.1em;
-                }
-            }
-        }
-
-        @media (((width <= 615px) and (width >= 550px)) or (width <= 430px)) {
-            grid-template-columns: 2fr 5fr 3fr;
-
-            li .offset .suffix {
-                display: none;
             }
         }
     }
