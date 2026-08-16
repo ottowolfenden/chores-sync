@@ -78,7 +78,8 @@ section.addEventListener("open", async () => {
             detailsListItems.forEach(dli => {
                 const numInput = dli.querySelector("input") as HTMLInputElement;
                 const numText = dli.querySelector(".count-text .num") as HTMLSpanElement;
-                numInput.value = numText.textContent;
+                const value = parseInt(numText.textContent);
+                if (!isNaN(value)) numInput.value = value.toString();
             });
         }
     };
@@ -91,6 +92,18 @@ section.addEventListener("open", async () => {
         icon.textContent = `keyboard_arrow_${detailsList.inert ? "down" : "up"}`;
         if (collapse) li.toggleAttribute("data-edit-mode", false);
         refreshEditState(li);
+    };
+
+    const evalTotal = (choreLi: HTMLLIElement) => {
+        const totalCount = choreLi.querySelector(
+            ".chore .total-count .num"
+        ) as HTMLSpanElement;
+        const counts = choreLi.querySelectorAll(
+            ".count-text .num"
+        ) as NodeListOf<HTMLSpanElement>;
+        totalCount.textContent = [...counts]
+            .reduce((acc, val) => acc + parseInt(val.textContent), 0)
+            .toString();
     };
 
     const refreshExpandAllButtonState = (collapse?: boolean) => {
@@ -115,7 +128,11 @@ section.addEventListener("open", async () => {
         { signal: controller.signal }
     );
 
-    const changeNum = (newNum: string | number, detailsListItem: HTMLLIElement) => {
+    const changeNum = (
+        newNum: string | number,
+        detailsListItem: HTMLLIElement,
+        listItem: HTMLLIElement
+    ) => {
         const numInput = detailsListItem.querySelector("input") as HTMLInputElement;
         const numText = detailsListItem.querySelector(".count-text .num") as HTMLSpanElement;
         const offset = detailsListItem.querySelector(".offset") as HTMLSpanElement;
@@ -130,6 +147,7 @@ section.addEventListener("open", async () => {
 
         const difference = newNumInt - parseInt(numText.textContent);
         numText.textContent = numInput.value = newNum.toString();
+        evalTotal(listItem);
         const newOffset =
             parseInt(offsetNum.textContent == "" ? "0" : offsetNum.textContent) + difference;
         offset.style.display = newOffset == 0 ? "none" : "";
@@ -185,7 +203,7 @@ section.addEventListener("open", async () => {
                 signal: controller.signal
             });
 
-            numInput.addEventListener("input", e => changeNum(numInput.value, dli), {
+            numInput.addEventListener("input", e => changeNum(numInput.value, dli, li), {
                 signal: controller.signal
             });
 
@@ -200,13 +218,13 @@ section.addEventListener("open", async () => {
 
             minusButton.addEventListener(
                 "click",
-                () => changeNum(parseInt(numInput.value) - 1, dli),
+                () => changeNum(parseInt(numInput.value) - 1, dli, li),
                 { signal: controller.signal }
             );
 
             plusButton.addEventListener(
                 "click",
-                () => changeNum(parseInt(numInput.value) + 1, dli),
+                () => changeNum(parseInt(numInput.value) + 1, dli, li),
                 { signal: controller.signal }
             );
         });
