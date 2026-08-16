@@ -16,6 +16,7 @@ section#count {
     & > ul {
         display: flex;
         flex-direction: column;
+        padding-bottom: 40px;
 
         & > li {
             background-color: var(--surface-container-low);
@@ -29,26 +30,8 @@ section#count {
             transition: background-color, color;
             transition-duration: 100ms;
 
-            &:not([data-edit-mode]) {
-                ul.details {
-                    grid-template-columns: fit-content(30%) 1fr auto 1fr fit-content(50%);
-
-                    li .count-input {
-                        display: none;
-                    }
-
-                    @media (width >= 410px) {
-                        li .offset .suffix {
-                            display: inline;
-                        }
-                    }
-                }
-
-                div.chore button.save {
-                    display: none;
-                }
-            }
-
+            &:not([data-edit-mode]) ul.details li .count-input,
+            &:not([data-edit-mode]) div.chore button.save,
             &[data-edit-mode] li .count-text {
                 display: none;
             }
@@ -131,7 +114,8 @@ section#count {
         border-radius: 8px;
         margin: 0 8px 8px 8px;
         display: grid;
-        grid-template-columns: fit-content(30%) 1fr auto 1fr fit-content(30%);
+        grid-template-columns: 2fr 3fr 3fr;
+
         gap: 10px 15px;
 
         &[inert] {
@@ -145,7 +129,6 @@ section#count {
             align-items: center;
 
             .member-name {
-                grid-column: 1;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
@@ -153,7 +136,11 @@ section#count {
 
             .count-text,
             .count-input {
-                grid-column: 3;
+                grid-column: 2;
+            }
+
+            .count-input {
+                justify-content: center;
             }
 
             .count-text {
@@ -161,6 +148,7 @@ section#count {
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+                text-align: right;
 
                 @media (width <= 370px) {
                     .suffix {
@@ -170,16 +158,14 @@ section#count {
             }
 
             .offset {
-                grid-column: 5;
                 color: rgb(from var(--on-surface-variant) r g b / 0.85);
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+                text-align: right;
 
-                @media (((width <= 615px) and (width >= 550px)) or (width <= 430px)) {
-                    .suffix {
-                        display: none;
-                    }
+                &:has(.num:empty) {
+                    display: none;
                 }
             }
 
@@ -187,6 +173,14 @@ section#count {
                 input[type="number"] {
                     width: 2.1em;
                 }
+            }
+        }
+
+        @media (((width <= 615px) and (width >= 550px)) or (width <= 430px)) {
+            grid-template-columns: 2fr 5fr 3fr;
+
+            li .offset .suffix {
+                display: none;
             }
         }
     }
