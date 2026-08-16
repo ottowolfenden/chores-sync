@@ -1,7 +1,7 @@
 export class ElementUtils {
     private constructor() {}
 
-    static setTexts = (rootEl: DocumentFragment, selectorToText: Record<string, string>) => {
+    static setTexts = (rootEl: HTMLElement, selectorToText: Record<string, string>) => {
         if (!rootEl) return;
         Object.entries(selectorToText).forEach(([selector, text]) => {
             const target = rootEl.querySelector(selector);

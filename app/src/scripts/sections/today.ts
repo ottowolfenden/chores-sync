@@ -100,9 +100,10 @@ section.addEventListener("open", async () => {
     else {
         allChoresStatus.removeAttribute("data-status");
         const newNodes = chores.map(c => {
-            const clone = template?.content.cloneNode(true) as DocumentFragment;
+            const clone = template.content.cloneNode(true) as DocumentFragment;
+            const li = clone.firstElementChild as HTMLLIElement;
             const addButton = clone.querySelector("button") as HTMLButtonElement;
-            ElementUtils.setTexts(clone, { ".chore-name": c.name, ".member-name": "temp" });
+            ElementUtils.setTexts(li, { ".chore-name": c.name, ".member-name": "temp" });
             addButton.addEventListener("click", () => console.log("assign " + c.name), {
                 signal: controller.signal
             });
