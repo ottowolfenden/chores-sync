@@ -21,7 +21,7 @@ section#today {
 
     #assigned-chores {
         div:has(h2) button {
-            @media (width <= 300px) {
+            @media (width <= 370px) {
                 --collapse: 1;
             }
         }
