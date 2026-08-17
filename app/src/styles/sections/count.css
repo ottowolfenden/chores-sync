@@ -13,7 +13,7 @@ section#count {
             margin-top: 5px;
             display: flex;
             flex-direction: column;
-            transition: background-color, color;
+            transition: background-color, color, scale;
             transition-duration: 100ms;
 
             &:not([data-edit-mode]) ul.details li .count-input,
@@ -23,6 +23,7 @@ section#count {
 
             &:has(div.chore:focus-visible):not(:has(button:hover)),
             &:has(div.chore:active):not(:has(button:hover)) {
+                scale: 0.95;
                 background-color: color-mix(
                     in srgb,
                     var(--on-surface) 5%,
