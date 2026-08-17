@@ -4,6 +4,7 @@ import "../temp/sections/settings.js";
 import "../temp/sections/today.js";
 
 import "../components/section-nav.js";
+import "../components/status-message.js";
 
 import { Cloudflare } from "../services/cloudflare.js";
 import { Haptics } from "../services/haptics.js";

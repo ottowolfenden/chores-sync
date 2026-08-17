@@ -1,0 +1,26 @@
+status-message {
+    display: flex;
+    background-color: var(--surface-container-low);
+    color: var(--on-surface-variant);
+    justify-content: center;
+    margin: 5px 0 0 0;
+    padding: 25px;
+    align-items: center;
+    border-radius: 6px;
+    text-align: center;
+
+    & > * {
+        .icon.large {
+            margin-bottom: 10px;
+        }
+    }
+
+    &[status="error"] {
+        background-color: var(--error-container);
+        color: var(--on-error-container);
+    }
+
+    &[status="success"] {
+        display: none;
+    }
+}

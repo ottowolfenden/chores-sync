@@ -1,12 +1,8 @@
 section#count {
-    &:has(.status-message[data-status]) {
+    &:not(:has(status-message[status="success"])) {
         & > ul,
         button#expand-all {
             display: none;
-        }
-
-        .status-message {
-            display: flex;
         }
     }
 

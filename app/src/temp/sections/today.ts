@@ -1,6 +1,7 @@
 import { Db } from "../../services/db.js";
 import { ElementUtils } from "../../services/element-utils.js";
 import { Haptics } from "../../services/haptics.js";
+import { StatusMessage } from "../../components/status-message.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -13,14 +14,14 @@ section.addEventListener("open", async () => {
     const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
     const assignedListItems = assignedList.querySelectorAll("li");
     const allChoresStatus = section.querySelector(
-        "#all-chores > .status-message"
-    ) as HTMLDivElement;
+        "#all-chores > status-message"
+    ) as StatusMessage;
+    const assignedChoresStatus = section.querySelector(
+        "#assigned-chores > status-message"
+    ) as StatusMessage;
     const dropdownButtons = section.querySelectorAll(
         ".name-dropdown > button"
     ) as NodeListOf<HTMLButtonElement>;
-    const assignedChoresStatus = section.querySelector(
-        "#assigned-chores > .status-message"
-    ) as HTMLDivElement;
 
     editButton.addEventListener(
         "click",
@@ -50,7 +51,7 @@ section.addEventListener("open", async () => {
                     () => {
                         li.remove();
                         if (assignedList.querySelector(":scope > li") == null)
-                            assignedChoresStatus.dataset.status = "empty";
+                            assignedChoresStatus.status = "empty";
                     }
                 );
             },
@@ -89,16 +90,15 @@ section.addEventListener("open", async () => {
         );
     });
 
-    assignedChoresStatus.removeAttribute("data-status"); // TEMPORARY
     if (assignedList.querySelector(":scope > li") == null)
-        assignedChoresStatus.dataset.status = "empty";
+        assignedChoresStatus.status = "empty";
 
-    allChoresStatus.dataset.status = "loading";
+    allChoresStatus.status = "loading";
     const chores = await Db.getChores();
-    if (chores == null) allChoresStatus.dataset.status = "error";
-    else if (chores.length == 0) allChoresStatus.dataset.status = "empty";
+    if (chores == null) allChoresStatus.status = "error";
+    else if (chores.length == 0) allChoresStatus.status = "empty";
     else {
-        allChoresStatus.removeAttribute("data-status");
+        allChoresStatus.status = "success";
         const newNodes = chores.map(c => {
             const clone = template.content.cloneNode(true) as DocumentFragment;
             const li = clone.firstElementChild as HTMLLIElement;

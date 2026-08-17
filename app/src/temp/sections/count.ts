@@ -1,25 +1,26 @@
 import { Haptics } from "../../services/haptics.js";
 import { Db } from "../../services/db.js";
 import { ElementUtils } from "../../services/element-utils.js";
+import { StatusMessage } from "../../components/status-message.js";
 
 const section = document.querySelector("section#count")!;
 
 section.addEventListener("open", async () => {
     const controller = new AbortController();
 
-    const countStatus = section.querySelector(".status-message") as HTMLDivElement;
-    countStatus.dataset.status = "loading";
+    const statusMessage = section.querySelector("status-message") as StatusMessage;
+    statusMessage.status = "loading";
     const counts = await Db.getCounts();
 
     if (counts == null) {
-        countStatus.dataset.status = "error";
+        statusMessage.status = "error";
         return;
     } else if (counts.length == 0) {
-        countStatus.dataset.status = "empty";
+        statusMessage.status = "empty";
         return;
     }
 
-    countStatus.removeAttribute("data-status");
+    statusMessage.status = "success";
 
     const choreUL = section.querySelector(":scope > ul") as HTMLUListElement;
     const choreLITemplate = section.querySelector("template") as HTMLTemplateElement;

@@ -4,6 +4,7 @@
 @import "temp/components/inputs.css";
 
 @import "components/section-nav.css";
+@import "components/status-message.css";
 
 @import "pages/login.css";
 
@@ -70,36 +71,6 @@ div:has(> h2) {
         --size: 15px;
         --background-color: var(--secondary);
         --color: var(--on-secondary);
-    }
-}
-
-.status-message {
-    display: none;
-    background-color: var(--surface-container-low);
-    color: var(--on-surface-variant);
-    justify-content: center;
-    margin: 5px 0 0 0;
-    padding: 25px;
-    align-items: center;
-    border-radius: 6px;
-    text-align: center;
-
-    & > * {
-        display: none;
-        .icon.large {
-            margin-bottom: 10px;
-        }
-    }
-
-    &[data-status="loading"] .loading,
-    &[data-status="empty"] .empty,
-    &[data-status="error"] .error {
-        display: block;
-    }
-
-    &[data-status="error"] {
-        background-color: var(--error-container);
-        color: var(--on-error-container);
     }
 }
 

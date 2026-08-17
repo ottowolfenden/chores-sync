@@ -3,12 +3,8 @@ section#today {
     #all-chores {
         padding-bottom: 40px;
 
-        &:has(.status-message[data-status]) ul {
+        &:not(:has(status-message[status="success"])) ul {
             display: none;
-
-            & + .status-message {
-                display: flex;
-            }
         }
     }
 

@@ -80,21 +80,7 @@
                             </button>
                         </li>
                     </ul>
-                    <div class="status-message" data-status="loading">
-                        <span class="empty">
-                            <span class="icon large">celebration</span>
-                            Nothing to do!<br />
-                            There are no chores assigned.
-                        </span>
-                        <span class="loading">
-                            <span class="icon large">cloud_sync</span>
-                            Loading, please wait.
-                        </span>
-                        <span class="error">
-                            <span class="icon large">error</span>
-                            Failed to fetch data.<br />Try reloading.
-                        </span>
-                    </div>
+                    <status-message></status-message>
                 </div>
                 <div id="all-chores">
                     <div><h2>All chores</h2></div>
@@ -109,21 +95,7 @@
                             </li>
                         </template>
                     </ul>
-                    <div class="status-message" data-status="loading">
-                        <span class="empty">
-                            <span class="icon large">grid_off</span>
-                            No chores to show.<br />
-                            Create chores in <a href="#settings">Settings</a>.
-                        </span>
-                        <span class="loading">
-                            <span class="icon large">cloud_sync</span>
-                            Loading, please wait.
-                        </span>
-                        <span class="error">
-                            <span class="icon large">error</span>
-                            Failed to fetch data.<br />Try again later.
-                        </span>
-                    </div>
+                    <status-message></status-message>
                 </div>
             </section>
 
@@ -182,22 +154,7 @@
                         </li>
                     </template>
                 </ul>
-
-                <div class="status-message" data-status="loading">
-                    <span class="empty">
-                        <span class="icon large">grid_off</span>
-                        No chores to show.<br />
-                        Create chores in <a href="#settings">Settings</a>.
-                    </span>
-                    <span class="loading">
-                        <span class="icon large">cloud_sync</span>
-                        Loading, please wait.
-                    </span>
-                    <span class="error">
-                        <span class="icon large">error</span>
-                        Failed to fetch data.<br />Try again later.
-                    </span>
-                </div>
+                <status-message></status-message>
             </section>
 
             <section id="settings" hidden>
