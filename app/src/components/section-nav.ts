@@ -3,13 +3,21 @@ import { customElement, state } from "lit/decorators.js";
 
 @customElement("section-nav")
 export class SectionNav extends LitElement {
-    protected createRenderRoot() {
-        return this;
-    }
+    protected createRenderRoot = () => this;
 
     @state() private activeHash = window.location.hash || "#today";
 
-    private open = (fragment: string) => (this.activeHash = window.location.hash = fragment);
+    private handleHashChange = () => (this.activeHash = window.location.hash || "#today");
+    private open = (fragment: string) => (window.location.hash = fragment);
+
+    connectedCallback() {
+        super.connectedCallback();
+        window.addEventListener("hashchange", this.handleHashChange);
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        window.removeEventListener("hashchange", this.handleHashChange);
+    }
 
     render = () =>
         [
