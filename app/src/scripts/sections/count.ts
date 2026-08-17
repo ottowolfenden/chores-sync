@@ -155,6 +155,34 @@ section.addEventListener("open", async () => {
         else offsetNum.textContent = newOffset.toString();
     };
 
+    const getUiCount = (li: HTMLLIElement): UiCount | null => {
+        const detailsListItems = li.querySelectorAll(
+            "ul.details > li"
+        ) as NodeListOf<HTMLLIElement>;
+
+        const choreName = li.querySelector(".chore .chore-name")?.textContent;
+        if (!choreName) return null;
+        return {
+            choreName: choreName,
+            memberCounts: [...detailsListItems].map(dli => {
+                let total = parseInt(
+                    (dli.querySelector(".count-text .num") as HTMLSpanElement).textContent
+                );
+                let offset = parseInt(
+                    (dli.querySelector(".offset .num") as HTMLSpanElement).textContent
+                );
+                total = isNaN(total) ? 0 : total;
+                offset = isNaN(offset) ? 0 : offset;
+                return {
+                    memberName: (dli.querySelector(".member-name") as HTMLSpanElement)
+                        .textContent,
+                    total: total,
+                    offset: offset
+                };
+            })
+        };
+    };
+
     const listItems = section.querySelectorAll(
         ":scope > ul > li"
     ) as NodeListOf<HTMLLIElement>;
@@ -167,7 +195,7 @@ section.addEventListener("open", async () => {
         Haptics.add(choreItem);
         Haptics.add(editButton);
 
-        choreItem?.addEventListener(
+        choreItem.addEventListener(
             "click",
             () => {
                 toggleCollapse(li);
@@ -177,9 +205,19 @@ section.addEventListener("open", async () => {
         );
         editButton.addEventListener(
             "click",
-            e => {
+            async e => {
                 e.stopPropagation();
                 li.toggleAttribute("data-edit-mode");
+                if (!li.hasAttribute("data-edit-mode")) {
+                    console.log("loading state here");
+                    const uiCount = getUiCount(li);
+                    console.log(uiCount);
+                    if (uiCount) {
+                        const success = await Db.setCount(uiCount);
+                        console.log("Success" + success);
+                    } else console.log("error");
+                    console.log("finished state here");
+                }
                 refreshEditState(li);
             },
             { signal: controller.signal }
@@ -203,7 +241,7 @@ section.addEventListener("open", async () => {
                 signal: controller.signal
             });
 
-            numInput.addEventListener("input", e => changeNum(numInput.value, dli, li), {
+            numInput.addEventListener("input", () => changeNum(numInput.value, dli, li), {
                 signal: controller.signal
             });
 
