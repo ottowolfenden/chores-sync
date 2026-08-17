@@ -56,12 +56,14 @@ export class Db {
 
         const response = await fetch("/api/counts", {
             method: "POST",
-            body: JSON.stringify({
-                "chore_name": uiCount.choreName,
-                "is_offset": true,
-                "member_name": uiCount.memberCounts[0]?.memberName!,
-                "total": uiCount.memberCounts[0]?.offset!
-            } satisfies DbCount),
+            body: JSON.stringify(
+                uiCount.memberCounts.map(mc => ({
+                    "chore_name": uiCount.choreName,
+                    "is_offset": true,
+                    "member_name": mc.memberName,
+                    "total": mc.offset
+                }))
+            ),
             headers: { "Authorization": guess }
         });
 

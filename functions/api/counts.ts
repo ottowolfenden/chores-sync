@@ -37,9 +37,10 @@ export const onRequestPost: PagesFunction<Env> = async context => {
             member_name: string;
             is_offset: boolean;
             total: number;
-        };
-        if (!data.is_offset) throw new Error("non-offset value passed");
-        if (typeof data.total != "number" && !isNaN(data.total))
+        }[];
+
+        if (data.some(d => !d.is_offset)) throw new Error("non-offset value passed");
+        if (data.some(d => typeof d.total != "number" || isNaN(d.total)))
             throw new Error("total not a number");
 
         return Response.json(
@@ -50,14 +51,21 @@ export const onRequestPost: PagesFunction<Env> = async context => {
                     is_offset,
                     chore_id,
                     member_id
-                ) 
-                VALUES (
-                    '-infinity',
-                    ${data.total},
-                    true,
-                    ( SELECT chore_id FROM chores WHERE chore_name = ${data.chore_name} ),
-                    ( SELECT member_id FROM members WHERE member_name = ${data.member_name} )
                 )
+                SELECT
+                    '-infinity',
+                    input.total,
+                    true,
+                    c.chore_id,
+                    m.member_id
+                FROM json_to_recordset(${JSON.stringify(data)}::json) AS input(
+                    chore_name TEXT,
+                    is_offset BOOLEAN,
+                    member_name TEXT,
+                    total INT
+                )
+                JOIN chores c on c.chore_name = input.chore_name
+                JOIN members m on m.member_name = input.member_name
                 ON CONFLICT (member_id, chore_id, assign_timestamp)
                 DO UPDATE SET quantity = EXCLUDED.quantity;
             `
