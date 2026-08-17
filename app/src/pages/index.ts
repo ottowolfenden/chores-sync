@@ -1,9 +1,12 @@
-import "./sections/count.js";
-import "./sections/history.js";
-import "./sections/settings.js";
-import "./sections/today.js";
-import { Cloudflare } from "./services/cloudflare.js";
-import { Haptics } from "./services/haptics.js";
+import "../temp/sections/count.js";
+import "../temp/sections/history.js";
+import "../temp/sections/settings.js";
+import "../temp/sections/today.js";
+
+import "../components/section-nav.js";
+
+import { Cloudflare } from "../services/cloudflare.js";
+import { Haptics } from "../services/haptics.js";
 
 if (!(await Cloudflare.checkAccess())) location.replace("login.html");
 
@@ -17,11 +20,6 @@ const openSection = async (targetId: string) => {
             document.querySelector("main")?.scroll(0, 0);
         }
     });
-    document
-        .querySelectorAll("nav > a")
-        .forEach(nl =>
-            nl.classList.toggle("active", nl.getAttribute("href") == "#" + targetId)
-        );
 };
 
 const handleRoute = async () => await openSection(location.hash.replace("#", ""));
@@ -29,4 +27,4 @@ window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
 
-Haptics.addAll(["button", "a"]);
+Haptics.addAll(["button"]);

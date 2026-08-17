@@ -1,16 +1,18 @@
-@import "components/buttons.css";
-@import "components/colours.css";
-@import "components/fonts.css";
-@import "components/icon.css";
-@import "components/inputs.css";
-@import "components/login.css";
-@import "components/main-layout.css";
-@import "components/nav.css";
+@import "temp/components/buttons.css";
+@import "temp/components/fonts.css";
+@import "temp/components/icon.css";
+@import "temp/components/inputs.css";
+
+@import "components/section-nav.css";
+
+@import "pages/login.css";
 
 @import "sections/count.css";
 @import "sections/history.css";
 @import "sections/settings.css";
 @import "sections/today.css";
+
+@import "colours.css";
 
 * {
     font-family: "Google Sans Flex", sans-serif;
@@ -32,10 +34,9 @@ body {
     margin: 0;
     background-color: var(--surface-container-lowest);
     color: var(--on-surface);
-}
-
-section {
-    font-size: 19px;
+    display: flex;
+    flex-direction: column;
+    height: 100svh;
 }
 
 a,
@@ -99,5 +100,102 @@ div:has(> h2) {
     &[data-status="error"] {
         background-color: var(--error-container);
         color: var(--on-error-container);
+    }
+}
+
+main {
+    overflow-y: auto;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    section {
+        max-width: 700px;
+        width: 100%;
+        font-size: 19px;
+    }
+}
+
+section-nav {
+    display: flex;
+    justify-content: space-around;
+    height: 70px;
+    flex-shrink: 0;
+    padding: 10px;
+    margin: 0 10px 10px 10px;
+
+    button {
+        width: 100%;
+        margin-right: 10px;
+        padding: 0;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+@media (width >= 550px) {
+    body {
+        flex-direction: row-reverse;
+    }
+
+    section-nav {
+        flex-direction: column;
+        height: auto;
+        width: 90px;
+        margin: 10px 0 10px 10px;
+
+        button {
+            width: auto;
+            height: 100%;
+            margin-right: 0;
+            margin-bottom: 10px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    section-nav {
+        @media (height >= 430px) {
+            height: auto;
+            margin: 20px 0 20px 20px;
+            max-height: 370px;
+        }
+    }
+}
+
+@media ((width >= 1200px) and (height >= 430px)) {
+    body {
+        justify-content: center;
+    }
+
+    main {
+        display: block;
+        width: 700px;
+        flex: unset;
+    }
+}
+
+@media (width <= 385px) {
+    section-nav {
+        height: 50px;
+
+        button .icon + span {
+            display: none;
+        }
+    }
+}
+
+@media ((height <= 385px) and (width > 550px)) {
+    section-nav {
+        width: 50px;
+
+        button .icon + span {
+            display: none;
+        }
     }
 }

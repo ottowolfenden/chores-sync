@@ -9,7 +9,7 @@ type DbChore = {
     chore_id: number;
     chore_name: string;
     is_daily: boolean;
-    limit_per_day: number?;
+    limit_per_day: number | null;
 };
 
 type DbAssignment = {

@@ -1,4 +1,4 @@
-import { Cloudflare } from "./services/cloudflare.js";
+import { Cloudflare } from "../services/cloudflare.js";
 
 if (await Cloudflare.checkAccess()) location.replace("index.html#today");
 

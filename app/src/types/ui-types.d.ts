@@ -9,7 +9,7 @@ type UiChore = {
     id: number;
     name: string;
     isDaily: boolean;
-    limitPerDay: number?;
+    limitPerDay: number | null;
 };
 
 type UiAssignment = {

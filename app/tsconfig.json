@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "rootDir": "./src/scripts",
-        "outDir": "./dist/scripts",
+        "rootDir": "./src",
+        "outDir": "./dist",
         "target": "ES2022",
         "module": "esnext",
         "moduleResolution": "bundler",
@@ -17,6 +17,8 @@
         "noUncheckedSideEffectImports": true,
         "moduleDetection": "force",
         "skipLibCheck": true,
-        "types": ["./src/scripts/types/ui-types.d.ts", "./src/scripts/types/db-types.d.ts"]
+        "experimentalDecorators": true,
+        "useDefineForClassFields": false,
+        "types": ["./src/types/ui-types.d.ts", "./src/types/db-types.d.ts"]
     }
 }
