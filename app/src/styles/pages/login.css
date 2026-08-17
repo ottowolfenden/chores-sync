@@ -1,40 +1,38 @@
-body#login {
-    margin: 0;
+@font-face {
+    font-family: "Inconsolata";
+    src: url(../../assets/fonts/inconsolata.ttf);
+}
+
+h1 {
+    text-align: center;
+    font-variation-settings: "wght" 500;
+    font-size: min(50px, 13vw);
+    color: var(--on-primary-container);
+    margin-top: 10svh;
+}
+
+form {
+    display: flex;
+    align-items: center;
     flex-direction: column;
-    justify-content: flex-start;
 
-    h1 {
-        text-align: center;
-        font-variation-settings: "wght" 500;
-        font-size: min(50px, 13vw);
-        color: var(--on-primary-container);
-        margin-top: 10svh;
-    }
-
-    form {
+    div {
         display: flex;
-        align-items: center;
         flex-direction: column;
 
-        div {
+        label {
+            margin-bottom: 30px;
+            font-size: 17px;
             display: flex;
             flex-direction: column;
-
-            label {
-                margin-bottom: 30px;
-                font-size: 17px;
-                display: flex;
-                flex-direction: column;
-
-                input[name="secret"] {
-                    font-family: "Inconsolata", monospace;
-                    width: min(44ch, 100vw - 70px);
-                }
-            }
         }
-
-        button[type="submit"] {
-            margin-bottom: 20px;
+        input[name="secret"] {
+            font-family: "Inconsolata", monospace;
+            width: min(44ch, 100vw - 70px);
         }
+    }
+
+    button[type="submit"] {
+        margin-bottom: 20px;
     }
 }
