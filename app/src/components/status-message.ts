@@ -14,6 +14,9 @@ export class StatusMessage extends LitElement {
     @property({ attribute: false })
     messages?: Partial<Record<StatusType, StatusConf>>;
 
+    @property({ attribute: false })
+    elsToHide: (HTMLElement | null)[] = [];
+
     render() {
         const defaultMessages = {
             loading: {
@@ -35,6 +38,8 @@ export class StatusMessage extends LitElement {
             ...defaultMessages[this.status],
             ...this.messages?.[this.status]
         };
+
+        this.elsToHide.forEach(el => el?.toggleAttribute("hidden", this.status != "success"));
 
         return html`
             <span>${icon ? html`<span class="icon large">${icon}</span>` : ""}${text}</span>

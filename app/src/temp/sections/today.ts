@@ -13,15 +13,19 @@ section.addEventListener("open", async () => {
     const editButton = section.querySelector("button#edit") as HTMLButtonElement;
     const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
     const assignedListItems = assignedList.querySelectorAll("li");
+    const dropdownButtons = section.querySelectorAll(
+        ".name-dropdown > button"
+    ) as NodeListOf<HTMLButtonElement>;
+
     const allChoresStatus = section.querySelector(
         "#all-chores > status-message"
     ) as StatusMessage;
     const assignedChoresStatus = section.querySelector(
         "#assigned-chores > status-message"
     ) as StatusMessage;
-    const dropdownButtons = section.querySelectorAll(
-        ".name-dropdown > button"
-    ) as NodeListOf<HTMLButtonElement>;
+
+    allChoresStatus.elsToHide = [allChoresList];
+    assignedChoresStatus.elsToHide = [assignedList, editButton];
 
     editButton.addEventListener(
         "click",

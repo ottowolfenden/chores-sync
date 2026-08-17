@@ -9,6 +9,10 @@ section.addEventListener("open", async () => {
     const controller = new AbortController();
 
     const statusMessage = section.querySelector("status-message") as StatusMessage;
+    statusMessage.elsToHide = [
+        section.querySelector(":scope > ul"),
+        section.querySelector("button#expand-all")
+    ];
     statusMessage.status = "loading";
     const counts = await Db.getCounts();
 

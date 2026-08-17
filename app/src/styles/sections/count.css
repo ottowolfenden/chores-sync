@@ -1,11 +1,4 @@
 section#count {
-    &:not(:has(status-message[status="success"])) {
-        & > ul,
-        button#expand-all {
-            display: none;
-        }
-    }
-
     & > ul {
         display: flex;
         flex-direction: column;

@@ -2,10 +2,6 @@ section#today {
     #assigned-chores,
     #all-chores {
         padding-bottom: 40px;
-
-        &:not(:has(status-message[status="success"])) ul {
-            display: none;
-        }
     }
 
     .chore-name {
@@ -185,10 +181,6 @@ section#today {
                     display: none;
                 }
             }
-        }
-
-        &:has(> ul + .status-message[data-status]) button#edit {
-            display: none;
         }
     }
 
