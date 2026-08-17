@@ -4,7 +4,8 @@ export class Db {
     static getChores = async (): Promise<UiChore[] | null> => {
         const guess = localStorage.getItem("secret");
         if (!guess) return null;
-        const response = await fetch("/api/get-chores", {
+        const response = await fetch("/api/chores", {
+            method: "GET",
             headers: { "Authorization": guess }
         });
         if (!response.ok) return null;
@@ -23,7 +24,8 @@ export class Db {
     static getCounts = async (): Promise<UiCount[] | null> => {
         const guess = localStorage.getItem("secret");
         if (!guess) return null;
-        const response = await fetch("/api/get-counts", {
+        const response = await fetch("/api/counts", {
+            method: "GET",
             headers: { "Authorization": guess }
         });
         if (!response.ok) return null;
@@ -46,5 +48,23 @@ export class Db {
                 };
             })
         }));
+    };
+
+    static setCount = async (uiCount: UiCount): Promise<boolean> => {
+        const guess = localStorage.getItem("secret");
+        if (!guess) return false;
+
+        const response = await fetch("/api/counts", {
+            method: "POST",
+            body: JSON.stringify({
+                "chore_name": uiCount.choreName,
+                "is_offset": true,
+                "member_name": uiCount.memberCounts[0]?.memberName!,
+                "total": uiCount.memberCounts[0]?.offset!
+            } satisfies DbCount),
+            headers: { "Authorization": guess }
+        });
+
+        return response.ok;
     };
 }
