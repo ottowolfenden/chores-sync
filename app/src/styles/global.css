@@ -108,7 +108,7 @@ button {
         --collapse: 1;
     }
 
-    md-icon + span {
+    & > span {
         margin-left: calc(var(--size) * 0.4px);
 
         @container style(--collapse: 1) {
@@ -144,7 +144,7 @@ button {
             var(--size) * 0.3px + (var(--size) * 0.3px * (1 - var(--collapse)))
         );
 
-        md-icon + span {
+        & > span {
             margin-left: calc(var(--size) * 0.2px);
         }
     }
@@ -267,6 +267,7 @@ button.minus:has(+ input[type="number"]) {
         translate: 0.05em 0;
     }
 }
+
 input[type="number"] + button.plus {
     --background-color: var(--primary-container);
     --color: var(--on-primary-container);
