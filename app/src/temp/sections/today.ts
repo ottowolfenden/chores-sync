@@ -1,4 +1,4 @@
-import { Db } from "../../services/db.js";
+import { Context } from "../../services/context.js";
 import { ElementUtils } from "../../services/element-utils.js";
 import { Haptics } from "../../services/haptics.js";
 import { StatusMessage } from "../../components/status-message.js";
@@ -99,7 +99,7 @@ section.addEventListener("open", async () => {
         assignedChoresStatus.status = "empty";
 
     allChoresStatus.status = "loading";
-    const chores = await Db.getChores();
+    const chores = await Context.chores;
     if (chores == null) allChoresStatus.status = "error";
     else if (chores.length == 0) allChoresStatus.status = "empty";
     else {
