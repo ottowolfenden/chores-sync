@@ -17,7 +17,8 @@ type UiAssignment = {
     datetime: Date;
     quantity: number;
     chore: Chore;
-    member: Member;
+    turnMember: Member;
+    chosenMember: Member;
 };
 
 type UiCount = {
