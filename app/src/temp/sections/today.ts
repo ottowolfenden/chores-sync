@@ -52,7 +52,11 @@ section.addEventListener("open", async () => {
             () => {
                 ElementUtils.withTransition(
                     li,
-                    () => (li.style.height = li.style.opacity = li.style.marginTop = "0"),
+                    {
+                        "height": "0",
+                        "opacity": "0",
+                        "margin-top": "0"
+                    },
                     () => {
                         li.remove();
                         if (assignedList.querySelector(":scope > li") == null)

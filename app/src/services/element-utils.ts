@@ -14,12 +14,16 @@ export class ElementUtils {
 
     static withTransition = (
         el: HTMLElement,
-        before: () => void = () => {},
-        after: () => void = () => {}
+        before: (() => void) | Record<string, string> = () => {},
+        after: (() => void) | Record<string, string> = () => {}
     ) => {
-        before();
+        const handleEvent = (event: (() => void) | Record<string, string>) =>
+            (typeof event == "function"
+                ? () => event()
+                : () => Object.assign(el.style, event))();
+        handleEvent(before);
         const duration = getComputedStyle(el).transitionDuration;
         const delay = parseFloat(duration) * (duration.endsWith("ms") ? 1 : 1000);
-        setTimeout(() => after(), delay);
+        setTimeout(() => handleEvent(after), delay);
     };
 }
