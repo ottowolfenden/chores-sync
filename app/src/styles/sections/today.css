@@ -116,7 +116,7 @@ section#today {
                             border-radius: 6px;
                             scale: 1;
                             margin-bottom: 4px;
-                            padding-left: 12px;
+                            padding: 0 12px;
 
                             &:last-child {
                                 margin-bottom: 0;
@@ -127,6 +127,7 @@ section#today {
                                 text-overflow: ellipsis;
                                 overflow: hidden;
                                 font-weight: 470;
+                                margin-left: 0;
                             }
                         }
                     }
