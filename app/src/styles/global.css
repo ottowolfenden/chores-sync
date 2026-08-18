@@ -1,7 +1,7 @@
 @import "temp/components/buttons.css";
-@import "temp/components/icon.css";
 @import "temp/components/inputs.css";
 
+@import "components/md-icon.css";
 @import "components/section-nav.css";
 @import "components/status-message.css";
 
@@ -15,11 +15,6 @@
 @font-face {
     font-family: "Google Sans Flex";
     src: url(../assets/fonts/google-sans-flex.ttf);
-}
-
-@font-face {
-    font-family: "Material Symbols";
-    src: url(../assets/fonts/material-symbols.ttf);
 }
 
 * {
@@ -80,7 +75,7 @@ div:has(> h2) {
     }
 
     button.filled {
-        --size: 15px;
+        --size: 15;
         --background-color: var(--secondary);
         --color: var(--on-secondary);
     }

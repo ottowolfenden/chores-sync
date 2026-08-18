@@ -113,7 +113,7 @@ section#count {
         }
 
         button.expand {
-            --size: 16px;
+            --size: 16;
             --color: var(--secondary);
             padding: 4px;
         }

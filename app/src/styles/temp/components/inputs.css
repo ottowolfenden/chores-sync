@@ -90,7 +90,7 @@ button.minus:has(+ input[type="number"]) {
     --background-color: var(--primary-container);
     --color: var(--on-primary-container);
     border-radius: 50% 5px 5px 50%;
-    .icon {
+    md-icon {
         translate: 0.05em 0;
     }
 }
@@ -98,7 +98,7 @@ input[type="number"] + button.plus {
     --background-color: var(--primary-container);
     --color: var(--on-primary-container);
     border-radius: 5px 50% 50% 5px;
-    .icon {
+    md-icon {
         translate: -0.05em 0;
     }
 }

@@ -16,15 +16,15 @@ section-nav {
         align-items: center;
         justify-content: center;
 
-        .icon {
-            font-size: 27px;
+        md-icon {
+            --opsz: 27;
+        }
 
-            & + span {
-                font-size: 15px;
-                margin-top: 5px;
-                transition: font-weight 100ms ease-in;
-                margin-left: 0;
-            }
+        span {
+            font-size: 15px;
+            margin-top: 5px;
+            transition: font-weight 100ms ease-in;
+            margin-left: 0;
         }
 
         &[data-active] {
@@ -33,16 +33,11 @@ section-nav {
             scale: 1;
             pointer-events: none;
 
-            .icon {
-                font-variation-settings:
-                    "FILL" 1,
-                    "wght" 400,
-                    "GRAD" 0,
-                    "opsz" 24;
-
-                & + span {
-                    font-weight: 600;
-                }
+            md-icon {
+                --fill: 1;
+            }
+            span {
+                font-weight: 600;
             }
         }
 

@@ -9,10 +9,8 @@ status-message {
     border-radius: 6px;
     text-align: center;
 
-    & > * {
-        .icon.large {
-            margin-bottom: 10px;
-        }
+    md-icon.large {
+        margin-bottom: 10px;
     }
 
     &[status="error"] {

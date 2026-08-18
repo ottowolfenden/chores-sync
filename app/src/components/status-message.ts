@@ -42,7 +42,7 @@ export class StatusMessage extends LitElement {
         this.elsToHide.forEach(el => el?.toggleAttribute("hidden", this.status != "success"));
 
         return html`
-            <span>${icon ? html`<span class="icon large">${icon}</span>` : ""}${text}</span>
+            <span>${icon ? html`<md-icon class="large">${icon}</md-icon>` : ""}${text}</span>
         `;
     }
 }

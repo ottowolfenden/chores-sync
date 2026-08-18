@@ -79,7 +79,7 @@ section-nav {
     section-nav {
         height: 50px;
 
-        button .icon + span {
+        button span {
             display: none;
         }
     }
@@ -89,7 +89,7 @@ section-nav {
     section-nav {
         width: 50px;
 
-        button .icon + span {
+        button span {
             display: none;
         }
     }

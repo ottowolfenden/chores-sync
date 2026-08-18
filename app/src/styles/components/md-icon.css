@@ -1,0 +1,31 @@
+@font-face {
+    font-family: "Material Symbols";
+    src: url(../../assets/fonts/material-symbols.ttf);
+}
+
+md-icon {
+    --fill: 0;
+    --wght: 400;
+    --grad: 0;
+    --opsz: 24;
+
+    font-family: "Material Symbols";
+    font-size: calc(var(--opsz) * 1px);
+    font-variation-settings:
+        "FILL" var(--fill),
+        "wght" var(--wght),
+        "GRAD" var(--grad),
+        "opsz" var(--opsz);
+    transition: font-variation-settings 100ms ease-in;
+    display: block;
+    text-align: center;
+    width: 1.2em;
+    height: 1.2em;
+
+    &.large {
+        --opsz: 50;
+        display: block;
+        width: auto;
+        height: auto;
+    }
+}

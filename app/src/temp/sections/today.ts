@@ -2,6 +2,7 @@ import { Db } from "../../services/db.js";
 import { ElementUtils } from "../../services/element-utils.js";
 import { Haptics } from "../../services/haptics.js";
 import { StatusMessage } from "../../components/status-message.js";
+import type { MdIcon } from "../../components/md-icon.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -30,8 +31,8 @@ section.addEventListener("open", async () => {
     editButton.addEventListener(
         "click",
         () => {
-            const icon = editButton.querySelector(".icon") as HTMLSpanElement;
-            const label = editButton.querySelector(".icon + span") as HTMLSpanElement;
+            const icon = editButton.querySelector("md-icon") as MdIcon;
+            const label = editButton.querySelector("span") as HTMLSpanElement;
             assignedList.toggleAttribute("inert");
             if (assignedList.inert) {
                 label.textContent = "Edit";
@@ -65,7 +66,7 @@ section.addEventListener("open", async () => {
 
     dropdownButtons.forEach((db, i) => {
         const popover = db.nextElementSibling as HTMLDivElement;
-        const dropdownIcon = db.querySelector(".icon") as HTMLSpanElement;
+        const dropdownIcon = db.querySelector("md-icon") as MdIcon;
         const memberName = db.querySelector(".member-name") as HTMLSpanElement;
         const popoverButtons = popover.querySelectorAll("button");
 

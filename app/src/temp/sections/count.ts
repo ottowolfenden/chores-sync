@@ -2,6 +2,7 @@ import { Haptics } from "../../services/haptics.js";
 import { Db } from "../../services/db.js";
 import { ElementUtils } from "../../services/element-utils.js";
 import { StatusMessage } from "../../components/status-message.js";
+import { MdIcon } from "../../components/md-icon.js";
 
 const section = document.querySelector("section#count")!;
 
@@ -67,8 +68,8 @@ section.addEventListener("open", async () => {
     const refreshEditState = (li: HTMLLIElement) => {
         const choreItem = li.querySelector("div.chore") as HTMLDivElement;
         const editButton = choreItem.querySelector("button.edit") as HTMLButtonElement;
-        const icon = editButton.querySelector(".icon") as HTMLSpanElement;
-        const label = editButton.querySelector(".icon + span") as HTMLSpanElement;
+        const icon = editButton.querySelector("md-icon") as MdIcon;
+        const label = editButton.querySelector("span") as HTMLSpanElement;
 
         if (li.hasAttribute("data-edit-mode")) {
             label.textContent = "Save";
@@ -91,7 +92,7 @@ section.addEventListener("open", async () => {
 
     const toggleCollapse = (li: HTMLLIElement, collapse?: boolean) => {
         const detailsList = li.querySelector("ul.details") as HTMLUListElement;
-        const icon = li.querySelector(".chore .expand .icon") as HTMLSpanElement;
+        const icon = li.querySelector(".chore .expand md-icon") as MdIcon;
         collapse ??= detailsList.inert;
         detailsList.toggleAttribute("inert", !collapse);
         icon.textContent = `keyboard_arrow_${detailsList.inert ? "down" : "up"}`;
@@ -112,8 +113,8 @@ section.addEventListener("open", async () => {
     };
 
     const refreshExpandAllButtonState = (collapse?: boolean) => {
-        const icon = expandAllButton.querySelector(".icon") as HTMLSpanElement;
-        const label = expandAllButton.querySelector(".icon + span") as HTMLSpanElement;
+        const icon = expandAllButton.querySelector("md-icon") as MdIcon;
+        const label = expandAllButton.querySelector("span") as HTMLSpanElement;
         if (!detailsLists.every(ul => ul?.hasAttribute("inert")) && (collapse ?? true)) {
             label.textContent = "Collapse all";
             icon.textContent = "collapse_content";
@@ -126,7 +127,7 @@ section.addEventListener("open", async () => {
     expandAllButton.addEventListener(
         "click",
         () => {
-            const label = expandAllButton.querySelector(".icon + span") as HTMLSpanElement;
+            const label = expandAllButton.querySelector("span") as HTMLSpanElement;
             listItems.forEach(li => toggleCollapse(li, label.textContent == "Expand all"));
             refreshExpandAllButtonState();
         },

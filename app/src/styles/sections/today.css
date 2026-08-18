@@ -62,7 +62,7 @@ section#today {
                         display: none;
                     }
                 }
-                .swapped.icon {
+                md-icon.swapped {
                     display: none;
                 }
                 .name-dropdown {
@@ -116,6 +116,8 @@ section#today {
                             border-radius: 6px;
                             scale: 1;
                             margin-bottom: 4px;
+                            padding-left: 12px;
+
                             &:last-child {
                                 margin-bottom: 0;
                             }
@@ -125,21 +127,20 @@ section#today {
                                 text-overflow: ellipsis;
                                 overflow: hidden;
                                 font-weight: 470;
-                                margin-left: 4.5px;
                             }
                         }
                     }
                 }
 
                 button.remove {
-                    --size: 14px;
+                    --size: 14;
                     --background-color: var(--primary-container);
                     --color: var(--on-primary-container);
                 }
             }
 
             &[inert] > li {
-                .swapped.icon {
+                md-icon.swapped {
                     margin-left: auto;
                     display: inline-block;
                     color: var(--on-surface-variant);
@@ -150,7 +151,7 @@ section#today {
                     }
                 }
 
-                .swapped.icon:not([data-enabled]) + .name-dropdown {
+                md-icon.swapped:not([data-enabled]) + .name-dropdown {
                     margin-left: auto;
                 }
 
@@ -172,7 +173,7 @@ section#today {
                             width: 100%;
                             text-align: right;
                         }
-                        .icon {
+                        md-icon {
                             display: none;
                         }
                     }
@@ -219,7 +220,7 @@ section#today {
 
             button {
                 grid-column: 5;
-                --size: 16px;
+                --size: 16;
             }
         }
     }

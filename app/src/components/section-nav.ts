@@ -31,8 +31,8 @@ export class SectionNav extends LitElement {
                     href="${s.fragment}"
                     @click="${() => this.open(s.fragment)}"
                     ?data-active="${this.activeHash == s.fragment}">
-                    <span class="icon">${s.icon}</span>
-                    <span class="label">${s.name}</span>
+                    <md-icon>${s.icon}</md-icon>
+                    <span>${s.name}</span>
                 </button>
             `
         );
