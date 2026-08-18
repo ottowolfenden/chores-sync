@@ -10,7 +10,7 @@ export const onRequestGet: PagesFunction<Env> = async context => {
                     c.chore_name,
                     m.member_name,
                     o.is_offset,
-                    COALESCE(SUM(a.quantity), 0) total
+                    coalesce(sum(a.quantity), 0) total
                 FROM chores c
                 CROSS JOIN members m
                 CROSS JOIN (SELECT DISTINCT is_offset FROM assignments) o
@@ -58,7 +58,7 @@ export const onRequestPost: PagesFunction<Env> = async context => {
                     true,
                     c.chore_id,
                     m.member_id
-                FROM json_to_recordset(${JSON.stringify(data)}::json) AS input(
+                FROM json_to_recordset(${JSON.stringify(data)}::json) AS input (
                     chore_name TEXT,
                     is_offset BOOLEAN,
                     member_name TEXT,
