@@ -16,7 +16,7 @@ section#count {
             transition: background-color, color, scale;
             transition-duration: 100ms;
 
-            &:not([data-edit-mode]) ul.details li .count-input,
+            &:not([data-edit-mode]) ul.details li num-input,
             &[data-edit-mode] li .count-text {
                 display: none;
             }
@@ -147,16 +147,12 @@ section#count {
             }
 
             .count-text,
-            .count-input {
+            num-input {
                 grid-column: 2;
             }
 
-            .count-input {
-                justify-content: center;
-
-                input[type="number"] {
-                    width: min(4em, 13vw);
-                }
+            num-input input {
+                width: min(4em, 13vw);
             }
 
             .count-text {

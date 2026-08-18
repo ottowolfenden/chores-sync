@@ -1,0 +1,53 @@
+num-input {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+        width: 3em;
+        text-align: center;
+        font-size: inherit;
+        border: none;
+        outline: solid 2px var(--primary-container);
+        outline-offset: -2px;
+        border-radius: 5px;
+        background-color: rgb(from var(--primary-container) r g b / 0.3);
+        color: var(--on-surface);
+
+        &:focus {
+            outline-color: var(--primary);
+            background-color: rgb(from var(--primary-container) r g b / 0.5);
+        }
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+    }
+
+    button.minus,
+    button.plus {
+        --background-color: var(--primary-container);
+        --color: var(--on-primary-container);
+    }
+
+    button.minus {
+        border-radius: 50% 5px 5px 50%;
+
+        md-icon {
+            translate: 0.05em 0;
+        }
+    }
+
+    button.plus {
+        border-radius: 5px 50% 50% 5px;
+
+        md-icon {
+            translate: -0.05em 0;
+        }
+    }
+}

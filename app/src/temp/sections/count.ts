@@ -3,6 +3,7 @@ import { Db } from "../../services/db.js";
 import { ElementUtils } from "../../services/element-utils.js";
 import { StatusMessage } from "../../components/status-message.js";
 import { MdIcon } from "../../components/md-icon.js";
+import { NumInput } from "../../components/num-input.js";
 
 const section = document.querySelector("section#count")!;
 
@@ -82,10 +83,10 @@ section.addEventListener("open", async () => {
                 "ul.details > li"
             ) as NodeListOf<HTMLLIElement>;
             detailsListItems.forEach(dli => {
-                const numInput = dli.querySelector("input") as HTMLInputElement;
+                const numInput = dli.querySelector("num-input") as NumInput;
                 const numText = dli.querySelector(".count-text .num") as HTMLSpanElement;
                 const value = parseInt(numText.textContent);
-                if (!isNaN(value)) numInput.value = value.toString();
+                if (!isNaN(value)) numInput.value = value;
             });
         }
     };
@@ -135,24 +136,25 @@ section.addEventListener("open", async () => {
     );
 
     const changeNum = (
-        newNum: string | number,
+        newNum: number,
         detailsListItem: HTMLLIElement,
         listItem: HTMLLIElement
     ) => {
-        const numInput = detailsListItem.querySelector("input") as HTMLInputElement;
+        const numInput = detailsListItem.querySelector("num-input") as NumInput;
         const numText = detailsListItem.querySelector(".count-text .num") as HTMLSpanElement;
         const offset = detailsListItem.querySelector(".offset") as HTMLSpanElement;
         const offsetNum = detailsListItem.querySelector(".offset .num") as HTMLSpanElement;
 
-        const oldNum = numText.textContent;
+        const oldNum = parseInt(numText.textContent);
         const newNumInt: number = parseInt(newNum.toString());
         if (Math.abs(newNumInt) > 100_000 || isNaN(newNumInt)) {
-            numInput.textContent = oldNum;
+            numInput.value = oldNum;
             return;
         }
 
         const difference = newNumInt - parseInt(numText.textContent);
-        numText.textContent = numInput.value = newNum.toString();
+        numInput.value = newNum;
+        numText.textContent = newNum.toString();
         evalTotal(listItem);
         const newOffset =
             parseInt(offsetNum.textContent == "" ? "0" : offsetNum.textContent) + difference;
@@ -189,6 +191,11 @@ section.addEventListener("open", async () => {
         };
     };
 
+    const setUiCount = async (li: HTMLLIElement) => {
+        const uiCount = getUiCount(li);
+        if (uiCount) await Db.setCount(uiCount);
+    };
+
     const listItems = section.querySelectorAll(
         ":scope > ul > li"
     ) as NodeListOf<HTMLLIElement>;
@@ -214,16 +221,7 @@ section.addEventListener("open", async () => {
             async e => {
                 e.stopPropagation();
                 li.toggleAttribute("data-edit-mode");
-                if (!li.hasAttribute("data-edit-mode")) {
-                    console.log("loading state here");
-                    const uiCount = getUiCount(li);
-                    console.log(uiCount);
-                    if (uiCount) {
-                        const success = await Db.setCount(uiCount);
-                        console.log("Success" + success);
-                    } else console.log("error");
-                    console.log("finished state here");
-                }
+                if (!li.hasAttribute("data-edit-mode")) setUiCount(li);
                 refreshEditState(li);
             },
             { signal: controller.signal }
@@ -233,19 +231,10 @@ section.addEventListener("open", async () => {
             "ul.details > li"
         ) as NodeListOf<HTMLLIElement>;
         detailsListItems.forEach(dli => {
-            const minusButton = dli.querySelector(".minus") as HTMLButtonElement;
-            const plusButton = dli.querySelector(".plus") as HTMLButtonElement;
-            const numInput = dli.querySelector("input") as HTMLInputElement;
+            const numInput = dli.querySelector("num-input") as NumInput;
             const numText = dli.querySelector(".count-text .num") as HTMLSpanElement;
 
-            Haptics.add(minusButton);
-            Haptics.add(plusButton);
-
-            numInput.value = numText.textContent;
-
-            numInput.addEventListener("click", () => numInput.select(), {
-                signal: controller.signal
-            });
+            numInput.value = parseInt(numText.textContent);
 
             numInput.addEventListener("input", () => changeNum(numInput.value, dli, li), {
                 signal: controller.signal
@@ -254,21 +243,12 @@ section.addEventListener("open", async () => {
             numInput.addEventListener(
                 "keydown",
                 e => {
-                    li.toggleAttribute("data-edit-mode", e.key != "Enter");
-                    refreshEditState(li);
+                    if (e.key == "Enter") {
+                        li.toggleAttribute("data-edit-mode", false);
+                        setUiCount(li);
+                        refreshEditState(li);
+                    }
                 },
-                { signal: controller.signal }
-            );
-
-            minusButton.addEventListener(
-                "click",
-                () => changeNum(parseInt(numInput.value) - 1, dli, li),
-                { signal: controller.signal }
-            );
-
-            plusButton.addEventListener(
-                "click",
-                () => changeNum(parseInt(numInput.value) + 1, dli, li),
                 { signal: controller.signal }
             );
         });
