@@ -1,10 +1,16 @@
 export class Haptics {
-    static add = (el: Element, ms?: number) =>
-        el.addEventListener("click", () => navigator.vibrate(ms ?? 1));
+    static add = (
+        els: string | Element | (Element | string)[],
+        rootNode?: ParentNode,
+        ms?: number
+    ) => {
+        const query = (sel: string) => [...(rootNode ?? document).querySelectorAll(sel)];
+        let elsToAdd: Element[] = [];
 
-    static addAll = (selectors: string[], rootEl?: DocumentFragment, ms?: number) => {
-        (rootEl ?? document)
-            .querySelectorAll(selectors.join(", "))
-            .forEach(el => this.add(el, ms));
+        if (typeof els == "string") elsToAdd = query(els);
+        else if (els instanceof Element) elsToAdd = [els];
+        else els.forEach(el => elsToAdd.concat(typeof el == "string" ? query(el) : [el]));
+
+        elsToAdd.forEach(el => el.addEventListener("click", () => navigator.vibrate(ms ?? 1)));
     };
 }

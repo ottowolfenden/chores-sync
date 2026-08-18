@@ -28,4 +28,4 @@ window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
 
-Haptics.addAll(["button"]);
+Haptics.add("button");
