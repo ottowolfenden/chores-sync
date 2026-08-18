@@ -69,4 +69,24 @@ export class Db {
 
         return response.ok;
     };
+
+    static getMembers = async (): Promise<UiMember[] | null> => {
+        const guess = localStorage.getItem("secret");
+        if (!guess) return null;
+        const response = await fetch("/api/members", {
+            method: "GET",
+            headers: { "Authorization": guess }
+        });
+        if (!response.ok) return null;
+
+        const data: DbMember[] = await response.json();
+        return data.map(
+            (d): UiMember => ({
+                id: d["member_id"],
+                name: d["member_name"],
+                isActive: d["is_active"],
+                isAdmin: d["is_admin"]
+            })
+        );
+    };
 }
