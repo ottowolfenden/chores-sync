@@ -89,4 +89,23 @@ export class Db {
             })
         );
     };
+
+    static getCurrentMember = async (): Promise<UiMember | null> => {
+        const guess = localStorage.getItem("secret");
+        const name = localStorage.getItem("name");
+        if (!guess || !name) return null;
+        const response = await fetch(`/api/members?name=${encodeURIComponent(name)}`, {
+            method: "GET",
+            headers: { "Authorization": guess }
+        });
+        if (!response.ok) return null;
+
+        const data: DbMember = await response.json();
+        return {
+            id: data["member_id"],
+            name: data["member_name"],
+            isActive: data["is_active"],
+            isAdmin: data["is_admin"]
+        };
+    };
 }
