@@ -13,10 +13,11 @@ export class ElementUtils {
     };
 
     static withTransition = (
-        el: HTMLElement,
+        el: HTMLElement | null,
         before: (() => void) | Record<string, string> = () => {},
         after: (() => void) | Record<string, string> = () => {}
     ) => {
+        if (!el) return;
         const handleEvent = (event: (() => void) | Record<string, string>) =>
             (typeof event == "function"
                 ? () => event()
