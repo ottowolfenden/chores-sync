@@ -42,10 +42,12 @@ section#count {
             }
 
             @media (((width <= 615px) and (width >= 550px)) or (width <= 430px)) {
-                grid-template-columns: 2fr 5fr 3fr;
-
                 ul.details li .offset .suffix {
                     display: none;
+                }
+
+                &[data-edit-mode] ul.details {
+                    grid-template-columns: 2fr 3fr 2fr;
                 }
 
                 div.chore {
