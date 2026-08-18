@@ -3,6 +3,9 @@ import "../temp/sections/history.js";
 import "../temp/sections/settings.js";
 import "../temp/sections/today.js";
 
+import "../components/assignment-list.js";
+import "../components/md-icon.js";
+import "../components/num-input.js";
 import "../components/section-nav.js";
 import "../components/status-message.js";
 
