@@ -15,7 +15,7 @@ export class StatusMessage extends LitElement {
     messages?: Partial<Record<StatusType, StatusConf>>;
 
     @property({ attribute: false })
-    elsToHide: (HTMLElement | null)[] = [];
+    elsToHide: (Element | null)[] = [];
 
     render() {
         const defaultMessages = {
