@@ -1,4 +1,6 @@
 export class Haptics {
+    private constructor() {}
+
     static add = (
         els: string | Element | (Element | string)[],
         rootNode?: ParentNode,

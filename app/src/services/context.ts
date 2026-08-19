@@ -1,6 +1,8 @@
 import { Db } from "./db.js";
 
 export class Context {
+    private constructor() {}
+
     private static choresCache: Promise<UiChore[] | null> | null = null;
     static get chores(): Promise<UiChore[] | null> {
         Context.choresCache ??= Db.getChores();
