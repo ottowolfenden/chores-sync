@@ -110,7 +110,7 @@ div:has(> h2) {
         font-size: 22px;
     }
 
-    state-actions button {
+    button {
         --size: 15;
 
         &.tonal {
