@@ -9,32 +9,7 @@ import { Haptics } from "../services/haptics.js";
 export class AssignmentList extends LitElement {
     protected createRenderRoot = () => this;
 
-    @state() private assignments: UiAssignment[] = [
-        {
-            id: 1,
-            datetime: new Date(),
-            quantity: 1,
-            chore: { id: 1, name: "Washing up", isDaily: true, limitPerDay: 1 },
-            turnMember: { id: 1, name: "Otto", isActive: true, isAdmin: true },
-            chosenMember: { id: 1, name: "Otto", isActive: true, isAdmin: true }
-        },
-        {
-            id: 2,
-            datetime: new Date(),
-            quantity: 1,
-            chore: { id: 2, name: "Cooking supper", isDaily: false, limitPerDay: null },
-            turnMember: { id: 1, name: "Otto", isActive: true, isAdmin: true },
-            chosenMember: { id: 3, name: "Ivo", isActive: true, isAdmin: false }
-        },
-        {
-            id: 3,
-            datetime: new Date(),
-            quantity: 2,
-            chore: { id: 8, name: "Emptying dishwasher", isDaily: false, limitPerDay: null },
-            turnMember: { id: 1, name: "Otto", isActive: true, isAdmin: true },
-            chosenMember: { id: 2, name: "Emily", isActive: true, isAdmin: true }
-        }
-    ];
+    @property({ type: Array }) assignments: UiAssignment[] = [];
 
     @property({ type: Boolean, attribute: "edit-mode" }) editMode = false;
     updated = () => this.toggleAttribute("inert", !this.editMode);
