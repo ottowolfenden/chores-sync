@@ -54,8 +54,8 @@ section-nav {
         }
     }
 
-    section-nav {
-        @media (height >= 430px) {
+    @media (height >= 430px) {
+        section-nav {
             height: auto;
             margin: 20px 0 20px 20px;
             max-height: 370px;
@@ -91,6 +91,36 @@ section-nav {
 
         button span {
             display: none;
+        }
+    }
+}
+
+div:has(> h2) {
+    background-color: var(--secondary-container);
+    color: var(--on-secondary-container);
+    padding: 12px;
+    border-radius: 17px 17px 6px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+        margin: 5px;
+        font-weight: 500;
+        font-size: 22px;
+    }
+
+    state-actions button {
+        --size: 15;
+
+        &.tonal {
+            --background-color: rgb(from var(--secondary) r g b / 0.08);
+            --color: var(--secondary);
+        }
+
+        &.filled {
+            --background-color: var(--secondary);
+            --color: var(--on-secondary);
         }
     }
 }

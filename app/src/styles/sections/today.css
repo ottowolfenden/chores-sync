@@ -7,8 +7,20 @@ section#today {
         font-weight: 470;
     }
 
-    @media (width <= 370px) {
-        div:has(h2) > button {
+    @media (width <= 350px) {
+        state-actions button {
+            --collapse: 1;
+        }
+    }
+
+    @media (width <= 410px) {
+        state-actions:has(button.tonal:not([hidden])) button {
+            --collapse: 1;
+        }
+    }
+
+    @media ((width <= 475px) or ((width <= 615px) and (width >= 550px))) {
+        state-actions button.tonal {
             --collapse: 1;
         }
     }
