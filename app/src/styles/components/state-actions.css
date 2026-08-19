@@ -1,4 +1,15 @@
 state-actions {
     display: flex;
     gap: 12px;
+
+    &[state="loading"] button,
+    &[state="success"] button {
+        background-color: rgb(from var(--background) r g b / 0.4);
+        color: var(--on-secondary-container);
+    }
+
+    &[state="error"] button {
+        background-color: var(--error-container);
+        color: var(--on-error-container);
+    }
 }

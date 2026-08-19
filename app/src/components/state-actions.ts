@@ -12,7 +12,7 @@ type IndicatorConf = Conf & { msToShow?: number };
 export class StateActions extends LitElement {
     protected createRenderRoot = () => this;
 
-    @property({ type: String, attribute: "state" })
+    @property({ type: String, attribute: "state", reflect: true })
     state: "normal" | "active" | "loading" | "success" | "error" = "normal";
 
     @property({ type: Object }) conf: {
@@ -24,7 +24,7 @@ export class StateActions extends LitElement {
         cancel?: ButtonConf;
     } = {};
 
-    private defaultConf = {
+    defaultConf = {
         normal: { icon: "", label: "" },
         active: { icon: "save", label: "Save" },
         loading: { icon: "cloud_upload", label: "Saving" },
