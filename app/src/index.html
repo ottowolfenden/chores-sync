@@ -15,7 +15,7 @@
     <body>
         <main>
             <section id="today" hidden>
-                <div id="assigned-chores">
+                <div id="assigned">
                     <div>
                         <h2>Assigned chores</h2>
                         <button class="filled" id="edit">
@@ -23,68 +23,10 @@
                             <span>Edit</span>
                         </button>
                     </div>
-                    <assignment-list></assignment-list>
-                    <ul inert>
-                        <li>
-                            <span class="chore-name">Drying up</span>
-                            <span class="chore-quantity">×2</span>
-                            <md-icon class="swapped" data-enabled>swap_horiz</md-icon>
-                            <div class="name-dropdown">
-                                <button class="tonal">
-                                    <span class="member-name">Ivo</span>
-                                    <md-icon>arrow_drop_down</md-icon>
-                                </button>
-                                <div popover>
-                                    <button class="tonal"><span>Otto</span></button>
-                                    <button class="tonal"><span>Emily</span></button>
-                                </div>
-                            </div>
-                            <button class="remove tonal small">
-                                <md-icon>remove</md-icon>
-                            </button>
-                        </li>
-
-                        <li>
-                            <span class="chore-name">Washing up</span>
-                            <span class="chore-quantity" data-enabled>×300</span>
-                            <md-icon class="swapped">swap_horiz</md-icon>
-                            <div class="name-dropdown">
-                                <button class="tonal">
-                                    <span class="member-name">Otto</span>
-                                    <md-icon>arrow_drop_down</md-icon>
-                                </button>
-                                <div popover>
-                                    <button class="tonal"><span>Emily</span></button>
-                                    <button class="tonal"><span>Ivo</span></button>
-                                </div>
-                            </div>
-                            <button class="remove tonal small">
-                                <md-icon>remove</md-icon>
-                            </button>
-                        </li>
-
-                        <li>
-                            <span class="chore-name">Emptying dishwasher</span>
-                            <span class="chore-quantity" data-enabled>×3</span>
-                            <md-icon class="swapped" data-enabled>swap_horiz</md-icon>
-                            <div class="name-dropdown">
-                                <button class="tonal">
-                                    <span class="member-name">Emily</span>
-                                    <md-icon>arrow_drop_down</md-icon>
-                                </button>
-                                <div popover>
-                                    <button class="tonal"><span>Otto</span></button>
-                                    <button class="tonal"><span>Ivo</span></button>
-                                </div>
-                            </div>
-                            <button class="remove tonal small">
-                                <md-icon>remove</md-icon>
-                            </button>
-                        </li>
-                    </ul>
+                    <assignment-list inert></assignment-list>
                     <status-message></status-message>
                 </div>
-                <div id="all-chores">
+                <div id="all">
                     <div><h2>All chores</h2></div>
                     <ul>
                         <template>

@@ -1,40 +1,33 @@
 import { Context } from "../../services/context.js";
 import { ElementUtils } from "../../services/element-utils.js";
 import { Haptics } from "../../services/haptics.js";
-import { StatusMessage } from "../../components/status-message.js";
-import type { MdIcon } from "../../components/md-icon.js";
 
 const section = document.querySelector("section#today")!;
 
 section.addEventListener("open", async () => {
     const controller = new AbortController();
 
-    const allChoresList = section.querySelector("#all-chores > ul") as HTMLUListElement;
-    const template = allChoresList.querySelector("template") as HTMLTemplateElement;
-    const editButton = section.querySelector("button#edit") as HTMLButtonElement;
-    const assignedList = section.querySelector("#assigned-chores > ul") as HTMLUListElement;
-    const assignedListItems = assignedList.querySelectorAll("li");
-    const dropdownButtons = section.querySelectorAll(
-        ".name-dropdown > button"
-    ) as NodeListOf<HTMLButtonElement>;
+    const allChoresList = section.querySelector("#all > ul")!;
+    const template = allChoresList.querySelector("template")!;
 
-    const allChoresStatus = section.querySelector(
-        "#all-chores > status-message"
-    ) as StatusMessage;
-    const assignedChoresStatus = section.querySelector(
-        "#assigned-chores > status-message"
-    ) as StatusMessage;
+    const editButton = section.querySelector("#edit")!;
+    const assignmentList = section.querySelector("assignment-list")!;
+    const allStatus = section.querySelector<StatusMessage>("#all > status-message")!;
+    const assignedStatus = section.querySelector<StatusMessage>("#assigned > status-message")!;
 
-    allChoresStatus.elsToHide = [allChoresList];
-    assignedChoresStatus.elsToHide = [assignedList, editButton];
+    allStatus.elsToHide = [allChoresList];
+    assignedStatus.elsToHide = [assignmentList, editButton];
+
+    if (assignmentList.querySelector(":scope > .assignment") == null)
+        assignedStatus.status = "empty";
 
     editButton.addEventListener(
         "click",
         () => {
-            const icon = editButton.querySelector("md-icon") as MdIcon;
-            const label = editButton.querySelector("span") as HTMLSpanElement;
-            assignedList.toggleAttribute("inert");
-            if (assignedList.inert) {
+            const icon = editButton.querySelector("md-icon")!;
+            const label = editButton.querySelector("span")!;
+            assignmentList.toggleAttribute("inert");
+            if (assignmentList.inert) {
                 label.textContent = "Edit";
                 icon.textContent = "edit";
             } else {
@@ -45,77 +38,17 @@ section.addEventListener("open", async () => {
         { signal: controller.signal }
     );
 
-    assignedListItems.forEach(li => {
-        const removeButton = li.querySelector("button.remove");
-        removeButton?.addEventListener(
-            "click",
-            () => {
-                ElementUtils.withTransition(
-                    li,
-                    {
-                        "height": "0",
-                        "opacity": "0",
-                        "margin-top": "0"
-                    },
-                    () => {
-                        li.remove();
-                        if (assignedList.querySelector(":scope > li") == null)
-                            assignedChoresStatus.status = "empty";
-                    }
-                );
-            },
-            { signal: controller.signal }
-        );
-    });
-
-    dropdownButtons.forEach((db, i) => {
-        const popover = db.nextElementSibling as HTMLDivElement;
-        const dropdownIcon = db.querySelector("md-icon") as MdIcon;
-        const memberName = db.querySelector(".member-name") as HTMLSpanElement;
-        const popoverButtons = popover.querySelectorAll("button");
-
-        db.popoverTargetElement = popover;
-        db.style.anchorName = popover.style.positionAnchor = `--dropdown-anchor-${i}`;
-
-        popover.addEventListener(
-            "toggle",
-            e =>
-                (dropdownIcon.textContent =
-                    e.newState == "open" ? "arrow_drop_up" : "arrow_drop_down"),
-            { signal: controller.signal }
-        );
-        popoverButtons.forEach(pb =>
-            pb.addEventListener(
-                "click",
-                () => {
-                    popover.hidePopover();
-                    [pb.textContent, memberName.textContent] = [
-                        memberName.textContent,
-                        pb.textContent
-                    ];
-                },
-                { signal: controller.signal }
-            )
-        );
-    });
-
-    if (assignedList.querySelector(":scope > li") == null)
-        assignedChoresStatus.status = "empty";
-
-    allChoresStatus.status = "loading";
+    allStatus.status = "loading";
     const chores = await Context.chores;
-    if (chores == null) allChoresStatus.status = "error";
-    else if (chores.length == 0) allChoresStatus.status = "empty";
+    if (chores == null) allStatus.status = "error";
+    else if (chores.length == 0) allStatus.status = "empty";
     else {
-        allChoresStatus.status = "success";
+        allStatus.status = "success";
         const newNodes = chores.map(c => {
             const clone = template.content.cloneNode(true) as DocumentFragment;
             const li = clone.firstElementChild as HTMLLIElement;
             const addButton = clone.querySelector("button") as HTMLButtonElement;
             ElementUtils.setTexts(li, { ".chore-name": c.name, ".member-name": "temp" });
-            addButton.addEventListener("click", () => console.log("assign " + c.name), {
-                signal: controller.signal
-            });
             Haptics.add(addButton);
             return clone;
         });

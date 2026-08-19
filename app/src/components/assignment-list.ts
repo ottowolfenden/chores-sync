@@ -8,60 +8,30 @@ import { ElementUtils } from "../services/element-utils.js";
 export class AssignmentList extends LitElement {
     protected createRenderRoot = () => this;
 
-    @state() private tempExampleAssignments: UiAssignment[] = [
+    @state() private assignments: UiAssignment[] = [
         {
             id: 1,
             datetime: new Date(),
             quantity: 1,
+            chore: { id: 1, name: "Washing up", isDaily: true, limitPerDay: 1 },
             turnMember: { id: 1, name: "Otto", isActive: true, isAdmin: true },
-            chore: {
-                id: 1,
-                name: "Washing up",
-                isDaily: true,
-                limitPerDay: 1
-            },
-            chosenMember: {
-                id: 1,
-                name: "Otto",
-                isActive: true,
-                isAdmin: true
-            }
+            chosenMember: { id: 1, name: "Otto", isActive: true, isAdmin: true }
         },
         {
             id: 2,
             datetime: new Date(),
             quantity: 1,
+            chore: { id: 2, name: "Cooking supper", isDaily: false, limitPerDay: null },
             turnMember: { id: 1, name: "Otto", isActive: true, isAdmin: true },
-            chore: {
-                id: 2,
-                name: "Cooking supper",
-                isDaily: false,
-                limitPerDay: null
-            },
-            chosenMember: {
-                id: 3,
-                name: "Ivo",
-                isActive: true,
-                isAdmin: false
-            }
+            chosenMember: { id: 3, name: "Ivo", isActive: true, isAdmin: false }
         },
         {
             id: 3,
             datetime: new Date(),
             quantity: 2,
+            chore: { id: 8, name: "Emptying dishwasher", isDaily: false, limitPerDay: null },
             turnMember: { id: 1, name: "Otto", isActive: true, isAdmin: true },
-            chore: {
-                id: 8,
-                name: "Emptying dishwasher",
-                isDaily: false,
-                limitPerDay: null
-            },
-            chosenMember: {
-                id: 2,
-                name: "Emily",
-                isActive: true,
-                isAdmin: true
-            }
+            chosenMember: { id: 2, name: "Emily", isActive: true, isAdmin: true }
         }
     ];
 
@@ -72,9 +42,16 @@ export class AssignmentList extends LitElement {
         this.members = (await Context.members) ?? [];
     }
 
+    private removeAssignment = (e: Event, assignment: UiAssignment) =>
+        ElementUtils.withTransition(
+            (e.target as HTMLElement).closest<HTMLElement>(".assignment"),
+            { "height": "0", "opacity": "0", "margin-top": "0" },
+            () => void (this.assignments = this.assignments.filter(a => a.id != assignment.id))
+        );
+
     render = () =>
         repeat(
-            this.tempExampleAssignments,
+            this.assignments,
             a => a.id,
             a => html`
                 <div class="assignment">
@@ -88,7 +65,7 @@ export class AssignmentList extends LitElement {
                             class="tonal"
                             popovertarget="assignment-popover-${a.id}"
                             style="anchor-name: --assignment-anchor-${a.id}">
-                            <span class="member-name">${a.chosenMember.name}</span>
+                            <span>${a.chosenMember.name}</span>
                             <md-icon>arrow_drop_down</md-icon>
                         </button>
                         <div
@@ -116,16 +93,7 @@ export class AssignmentList extends LitElement {
                     </div>
                     <button
                         class="remove tonal small"
-                        @click=${(e: Event) =>
-                            ElementUtils.withTransition(
-                                (e.target as HTMLElement).closest<HTMLElement>(".assignment"),
-                                { "height": "0", "opacity": "0", "margin-top": "0" },
-                                () =>
-                                    void (this.tempExampleAssignments =
-                                        this.tempExampleAssignments.filter(
-                                            assignment => assignment.id != a.id
-                                        ))
-                            )}>
+                        @click=${(e: Event) => this.removeAssignment(e, a)}>
                         <md-icon>remove</md-icon>
                     </button>
                 </div>

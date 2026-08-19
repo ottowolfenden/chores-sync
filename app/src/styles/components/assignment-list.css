@@ -1,159 +1,162 @@
 assignment-list {
     display: flex;
     flex-direction: column;
+}
 
-    & > .assignment {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        width: 100%;
-        background-color: var(--surface-container-low);
+assignment-list .assignment {
+    display: flex;
+    align-items: center;
+    background-color: var(--surface-container-low);
+    color: var(--on-surface);
+    gap: 12px;
+    width: 100%;
+    border-radius: 6px;
+    box-sizing: border-box;
+    padding: 0 8px;
+    height: 48px;
+    margin-top: 5px;
+    transition: height, margin-top, opacity;
+    transition-duration: 150ms, 150ms, 80ms;
+
+    .chore-name {
+        color: var(--on-surface-variant);
+        flex-grow: 0;
+        flex-shrink: 1;
+        margin-left: 6px;
+        font-size: 18px;
+    }
+
+    .quantity {
+        background-color: var(--surface-container-highest);
         color: var(--on-surface);
-        border-radius: 6px;
-        box-sizing: border-box;
-        padding: 0 8px;
-        height: 48px;
-        transition: height, margin-top, opacity;
-        transition-duration: 150ms, 150ms, 80ms;
-        margin-top: 5px;
+        padding: 4px 9px;
+        border-radius: calc(infinity * 1px);
+        font-weight: 550;
+        font-size: 14px;
+    }
 
-        .chore-name {
-            flex-grow: 0;
-            flex-shrink: 1;
-            margin-left: 6px;
-            font-size: 18px;
-        }
+    md-icon.swapped {
+        display: none;
+    }
 
-        .quantity {
-            background-color: var(--surface-container-highest);
-            color: var(--on-surface);
-            padding: 4px 9px;
-            border-radius: calc(infinity * 1px);
-            font-weight: 550;
-            font-size: 14px;
-        }
+    .name-dropdown {
+        margin-left: auto;
+        width: 30%;
+        flex-shrink: 0;
 
-        md-icon.swapped {
-            display: none;
-        }
-
-        .name-dropdown {
-            margin-left: auto;
-            width: 30%;
-            flex-shrink: 0;
-
-            & > button {
-                --background-color: var(--primary-container);
-                --color: var(--on-primary-container);
-                padding: 0;
-                display: flex;
-                justify-content: space-between;
-                height: 32px;
-                width: 100%;
-                scale: 1;
-                @media not (hover: hover) {
-                    background-color: var(--primary-container);
-                    color: var(--on-primary-container);
-                    &:has(+ :popover-open) {
-                        color: var(--on-tertiary-container);
-                        background-color: var(--tertiary-container);
-                    }
-                }
-
-                &:has(+ :popover-open) {
-                    border-radius: 16px 16px 6px 6px;
-                    --color: var(--on-tertiary-container);
-                    --background-color: var(--tertiary-container);
-                }
-
-                .member-name {
-                    margin-left: 12px;
-                }
-            }
-            [popover] {
-                position-area: bottom;
-                width: anchor-size(width);
-                background-color: var(--surface-container-low);
-                border: none;
-                padding: 0 6px 6px 6px;
-                border-radius: 0 0 8px 8px;
-                margin-top: 4px;
-                list-style: none;
-
-                button {
-                    height: 32px;
-                    width: 100%;
-                    --background-color: var(--tertiary-container);
-                    --color: var(--on-tertiary-container);
-                    border-radius: 6px;
-                    scale: 1;
-                    margin-bottom: 4px;
-                    padding: 0 12px;
-
-                    &:last-child {
-                        margin-bottom: 0;
-                    }
-
-                    span {
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
-                        font-weight: 470;
-                        margin-left: 0;
-                    }
-                }
-            }
-        }
-
-        button.remove {
-            --size: 14;
+        & > button {
             --background-color: var(--primary-container);
             --color: var(--on-primary-container);
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            height: 32px;
+            width: 100%;
+            scale: 1;
+
+            @media not (hover: hover) {
+                background-color: var(--primary-container);
+                color: var(--on-primary-container);
+                &:has(+ :popover-open) {
+                    color: var(--on-tertiary-container);
+                    background-color: var(--tertiary-container);
+                }
+            }
+
+            &:has(+ :popover-open) {
+                border-radius: 16px 16px 6px 6px;
+                --color: var(--on-tertiary-container);
+                --background-color: var(--tertiary-container);
+
+                md-icon {
+                    rotate: 180deg;
+                }
+            }
+
+            span {
+                margin-left: 12px;
+            }
+        }
+
+        [popover] {
+            position-area: bottom;
+            width: anchor-size(width);
+            background-color: var(--surface-container-low);
+            border: none;
+            padding: 0 6px 6px 6px;
+            border-radius: 0 0 8px 8px;
+            margin-top: 4px;
+            list-style: none;
+
+            button {
+                height: 32px;
+                width: 100%;
+                --background-color: var(--tertiary-container);
+                --color: var(--on-tertiary-container);
+                border-radius: 6px;
+                scale: 1;
+                margin-bottom: 4px;
+                padding: 0 12px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                span {
+                    font-weight: 470;
+                    margin-left: 0;
+                }
+            }
         }
     }
 
-    &[inert] > li {
-        md-icon.swapped {
-            margin-left: auto;
-            display: inline-block;
-            color: var(--on-surface-variant);
-            opacity: 0.8;
-            font-size: 20px;
-        }
-
-        md-icon.swapped[hidden] + .name-dropdown {
-            margin-left: auto;
-        }
-
-        .name-dropdown {
-            margin-left: 0;
-            pointer-events: none;
-            max-width: 40%;
-            width: auto;
-
-            & > button {
-                max-width: 100%;
-                width: fit-content;
-                background-color: var(--surface-container-low);
-                color: var(--on-surface);
-
-                .member-name {
-                    margin-left: 0;
-                    margin-right: 10px;
-                    width: 100%;
-                    text-align: right;
-                }
-                md-icon {
-                    display: none;
-                }
-            }
-        }
-        button.remove {
-            display: none;
-        }
+    button.remove {
+        --size: 14;
+        --background-color: var(--primary-container);
+        --color: var(--on-primary-container);
     }
 }
 
-.dropdown > button:has(+ :popover-open) md-icon {
-    rotate: 180deg;
+assignment-list[inert] .assignment {
+    md-icon.swapped {
+        --opsz: 20;
+        margin-left: auto;
+        display: inline-block;
+        color: var(--on-surface-variant);
+        opacity: 0.8;
+    }
+
+    md-icon.swapped[hidden] + .name-dropdown {
+        margin-left: auto;
+    }
+
+    .name-dropdown {
+        margin-left: 0;
+        pointer-events: none;
+        max-width: 40%;
+        width: auto;
+
+        & > button {
+            max-width: 100%;
+            width: fit-content;
+            background-color: var(--surface-container-low);
+            color: var(--on-surface);
+
+            span {
+                margin-left: 0;
+                margin-right: 10px;
+                width: 100%;
+                text-align: right;
+                font-weight: 470;
+            }
+
+            md-icon {
+                display: none;
+            }
+        }
+    }
+
+    button.remove {
+        display: none;
+    }
 }
