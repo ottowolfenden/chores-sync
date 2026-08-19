@@ -1,16 +1,13 @@
 import { Haptics } from "../../services/haptics.js";
 import { Db } from "../../services/db.js";
 import { ElementUtils } from "../../services/element-utils.js";
-import { StatusMessage } from "../../components/status-message.js";
-import { MdIcon } from "../../components/md-icon.js";
-import { NumInput } from "../../components/num-input.js";
 
 const section = document.querySelector("section#count")!;
 
 section.addEventListener("open", async () => {
     const controller = new AbortController();
 
-    const statusMessage = section.querySelector("status-message") as StatusMessage;
+    const statusMessage = section.querySelector("status-message")!;
     statusMessage.elsToHide = [
         section.querySelector(":scope > ul"),
         section.querySelector("button#expand-all")
@@ -28,8 +25,8 @@ section.addEventListener("open", async () => {
 
     statusMessage.status = "success";
 
-    const choreUL = section.querySelector(":scope > ul") as HTMLUListElement;
-    const choreLITemplate = section.querySelector("template") as HTMLTemplateElement;
+    const choreUL = section.querySelector(":scope > ul")!;
+    const choreLITemplate = section.querySelector("template")!;
 
     const choreLIs = counts.map(count => {
         const clone = choreLITemplate.content.cloneNode(true) as DocumentFragment;
@@ -39,7 +36,7 @@ section.addEventListener("open", async () => {
             ".total-count .num": count.memberCounts.reduce((acc, val) => acc + val.total, 0)
         });
 
-        const choreDetailsUL = choreLI.querySelector(":scope > ul") as HTMLUListElement;
+        const choreDetailsUL = choreLI.querySelector(":scope > ul")!;
         const choreDetailsLITemplate = choreDetailsUL.querySelector(
             "template"
         ) as HTMLTemplateElement;
@@ -67,10 +64,10 @@ section.addEventListener("open", async () => {
     choreUL.replaceChildren(choreLITemplate, ...choreLIs);
 
     const refreshEditState = (li: HTMLLIElement) => {
-        const choreItem = li.querySelector("div.chore") as HTMLDivElement;
-        const editButton = choreItem.querySelector("button.edit") as HTMLButtonElement;
-        const icon = editButton.querySelector("md-icon") as MdIcon;
-        const label = editButton.querySelector("span") as HTMLSpanElement;
+        const choreItem = li.querySelector("div.chore")!;
+        const editButton = choreItem.querySelector("button.edit")!;
+        const icon = editButton.querySelector("md-icon")!;
+        const label = editButton.querySelector("span")!;
 
         if (li.hasAttribute("data-edit-mode")) {
             label.textContent = "Save";
@@ -83,8 +80,8 @@ section.addEventListener("open", async () => {
                 "ul.details > li"
             ) as NodeListOf<HTMLLIElement>;
             detailsListItems.forEach(dli => {
-                const numInput = dli.querySelector("num-input") as NumInput;
-                const numText = dli.querySelector(".count-text .num") as HTMLSpanElement;
+                const numInput = dli.querySelector("num-input")!;
+                const numText = dli.querySelector(".count-text .num")!;
                 const value = parseInt(numText.textContent);
                 if (!isNaN(value)) numInput.value = value;
             });
@@ -93,7 +90,7 @@ section.addEventListener("open", async () => {
 
     const toggleCollapse = (li: HTMLLIElement, collapse?: boolean) => {
         const detailsList = li.querySelector("ul.details") as HTMLUListElement;
-        const icon = li.querySelector(".chore .expand md-icon") as MdIcon;
+        const icon = li.querySelector(".chore .expand md-icon")!;
         collapse ??= detailsList.inert;
         detailsList.toggleAttribute("inert", !collapse);
         icon.textContent = `keyboard_arrow_${detailsList.inert ? "down" : "up"}`;
