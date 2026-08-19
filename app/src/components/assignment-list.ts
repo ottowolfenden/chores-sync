@@ -1,5 +1,5 @@
-import { LitElement, html } from "lit";
-import { customElement, state, property } from "lit/decorators.js";
+import { LitElement, html, type PropertyValues } from "lit";
+import { customElement, state, property, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { Context } from "../services/context";
 import { ElementUtils } from "../services/element-utils.js";
@@ -44,6 +44,10 @@ export class AssignmentList extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         this.members = (await Context.members) ?? [];
+    }
+
+    protected update(changed: PropertyValues) {
+        super.update(changed);
         Haptics.add("button");
     }
 
