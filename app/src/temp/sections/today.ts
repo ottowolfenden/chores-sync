@@ -10,33 +10,39 @@ section.addEventListener("open", async () => {
     const allChoresList = section.querySelector("#all > ul")!;
     const template = allChoresList.querySelector("template")!;
 
-    const editButton = section.querySelector("#edit")!;
+    const assignedStateActions = section.querySelector<StateActions>(
+        "#assigned state-actions"
+    )!;
     const assignmentList = section.querySelector("assignment-list")!;
     const allStatus = section.querySelector<StatusMessage>("#all > status-message")!;
     const assignedStatus = section.querySelector<StatusMessage>("#assigned > status-message")!;
 
     allStatus.elsToHide = [allChoresList];
-    assignedStatus.elsToHide = [assignmentList, editButton];
+    assignedStatus.elsToHide = [assignmentList, assignedStateActions];
+
+    assignedStateActions.conf = {
+        normal: {
+            icon: "edit",
+            label: "Edit",
+            click: () => assignmentList.toggleAttribute("edit-mode", true)
+        },
+        active: {
+            click: async () => {
+                assignmentList.toggleAttribute("edit-mode", false);
+
+                // TEMP
+                await new Promise(r => setTimeout(r, 500));
+                return Math.random() < 0.5;
+            }
+        },
+        cancel: { click: () => assignmentList.toggleAttribute("edit-mode", false) },
+        loading: {},
+        success: {},
+        error: {}
+    };
 
     if (assignmentList.querySelector(":scope > .assignment") == null)
         assignedStatus.status = "empty";
-
-    editButton.addEventListener(
-        "click",
-        () => {
-            const icon = editButton.querySelector("md-icon")!;
-            const label = editButton.querySelector("span")!;
-            assignmentList.toggleAttribute("edit-mode");
-            if (assignmentList.editMode) {
-                label.textContent = "Save";
-                icon.textContent = "check";
-            } else {
-                label.textContent = "Edit";
-                icon.textContent = "edit";
-            }
-        },
-        { signal: controller.signal }
-    );
 
     allStatus.status = "loading";
     const chores = await Context.chores;
