@@ -80,9 +80,6 @@ section#count {
             color: var(--on-surface-variant);
             font-size: 19px;
             margin-left: 4px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
         }
 
         button.edit,
@@ -93,9 +90,6 @@ section#count {
         .total-count {
             font-weight: 470;
             color: var(--on-secondary-container);
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
             flex-shrink: 0;
             max-width: 5.5em;
 
@@ -142,12 +136,6 @@ section#count {
             grid-column: 1 / -1;
             align-items: center;
 
-            .member-name {
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-            }
-
             .count-text,
             num-input {
                 grid-column: 2;
@@ -159,9 +147,6 @@ section#count {
 
             .count-text {
                 font-weight: 500;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
                 text-align: right;
 
                 @media (width <= 370px) {
@@ -173,9 +158,6 @@ section#count {
 
             .offset {
                 color: rgb(from var(--on-surface-variant) r g b / 0.85);
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
                 text-align: right;
 
                 &:has(.num:empty) {

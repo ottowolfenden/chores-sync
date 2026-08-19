@@ -45,6 +45,12 @@ body {
     display: none !important;
 }
 
+span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 ul,
 ol {
     list-style: none;
