@@ -23,7 +23,6 @@ section#count {
 
             &:has(div.chore:focus-visible):not(:has(button:hover)),
             &:has(div.chore:active):not(:has(button:hover)) {
-                scale: 0.95;
                 background-color: color-mix(
                     in srgb,
                     var(--on-surface) 5%,
@@ -52,10 +51,6 @@ section#count {
 
                 div.chore {
                     &:not(:has(+ ul[inert])) {
-                        button.edit {
-                            margin-left: 10px;
-                        }
-
                         .total-count {
                             display: none;
                         }
@@ -118,16 +113,21 @@ section#count {
     ul.details {
         display: flex;
         background-color: rgb(from var(--surface-container-lowest) r g b / 0.6);
-        padding: 12px;
         border-radius: 8px;
         margin: 0 8px 8px 8px;
+        gap: 10px 15px;
+        padding: 12px;
         display: grid;
         grid-template-columns: 2fr 3fr 3fr;
-
-        gap: 10px 15px;
+        overflow: hidden;
+        transition: height, padding, margin;
+        transition-duration: 150ms;
+        transition-timing-function: ease-in-out;
 
         &[inert] {
-            display: none;
+            padding: 0 12px;
+            height: 0;
+            margin: 0 8px;
         }
 
         li {

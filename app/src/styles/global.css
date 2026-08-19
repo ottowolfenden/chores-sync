@@ -16,6 +16,10 @@
     src: url(../assets/fonts/google-sans-flex.ttf);
 }
 
+:root {
+    interpolate-size: allow-keywords;
+}
+
 * {
     font-family: "Google Sans Flex", sans-serif;
     -webkit-tap-highlight-color: transparent;
