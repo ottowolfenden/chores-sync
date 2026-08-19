@@ -5,6 +5,7 @@ import "../temp/sections/today.js";
 
 import "../components/assignment-list.js";
 import "../components/md-icon.js";
+import "../components/state-actions.js";
 import "../components/num-input.js";
 import "../components/section-nav.js";
 import "../components/status-message.js";
