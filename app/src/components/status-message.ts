@@ -1,48 +1,46 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, type TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-export type StatusType = "loading" | "empty" | "error" | "success";
-export type StatusConf = { icon?: string; text?: string };
+type Status = "loading" | "empty" | "error" | "success";
+type Messages = Record<Status, { icon?: string; text?: string | TemplateResult }>;
 
 @customElement("status-message")
 export class StatusMessage extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: String, reflect: true })
-    status: StatusType = "success";
+    status: Status = "success";
 
     @property({ attribute: false })
-    messages?: Partial<Record<StatusType, StatusConf>>;
+    messages?: Messages;
 
     @property({ attribute: false })
     elsToHide: (Element | null)[] = [];
 
-    render() {
-        const defaultMessages = {
-            loading: {
-                icon: "cloud_sync",
-                text: "Loading, please wait."
-            },
-            empty: {
-                icon: "mood_bad",
-                text: "Nothing to show."
-            },
-            error: {
-                icon: "error",
-                text: "Failed to fetch data."
-            },
-            success: {}
-        };
+    private defaultMessages: Messages = {
+        loading: {
+            icon: "cloud_sync",
+            text: "Loading, please wait."
+        },
+        empty: {
+            icon: "mood_bad",
+            text: "Nothing to show."
+        },
+        error: {
+            icon: "error",
+            text: html`Failed to fetch data.<br /><a href="">Retry</a>`
+        },
+        success: {}
+    };
 
+    render = () => {
         const { icon, text } = {
-            ...defaultMessages[this.status],
+            ...this.defaultMessages[this.status],
             ...this.messages?.[this.status]
         };
-
         this.elsToHide.forEach(el => el?.toggleAttribute("hidden", this.status != "success"));
-
         return html`
             <span>${icon ? html`<md-icon class="large">${icon}</md-icon>` : ""}${text}</span>
         `;
-    }
+    };
 }
