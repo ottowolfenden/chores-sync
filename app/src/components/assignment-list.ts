@@ -3,6 +3,7 @@ import { customElement, state, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { Context } from "../services/context";
 import { ElementUtils } from "../services/element-utils.js";
+import { Haptics } from "../services/haptics.js";
 
 @customElement("assignment-list")
 export class AssignmentList extends LitElement {
@@ -43,6 +44,7 @@ export class AssignmentList extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         this.members = (await Context.members) ?? [];
+        Haptics.add("button");
     }
 
     private removeAssignment = (e: Event, assignment: UiAssignment) =>
