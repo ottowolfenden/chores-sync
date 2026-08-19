@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { customElement, state } from "lit/decorators.js";
+import { customElement, state, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { Context } from "../services/context";
 import { ElementUtils } from "../services/element-utils.js";
@@ -35,6 +35,9 @@ export class AssignmentList extends LitElement {
         }
     ];
 
+    @property({ type: Boolean, attribute: "edit-mode" }) editMode = false;
+    updated = () => this.toggleAttribute("inert", !this.editMode);
+
     @state() private members: UiMember[] = [];
 
     async connectedCallback() {
@@ -65,7 +68,7 @@ export class AssignmentList extends LitElement {
                             class="tonal"
                             popovertarget="assignment-popover-${a.id}"
                             style="anchor-name: --assignment-anchor-${a.id}">
-                            <span>${a.chosenMember.name}</span>
+                            <span class="member-name">${a.chosenMember.name}</span>
                             <md-icon>arrow_drop_down</md-icon>
                         </button>
                         <div
@@ -85,7 +88,7 @@ export class AssignmentList extends LitElement {
                                                 a.chosenMember = m;
                                                 this.requestUpdate();
                                             }}>
-                                            <span>${m.name}</span>
+                                            <span class="member-name">${m.name}</span>
                                         </button>
                                     `
                                 )}

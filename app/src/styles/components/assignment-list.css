@@ -33,21 +33,34 @@ assignment-list .assignment {
         border-radius: calc(infinity * 1px);
         font-weight: 550;
         font-size: 14px;
+        overflow: visible;
+    }
+
+    .name-dropdown > button {
+        padding: 0;
     }
 
     md-icon.swapped {
-        display: none;
+        --opsz: 20;
+        margin-left: auto;
+        display: inline-block;
+        color: var(--on-surface-variant);
+        opacity: 0.8;
     }
 
-    .name-dropdown {
+    md-icon.swapped[hidden] + .name-dropdown {
         margin-left: auto;
+    }
+}
+
+assignment-list[edit-mode] .assignment {
+    .name-dropdown {
         width: 30%;
         flex-shrink: 0;
 
         & > button {
             --background-color: var(--primary-container);
             --color: var(--on-primary-container);
-            padding: 0;
             display: flex;
             justify-content: space-between;
             height: 32px;
@@ -57,6 +70,7 @@ assignment-list .assignment {
             @media not (hover: hover) {
                 background-color: var(--primary-container);
                 color: var(--on-primary-container);
+
                 &:has(+ :popover-open) {
                     color: var(--on-tertiary-container);
                     background-color: var(--tertiary-container);
@@ -73,39 +87,38 @@ assignment-list .assignment {
                 }
             }
 
-            span {
+            .member-name {
                 margin-left: 12px;
             }
         }
+    }
 
-        [popover] {
-            position-area: bottom;
-            width: anchor-size(width);
-            background-color: var(--surface-container-low);
-            border: none;
-            padding: 0 6px 6px 6px;
-            border-radius: 0 0 8px 8px;
-            margin-top: 4px;
-            list-style: none;
+    [popover] {
+        position-area: bottom;
+        width: anchor-size(width);
+        background-color: var(--surface-container-low);
+        border: none;
+        padding: 0 6px 6px 6px;
+        border-radius: 0 0 8px 8px;
+        margin-top: 4px;
+        list-style: none;
 
-            button {
-                height: 32px;
-                width: 100%;
-                --background-color: var(--tertiary-container);
-                --color: var(--on-tertiary-container);
-                border-radius: 6px;
-                scale: 1;
-                margin-bottom: 4px;
-                padding: 0 12px;
+        button {
+            --background-color: var(--tertiary-container);
+            --color: var(--on-tertiary-container);
+            height: 32px;
+            width: 100%;
+            border-radius: 6px;
+            scale: 1;
+            margin-bottom: 4px;
+            padding: 0 12px;
 
-                &:last-child {
-                    margin-bottom: 0;
-                }
+            &:last-child {
+                margin-bottom: 0;
+            }
 
-                span {
-                    font-weight: 470;
-                    margin-left: 0;
-                }
+            .member-name {
+                margin-left: 0;
             }
         }
     }
@@ -117,22 +130,8 @@ assignment-list .assignment {
     }
 }
 
-assignment-list[inert] .assignment {
-    md-icon.swapped {
-        --opsz: 20;
-        margin-left: auto;
-        display: inline-block;
-        color: var(--on-surface-variant);
-        opacity: 0.8;
-    }
-
-    md-icon.swapped[hidden] + .name-dropdown {
-        margin-left: auto;
-    }
-
+assignment-list:not([edit-mode]) .assignment {
     .name-dropdown {
-        margin-left: 0;
-        pointer-events: none;
         max-width: 40%;
         width: auto;
 
@@ -142,12 +141,10 @@ assignment-list[inert] .assignment {
             background-color: var(--surface-container-low);
             color: var(--on-surface);
 
-            span {
+            .member-name {
                 margin-left: 0;
                 margin-right: 10px;
-                width: 100%;
                 text-align: right;
-                font-weight: 470;
             }
 
             md-icon {

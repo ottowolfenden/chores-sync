@@ -26,13 +26,13 @@ section.addEventListener("open", async () => {
         () => {
             const icon = editButton.querySelector("md-icon")!;
             const label = editButton.querySelector("span")!;
-            assignmentList.toggleAttribute("inert");
-            if (assignmentList.inert) {
+            assignmentList.toggleAttribute("edit-mode");
+            if (assignmentList.editMode) {
+                label.textContent = "Save";
+                icon.textContent = "check";
+            } else {
                 label.textContent = "Edit";
                 icon.textContent = "edit";
-            } else {
-                icon.textContent = "check";
-                label.textContent = "Save";
             }
         },
         { signal: controller.signal }

@@ -1,6 +1,5 @@
 section#today {
-    #assigned,
-    #all {
+    & > div {
         padding-bottom: 40px;
     }
 
@@ -8,11 +7,9 @@ section#today {
         font-weight: 470;
     }
 
-    #assigned {
-        div:has(h2) button {
-            @media (width <= 370px) {
-                --collapse: 1;
-            }
+    @media (width <= 370px) {
+        div:has(h2) > button {
+            --collapse: 1;
         }
     }
 
@@ -32,6 +29,7 @@ section#today {
             grid-column: 1 / -1;
             align-items: center;
             border-bottom: 2px solid rgb(from var(--secondary) r g b / 0.05);
+
             &:last-child {
                 border-bottom: none;
             }
