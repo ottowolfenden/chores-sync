@@ -6,8 +6,6 @@ import { Haptics } from "../../services/haptics.js";
 const section = document.querySelector("section#today")!;
 
 section.addEventListener("open", async () => {
-    const controller = new AbortController();
-
     const allChoresList = section.querySelector("#all > ul")!;
     const template = allChoresList.querySelector("template")!;
     const assignmentList = section.querySelector("assignment-list")!;
@@ -32,8 +30,8 @@ section.addEventListener("open", async () => {
         new Promise(r =>
             setTimeout(
                 () => {
-                    if (Math.random() < 0.9) r(null);
-                    if (Math.random() < 0.4) r([]);
+                    if (Math.random() < 0.02) r(null);
+                    if (Math.random() < 0.02) r([]);
                     r([
                         {
                             id: 1,
@@ -91,17 +89,14 @@ section.addEventListener("open", async () => {
                         }
                     ]);
                 },
-                Math.round(Math.random() * 4000)
+                Math.round(Math.random() * 2000)
             )
         );
 
     const tempSetAssignments = (): Promise<boolean> =>
         new Promise(r =>
-            setTimeout(() => r(Math.random() < 0.5), Math.round(Math.random() * 4000))
+            setTimeout(() => r(Math.random() < 0.02), Math.round(Math.random() * 2000))
         );
-
-    allStatus.elsToHide = [allChoresList];
-    assignedStatus.elsToHide = [assignmentList, assignedStateActions];
 
     let assignments: UiAssignment[] | null;
     let chores: UiChore[] | null;
@@ -177,5 +172,8 @@ section.addEventListener("open", async () => {
         })()
     ]);
 
-    section.addEventListener("close", () => controller.abort(), { once: true });
+    section.addEventListener("close", () => {
+        assignedStateActions.conf.cancel?.click?.();
+        assignedStateActions.state = "normal";
+    });
 });
