@@ -16,12 +16,10 @@ import "../temp/sections/history.js";
 import "../temp/sections/settings.js";
 import "../temp/sections/today.js";
 
-import * as Haptics from "../services/haptics.js";
-
-const openSection = async (targetId: string) => {
+const handleRoute = async () => {
     document.querySelectorAll("section").forEach(s => {
         if (!s.hidden) s.dispatchEvent(new CustomEvent("close"));
-        const isTarget = s.id == targetId;
+        const isTarget = s.id == location.hash.replace("#", "");
         s.hidden = !isTarget;
         if (isTarget) {
             s.dispatchEvent(new CustomEvent("open"));
@@ -30,9 +28,9 @@ const openSection = async (targetId: string) => {
     });
 };
 
-const handleRoute = async () => await openSection(location.hash.replace("#", ""));
 window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
 
+import * as Haptics from "../services/haptics.js";
 Haptics.add("button");
