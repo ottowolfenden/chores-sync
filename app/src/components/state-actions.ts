@@ -35,7 +35,7 @@ export class StateActions extends LitElement {
 
     render = () => html`
         <button
-            class="tonal"
+            class="outlined"
             ?hidden=${this.state != "active" || !this.conf.cancel}
             @click=${async () => {
                 this.state = "normal";

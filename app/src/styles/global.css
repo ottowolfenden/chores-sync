@@ -152,8 +152,15 @@ button {
     }
 
     &.transparent {
-        --color: var(--primary);
         --background-color: transparent;
+        --color: var(--primary);
+    }
+
+    &.outlined {
+        --background-color: transparent;
+        --color: var(--on-surface-variant);
+        outline: solid 2px rgb(from var(--color) r g b / 0.3);
+        outline-offset: -1.5px;
     }
 
     &:disabled {

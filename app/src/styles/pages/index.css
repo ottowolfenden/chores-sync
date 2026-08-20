@@ -113,8 +113,7 @@ div:has(> h2) {
     button {
         --size: 15;
 
-        &.tonal {
-            --background-color: rgb(from var(--secondary) r g b / 0.08);
+        &.outlined {
             --color: var(--secondary);
         }
 
