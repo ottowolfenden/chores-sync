@@ -1,6 +1,6 @@
 @font-face {
-    font-family: "Material Symbols";
-    src: url(../../assets/fonts/material-symbols.ttf);
+    font-family: "Material Symbols Outlined";
+    src: url(../../assets/fonts/material-symbols-outlined.ttf);
 }
 
 md-icon {
@@ -9,18 +9,24 @@ md-icon {
     --grad: 0;
     --opsz: 24;
 
-    font-family: "Material Symbols";
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
     font-size: calc(var(--opsz) * 1px);
+    display: inline-block;
+    line-height: 1;
+    margin: 0.05em;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    transition: font-variation-settings 100ms ease-in;
     font-variation-settings:
         "FILL" var(--fill),
         "wght" var(--wght),
         "GRAD" var(--grad),
         "opsz" var(--opsz);
-    transition: font-variation-settings 100ms ease-in;
-    display: block;
-    text-align: center;
-    width: 1.2em;
-    height: 1.2em;
 
     &.large {
         --opsz: 50;
