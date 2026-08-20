@@ -1,5 +1,5 @@
 import * as Haptics from "../../services/haptics.js";
-import { Db } from "../../services/db.js";
+import { getCounts, setCount } from "../../services/db.js";
 import { setTexts } from "../../services/element-utils.js";
 
 const section = document.querySelector("section#count")!;
@@ -13,7 +13,7 @@ section.addEventListener("open", async () => {
         section.querySelector("button#expand-all")
     ];
     statusMessage.status = "loading";
-    const counts = await Db.getCounts();
+    const counts = await getCounts();
 
     if (counts == null) {
         statusMessage.status = "error";
@@ -190,7 +190,7 @@ section.addEventListener("open", async () => {
 
     const setUiCount = async (li: HTMLLIElement) => {
         const uiCount = getUiCount(li);
-        if (uiCount) await Db.setCount(uiCount);
+        if (uiCount) await setCount(uiCount);
     };
 
     const listItems = section.querySelectorAll(

@@ -1,7 +1,6 @@
-export class Db {
-    private constructor() {}
+import { Context } from "./context.js";
 
-    static getChores = async (): Promise<UiChore[] | null> => {
+export const getChores = async (): Promise<UiChore[] | null> => {
         const guess = localStorage.getItem("secret");
         if (!guess) return null;
         const response = await fetch("/api/chores", {
@@ -21,7 +20,7 @@ export class Db {
         );
     };
 
-    static getCounts = async (): Promise<UiCount[] | null> => {
+export const getCounts = async (): Promise<UiCount[] | null> => {
         const guess = localStorage.getItem("secret");
         if (!guess) return null;
         const response = await fetch("/api/counts", {
@@ -36,9 +35,7 @@ export class Db {
         return choreNames.map(cn => ({
             choreName: cn,
             memberCounts: memberNames.map(mn => {
-                const records = data.filter(
-                    d => d["member_name"] == mn && d["chore_name"] == cn
-                );
+            const records = data.filter(d => d["member_name"] == mn && d["chore_name"] == cn);
                 const offsetCount = Number(records?.find(r => r["is_offset"])?.total ?? 0);
                 const nonOffsetCount = Number(records?.find(r => !r["is_offset"])?.total ?? 0);
                 return {
@@ -50,7 +47,7 @@ export class Db {
         }));
     };
 
-    static setCount = async (uiCount: UiCount): Promise<boolean> => {
+export const setCount = async (uiCount: UiCount): Promise<boolean> => {
         const guess = localStorage.getItem("secret");
         if (!guess) return false;
 
@@ -70,7 +67,7 @@ export class Db {
         return response.ok;
     };
 
-    static getMembers = async (): Promise<UiMember[] | null> => {
+export const getMembers = async (): Promise<UiMember[] | null> => {
         const guess = localStorage.getItem("secret");
         if (!guess) return null;
         const response = await fetch("/api/members", {
@@ -90,7 +87,7 @@ export class Db {
         );
     };
 
-    static getCurrentMember = async (): Promise<UiMember | null> => {
+export const getCurrentMember = async (): Promise<UiMember | null> => {
         const guess = localStorage.getItem("secret");
         const name = localStorage.getItem("name");
         if (!guess || !name) return null;
@@ -108,4 +105,4 @@ export class Db {
             isAdmin: data["is_admin"]
         };
     };
-}
+
