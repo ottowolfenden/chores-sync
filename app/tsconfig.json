@@ -19,6 +19,6 @@
         "skipLibCheck": true,
         "experimentalDecorators": true,
         "useDefineForClassFields": false,
-        "types": ["./src/types/ui-types.d.ts", "./src/types/db-types.d.ts"]
+        "types": ["./src/types/ui.d.ts", "./src/types/db.d.ts"]
     }
 }

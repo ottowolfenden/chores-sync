@@ -14,7 +14,7 @@ type DbChore = {
 
 type DbAssignment = {
     assignment_id: number;
-    assign_timestamp: Date;
+    assign_date: Date;
     quantity: number;
     is_offset: boolean;
     chore_id: number;
