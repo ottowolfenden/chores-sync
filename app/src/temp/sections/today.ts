@@ -95,7 +95,7 @@ section.addEventListener("open", async () => {
 
     const tempSetAssignments = (): Promise<boolean> =>
         new Promise(r =>
-            setTimeout(() => r(Math.random() < 0.02), Math.round(Math.random() * 2000))
+            setTimeout(() => r(Math.random() > 0.02), Math.round(Math.random() * 2000))
         );
 
     let assignments: UiAssignment[] | null;
