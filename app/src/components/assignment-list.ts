@@ -1,9 +1,9 @@
 import { LitElement, html, type PropertyValues } from "lit";
 import { customElement, state, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { Context } from "../services/context";
-import { withTransition } from "../services/element-utils.js";
-import * as Haptics from "../services/haptics.js";
+import { Context } from "../classes/context";
+import { withTransition } from "../functions/element-utils.js";
+import * as Haptics from "../functions/haptics.js";
 
 @customElement("assignment-list")
 export class AssignmentList extends LitElement {

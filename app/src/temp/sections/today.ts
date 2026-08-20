@@ -1,7 +1,7 @@
 import { html } from "lit";
-import { Context } from "../../services/context.js";
-import { setTexts } from "../../services/element-utils.js";
-import * as Haptics from "../../services/haptics.js";
+import { Context } from "../../classes/context.js";
+import { setTexts } from "../../functions/element-utils.js";
+import * as Haptics from "../../functions/haptics.js";
 
 const section = document.querySelector("section#today")!;
 

@@ -1,4 +1,4 @@
-import { checkAccess } from "../services/cloudflare.js";
+import { checkAccess } from "../functions/cloudflare.js";
 
 if (await checkAccess()) location.replace("index.html#today");
 

@@ -1,6 +1,6 @@
-import * as Haptics from "../../services/haptics.js";
-import { getCounts, setCount } from "../../services/db.js";
-import { setTexts } from "../../services/element-utils.js";
+import * as Haptics from "../../functions/haptics.js";
+import { getCounts, setCount } from "../../functions/db.js";
+import { setTexts } from "../../functions/element-utils.js";
 
 const section = document.querySelector("section#count")!;
 

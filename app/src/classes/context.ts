@@ -1,4 +1,4 @@
-import { getChores, getMembers, getCurrentMember } from "./db.js";
+import { getChores, getMembers, getCurrentMember } from "../functions/db.js";
 
 export class Context {
     private constructor() {}

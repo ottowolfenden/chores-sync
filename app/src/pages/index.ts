@@ -1,7 +1,7 @@
-import { checkAccess } from "../services/cloudflare.js";
+import { checkAccess } from "../functions/cloudflare.js";
 if (!(await checkAccess())) location.replace("login.html");
 
-import { Context } from "../services/context.js";
+import { Context } from "../classes/context.js";
 await Context.init();
 
 import "../components/assignment-list.js";
@@ -32,5 +32,5 @@ window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
 
-import * as Haptics from "../services/haptics.js";
+import * as Haptics from "../functions/haptics.js";
 Haptics.add("button");

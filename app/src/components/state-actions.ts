@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { Timer } from "../services/timer.js";
+import { delay } from "../functions/timer.js";
 
 type Conf = { icon?: string; label?: string };
 type ButtonConf = Conf & {
@@ -56,7 +56,7 @@ export class StateActions extends LitElement {
                     const success = await this.conf.active?.click?.(e);
                     if (this.conf.success && this.conf.error && typeof success == "boolean") {
                         this.state = success ? "success" : "error";
-                        await Timer.delay(
+                        await delay(
                             this.conf?.[this.state]?.msToShow ??
                                 this.defaultConf[this.state].msToShow
                         );
