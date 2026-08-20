@@ -1,3 +1,5 @@
+import { Context } from "../classes/context.js";
+
 export const getChores = async (): Promise<UiChore[] | null> => {
     const guess = localStorage.getItem("secret");
     if (!guess) return null;
@@ -102,4 +104,28 @@ export const getCurrentMember = async (): Promise<UiMember | null> => {
         isActive: data["is_active"],
         isAdmin: data["is_admin"]
     };
+};
+
+export const getTodayAssignments = async (): Promise<
+    Omit<UiAssignment, "turnMember">[] | null
+> => {
+    const guess = localStorage.getItem("secret");
+    if (!guess) return null;
+    const today = new Date().toISOString().split("T")[0];
+    const response = await fetch(`/api/assignments?min-date=${today}`, {
+        method: "GET",
+        headers: { "Authorization": guess }
+    });
+    if (!response.ok) return null;
+
+    const data: DbAssignment[] = await response.json();
+    return data.map(
+        (d): Omit<UiAssignment, "turnMember"> => ({
+            id: d["assignment_id"],
+            date: new Date(d["assign_date"]),
+            quantity: d["quantity"],
+            chore: Context.chores?.find(c => c.id == d["chore_id"]),
+            chosenMember: Context.members?.find(m => m.id == d["member_id"])
+        })
+    );
 };
