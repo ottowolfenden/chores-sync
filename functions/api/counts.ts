@@ -46,7 +46,7 @@ export const onRequestPost: PagesFunction<Env> = async context => {
         return Response.json(
             await sql`
                 INSERT INTO assignments (
-                    assign_timestamp,
+                    assign_date,
                     quantity,
                     chore_id,
                     member_id
@@ -63,7 +63,7 @@ export const onRequestPost: PagesFunction<Env> = async context => {
                 )
                 JOIN chores c on c.chore_name = input.chore_name
                 JOIN members m on m.member_name = input.member_name
-                ON CONFLICT (member_id, chore_id, assign_timestamp)
+                ON CONFLICT (member_id, chore_id, assign_date)
                 DO UPDATE SET quantity = EXCLUDED.quantity;
             `
         );

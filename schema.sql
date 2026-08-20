@@ -17,11 +17,11 @@ CREATE TABLE chores (
 
 CREATE TABLE assignments (
     assignment_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    assign_timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    assign_date DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     quantity INT NOT NULL DEFAULT 1,
-    is_offset BOOLEAN NOT NULL GENERATED ALWAYS AS (assign_timestamp = '-infinity'),
+    is_offset BOOLEAN NOT NULL GENERATED ALWAYS AS (assign_date = '-infinity'),
     chore_id INT NOT NULL REFERENCES chores (chore_id) ON DELETE CASCADE,
     member_id INT NOT NULL REFERENCES members (member_id) ON DELETE CASCADE,
-    UNIQUE (member_id, chore_id, assign_timestamp),
-    CHECK (assign_timestamp = '-infinity' OR quantity >= 1)
+    UNIQUE (member_id, chore_id, assign_date),
+    CHECK (assign_date = '-infinity' OR quantity >= 1)
 );
