@@ -14,7 +14,7 @@ type UiChore = {
 
 type UiAssignment = {
     id: number;
-    datetime: Date;
+    date: Date;
     quantity: number;
     chore: Chore;
     turnMember: Member;

@@ -35,7 +35,7 @@ section.addEventListener("open", async () => {
                     r([
                         {
                             id: 1,
-                            datetime: new Date(),
+                            date: new Date(),
                             quantity: 1,
                             chore: {
                                 id: 1,
@@ -53,7 +53,7 @@ section.addEventListener("open", async () => {
                         },
                         {
                             id: 2,
-                            datetime: new Date(),
+                            date: new Date(),
                             quantity: 1,
                             chore: {
                                 id: 2,
@@ -71,7 +71,7 @@ section.addEventListener("open", async () => {
                         },
                         {
                             id: 3,
-                            datetime: new Date(),
+                            date: new Date(),
                             quantity: 2,
                             chore: {
                                 id: 8,
