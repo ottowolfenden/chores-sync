@@ -1,5 +1,6 @@
 import { html } from "lit";
 import { Context } from "../../classes/context.js";
+import { DateOnly } from "../../classes/date-only.js";
 import { setTexts } from "../../functions/element-utils.js";
 import * as Haptics from "../../functions/haptics.js";
 
@@ -35,7 +36,7 @@ section.addEventListener("open", async () => {
                     r([
                         {
                             id: 1,
-                            date: new Date(),
+                            date: new DateOnly(),
                             quantity: 1,
                             chore: {
                                 id: 1,
@@ -53,7 +54,7 @@ section.addEventListener("open", async () => {
                         },
                         {
                             id: 2,
-                            date: new Date(),
+                            date: new DateOnly(),
                             quantity: 1,
                             chore: {
                                 id: 2,
@@ -71,7 +72,7 @@ section.addEventListener("open", async () => {
                         },
                         {
                             id: 3,
-                            date: new Date(),
+                            date: new DateOnly(),
                             quantity: 2,
                             chore: {
                                 id: 8,
@@ -93,6 +94,11 @@ section.addEventListener("open", async () => {
             )
         );
 
+    const clone = (list: UiAssignment[]) =>
+        JSON.parse(JSON.stringify(list), (key, val) =>
+            key == "date" ? new DateOnly(val) : val
+        );
+
     const tempSetAssignments = (): Promise<boolean> =>
         new Promise(r =>
             setTimeout(() => r(Math.random() > 0.02), Math.round(Math.random() * 2000))
@@ -110,7 +116,7 @@ section.addEventListener("open", async () => {
             else if (assignments.length == 0) assignedStatus.status = "empty";
             else {
                 assignedStatus.status = "success";
-                assignmentList.assignments = structuredClone(assignments);
+                assignmentList.assignments = clone(assignments);
 
                 assignedStateActions.conf = {
                     normal: {
@@ -123,9 +129,8 @@ section.addEventListener("open", async () => {
                             assignmentList.toggleAttribute("edit-mode", false);
 
                             const success = await tempSetAssignments();
-                            if (success)
-                                assignments = structuredClone(assignmentList.assignments);
-                            else assignmentList.assignments = structuredClone(assignments!);
+                            if (success) assignments = clone(assignmentList.assignments);
+                            else assignmentList.assignments = clone(assignments!);
                             if (assignmentList.assignments.length == 0) {
                                 assignedStateActions.state = "success";
                                 setTimeout(
@@ -141,7 +146,7 @@ section.addEventListener("open", async () => {
                     cancel: {
                         click: () => {
                             assignmentList.toggleAttribute("edit-mode", false);
-                            assignmentList.assignments = structuredClone(assignments!);
+                            assignmentList.assignments = clone(assignments!);
                         }
                     },
                     loading: {},
@@ -151,11 +156,12 @@ section.addEventListener("open", async () => {
             }
         })(),
         (async () => {
-            if (Context.chores == null) allStatus.status = "error";
-            else if (Context.chores.length == 0) allStatus.status = "empty";
+            chores = await Context.refreshChores();
+            if (chores == null) allStatus.status = "error";
+            else if (chores.length == 0) allStatus.status = "empty";
             else {
                 allStatus.status = "success";
-                const newNodes = Context.chores.map(c => {
+                const newNodes = chores.map(c => {
                     const clone = template.content.cloneNode(true) as DocumentFragment;
                     const li = clone.firstElementChild as HTMLLIElement;
                     const addButton = clone.querySelector("button") as HTMLButtonElement;

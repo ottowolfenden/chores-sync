@@ -40,6 +40,8 @@ export class DateOnly {
     toString = () =>
         `${this.year}-${this.month.toString().padStart(2, "0")}-${this.day.toString().padStart(2, "0")}`;
 
+    toJSON = this.toString;
+
     valueOf = () => this.timestamp;
 
     equals = (dateOnly: DateOnly) => this.toString() == dateOnly.toString();

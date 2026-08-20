@@ -1,4 +1,5 @@
 import { Context } from "../classes/context.js";
+import { DateOnly } from "../classes/date-only.js";
 
 export const getChores = async (): Promise<UiChore[] | null> => {
     const guess = localStorage.getItem("secret");
@@ -122,7 +123,7 @@ export const getTodayAssignments = async (): Promise<
     return data.map(
         (d): Omit<UiAssignment, "turnMember"> => ({
             id: d["assignment_id"],
-            date: new Date(d["assign_date"]),
+            date: new DateOnly(d["assign_date"]),
             quantity: d["quantity"],
             chore: Context.chores?.find(c => c.id == d["chore_id"]),
             chosenMember: Context.members?.find(m => m.id == d["member_id"])
