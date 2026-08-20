@@ -151,12 +151,11 @@ section.addEventListener("open", async () => {
             }
         })(),
         (async () => {
-            chores = await Context.chores;
-            if (chores == null) allStatus.status = "error";
-            else if (chores.length == 0) allStatus.status = "empty";
+            if (Context.chores == null) allStatus.status = "error";
+            else if (Context.chores.length == 0) allStatus.status = "empty";
             else {
                 allStatus.status = "success";
-                const newNodes = chores.map(c => {
+                const newNodes = Context.chores.map(c => {
                     const clone = template.content.cloneNode(true) as DocumentFragment;
                     const li = clone.firstElementChild as HTMLLIElement;
                     const addButton = clone.querySelector("button") as HTMLButtonElement;

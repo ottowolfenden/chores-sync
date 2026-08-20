@@ -1,7 +1,8 @@
-import "../temp/sections/count.js";
-import "../temp/sections/history.js";
-import "../temp/sections/settings.js";
-import "../temp/sections/today.js";
+import { Cloudflare } from "../services/cloudflare.js";
+if (!(await Cloudflare.checkAccess())) location.replace("login.html");
+
+import { Context } from "../services/context.js";
+await Context.init();
 
 import "../components/assignment-list.js";
 import "../components/md-icon.js";
@@ -10,10 +11,12 @@ import "../components/num-input.js";
 import "../components/section-nav.js";
 import "../components/status-message.js";
 
-import { Cloudflare } from "../services/cloudflare.js";
-import { Haptics } from "../services/haptics.js";
+import "../temp/sections/count.js";
+import "../temp/sections/history.js";
+import "../temp/sections/settings.js";
+import "../temp/sections/today.js";
 
-if (!(await Cloudflare.checkAccess())) location.replace("login.html");
+import { Haptics } from "../services/haptics.js";
 
 const openSection = async (targetId: string) => {
     document.querySelectorAll("section").forEach(s => {
