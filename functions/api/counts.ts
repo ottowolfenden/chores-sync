@@ -48,19 +48,16 @@ export const onRequestPost: PagesFunction<Env> = async context => {
                 INSERT INTO assignments (
                     assign_timestamp,
                     quantity,
-                    is_offset,
                     chore_id,
                     member_id
                 )
                 SELECT
                     '-infinity',
                     input.total,
-                    true,
                     c.chore_id,
                     m.member_id
                 FROM json_to_recordset(${JSON.stringify(data)}::json) AS input (
                     chore_name TEXT,
-                    is_offset BOOLEAN,
                     member_name TEXT,
                     total INT
                 )
