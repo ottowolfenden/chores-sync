@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import * as Haptics from "../functions/haptics.js";
+import { addHaptics } from "../functions/haptics.js";
 
 @customElement("num-input")
 export class NumInput extends LitElement {
@@ -27,7 +27,7 @@ export class NumInput extends LitElement {
     private handleInput = (e: Event) =>
         (this.value = Number((e.target as HTMLInputElement).value));
 
-    firstUpdated = () => Haptics.add("button", this);
+    firstUpdated = () => addHaptics("button", this);
 
     render = () => html`
         <button

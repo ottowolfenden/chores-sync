@@ -1,4 +1,4 @@
-import * as Haptics from "../../functions/haptics.js";
+import { addHaptics } from "../../functions/haptics.js";
 import { getCounts, setCount } from "../../functions/db.js";
 import { setTexts } from "../../functions/element-utils.js";
 
@@ -202,8 +202,8 @@ section.addEventListener("open", async () => {
         const choreItem = li.querySelector("div.chore") as HTMLDivElement;
         const editButton = choreItem.querySelector("button.edit") as HTMLButtonElement;
 
-        Haptics.add(choreItem);
-        Haptics.add(editButton);
+        addHaptics(choreItem);
+        addHaptics(editButton);
 
         choreItem.addEventListener(
             "click",

@@ -1,4 +1,4 @@
-export const add = (
+export const addHaptics = (
     els: string | Element | (Element | string)[],
     rootNode?: ParentNode,
     ms?: number

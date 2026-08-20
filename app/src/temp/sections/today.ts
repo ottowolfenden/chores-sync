@@ -2,7 +2,7 @@ import { html } from "lit";
 import { Context } from "../../classes/context.js";
 import { DateOnly } from "../../classes/date-only.js";
 import { setTexts } from "../../functions/element-utils.js";
-import * as Haptics from "../../functions/haptics.js";
+import { addHaptics } from "../../functions/haptics.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -169,7 +169,7 @@ section.addEventListener("open", async () => {
                         ".chore-name": c.name,
                         ".member-name": "temp"
                     });
-                    Haptics.add(addButton);
+                    addHaptics(addButton);
                     return clone;
                 });
                 allChoresList.replaceChildren(template, ...newNodes);

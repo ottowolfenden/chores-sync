@@ -29,5 +29,5 @@ window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
 
-import * as Haptics from "../functions/haptics.js";
-Haptics.add("button");
+import { addHaptics } from "../functions/haptics.js";
+addHaptics("button");

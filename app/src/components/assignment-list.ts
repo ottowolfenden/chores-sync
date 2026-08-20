@@ -3,7 +3,7 @@ import { customElement, state, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { Context } from "../classes/context";
 import { withTransition } from "../functions/element-utils.js";
-import * as Haptics from "../functions/haptics.js";
+import { addHaptics } from "../functions/haptics.js";
 
 @customElement("assignment-list")
 export class AssignmentList extends LitElement {
@@ -23,7 +23,7 @@ export class AssignmentList extends LitElement {
 
     protected update(changed: PropertyValues) {
         super.update(changed);
-        Haptics.add("button");
+        addHaptics("button");
     }
 
     private removeAssignment = (e: Event, assignment: UiAssignment) =>
