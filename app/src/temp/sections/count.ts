@@ -1,6 +1,6 @@
-import { Haptics } from "../../services/haptics.js";
+import * as Haptics from "../../services/haptics.js";
 import { Db } from "../../services/db.js";
-import { ElementUtils } from "../../services/element-utils.js";
+import { setTexts } from "../../services/element-utils.js";
 
 const section = document.querySelector("section#count")!;
 
@@ -31,7 +31,7 @@ section.addEventListener("open", async () => {
     const choreLIs = counts.map(count => {
         const clone = choreLITemplate.content.cloneNode(true) as DocumentFragment;
         const choreLI = clone.firstElementChild as HTMLLIElement;
-        ElementUtils.setTexts(choreLI, {
+        setTexts(choreLI, {
             ".chore-name": count.choreName,
             ".total-count .num": count.memberCounts.reduce((acc, val) => acc + val.total, 0)
         });
@@ -44,7 +44,7 @@ section.addEventListener("open", async () => {
         const choreDetailsLIs = count.memberCounts.map(memberCount => {
             const clone = choreDetailsLITemplate.content.cloneNode(true) as DocumentFragment;
             const choreDetailsLI = clone.firstElementChild as HTMLLIElement;
-            ElementUtils.setTexts(choreDetailsLI, {
+            setTexts(choreDetailsLI, {
                 ".member-name": memberCount.memberName,
                 ".count-text .num": memberCount.total,
                 ".offset .num": (() => {

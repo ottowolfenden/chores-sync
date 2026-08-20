@@ -1,7 +1,7 @@
 import { html } from "lit";
 import { Context } from "../../services/context.js";
-import { ElementUtils } from "../../services/element-utils.js";
-import { Haptics } from "../../services/haptics.js";
+import { setTexts } from "../../services/element-utils.js";
+import * as Haptics from "../../services/haptics.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -159,7 +159,7 @@ section.addEventListener("open", async () => {
                     const clone = template.content.cloneNode(true) as DocumentFragment;
                     const li = clone.firstElementChild as HTMLLIElement;
                     const addButton = clone.querySelector("button") as HTMLButtonElement;
-                    ElementUtils.setTexts(li, {
+                    setTexts(li, {
                         ".chore-name": c.name,
                         ".member-name": "temp"
                     });

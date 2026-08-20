@@ -1,6 +1,6 @@
-import { Cloudflare } from "../services/cloudflare.js";
+import { checkAccess } from "../services/cloudflare.js";
 
-if (await Cloudflare.checkAccess()) location.replace("index.html#today");
+if (await checkAccess()) location.replace("index.html#today");
 
 const showInvalid = (inputName: string) => {
     const input = document.querySelector(`form input[name="${inputName}"]`);
@@ -19,7 +19,7 @@ document.querySelector("form")?.addEventListener("submit", async e => {
     if (!guess) showInvalid("secret");
     if (!name || !guess) return;
 
-    if (await Cloudflare.checkAccess(guess, false)) {
+    if (await checkAccess(guess, false)) {
         localStorage.setItem("name", name);
         localStorage.setItem("secret", guess);
         location.replace("index.html#today");

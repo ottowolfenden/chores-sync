@@ -1,9 +1,9 @@
 import { LitElement, html, type PropertyValues } from "lit";
-import { customElement, state, property, queryAll } from "lit/decorators.js";
+import { customElement, state, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { Context } from "../services/context";
-import { ElementUtils } from "../services/element-utils.js";
-import { Haptics } from "../services/haptics.js";
+import { withTransition } from "../services/element-utils.js";
+import * as Haptics from "../services/haptics.js";
 
 @customElement("assignment-list")
 export class AssignmentList extends LitElement {
@@ -27,7 +27,7 @@ export class AssignmentList extends LitElement {
     }
 
     private removeAssignment = (e: Event, assignment: UiAssignment) =>
-        ElementUtils.withTransition(
+        withTransition(
             (e.target as HTMLElement).closest<HTMLElement>(".assignment"),
             { "height": "0", "opacity": "0", "margin-top": "0" },
             () => void (this.assignments = this.assignments.filter(a => a.id != assignment.id))

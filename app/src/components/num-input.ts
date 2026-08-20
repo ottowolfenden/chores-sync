@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { Haptics } from "../services/haptics.js";
+import * as Haptics from "../services/haptics.js";
 
 @customElement("num-input")
 export class NumInput extends LitElement {

@@ -1,5 +1,5 @@
-import { Cloudflare } from "../services/cloudflare.js";
-if (!(await Cloudflare.checkAccess())) location.replace("login.html");
+import { checkAccess } from "../services/cloudflare.js";
+if (!(await checkAccess())) location.replace("login.html");
 
 import { Context } from "../services/context.js";
 await Context.init();
@@ -16,7 +16,7 @@ import "../temp/sections/history.js";
 import "../temp/sections/settings.js";
 import "../temp/sections/today.js";
 
-import { Haptics } from "../services/haptics.js";
+import * as Haptics from "../services/haptics.js";
 
 const openSection = async (targetId: string) => {
     document.querySelectorAll("section").forEach(s => {
