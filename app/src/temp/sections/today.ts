@@ -1,7 +1,7 @@
+import { html } from "lit";
 import { Context } from "../../services/context.js";
 import { ElementUtils } from "../../services/element-utils.js";
 import { Haptics } from "../../services/haptics.js";
-import { Timer } from "../../services/timer.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -14,8 +14,19 @@ section.addEventListener("open", async () => {
     const assignedStateActions = section.querySelector<StateActions>(
         "#assigned state-actions"
     )!;
-    const allStatus = section.querySelector<StatusMessage>("#all > status-message")!;
     const assignedStatus = section.querySelector<StatusMessage>("#assigned > status-message")!;
+    const allStatus = section.querySelector<StatusMessage>("#all > status-message")!;
+
+    assignedStatus.elsToHide = [assignmentList, assignedStateActions];
+    allStatus.elsToHide = [allChoresList];
+
+    assignedStatus.messages.empty = {
+        icon: "celebration",
+        text: html` Nothing to do!<br />Assign chores with the plus buttons below. `
+    };
+    allStatus.messages.empty.text = html`
+        No chores have been created.<br />Create chores in <a href="#settings">Settings</a>.
+    `;
 
     const tempGetAssignments = (): Promise<UiAssignment[] | null> =>
         new Promise(r =>
