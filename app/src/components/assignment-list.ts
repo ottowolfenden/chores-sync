@@ -18,7 +18,7 @@ export class AssignmentList extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback();
-        this.members = Context.members ?? [];
+        this.members = (await Context.members) ?? [];
     }
 
     protected update(changed: PropertyValues) {

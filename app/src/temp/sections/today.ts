@@ -156,7 +156,7 @@ section.addEventListener("open", async () => {
             }
         })(),
         (async () => {
-            chores = await Context.refreshChores();
+            chores = await Context.chores;
             if (chores == null) allStatus.status = "error";
             else if (chores.length == 0) allStatus.status = "empty";
             else {

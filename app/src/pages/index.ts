@@ -1,9 +1,6 @@
 import { checkAccess } from "../functions/cloudflare.js";
 if (!(await checkAccess())) location.replace("login.html");
 
-import { Context } from "../classes/context.js";
-await Context.init();
-
 import "../components/assignment-list.js";
 import "../components/md-icon.js";
 import "../components/state-actions.js";

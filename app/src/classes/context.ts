@@ -3,29 +3,24 @@ import { getChores, getMembers, getCurrentMember } from "../functions/db.js";
 export class Context {
     private constructor() {}
 
-    static readonly init = async () =>
-        await Promise.all([
-            this.refreshChores(),
-            this.refreshMembers(),
-            this.refreshCurrentMember()
-        ]);
-
-    private static _chores: UiChore[] | null = null;
-    static get chores(): UiChore[] | null {
-        return Context._chores;
+    private static choresCache: Promise<UiChore[] | null> | null = null;
+    static get chores(): Promise<UiChore[] | null> {
+        Context.choresCache ??= getChores();
+        return Context.choresCache;
     }
-    static readonly refreshChores = async () => (Context._chores = await getChores());
+    static updateChores = () => (Context.choresCache = getChores());
 
-    private static _members: UiMember[] | null = null;
-    static get members(): UiMember[] | null {
-        return Context._members;
+    private static membersCache: Promise<UiMember[] | null> | null = null;
+    static get members(): Promise<UiMember[] | null> {
+        Context.membersCache ??= getMembers();
+        return Context.membersCache;
     }
-    static readonly refreshMembers = async () => (Context._members = await getMembers());
+    static updateMembers = () => (Context.membersCache = getMembers());
 
-    private static _currentMember: UiMember | null = null;
-    static get currentMember(): UiMember | null {
-        return Context._currentMember;
+    private static currentMemberCache: Promise<UiMember | null> | null = null;
+    static get currentMember(): Promise<UiMember | null> {
+        Context.currentMemberCache ??= getCurrentMember();
+        return Context.currentMemberCache;
     }
-    static readonly refreshCurrentMember = async () =>
-        (Context._currentMember = await getCurrentMember());
+    static updateCurrentMember = () => (Context.currentMemberCache = getCurrentMember());
 }
