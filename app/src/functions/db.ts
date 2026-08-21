@@ -1,14 +1,17 @@
 import { Context } from "../classes/context.js";
 import { DateOnly } from "../classes/date-only.js";
 
+const timeout = 10000;
+
 export const getChores = async (): Promise<UiChore[] | null> => {
     const guess = localStorage.getItem("secret");
     if (!guess) return null;
     const response = await fetch("/api/chores", {
         method: "GET",
-        headers: { "Authorization": guess }
-    });
-    if (!response.ok) return null;
+        headers: { "Authorization": guess },
+        signal: AbortSignal.timeout(timeout)
+    }).catch(() => null);
+    if (!response?.ok) return null;
 
     const data: DbChore[] = await response.json();
     return data.map(
@@ -26,9 +29,10 @@ export const getCounts = async (): Promise<UiCount[] | null> => {
     if (!guess) return null;
     const response = await fetch("/api/counts", {
         method: "GET",
-        headers: { "Authorization": guess }
-    });
-    if (!response.ok) return null;
+        headers: { "Authorization": guess },
+        signal: AbortSignal.timeout(timeout)
+    }).catch(() => null);
+    if (!response?.ok) return null;
 
     const data: DbCount[] = await response.json();
     const choreNames = [...new Set(data.map(d => d["chore_name"]))];
@@ -62,10 +66,11 @@ export const setCount = async (uiCount: UiCount): Promise<boolean> => {
                 "total": mc.offset
             }))
         ),
-        headers: { "Authorization": guess }
-    });
+        headers: { "Authorization": guess },
+        signal: AbortSignal.timeout(timeout)
+    }).catch(() => null);
 
-    return response.ok;
+    return response?.ok ?? false;
 };
 
 export const getMembers = async (): Promise<UiMember[] | null> => {
@@ -73,9 +78,10 @@ export const getMembers = async (): Promise<UiMember[] | null> => {
     if (!guess) return null;
     const response = await fetch("/api/members", {
         method: "GET",
-        headers: { "Authorization": guess }
-    });
-    if (!response.ok) return null;
+        headers: { "Authorization": guess },
+        signal: AbortSignal.timeout(timeout)
+    }).catch(() => null);
+    if (!response?.ok) return null;
 
     const data: DbMember[] = await response.json();
     return data.map(
@@ -94,9 +100,10 @@ export const getCurrentMember = async (): Promise<UiMember | null> => {
     if (!guess || !name) return null;
     const response = await fetch(`/api/members?name=${encodeURIComponent(name)}`, {
         method: "GET",
-        headers: { "Authorization": guess }
-    });
-    if (!response.ok) return null;
+        headers: { "Authorization": guess },
+        signal: AbortSignal.timeout(timeout)
+    }).catch(() => null);
+    if (!response?.ok) return null;
 
     const data: DbMember = await response.json();
     return {
@@ -115,9 +122,10 @@ export const getTodayAssignments = async (): Promise<
     const today = new Date().toISOString().split("T")[0];
     const response = await fetch(`/api/assignments?min-date=${today}`, {
         method: "GET",
-        headers: { "Authorization": guess }
-    });
-    if (!response.ok) return null;
+        headers: { "Authorization": guess },
+        signal: AbortSignal.timeout(timeout)
+    }).catch(() => null);
+    if (!response?.ok) return null;
 
     const data: DbAssignment[] = await response.json();
     const chores = await Context.chores;
