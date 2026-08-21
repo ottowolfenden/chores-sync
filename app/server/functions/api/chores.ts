@@ -1,0 +1,11 @@
+import { neon } from "@neondatabase/serverless";
+
+export const onRequestGet: PagesFunction<Env> = async context => {
+    try {
+        const sql = neon(context.env.DATABASE_URL);
+        return Response.json(await sql`SELECT * FROM chores ORDER BY chore_name;`);
+    } catch (err) {
+        console.error(err);
+        return Response.json(null, { status: 500 });
+    }
+};

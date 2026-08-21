@@ -4,7 +4,9 @@ const icons = [
     ...new Set(fs.readFileSync("material-symbols.txt", "utf-8").trim().split(/\s+/).sort())
 ].join(",");
 
-const url = `https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1&icon_names=${icons}`;
+const url =
+    "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:" +
+    `opsz,wght,FILL@20..48,100..700,0..1&icon_names=${icons}`;
 const css = await fetch(url, {
     headers: {
         "User-Agent":
@@ -17,6 +19,6 @@ const end = css.indexOf(")", start);
 const fontUrl = css.substring(start, end);
 const font = await fetch(fontUrl).then(r => r.arrayBuffer());
 
-fs.writeFileSync("app/src/assets/fonts/material-symbols.woff2", Buffer.from(font));
+fs.writeFileSync("app/client/src/assets/fonts/material-symbols.woff2", Buffer.from(font));
 
 console.log("downloaded material symbols");

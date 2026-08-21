@@ -27,3 +27,8 @@ type DbCount = {
     is_offset: boolean;
     total: number;
 };
+
+type DbTurn = {
+    chore_name: string;
+    member_name: string;
+};
