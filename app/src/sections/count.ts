@@ -1,6 +1,6 @@
-import { addHaptics } from "../../functions/haptics.js";
-import { getCounts, setCount } from "../../functions/db.js";
-import { setTexts } from "../../functions/element-utils.js";
+import { addHaptics } from "../functions/haptics.js";
+import { getCounts, setCount } from "../functions/db.js";
+import { setTexts } from "../functions/element-utils.js";
 
 const section = document.querySelector("section#count")!;
 
@@ -239,7 +239,7 @@ section.addEventListener("open", async () => {
 
             numInput.addEventListener(
                 "keydown",
-                e => {
+                (e: KeyboardEvent) => {
                     if (e.key == "Enter") {
                         li.toggleAttribute("data-edit-mode", false);
                         setUiCount(li);

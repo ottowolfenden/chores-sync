@@ -1,5 +1,4 @@
 import { neon } from "@neondatabase/serverless";
-import type { PagesFunction } from "@cloudflare/workers-types";
 
 export const onRequestGet: PagesFunction<Env> = async context => {
     try {

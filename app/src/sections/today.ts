@@ -1,8 +1,8 @@
 import { html } from "lit";
-import { Context } from "../../classes/context.js";
-import { DateOnly } from "../../classes/date-only.js";
-import { setTexts } from "../../functions/element-utils.js";
-import { addHaptics } from "../../functions/haptics.js";
+import { Context } from "../classes/context.js";
+import { DateOnly } from "../classes/date-only.js";
+import { setTexts } from "../functions/element-utils.js";
+import { addHaptics } from "../functions/haptics.js";
 
 const section = document.querySelector("section#today")!;
 

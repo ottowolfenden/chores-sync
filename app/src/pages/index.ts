@@ -9,10 +9,10 @@ else
         import("../components/num-input.js"),
         import("../components/section-nav.js"),
         import("../components/status-message.js"),
-        import("../temp/sections/count.js"),
-        import("../temp/sections/history.js"),
-        import("../temp/sections/settings.js"),
-        import("../temp/sections/today.js")
+        import("../sections/count.js"),
+        import("../sections/history.js"),
+        import("../sections/settings.js"),
+        import("../sections/today.js")
     ]);
 
 const handleRoute = async () => {
