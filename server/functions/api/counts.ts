@@ -1,5 +1,4 @@
-import { neon } from "@neondatabase/serverless";
-import { getCounts } from "../../services/count-service";
+import { getCounts, setCounts } from "../../services/count-service";
 
 export const onRequestGet: PagesFunction<Env> = async context => {
     try {
@@ -12,43 +11,14 @@ export const onRequestGet: PagesFunction<Env> = async context => {
 
 export const onRequestPost: PagesFunction<Env> = async context => {
     try {
-        const sql = neon(context.env.DATABASE_URL);
-
-        const data = (await context.request.json()) as {
-            chore_name: string;
-            member_name: string;
-            is_offset: boolean;
-            total: number;
-        }[];
+        const data = (await context.request.json()) as DbCount[];
 
         if (data.some(d => !d.is_offset)) throw new Error("non-offset value passed");
         if (data.some(d => typeof d.total != "number" || isNaN(d.total)))
             throw new Error("total not a number");
 
-        return Response.json(
-            await sql`
-                INSERT INTO assignments (
-                    assign_date,
-                    quantity,
-                    chore_id,
-                    member_id
-                )
-                SELECT
-                    '-infinity',
-                    input.total,
-                    c.chore_id,
-                    m.member_id
-                FROM json_to_recordset(${JSON.stringify(data)}::json) AS input (
-                    chore_name TEXT,
-                    member_name TEXT,
-                    total INT
-                )
-                JOIN chores c on c.chore_name = input.chore_name
-                JOIN members m on m.member_name = input.member_name
-                ON CONFLICT (member_id, chore_id, assign_date)
-                DO UPDATE SET quantity = EXCLUDED.quantity;
-            `
-        );
+        await setCounts(context.env, data);
+        return Response.json(null, { status: 200 });
     } catch (err) {
         console.error(err);
         return Response.json(null, { status: 500 });

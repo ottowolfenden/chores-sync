@@ -19,3 +19,29 @@ export const getCounts = async (env: Env): Promise<DbCount[]> => {
         ORDER BY c.chore_name, m.member_name, o.is_offset;
     `) as DbCount[];
 };
+
+export const setCounts = async (env: Env, counts: DbCount[]): Promise<void> => {
+    const sql = neon(env.DATABASE_URL);
+    await sql`
+        INSERT INTO assignments (
+            assign_date,
+            quantity,
+            chore_id,
+            member_id
+        )
+        SELECT
+            '-infinity',
+            input.total,
+            c.chore_id,
+            m.member_id
+        FROM json_to_recordset(${JSON.stringify(counts)}::json) AS input (
+            chore_name TEXT,
+            member_name TEXT,
+            total INT
+        )
+        JOIN chores c on c.chore_name = input.chore_name
+        JOIN members m on m.member_name = input.member_name
+        ON CONFLICT (member_id, chore_id, assign_date)
+        DO UPDATE SET quantity = EXCLUDED.quantity;
+    `;
+};

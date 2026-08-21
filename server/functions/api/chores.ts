@@ -1,9 +1,8 @@
-import { neon } from "@neondatabase/serverless";
+import { getAllChores } from "../../services/chores-service";
 
 export const onRequestGet: PagesFunction<Env> = async context => {
     try {
-        const sql = neon(context.env.DATABASE_URL);
-        return Response.json(await sql`SELECT * FROM chores ORDER BY chore_name;`);
+        return Response.json(await getAllChores(context.env));
     } catch (err) {
         console.error(err);
         return Response.json(null, { status: 500 });
