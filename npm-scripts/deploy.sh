@@ -1,4 +1,4 @@
 #!/bin/bash
 
 npm run build
-wrangler pages deploy app/dist
+wrangler pages deploy ../app/dist --cwd server
