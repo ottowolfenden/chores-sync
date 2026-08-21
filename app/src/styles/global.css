@@ -26,6 +26,7 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     font-family: "Google Sans Flex", sans-serif;
+    scrollbar-color: var(--outline) var(--surface-container-low);
 
     &:focus-visible {
         outline: solid var(--primary) 2px;
