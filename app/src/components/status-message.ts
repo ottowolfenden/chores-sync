@@ -24,7 +24,8 @@ export class StatusMessage extends LitElement {
         },
         error: {
             icon: "error",
-            text: html`Failed to fetch data.<br /><a href="">Retry</a>`
+            text: html`Failed to fetch data.<br />
+                <a href="#" @click=${() => location.reload()}>Retry</a>`
         }
     };
 
