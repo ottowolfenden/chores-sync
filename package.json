@@ -1,9 +1,9 @@
 {
     "scripts": {
-        "build": "./npm-scripts/build.sh",
-        "deploy": "./npm-scripts/deploy.sh",
-        "start": "./npm-scripts/start.sh",
-        "watch": "./npm-scripts/watch.sh"
+        "build": "./scripts/build.sh",
+        "deploy": "./scripts/deploy.sh",
+        "start": "./scripts/start.sh",
+        "watch": "./scripts/watch.sh"
     },
     "devDependencies": {
         "@cloudflare/workers-types": "^5.20260810.1",
