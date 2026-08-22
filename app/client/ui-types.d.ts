@@ -14,11 +14,11 @@ type UiChore = {
 
 type UiAssignment = {
     id: number;
-    date: DateOnly;
+    date: import("./src/classes/date-only").DateOnly;
     quantity: number;
-    chore: Chore;
-    turnMember: Member;
-    chosenMember: Member;
+    chore: UiChore;
+    turnMember: UiMember;
+    chosenMember: UiMember;
 };
 
 type UiCount = {

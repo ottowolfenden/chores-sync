@@ -130,13 +130,24 @@ export const getTodayAssignments = async (): Promise<
     const data: DbAssignment[] = await response.json();
     const chores = await Context.chores;
     const members = await Context.members;
+
+    if (
+        !chores ||
+        !members ||
+        !data.every(
+            d =>
+                chores.some(c => c.id == d["chore_id"]) &&
+                members.some(m => m.id == d["member_id"])
+        )
+    )
+        return null;
     return data.map(
         (d): Omit<UiAssignment, "turnMember"> => ({
             id: d["assignment_id"],
             date: new DateOnly(d["assign_date"]),
             quantity: d["quantity"],
-            chore: chores?.find(c => c.id == d["chore_id"]),
-            chosenMember: members?.find(m => m.id == d["member_id"])
+            chore: chores.find(c => c.id == d["chore_id"])!,
+            chosenMember: members.find(m => m.id == d["member_id"])!
         })
     );
 };
