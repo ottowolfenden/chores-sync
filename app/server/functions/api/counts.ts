@@ -9,7 +9,7 @@ export const onRequestGet: PagesFunction<Env> = async context => {
                     c.chore_name,
                     m.member_name,
                     o.is_offset,
-                    coalesce(sum(a.quantity), 0) total
+                    COALESCE(SUM(a.quantity), 0) total
                 FROM chores c
                 CROSS JOIN members m
                 CROSS JOIN (SELECT DISTINCT is_offset FROM assignments) o
@@ -36,30 +36,17 @@ export const onRequestPut: PagesFunction<Env> = async context => {
         if (data.some(d => typeof d.total != "number" || isNaN(d.total)))
             throw new Error("total not a number");
 
-        return Response.json(
-            await sql`
-                INSERT INTO assignments (
-                    assign_date,
-                    quantity,
-                    chore_id,
-                    member_id
-                )
-                SELECT
-                    '-infinity',
-                    input.total,
-                    c.chore_id,
-                    m.member_id
-                FROM json_to_recordset(${JSON.stringify(data)}::json) AS input (
-                    chore_name TEXT,
-                    member_name TEXT,
-                    total INT
-                )
-                JOIN chores c on c.chore_name = input.chore_name
-                JOIN members m on m.member_name = input.member_name
-                ON CONFLICT (member_id, chore_id, assign_date)
-                DO UPDATE SET quantity = EXCLUDED.quantity;
-            `
-        );
+        await sql`
+            INSERT INTO assignments (assign_date, quantity, chore_id, member_id)
+            SELECT '-infinity', input.total, c.chore_id, m.member_id
+            FROM JSON_TO_RECORDSET(${JSON.stringify(data)}::json)
+            AS input (chore_name TEXT, member_name TEXT, total INT)
+            JOIN chores c ON c.chore_name = input.chore_name
+            JOIN members m ON m.member_name = input.member_name
+            ON CONFLICT (member_id, chore_id, assign_date)
+            DO UPDATE SET quantity = EXCLUDED.quantity;
+        `;
+        return Response.json(null);
     } catch (err) {
         console.error(err);
         return Response.json(null, { status: 500 });

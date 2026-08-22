@@ -7,9 +7,9 @@ export const onRequestGet: PagesFunction<Env> = async context => {
                 SELECT 
                     c.chore_id,
                     m.member_id,
-                    coalesce(sum(a.quantity), 0) total,
-                    coalesce(
-                        max(a.assign_date) FILTER (WHERE a.assign_date < CURRENT_DATE),
+                    COALESCE(SUM(a.quantity), 0) total,
+                    COALESCE(
+                        MAX(a.assign_date) FILTER (WHERE a.assign_date < CURRENT_DATE),
                         '-infinity'
                     ) last_assign_date
                 FROM chores c
