@@ -15,7 +15,7 @@
         "noUncheckedSideEffectImports": true,
         "moduleDetection": "force",
         "skipLibCheck": true,
-        "types": ["@cloudflare/workers-types", "./types.d.ts", "../shared/db-types.d.ts"],
+        "types": ["@cloudflare/workers-types", "./db-types.d.ts"],
         "lib": ["ESNext"]
     }
 }

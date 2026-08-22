@@ -1,3 +1,8 @@
+type Env = {
+    DATABASE_URL: string;
+    SECRET: string;
+};
+
 type DbMember = {
     member_id: number;
     member_name: string;
