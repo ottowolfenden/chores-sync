@@ -119,7 +119,7 @@ export const getTodayAssignments = async (): Promise<
 > => {
     const guess = localStorage.getItem("secret");
     if (!guess) return null;
-    const today = new Date().toISOString().split("T")[0];
+    const today = new DateOnly().toString();
     const response = await fetch(`/api/assignments?min-date=${today}`, {
         method: "GET",
         headers: { "Authorization": guess },
