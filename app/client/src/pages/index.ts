@@ -29,6 +29,3 @@ const handleRoute = async () => {
 window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
-
-import { addHaptics } from "../functions/haptics.js";
-addHaptics("button");
