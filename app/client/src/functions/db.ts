@@ -56,7 +56,7 @@ export const setCount = async (uiCount: UiCount): Promise<boolean> => {
     if (!guess) return false;
 
     const response = await fetch("/api/counts", {
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify(
             uiCount.memberCounts.map(mc => ({
                 "chore_name": uiCount.choreName,

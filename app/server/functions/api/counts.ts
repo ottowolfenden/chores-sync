@@ -27,16 +27,10 @@ export const onRequestGet: PagesFunction<Env> = async context => {
     }
 };
 
-export const onRequestPost: PagesFunction<Env> = async context => {
+export const onRequestPut: PagesFunction<Env> = async context => {
     try {
         const sql = neon(context.env.DATABASE_URL);
-
-        const data = (await context.request.json()) as {
-            chore_name: string;
-            member_name: string;
-            is_offset: boolean;
-            total: number;
-        }[];
+        const data = (await context.request.json()) as DbCount[];
 
         if (data.some(d => !d.is_offset)) throw new Error("non-offset value passed");
         if (data.some(d => typeof d.total != "number" || isNaN(d.total)))
