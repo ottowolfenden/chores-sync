@@ -28,7 +28,11 @@ type DbCount = {
     total: number;
 };
 
-type DbTurn = {
-    chore_name: string;
-    member_name: string;
+type DbTurnData = {
+    chore_id: number;
+    member_id: number;
+    total: number;
+    last_assign_date: Date | number;
 };
+
+type DbTurn = { chore_id: number; member_id: number };
