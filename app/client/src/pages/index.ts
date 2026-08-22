@@ -9,6 +9,7 @@ else
         import("../components/num-input.js"),
         import("../components/section-nav.js"),
         import("../components/status-message.js"),
+        import("../components/turns-list.js"),
         import("../sections/count.js"),
         import("../sections/history.js"),
         import("../sections/settings.js"),

@@ -5,6 +5,7 @@ declare global {
     type NumInput = import("./src/components/num-input").NumInput;
     type SectionNav = import("./src/components/section-nav").SectionNav;
     type StatusMessage = import("./src/components/status-message").StatusMessage;
+    type TurnsList = import("./src/components/turns-list").TurnsList;
 
     interface HTMLElementTagNameMap {
         "assignment-list": AssignmentList;
@@ -13,6 +14,7 @@ declare global {
         "num-input": NumInput;
         "section-nav": SectionNav;
         "status-message": StatusMessage;
+        "turns-list": TurnsList;
     }
 }
 

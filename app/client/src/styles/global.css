@@ -4,6 +4,7 @@
 @import "components/section-nav.css";
 @import "components/state-actions.css";
 @import "components/status-message.css";
+@import "components/turns-list.css";
 
 @import "sections/count.css";
 @import "sections/history.css";

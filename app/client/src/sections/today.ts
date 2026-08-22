@@ -1,29 +1,28 @@
 import { html } from "lit";
-import { Context } from "../classes/context.js";
 import { DateOnly } from "../classes/date-only.js";
-import { setTexts } from "../functions/element-utils.js";
-import { addHaptics } from "../functions/haptics.js";
+import { getTurns } from "../functions/db.js";
 
 const section = document.querySelector("section#today")!;
 
 section.addEventListener("open", async () => {
-    const allChoresList = section.querySelector("#all > ul")!;
-    const template = allChoresList.querySelector("template")!;
+    const turnsList = section.querySelector("turns-list")!;
     const assignmentList = section.querySelector("assignment-list")!;
-    const assignedStateActions = section.querySelector<StateActions>(
-        "#assigned state-actions"
+    const assignmentStateActions = section.querySelector<StateActions>(
+        "#assignments state-actions"
     )!;
-    const assignedStatus = section.querySelector<StatusMessage>("#assigned > status-message")!;
-    const allStatus = section.querySelector<StatusMessage>("#all > status-message")!;
+    const assignmentsMessage = section.querySelector<StatusMessage>(
+        "#assignments status-message"
+    )!;
+    const turnsMessage = section.querySelector<StatusMessage>("#turns status-message")!;
 
-    assignedStatus.elsToHide = [assignmentList, assignedStateActions];
-    allStatus.elsToHide = [allChoresList];
+    assignmentsMessage.elsToHide = [assignmentList, assignmentStateActions];
+    turnsMessage.elsToHide = [turnsList];
 
-    assignedStatus.messages.empty = {
+    assignmentsMessage.messages.empty = {
         icon: "celebration",
         text: html` Nothing to do!<br />Assign chores with the plus buttons below. `
     };
-    allStatus.messages.empty.text = html`
+    turnsMessage.messages.empty.text = html`
         No chores have been created.<br />Create chores in <a href="#settings">Settings</a>.
     `;
 
@@ -105,20 +104,20 @@ section.addEventListener("open", async () => {
         );
 
     let assignments: UiAssignment[] | null;
-    let chores: UiChore[] | null;
+    let turns: UiTurn[] | null;
 
-    assignedStatus.status = allStatus.status = "loading";
+    assignmentsMessage.status = turnsMessage.status = "loading";
 
     await Promise.all([
         (async () => {
             assignments = await tempGetAssignments();
-            if (assignments == null) assignedStatus.status = "error";
-            else if (assignments.length == 0) assignedStatus.status = "empty";
+            if (assignments == null) assignmentsMessage.status = "error";
+            else if (assignments.length == 0) assignmentsMessage.status = "empty";
             else {
-                assignedStatus.status = "success";
+                assignmentsMessage.status = "success";
                 assignmentList.assignments = clone(assignments);
 
-                assignedStateActions.conf = {
+                assignmentStateActions.conf = {
                     normal: {
                         icon: "edit",
                         label: "Edit",
@@ -132,11 +131,11 @@ section.addEventListener("open", async () => {
                             if (success) assignments = clone(assignmentList.assignments);
                             else assignmentList.assignments = clone(assignments!);
                             if (assignmentList.assignments.length == 0) {
-                                assignedStateActions.state = "success";
+                                assignmentStateActions.state = "success";
                                 setTimeout(
-                                    () => (assignedStatus.status = "empty"),
-                                    assignedStateActions.conf.success?.msToShow ??
-                                        assignedStateActions.defaultConf.success.msToShow
+                                    () => (assignmentsMessage.status = "empty"),
+                                    assignmentStateActions.conf.success?.msToShow ??
+                                        assignmentStateActions.defaultConf.success.msToShow
                                 );
                             }
 
@@ -156,29 +155,18 @@ section.addEventListener("open", async () => {
             }
         })(),
         (async () => {
-            chores = await Context.chores;
-            if (chores == null) allStatus.status = "error";
-            else if (chores.length == 0) allStatus.status = "empty";
+            turns = await getTurns();
+            if (turns == null) turnsMessage.status = "error";
+            else if (turns.length == 0) turnsMessage.status = "empty";
             else {
-                allStatus.status = "success";
-                const newNodes = chores.map(c => {
-                    const clone = template.content.cloneNode(true) as DocumentFragment;
-                    const li = clone.firstElementChild as HTMLLIElement;
-                    const addButton = clone.querySelector("button") as HTMLButtonElement;
-                    setTexts(li, {
-                        ".chore-name": c.name,
-                        ".member-name": "temp"
-                    });
-                    addHaptics(addButton);
-                    return clone;
-                });
-                allChoresList.replaceChildren(template, ...newNodes);
+                turnsMessage.status = "success";
+                turnsList.turns = turns;
             }
         })()
     ]);
 
     section.addEventListener("close", () => {
-        assignedStateActions.conf.cancel?.click?.();
-        assignedStateActions.state = "normal";
+        assignmentStateActions.conf.cancel?.click?.();
+        assignmentStateActions.state = "normal";
     });
 });

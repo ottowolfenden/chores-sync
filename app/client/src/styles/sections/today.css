@@ -8,6 +8,10 @@ section#today {
     }
 
     @media (width <= 350px) {
+        turns-list {
+            gap: 0 10px;
+        }
+
         state-actions button {
             --collapse: 1;
         }
@@ -22,49 +26,6 @@ section#today {
     @media ((width <= 475px) or ((width <= 615px) and (width >= 550px))) {
         state-actions button:is(.outlined, .tonal) {
             --collapse: 1;
-        }
-    }
-
-    #all ul {
-        background-color: var(--surface-container-low);
-        color: var(--on-surface);
-        border-radius: 6px;
-        padding: 5px 10px;
-        display: grid;
-        grid-template-columns: fit-content(60%) 1fr auto 1fr max-content;
-        gap: 0 17px;
-        margin-top: 5px;
-
-        li {
-            display: grid;
-            grid-template-columns: subgrid;
-            grid-column: 1 / -1;
-            align-items: center;
-            border-bottom: 2px solid rgb(from var(--secondary) r g b / 0.05);
-
-            &:last-child {
-                border-bottom: none;
-            }
-
-            .chore-name {
-                font-size: 17px;
-                grid-column: 1;
-                margin: 10px 0 10px 8px;
-                color: var(--on-surface-variant);
-            }
-
-            .member-name {
-                grid-column: 3;
-                display: block;
-                min-width: 0;
-                max-width: 100%;
-                font-size: 18px;
-            }
-
-            button {
-                grid-column: 5;
-                --size: 16;
-            }
         }
     }
 }
