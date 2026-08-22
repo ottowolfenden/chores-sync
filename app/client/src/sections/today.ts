@@ -1,6 +1,6 @@
 import { html } from "lit";
-import { DateOnly } from "../classes/date-only.js";
-import { getTurns } from "../functions/db.js";
+import { getTodayAssignments } from "../functions/db.js";
+import { Context } from "../classes/context.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -38,78 +38,6 @@ section.addEventListener("open", async () => {
         No chores have been created.<br />Create chores in <a href="#settings">Settings</a>.
     `;
 
-    const tempGetAssignments = (): Promise<UiAssignment[] | null> =>
-        new Promise(r =>
-            setTimeout(
-                () => {
-                    if (Math.random() < 0.02) r(null);
-                    if (Math.random() < 0.02) r([]);
-                    r([
-                        {
-                            id: 1,
-                            date: new DateOnly(),
-                            quantity: 1,
-                            chore: {
-                                id: 1,
-                                name: "Washing up",
-                                isDaily: true,
-                                limitPerDay: 1
-                            },
-                            turnMember: { id: 1, name: "Otto", isActive: true, isAdmin: true },
-                            chosenMember: {
-                                id: 1,
-                                name: "Otto",
-                                isActive: true,
-                                isAdmin: true
-                            }
-                        },
-                        {
-                            id: 2,
-                            date: new DateOnly(),
-                            quantity: 1,
-                            chore: {
-                                id: 2,
-                                name: "Cooking supper",
-                                isDaily: false,
-                                limitPerDay: null
-                            },
-                            turnMember: { id: 1, name: "Otto", isActive: true, isAdmin: true },
-                            chosenMember: {
-                                id: 3,
-                                name: "Ivo",
-                                isActive: true,
-                                isAdmin: false
-                            }
-                        },
-                        {
-                            id: 3,
-                            date: new DateOnly(),
-                            quantity: 2,
-                            chore: {
-                                id: 8,
-                                name: "Emptying dishwasher",
-                                isDaily: false,
-                                limitPerDay: null
-                            },
-                            turnMember: { id: 1, name: "Otto", isActive: true, isAdmin: true },
-                            chosenMember: {
-                                id: 2,
-                                name: "Emily",
-                                isActive: true,
-                                isAdmin: true
-                            }
-                        }
-                    ]);
-                },
-                Math.round(Math.random() * 2000)
-            )
-        );
-
-    const clone = (list: UiAssignment[]) =>
-        JSON.parse(JSON.stringify(list), (key, val) =>
-            key == "date" ? new DateOnly(val) : val
-        );
-
     const tempSetAssignments = (): Promise<boolean> =>
         new Promise(r =>
             setTimeout(() => r(Math.random() > 0.02), Math.round(Math.random() * 2000))
@@ -122,12 +50,21 @@ section.addEventListener("open", async () => {
 
     await Promise.all([
         (async () => {
-            assignments = await tempGetAssignments();
+            turns = await Context.turns;
+            if (turns == null) turnsUi.message.status = "error";
+            else if (turns.length == 0) turnsUi.message.status = "empty";
+            else {
+                turnsUi.message.status = "success";
+                turnsUi.list.turns = turns;
+            }
+        })(),
+        (async () => {
+            assignments = await getTodayAssignments();
             if (assignments == null) assignmentsUi.message.status = "error";
             else if (assignments.length == 0) assignmentsUi.message.status = "empty";
             else {
                 assignmentsUi.message.status = "success";
-                assignmentsUi.list.assignments = clone(assignments);
+                assignmentsUi.list.assignments = structuredClone(assignments);
 
                 assignmentsUi.stateActions.conf = {
                     normal: {
@@ -140,8 +77,10 @@ section.addEventListener("open", async () => {
                             assignmentsUi.list.toggleAttribute("edit-mode", false);
 
                             const success = await tempSetAssignments();
-                            if (success) assignments = clone(assignmentsUi.list.assignments);
-                            else assignmentsUi.list.assignments = clone(assignments!);
+                            if (success)
+                                assignments = structuredClone(assignmentsUi.list.assignments);
+                            else
+                                assignmentsUi.list.assignments = structuredClone(assignments!);
                             if (assignmentsUi.list.assignments.length == 0) {
                                 assignmentsUi.stateActions.state = "success";
                                 setTimeout(
@@ -157,22 +96,13 @@ section.addEventListener("open", async () => {
                     cancel: {
                         click: () => {
                             assignmentsUi.list.toggleAttribute("edit-mode", false);
-                            assignmentsUi.list.assignments = clone(assignments!);
+                            assignmentsUi.list.assignments = structuredClone(assignments!);
                         }
                     },
                     loading: {},
                     success: {},
                     error: {}
                 };
-            }
-        })(),
-        (async () => {
-            turns = await getTurns();
-            if (turns == null) turnsUi.message.status = "error";
-            else if (turns.length == 0) turnsUi.message.status = "empty";
-            else {
-                turnsUi.message.status = "success";
-                turnsUi.list.turns = turns;
             }
         })()
     ]);
