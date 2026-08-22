@@ -14,7 +14,7 @@ type UiChore = {
 
 type UiAssignment = {
     id: number;
-    date: import("./src/classes/date-only").DateOnly;
+    date: Date | number;
     quantity: number;
     chore: UiChore;
     turnMember: UiMember;
