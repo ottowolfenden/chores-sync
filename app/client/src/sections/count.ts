@@ -1,6 +1,7 @@
 import { addHaptics } from "../functions/haptics.js";
 import { getCounts, setCount } from "../functions/db.js";
 import { setTexts } from "../functions/element-utils.js";
+import { Context } from "../classes/context.js";
 
 const section = document.querySelector("section#count")!;
 
@@ -251,9 +252,13 @@ section.addEventListener("open", async () => {
         });
     });
 
-    section.addEventListener("close", () => refreshExpandAllButtonState(false), {
-        signal: controller.signal
-    });
-
-    section.addEventListener("close", () => controller.abort(), { once: true });
+    section.addEventListener(
+        "close",
+        () => {
+            refreshExpandAllButtonState(false);
+            Context.updateTurns();
+            controller.abort();
+        },
+        { once: true }
+    );
 });

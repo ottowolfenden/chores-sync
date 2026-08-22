@@ -1,4 +1,4 @@
-import { getChores, getMembers, getCurrentMember } from "../functions/db.js";
+import { getChores, getMembers, getCurrentMember, getTurns } from "../functions/db.js";
 
 export class Context {
     private constructor() {}
@@ -23,4 +23,11 @@ export class Context {
         return Context.currentMemberCache;
     }
     static updateCurrentMember = () => (Context.currentMemberCache = getCurrentMember());
+
+    private static turnsCache: Promise<UiTurn[] | null> | null = null;
+    static get turns(): Promise<UiTurn[] | null> {
+        Context.turnsCache ??= getTurns();
+        return Context.turnsCache;
+    }
+    static updateTurns = () => (Context.turnsCache = getTurns());
 }
