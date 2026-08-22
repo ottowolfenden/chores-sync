@@ -3,7 +3,7 @@ import { checkAccess } from "../functions/cloudflare.js";
 if (!(await checkAccess())) location.replace("login.html");
 else
     await Promise.all([
-        import("../components/assignment-list.js"),
+        import("../components/assignments-list.js"),
         import("../components/md-icon.js"),
         import("../components/state-actions.js"),
         import("../components/num-input.js"),

@@ -1,9 +1,9 @@
-assignment-list {
+assignments-list {
     display: flex;
     flex-direction: column;
 }
 
-assignment-list .assignment {
+assignments-list .assignment {
     display: flex;
     align-items: center;
     background-color: var(--surface-container-low);
@@ -53,7 +53,7 @@ assignment-list .assignment {
     }
 }
 
-assignment-list[edit-mode] .assignment {
+assignments-list[edit-mode] .assignment {
     .name-dropdown {
         width: 30%;
         flex-shrink: 0;
@@ -130,7 +130,7 @@ assignment-list[edit-mode] .assignment {
     }
 }
 
-assignment-list:not([edit-mode]) .assignment {
+assignments-list:not([edit-mode]) .assignment {
     .name-dropdown {
         max-width: 40%;
         width: auto;

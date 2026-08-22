@@ -5,8 +5,8 @@ import { Context } from "../classes/context";
 import { withTransition } from "../functions/element-utils.js";
 import { addHaptics } from "../functions/haptics.js";
 
-@customElement("assignment-list")
-export class AssignmentList extends LitElement {
+@customElement("assignments-list")
+export class AssignmentsList extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: Array }) assignments: UiAssignment[] = [];
