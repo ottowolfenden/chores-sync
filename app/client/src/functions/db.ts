@@ -151,3 +151,35 @@ export const getTodayAssignments = async (): Promise<
         })
     );
 };
+
+export const getTurns = async (): Promise<UiTurn[] | null> => {
+    const guess = localStorage.getItem("secret");
+    if (!guess) return null;
+    const response = await fetch("/api/turns", {
+        method: "GET",
+        headers: { "Authorization": guess },
+        signal: AbortSignal.timeout(timeout)
+    }).catch(() => null);
+    if (!response?.ok) return null;
+
+    const data: DbTurn[] = await response.json();
+    const chores = await Context.chores;
+    const members = await Context.members;
+
+    if (
+        !chores ||
+        !members ||
+        !data.every(
+            d =>
+                chores.some(c => c.id == d["chore_id"]) &&
+                members.some(m => m.id == d["member_id"])
+        )
+    )
+        return null;
+    return data.map(
+        (d): UiTurn => ({
+            chore: chores.find(c => c.id == d["chore_id"])!,
+            member: members.find(m => m.id == d["member_id"])!
+        })
+    );
+};

@@ -29,3 +29,5 @@ type UiCount = {
         offset: number;
     }[];
 };
+
+type UiTurn = { chore: UiChore; member: UiMember };
