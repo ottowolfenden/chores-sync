@@ -32,9 +32,10 @@ export const onRequestPut: PagesFunction<Env> = async context => {
         const sql = neon(context.env.DATABASE_URL);
         const data = (await context.request.json()) as DbCount[];
 
-        if (data.some(d => !d.is_offset)) throw new Error("non-offset value passed");
+        if (data.some(d => !d.is_offset))
+            return Response.json({ error: "non-offset value passed" }, { status: 400 });
         if (data.some(d => typeof d.total != "number" || isNaN(d.total)))
-            throw new Error("total not a number");
+            return Response.json({ error: "total not a number" }, { status: 400 });
 
         await sql`
             INSERT INTO assignments (assign_date, quantity, chore_id, member_id)
