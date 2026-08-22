@@ -17,6 +17,15 @@ section.addEventListener("open", async () => {
         message: assignmentsDiv.querySelector("status-message")!
     };
 
+    section.addEventListener(
+        "close",
+        () => {
+            assignmentsUi.stateActions.conf.cancel?.click?.();
+            assignmentsUi.stateActions.state = "normal";
+        },
+        { once: true }
+    );
+
     assignmentsUi.message.elsToHide = [assignmentsUi.list, assignmentsUi.stateActions];
     turnsUi.message.elsToHide = [turnsUi.list];
 
@@ -167,9 +176,4 @@ section.addEventListener("open", async () => {
             }
         })()
     ]);
-
-    section.addEventListener("close", () => {
-        assignmentsUi.stateActions.conf.cancel?.click?.();
-        assignmentsUi.stateActions.state = "normal";
-    });
 });
