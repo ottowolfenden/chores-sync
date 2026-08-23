@@ -59,7 +59,7 @@ export class StateActions extends LitElement {
             <span>${this.conf.cancel?.label ?? this.defaultConf.cancel?.label}</span>
         </button>
         <button
-            data-mode
+            data-state
             class=${this.stateClass}
             ?disabled=${["loading", "error", "success"].includes(this.state)}
             @click=${async (e: Event) => {
