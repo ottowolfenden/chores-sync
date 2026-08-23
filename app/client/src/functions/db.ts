@@ -206,3 +206,16 @@ export const addAssignment = async (uiAssignment: UiAssignment): Promise<boolean
     }).catch(() => null);
     return response?.ok ?? false;
 };
+
+export const replaceAssignments = async (uiAssignments: UiAssignment[]): Promise<boolean> => {
+    const guess = localStorage.getItem("secret");
+    if (!guess) return false;
+    const today = new Date().toISOString().split("T")[0];
+    const response = await fetch(`/api/assignments?action=replace&date=${today}`, {
+        method: "POST",
+        headers: { "Authorization": guess },
+        body: JSON.stringify(uiAssignments.map(toDbAssignment)),
+        signal: AbortSignal.timeout(timeout)
+    }).catch(() => null);
+    return response?.ok ?? false;
+};

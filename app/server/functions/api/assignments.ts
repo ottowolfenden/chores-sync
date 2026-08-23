@@ -86,6 +86,47 @@ export const onRequestPost: PagesFunction<Env> = async context => {
                 const date = params.get("date");
                 if (!date || !validateDate(date))
                     return Response.json({ error: "date invalid" }, { status: 400 });
+                if (!Array.isArray(data))
+                    return Response.json({ error: "must be an array" }, { status: 400 });
+                const uuids = data.map(d => d.assignment_uuid);
+                await sql.transaction([
+                    uuids.length == 0
+                        ? sql`DELETE FROM assignments WHERE assign_date = ${date};`
+                        : sql`
+                            DELETE FROM assignments
+                            WHERE assign_date = ${date}
+                            AND NOT (assignment_uuid = ANY(${uuids}));
+                        `,
+                    sql`
+                        INSERT INTO assignments (
+                            assignment_uuid,
+                            assign_date,
+                            quantity,
+                            chore_id,
+                            member_id
+                        )
+                        SELECT
+                            input.assignment_uuid,
+                            input.assign_date,
+                            input.quantity,
+                            input.chore_id,
+                            input.member_id
+                        FROM JSON_TO_RECORDSET(${JSON.stringify(data)}::json)
+                        AS input (
+                            assignment_uuid UUID,
+                            assign_date DATE,
+                            quantity INT,
+                            chore_id INT,
+                            member_id INT
+                        )
+                        ON CONFLICT (assignment_uuid)
+                        DO UPDATE SET
+                            assign_date = EXCLUDED.assign_date,
+                            quantity = EXCLUDED.quantity,
+                            chore_id = EXCLUDED.chore_id,
+                            member_id = EXCLUDED.member_id;
+                    `
+                ]);
                 break;
             default:
                 return Response.json({ error: "invalid action" }, { status: 400 });
