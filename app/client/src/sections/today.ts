@@ -38,6 +38,16 @@ section.addEventListener("open", async () => {
         No chores have been created.<br />Create chores in <a href="#settings">Settings</a>.
     `;
 
+    const cloneAndSum = (assignmentsList: UiAssignment[]): UiAssignment[] => {
+        const map = new Map<string, UiAssignment>();
+        assignmentsList.forEach(a => {
+            const key = `${a.chosenMember.name}-${a.chore.name}-${a.date}`;
+            if (map.has(key)) map.get(key)!.quantity += a.quantity;
+            else map.set(key, { ...a });
+        });
+        return [...map.values()];
+    };
+
     let assignments: UiAssignment[] | null;
     let turns: UiTurn[] | null;
 
@@ -59,7 +69,7 @@ section.addEventListener("open", async () => {
             else if (assignments.length == 0) assignmentsUi.message.status = "empty";
             else {
                 assignmentsUi.message.status = "success";
-                assignmentsUi.list.assignments = structuredClone(assignments);
+                assignmentsUi.list.assignments = cloneAndSum(assignments);
 
                 assignmentsUi.stateActions.conf = {
                     normal: {
@@ -74,10 +84,11 @@ section.addEventListener("open", async () => {
                             const success = await replaceAssignments(
                                 assignmentsUi.list.assignments
                             );
-                            if (success)
-                                assignments = structuredClone(assignmentsUi.list.assignments);
-                            else
-                                assignmentsUi.list.assignments = structuredClone(assignments!);
+                            const newAssignments = cloneAndSum(
+                                success ? assignmentsUi.list.assignments : assignments!
+                            );
+                            assignmentsUi.list.assignments = newAssignments;
+                            assignmentsUi.list.requestUpdate();
                             if (assignmentsUi.list.assignments.length == 0) {
                                 assignmentsUi.stateActions.state = "success";
                                 setTimeout(
@@ -93,7 +104,7 @@ section.addEventListener("open", async () => {
                     cancel: {
                         click: () => {
                             assignmentsUi.list.toggleAttribute("edit-mode", false);
-                            assignmentsUi.list.assignments = structuredClone(assignments!);
+                            assignmentsUi.list.assignments = cloneAndSum(assignments!);
                         }
                     },
                     loading: {},
