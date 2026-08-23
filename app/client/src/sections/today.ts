@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { getTodayAssignments } from "../functions/db.js";
+import { getTodayAssignments, replaceAssignments } from "../functions/db.js";
 import { Context } from "../classes/context.js";
 
 const section = document.querySelector("section#today")!;
@@ -38,11 +38,6 @@ section.addEventListener("open", async () => {
         No chores have been created.<br />Create chores in <a href="#settings">Settings</a>.
     `;
 
-    const tempSetAssignments = (): Promise<boolean> =>
-        new Promise(r =>
-            setTimeout(() => r(Math.random() > 0.02), Math.round(Math.random() * 2000))
-        );
-
     let assignments: UiAssignment[] | null;
     let turns: UiTurn[] | null;
 
@@ -76,7 +71,9 @@ section.addEventListener("open", async () => {
                         click: async () => {
                             assignmentsUi.list.toggleAttribute("edit-mode", false);
 
-                            const success = await tempSetAssignments();
+                            const success = await replaceAssignments(
+                                assignmentsUi.list.assignments
+                            );
                             if (success)
                                 assignments = structuredClone(assignmentsUi.list.assignments);
                             else
