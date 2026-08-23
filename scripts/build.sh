@@ -8,7 +8,9 @@ cp app/client/src/* app/client/dist 2>/dev/null
 cp app/client/src/assets/* app/client/dist/assets 2>/dev/null
 cp -r app/client/src/assets/icons app/client/dist/assets
 
-npx esbuild 'app/client/src/**/*.ts' 'app/client/src/**/*.css' \
+tsc -p app/client/tsconfig.json --noEmit &&
+tsc -p app/server/tsconfig.json --noEmit &&
+esbuild 'app/client/src/**/*.ts' 'app/client/src/**/*.css' \
     --outdir=app/client/dist \
     --asset-names=assets/fonts/[name] \
     --bundle --format=esm --target=esnext \
