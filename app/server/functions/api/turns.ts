@@ -16,7 +16,7 @@ export const onRequestGet: PagesFunction<Env> = async context => {
                     AND a.member_id = m.member_id
                     AND a.assign_date < CURRENT_DATE
                 GROUP BY c.chore_id, m.member_id
-                ORDER BY c.chore_id;
+                ORDER BY c.chore_name;
             `) as DbTurnData[];
 
         if (turnData.length == 0) return Response.json([]);

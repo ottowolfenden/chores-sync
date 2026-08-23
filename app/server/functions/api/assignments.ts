@@ -20,17 +20,27 @@ export const onRequestGet: PagesFunction<Env> = async context => {
 
         return Response.json(
             await (() => {
-                if (date) return sql`SELECT * FROM assignments WHERE assign_date = ${date};`;
+                if (date)
+                    return sql`
+                        SELECT * FROM assignments a
+                        JOIN chores c ON c.chore_id = a.chore_id
+                        WHERE a.assign_date = ${date}
+                        ORDER BY c.chore_name;
+                    `;
                 else if (minDate && maxDate)
                     return sql`
-                        SELECT * FROM assignments 
-                        WHERE assign_date >= ${minDate} AND assign_date <= ${maxDate};
+                        SELECT * FROM assignments a
+                        JOIN chores c ON c.chore_id = a.chore_id
+                        WHERE a.assign_date >= ${minDate} AND a.assign_date <= ${maxDate}
+                        ORDER BY c.chore_name;
                     `;
                 return sql`
-                    SELECT * FROM assignments 
-                    WHERE assign_date >= ${minDate ?? "-infinity"}
-                    AND assign_date <= ${maxDate ?? "infinity"}
-                    AND assign_date > '-infinity';
+                    SELECT * FROM assignments a
+                    JOIN chores c on c.chore_id = a.chore_id
+                    WHERE a.assign_date >= ${minDate ?? "-infinity"}
+                    AND a.assign_date <= ${maxDate ?? "infinity"}
+                    AND a.assign_date > '-infinity'
+                    ORDER BY c.chore_name;
                 `;
             })()
         );
