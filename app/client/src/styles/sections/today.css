@@ -18,13 +18,13 @@ section#today {
     }
 
     @media (width <= 410px) {
-        state-actions:has(button:is(.outlined, .tonal):not([hidden])) button {
+        state-actions:has(button[data-state]:not([hidden])) button {
             --collapse: 1;
         }
     }
 
     @media ((width <= 475px) or ((width <= 615px) and (width >= 550px))) {
-        state-actions button:is(.outlined, .tonal) {
+        state-actions button[data-cancel] {
             --collapse: 1;
         }
     }

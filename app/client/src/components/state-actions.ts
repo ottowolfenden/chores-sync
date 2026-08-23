@@ -24,7 +24,7 @@ export class StateActions extends LitElement {
 
     @property({ type: Object, attribute: "conf" }) conf: Conf = {};
     @property({ type: String, attribute: "cancel-class" }) cancelClass: string = "outlined";
-    @property({ type: String, attribute: "mode-class" }) modeClass: string = "filled";
+    @property({ type: String, attribute: "state-class" }) stateClass: string = "filled";
     @property({ type: String, attribute: "state", reflect: true }) state: State = "normal";
 
     readonly defaultConf: Required<Conf> = {
@@ -60,7 +60,7 @@ export class StateActions extends LitElement {
         </button>
         <button
             data-mode
-            class=${this.modeClass}
+            class=${this.stateClass}
             ?disabled=${["loading", "error", "success"].includes(this.state)}
             @click=${async (e: Event) => {
                 if (this.state == "normal") {
