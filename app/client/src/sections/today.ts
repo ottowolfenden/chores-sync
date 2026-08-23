@@ -38,9 +38,9 @@ section.addEventListener("open", async () => {
         No chores have been created.<br />Create chores in <a href="#settings">Settings</a>.
     `;
 
-    const cloneAndSum = (assignmentsList: UiAssignment[]): UiAssignment[] => {
+    const cloneAndSum = (assignments: UiAssignment[]): UiAssignment[] => {
         const map = new Map<string, UiAssignment>();
-        assignmentsList.forEach(a => {
+        assignments.forEach(a => {
             const key = `${a.chosenMember.name}-${a.chore.name}-${a.date}`;
             if (map.has(key)) map.get(key)!.quantity += a.quantity;
             else map.set(key, { ...a });
@@ -48,28 +48,28 @@ section.addEventListener("open", async () => {
         return [...map.values()];
     };
 
-    let assignments: UiAssignment[] | null;
-    let turns: UiTurn[] | null;
+    let orgAssignments: UiAssignment[] | null;
+    let orgTurns: UiTurn[] | null;
 
     assignmentsUi.message.status = turnsUi.message.status = "loading";
 
     await Promise.all([
         (async () => {
-            turns = await Context.turns;
-            if (turns == null) turnsUi.message.status = "error";
-            else if (turns.length == 0) turnsUi.message.status = "empty";
+            orgTurns = await Context.turns;
+            if (orgTurns == null) turnsUi.message.status = "error";
+            else if (orgTurns.length == 0) turnsUi.message.status = "empty";
             else {
                 turnsUi.message.status = "success";
-                turnsUi.list.turns = turns;
+                turnsUi.list.turns = orgTurns;
             }
         })(),
         (async () => {
-            assignments = await getTodayAssignments();
-            if (assignments == null) assignmentsUi.message.status = "error";
-            else if (assignments.length == 0) assignmentsUi.message.status = "empty";
+            orgAssignments = await getTodayAssignments();
+            if (orgAssignments == null) assignmentsUi.message.status = "error";
+            else if (orgAssignments.length == 0) assignmentsUi.message.status = "empty";
             else {
                 assignmentsUi.message.status = "success";
-                assignmentsUi.list.assignments = cloneAndSum(assignments);
+                assignmentsUi.list.assignments = cloneAndSum(orgAssignments);
 
                 assignmentsUi.stateActions.conf = {
                     normal: {
@@ -85,7 +85,7 @@ section.addEventListener("open", async () => {
                                 assignmentsUi.list.assignments
                             );
                             const newAssignments = cloneAndSum(
-                                success ? assignmentsUi.list.assignments : assignments!
+                                success ? assignmentsUi.list.assignments : orgAssignments!
                             );
                             assignmentsUi.list.assignments = newAssignments;
                             assignmentsUi.list.requestUpdate();
@@ -104,7 +104,7 @@ section.addEventListener("open", async () => {
                     cancel: {
                         click: () => {
                             assignmentsUi.list.toggleAttribute("edit-mode", false);
-                            assignmentsUi.list.assignments = cloneAndSum(assignments!);
+                            assignmentsUi.list.assignments = cloneAndSum(orgAssignments!);
                         }
                     },
                     loading: {},
