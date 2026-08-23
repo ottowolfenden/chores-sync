@@ -13,7 +13,7 @@ type UiChore = {
 };
 
 type UiAssignment = {
-    id: number;
+    uuid: string;
     date: Date;
     quantity: number;
     chore: UiChore;

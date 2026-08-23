@@ -30,13 +30,13 @@ export class AssignmentsList extends LitElement {
         withTransition(
             (e.target as HTMLElement).closest<HTMLElement>(".assignment"),
             { "height": "0", "opacity": "0", "margin-top": "0" },
-            () => void (this.assignments = this.assignments.filter(a => a.id != assignment.id))
+            () => (this.assignments = this.assignments.filter(a => a.uuid != assignment.uuid))
         );
 
     render = () =>
         repeat(
             this.assignments,
-            a => a.id,
+            a => a.uuid,
             a => html`
                 <div class="assignment">
                     <span class="chore-name">${a.chore.name}</span>
@@ -47,15 +47,15 @@ export class AssignmentsList extends LitElement {
                     <div class="name-dropdown">
                         <button
                             class="tonal"
-                            popovertarget="assignment-popover-${a.id}"
-                            style="anchor-name: --assignment-anchor-${a.id}">
+                            popovertarget="assignment-popover-${a.uuid}"
+                            style="anchor-name: --assignment-anchor-${a.uuid}">
                             <span class="member-name">${a.chosenMember.name}</span>
                             <md-icon>arrow_drop_down</md-icon>
                         </button>
                         <div
                             popover
-                            id="assignment-popover-${a.id}"
-                            style="position-anchor: --assignment-anchor-${a.id}">
+                            id="assignment-popover-${a.uuid}"
+                            style="position-anchor: --assignment-anchor-${a.uuid}">
                             ${this.members
                                 .filter(m => m.id != a.chosenMember.id)
                                 .map(

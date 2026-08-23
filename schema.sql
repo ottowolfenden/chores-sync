@@ -16,7 +16,7 @@ CREATE TABLE chores (
 );
 
 CREATE TABLE assignments (
-    assignment_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    assignment_uuid UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
     assign_date DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     quantity INT NOT NULL DEFAULT 1,
     is_offset BOOLEAN NOT NULL GENERATED ALWAYS AS (assign_date = '-infinity'),

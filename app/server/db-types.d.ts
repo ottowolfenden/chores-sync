@@ -18,7 +18,7 @@ type DbChore = {
 };
 
 type DbAssignment = {
-    assignment_id: number;
+    assignment_uuid: string;
     assign_date: Date;
     quantity: number;
     is_offset: boolean;

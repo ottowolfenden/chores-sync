@@ -144,7 +144,7 @@ export const getTodayAssignments = async (): Promise<UiAssignment[] | null> => {
 
     return data.map(
         (d): UiAssignment => ({
-            id: d["assignment_id"],
+            uuid: d["assignment_uuid"],
             date: d["assign_date"],
             quantity: d["quantity"],
             chore: chores.find(c => c.id == d["chore_id"])!,
