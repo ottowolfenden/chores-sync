@@ -185,3 +185,24 @@ export const getTurns = async (): Promise<UiTurn[] | null> => {
         })
     );
 };
+
+const toDbAssignment = (uiAssignment: UiAssignment): DbAssignment => ({
+    "assignment_uuid": uiAssignment.uuid,
+    "assign_date": uiAssignment.date,
+    "quantity": uiAssignment.quantity,
+    "is_offset": false,
+    "chore_id": uiAssignment.chore.id,
+    "member_id": uiAssignment.chosenMember.id
+});
+
+export const addAssignment = async (uiAssignment: UiAssignment): Promise<boolean> => {
+    const guess = localStorage.getItem("secret");
+    if (!guess) return false;
+    const response = await fetch("/api/assignments?action=add", {
+        method: "POST",
+        headers: { "Authorization": guess },
+        body: JSON.stringify(toDbAssignment(uiAssignment)),
+        signal: AbortSignal.timeout(timeout)
+    }).catch(() => null);
+    return response?.ok ?? false;
+};
