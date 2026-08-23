@@ -2,12 +2,17 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { addAssignment } from "../functions/db";
+import { AssignmentsList } from "./assignments-list";
+import { cloneAndSum } from "../functions/assignments";
+import { withTransition } from "../functions/element-utils";
 
 @customElement("turns-list")
 export class TurnsList extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: Array }) turns: UiTurn[] = [];
+    @property({ type: Array }) assignments?: UiAssignment[];
+    @property({ attribute: false }) assignmentsList?: AssignmentsList;
 
     render = () =>
         repeat(
@@ -21,20 +26,40 @@ export class TurnsList extends LitElement {
                         .conf=${{
                             normal: {
                                 icon: "add",
-                                click: async () =>
-                                    await addAssignment({
+                                click: async () => {
+                                    const assignment = {
                                         uuid: crypto.randomUUID(),
                                         date: new Date(),
                                         quantity: 1,
                                         chore: t.chore,
                                         turnMember: t.member,
                                         chosenMember: t.member
-                                    })
+                                    };
+                                    const success = await addAssignment(assignment);
+                                    if (this.assignmentsList && success)
+                                        this.assignmentsList.assignments = this.assignments =
+                                            cloneAndSum([
+                                                ...this.assignmentsList.assignments,
+                                                assignment
+                                            ]);
+                                    return success;
+                                }
                             },
                             loading: {},
                             success: {},
                             error: { msToShow: 2000 }
                         }}
+                        ?hidden=${(() => {
+                            const assignment = this.assignments?.find(
+                                a => a.chore.id == t.chore.id
+                            );
+                            console.log(this.assignments);
+                            if (!assignment) return false;
+                            return (
+                                assignment.quantity >=
+                                (assignment.chore.limitPerDay ?? Infinity)
+                            );
+                        })()}
                         state-button-class="transparent small">
                     </state-actions>
                 </div>

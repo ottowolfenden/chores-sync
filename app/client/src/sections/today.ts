@@ -1,6 +1,7 @@
 import { html } from "lit";
 import { getTodayAssignments, replaceAssignments } from "../functions/db.js";
 import { Context } from "../classes/context.js";
+import { cloneAndSum } from "../functions/assignments.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -38,15 +39,7 @@ section.addEventListener("open", async () => {
         No chores have been created.<br />Create chores in <a href="#settings">Settings</a>.
     `;
 
-    const cloneAndSum = (assignments: UiAssignment[]): UiAssignment[] => {
-        const map = new Map<string, UiAssignment>();
-        assignments.forEach(a => {
-            const key = `${a.chosenMember.name}-${a.chore.name}-${a.date}`;
-            if (map.has(key)) map.get(key)!.quantity += a.quantity;
-            else map.set(key, { ...a });
-        });
-        return [...map.values()];
-    };
+    turnsUi.list.assignmentsList = assignmentsUi.list;
 
     let orgAssignments: UiAssignment[] | null;
     let orgTurns: UiTurn[] | null;
@@ -70,6 +63,7 @@ section.addEventListener("open", async () => {
             else {
                 assignmentsUi.message.status = "success";
                 assignmentsUi.list.assignments = cloneAndSum(orgAssignments);
+                turnsUi.list.assignments = assignmentsUi.list.assignments;
 
                 assignmentsUi.stateActions.conf = {
                     normal: {
@@ -88,6 +82,7 @@ section.addEventListener("open", async () => {
                                 success ? assignmentsUi.list.assignments : orgAssignments!
                             );
                             assignmentsUi.list.assignments = newAssignments;
+                            turnsUi.list.assignments = assignmentsUi.list.assignments;
                             assignmentsUi.list.requestUpdate();
                             if (assignmentsUi.list.assignments.length == 0) {
                                 assignmentsUi.stateActions.state = "success";
@@ -105,6 +100,7 @@ section.addEventListener("open", async () => {
                         click: () => {
                             assignmentsUi.list.toggleAttribute("edit-mode", false);
                             assignmentsUi.list.assignments = cloneAndSum(orgAssignments!);
+                            turnsUi.list.assignments = assignmentsUi.list.assignments;
                         }
                     },
                     loading: {},
