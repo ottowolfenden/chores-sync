@@ -36,11 +36,12 @@ export const onRequestGet: PagesFunction<Env> = async context => {
                     `;
                 return sql`
                     SELECT * FROM assignments a
-                    JOIN chores c on c.chore_id = a.chore_id
+                    JOIN chores c ON c.chore_id = a.chore_id
+                    JOIN members m ON m.member_id = a.member_id
                     WHERE a.assign_date >= ${minDate ?? "-infinity"}
                     AND a.assign_date <= ${maxDate ?? "infinity"}
                     AND a.assign_date > '-infinity'
-                    ORDER BY c.chore_name;
+                    ORDER BY c.chore_name, m.member_name;
                 `;
             })()
         );
