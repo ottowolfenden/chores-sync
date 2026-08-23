@@ -23,8 +23,8 @@ export class StateActions extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: Object, attribute: "conf" }) conf: Conf = {};
-    @property({ type: String, attribute: "cancel-class" }) cancelClass: string = "outlined";
-    @property({ type: String, attribute: "state-class" }) stateClass: string = "filled";
+    @property({ type: String, attribute: "cancel-button-class" }) cancelClass?: string;
+    @property({ type: String, attribute: "state-button-class" }) stateClass?: string;
     @property({ type: String, attribute: "state", reflect: true }) state: State = "normal";
 
     readonly defaultConf: Required<Conf> = {
@@ -49,7 +49,7 @@ export class StateActions extends LitElement {
     render = () => html`
         <button
             data-cancel
-            class=${this.cancelClass}
+            class=${this.cancelClass ?? "outlined"}
             ?hidden=${this.state != "active" || !this.conf.cancel}
             @click=${async () => {
                 this.state = "normal";
@@ -60,7 +60,7 @@ export class StateActions extends LitElement {
         </button>
         <button
             data-state
-            class=${this.stateClass}
+            class=${this.stateClass ?? "filled"}
             ?disabled=${["loading", "error", "success"].includes(this.state)}
             @click=${async (e: Event) => {
                 if (this.state == "normal") {
