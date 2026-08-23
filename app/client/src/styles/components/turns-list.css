@@ -34,10 +34,37 @@ turns-list {
             font-size: 18px;
         }
 
-        button.small {
+        state-actions {
             grid-column: 5;
-            --size: 17.5;
-            padding: 5px;
+
+            button[data-state] {
+                --size: 17.5;
+                padding: 5px;
+
+                span {
+                    display: none;
+                }
+            }
+
+            button md-icon {
+                --fill: 0 !important;
+            }
+
+            &[state="loading"] button,
+            &[state="success"] button,
+            &[state="error"] button {
+                background-color: transparent;
+            }
+
+            &[state="loading"] button {
+                color: rgb(from var(--on-surface-variant) r g b / 0.6);
+            }
+            &[state="success"] button {
+                color: var(--primary);
+            }
+            &[state="error"] button {
+                color: var(--error);
+            }
         }
     }
 }
