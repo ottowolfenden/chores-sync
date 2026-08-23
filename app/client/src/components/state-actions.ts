@@ -70,20 +70,15 @@ export class StateActions extends LitElement {
                         await this.conf.normal?.click?.(e);
                         return;
                     }
-                    withTransition(
-                        e.currentTarget as HTMLElement,
-                        undefined,
-                        this.conf.loading ? () => (this.state = "loading") : undefined
-                    );
-                    this.handleResult(await this.conf.normal?.click?.(e));
-                } else if (this.state == "active") {
-                    withTransition(
-                        e.currentTarget as HTMLElement,
-                        undefined,
-                        this.conf.loading ? () => (this.state = "loading") : undefined
-                    );
-                    this.handleResult(await this.conf.active?.click?.(e));
-                }
+                    withTransition(e.currentTarget as HTMLElement, undefined, async () => {
+                        this.state = this.conf.loading ? "loading" : this.state;
+                        this.handleResult(await this.conf.normal?.click?.(e));
+                    });
+                } else if (this.state == "active")
+                    withTransition(e.currentTarget as HTMLElement, undefined, async () => {
+                        this.state = this.conf.loading ? "loading" : this.state;
+                        this.handleResult(await this.conf.active?.click?.(e));
+                    });
             }}>
             <md-icon>
                 ${this.conf[this.state]?.icon ?? this.defaultConf[this.state]?.icon}
