@@ -1,6 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { delay } from "../functions/timer.js";
+import { withTransition } from "../functions/element-utils.js";
 
 type ButtonConf = {
     icon?: string;
@@ -69,10 +70,18 @@ export class StateActions extends LitElement {
                         await this.conf.normal?.click?.(e);
                         return;
                     }
-                    this.state = this.conf.loading ? "loading" : this.state;
+                    withTransition(
+                        e.currentTarget as HTMLElement,
+                        undefined,
+                        this.conf.loading ? () => (this.state = "loading") : undefined
+                    );
                     this.handleResult(await this.conf.normal?.click?.(e));
                 } else if (this.state == "active") {
-                    this.state = this.conf.loading ? "loading" : this.state;
+                    withTransition(
+                        e.currentTarget as HTMLElement,
+                        undefined,
+                        this.conf.loading ? () => (this.state = "loading") : undefined
+                    );
                     this.handleResult(await this.conf.active?.click?.(e));
                 }
             }}>
