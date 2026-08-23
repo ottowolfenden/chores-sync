@@ -19,21 +19,17 @@ export const onRequestGet: PagesFunction<Env> = async context => {
 
         return Response.json(
             await (() => {
-                if (date)
-                    return sql`
-                        SELECT * FROM assignments
-                        WHERE assign_date = ${date}
-                    `;
+                if (date) return sql`SELECT * FROM assignments WHERE assign_date = ${date};`;
                 else if (minDate && maxDate)
                     return sql`
                         SELECT * FROM assignments 
-                        WHERE assign_date >= ${minDate} AND assign_date <= ${maxDate}
+                        WHERE assign_date >= ${minDate} AND assign_date <= ${maxDate};
                     `;
                 return sql`
                     SELECT * FROM assignments 
                     WHERE assign_date >= ${minDate ?? "-infinity"}
                     AND assign_date <= ${maxDate ?? "infinity"}
-                    AND assign_date > '-infinity'
+                    AND assign_date > '-infinity';
                 `;
             })()
         );
