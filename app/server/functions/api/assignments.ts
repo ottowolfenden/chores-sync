@@ -89,7 +89,16 @@ export const onRequestPost: PagesFunction<Env> = async context => {
                     return Response.json({ error: "date invalid" }, { status: 400 });
                 if (!Array.isArray(data))
                     return Response.json({ error: "must be an array" }, { status: 400 });
-                const uuids = data.map(d => d.assignment_uuid);
+
+                const map = new Map();
+                data.forEach(d => {
+                    const key = `${d.member_id}-${d.chore_id}-${d.assign_date}`;
+                    if (map.has(key)) map.get(key).quantity += d.quantity;
+                    else map.set(key, { ...d });
+                });
+                const summedData = [...map.values()];
+                const uuids = summedData.map(d => d.assignment_uuid);
+
                 await sql.transaction([
                     uuids.length == 0
                         ? sql`DELETE FROM assignments WHERE assign_date = ${date};`
@@ -106,13 +115,8 @@ export const onRequestPost: PagesFunction<Env> = async context => {
                             chore_id,
                             member_id
                         )
-                        SELECT
-                            input.assignment_uuid,
-                            input.assign_date,
-                            input.quantity,
-                            input.chore_id,
-                            input.member_id
-                        FROM JSON_TO_RECORDSET(${JSON.stringify(data)}::json)
+                        SELECT input.*
+                        FROM JSON_TO_RECORDSET(${JSON.stringify(summedData)}::json)
                         AS input (
                             assignment_uuid UUID,
                             assign_date DATE,
