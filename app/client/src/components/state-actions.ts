@@ -16,15 +16,16 @@ type Conf = {
     success?: IndicatorConf;
     cancel?: ButtonConf;
 };
+type State = "normal" | "active" | "loading" | "success" | "error";
 
 @customElement("state-actions")
 export class StateActions extends LitElement {
     protected createRenderRoot = () => this;
 
-    @property({ type: String, attribute: "state", reflect: true })
-    state: "normal" | "active" | "loading" | "success" | "error" = "normal";
-
-    @property({ type: Object }) conf: Conf = {};
+    @property({ type: Object, attribute: "conf" }) conf: Conf = {};
+    @property({ type: String, attribute: "cancel-class" }) cancelClass: string = "outlined";
+    @property({ type: String, attribute: "mode-class" }) modeClass: string = "filled";
+    @property({ type: String, attribute: "state", reflect: true }) state: State = "normal";
 
     readonly defaultConf: Required<Conf> = {
         normal: { icon: "", label: "" },
@@ -47,7 +48,8 @@ export class StateActions extends LitElement {
 
     render = () => html`
         <button
-            class="outlined"
+            data-cancel
+            class=${this.cancelClass}
             ?hidden=${this.state != "active" || !this.conf.cancel}
             @click=${async () => {
                 this.state = "normal";
@@ -57,7 +59,8 @@ export class StateActions extends LitElement {
             <span>${this.conf.cancel?.label ?? this.defaultConf.cancel?.label}</span>
         </button>
         <button
-            class="filled"
+            data-mode
+            class=${this.modeClass}
             ?disabled=${["loading", "error", "success"].includes(this.state)}
             @click=${async (e: Event) => {
                 if (this.state == "normal") {
