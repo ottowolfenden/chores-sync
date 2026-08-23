@@ -2,11 +2,20 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { delay } from "../functions/timer.js";
 
-type Conf = { icon?: string; label?: string };
-type ButtonConf = Conf & {
+type ButtonConf = {
+    icon?: string;
+    label?: string;
     click?: (e?: Event) => (void | boolean) | Promise<void | boolean>;
 };
-type IndicatorConf = Conf & { msToShow?: number };
+type IndicatorConf = { icon?: string; label?: string; msToShow?: number };
+type Conf = {
+    normal?: ButtonConf;
+    active?: ButtonConf;
+    loading?: Omit<IndicatorConf, "msToShow">;
+    error?: IndicatorConf;
+    success?: IndicatorConf;
+    cancel?: ButtonConf;
+};
 
 @customElement("state-actions")
 export class StateActions extends LitElement {
@@ -15,23 +24,26 @@ export class StateActions extends LitElement {
     @property({ type: String, attribute: "state", reflect: true })
     state: "normal" | "active" | "loading" | "success" | "error" = "normal";
 
-    @property({ type: Object }) conf: {
-        normal?: ButtonConf;
-        active?: ButtonConf;
-        loading?: Conf;
-        error?: IndicatorConf;
-        success?: IndicatorConf;
-        cancel?: ButtonConf;
-    } = {};
+    @property({ type: Object }) conf: Conf = {};
 
-    defaultConf = {
+    readonly defaultConf: Required<Conf> = {
         normal: { icon: "", label: "" },
         active: { icon: "save", label: "Save" },
         loading: { icon: "cloud_upload", label: "Saving" },
         success: { icon: "check", label: "Saved", msToShow: 1000 },
         error: { icon: "error", label: "Failed", msToShow: 1500 },
         cancel: { icon: "close", label: "Cancel" }
-    } as const;
+    };
+
+    private handleResult = async (success: boolean | void | undefined) => {
+        if (this.conf.success && this.conf.error && typeof success == "boolean") {
+            this.state = success ? "success" : "error";
+            await delay(
+                this.conf?.[this.state]?.msToShow ?? this.defaultConf[this.state].msToShow ?? 0
+            );
+        }
+        this.state = "normal";
+    };
 
     render = () => html`
         <button
@@ -49,19 +61,16 @@ export class StateActions extends LitElement {
             ?disabled=${["loading", "error", "success"].includes(this.state)}
             @click=${async (e: Event) => {
                 if (this.state == "normal") {
-                    this.state = this.conf.active ? "active" : this.state;
-                    await this.conf.normal?.click?.(e);
+                    if (this.conf.active) {
+                        this.state = "active";
+                        await this.conf.normal?.click?.(e);
+                        return;
+                    }
+                    this.state = this.conf.loading ? "loading" : this.state;
+                    this.handleResult(await this.conf.normal?.click?.(e));
                 } else if (this.state == "active") {
                     this.state = this.conf.loading ? "loading" : this.state;
-                    const success = await this.conf.active?.click?.(e);
-                    if (this.conf.success && this.conf.error && typeof success == "boolean") {
-                        this.state = success ? "success" : "error";
-                        await delay(
-                            this.conf?.[this.state]?.msToShow ??
-                                this.defaultConf[this.state].msToShow
-                        );
-                    }
-                    this.state = "normal";
+                    this.handleResult(await this.conf.active?.click?.(e));
                 }
             }}>
             <md-icon>
