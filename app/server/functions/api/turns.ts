@@ -8,15 +8,13 @@ export const onRequestGet: PagesFunction<Env> = async context => {
                     c.chore_id,
                     m.member_id,
                     COALESCE(SUM(a.quantity), 0) total,
-                    COALESCE(
-                        MAX(a.assign_date) FILTER (WHERE a.assign_date < CURRENT_DATE),
-                        '-infinity'
-                    ) last_assign_date
+                    COALESCE(MAX(a.assign_date), '-infinity') last_assign_date
                 FROM chores c
                 CROSS JOIN members m
                 LEFT JOIN assignments a
                     ON a.chore_id = c.chore_id
                     AND a.member_id = m.member_id
+                    AND a.assign_date < CURRENT_DATE
                 GROUP BY c.chore_id, m.member_id
                 ORDER BY c.chore_id;
             `) as DbTurnData[];
