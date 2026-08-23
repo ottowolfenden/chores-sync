@@ -2,9 +2,6 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { addAssignment } from "../functions/db";
-import { AssignmentsList } from "./assignments-list";
-import { cloneAndSum } from "../functions/assignments";
-import { withTransition } from "../functions/element-utils";
 
 @customElement("turns-list")
 export class TurnsList extends LitElement {
@@ -12,7 +9,6 @@ export class TurnsList extends LitElement {
 
     @property({ type: Array }) turns: UiTurn[] = [];
     @property({ type: Array }) assignments?: UiAssignment[];
-    @property({ attribute: false }) assignmentsList?: AssignmentsList;
 
     render = () =>
         repeat(
@@ -36,12 +32,13 @@ export class TurnsList extends LitElement {
                                         chosenMember: t.member
                                     };
                                     const success = await addAssignment(assignment);
-                                    if (this.assignmentsList && success)
-                                        this.assignmentsList.assignments = this.assignments =
-                                            cloneAndSum([
-                                                ...this.assignmentsList.assignments,
-                                                assignment
-                                            ]);
+                                    if (success)
+                                        window.dispatchEvent(
+                                            new CustomEvent("assignment-added", {
+                                                detail: { assignment }
+                                            })
+                                        );
+                                    this.requestUpdate();
                                     return success;
                                 }
                             },
@@ -53,7 +50,6 @@ export class TurnsList extends LitElement {
                             const assignment = this.assignments?.find(
                                 a => a.chore.id == t.chore.id
                             );
-                            console.log(this.assignments);
                             if (!assignment) return false;
                             return (
                                 assignment.quantity >=

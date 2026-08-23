@@ -18,11 +18,19 @@ section.addEventListener("open", async () => {
         message: assignmentsDiv.querySelector("status-message")!
     };
 
+    const hideAssignmentsMessage = () => {
+        assignmentsUi.message.status = "success";
+        turnsUi.list.assignments = assignmentsUi.list.assignments;
+    };
+
+    window.addEventListener("assignment-added", hideAssignmentsMessage);
+
     section.addEventListener(
         "close",
         () => {
             assignmentsUi.stateActions.conf.cancel?.click?.();
             assignmentsUi.stateActions.state = "normal";
+            window.removeEventListener("assignment-added", hideAssignmentsMessage);
         },
         { once: true }
     );
@@ -38,8 +46,6 @@ section.addEventListener("open", async () => {
     turnsUi.message.messages.empty.text = html`
         No chores have been created.<br />Create chores in <a href="#settings">Settings</a>.
     `;
-
-    turnsUi.list.assignmentsList = assignmentsUi.list;
 
     let orgAssignments: UiAssignment[] | null;
     let orgTurns: UiTurn[] | null;
