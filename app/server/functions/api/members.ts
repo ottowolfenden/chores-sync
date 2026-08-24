@@ -1,18 +1,7 @@
-import { neon } from "@neondatabase/serverless";
+import { getMembers } from "../../services/members";
+import { response } from "../../utils";
 
-export const onRequestGet: PagesFunction<Env> = async context => {
-    try {
-        const sql = neon(context.env.DATABASE_URL);
-        const name = new URL(context.request.url).searchParams.get("name");
-        if (name) {
-            const result = await sql`SELECT * FROM members WHERE member_name = ${name};`;
-            if (result.length != 1)
-                return Response.json({ error: "member not found" }, { status: 404 });
-            return Response.json(result[0]);
-        }
-        return Response.json(await sql`SELECT * FROM members ORDER BY member_name;`);
-    } catch (err) {
-        console.error(err);
-        return Response.json(null, { status: 500 });
-    }
+export const onRequestGet: PagesFunction<Env> = async ctx => {
+    const name = new URL(ctx.request.url).searchParams.get("name");
+    return response(await getMembers(ctx.env, name));
 };

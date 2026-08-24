@@ -1,8 +1,8 @@
-import type { PagesFunction } from "@cloudflare/workers-types";
+import { error, response } from "../../utils";
 
-export const onRequest: PagesFunction<Env> = async context => {
-    const guess = context.request.headers.get("Authorization");
-    if (!guess || guess != context.env.SECRET)
-        return Response.json({ error: "unauthenticated" }, { status: 401 });
-    return await context.next();
+export const onRequest: PagesFunction<Env> = async ctx => {
+    const guess = ctx.request.headers.get("Authorization");
+    return guess && ctx.env.SECRET && guess == ctx.env.SECRET
+        ? await ctx.next()
+        : response(error(401, "unauthenticated"));
 };

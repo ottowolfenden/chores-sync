@@ -1,4 +1,7 @@
-export const cloneAndSum = (assignments: UiAssignment[]): UiAssignment[] => {
+export const cloneAndSum = (
+    assignments: UiAssignment[] | null | undefined
+): UiAssignment[] => {
+    if (!assignments) return [];
     const map = new Map<string, UiAssignment>();
     assignments.forEach(a => {
         const today = new Date(a.date).toISOString().split("T")[0];

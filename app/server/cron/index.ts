@@ -1,17 +1,14 @@
-import { neon } from "@neondatabase/serverless";
+import { getMembers } from "../services/members";
 
 const autoAssign = async (env: Env) => {
-    try {
-        const sql = neon(env.DATABASE_URL);
-        console.log(await sql`SELECT chore_name FROM chores;`);
-    } catch (err) {
-        console.error("auto assign failed", err);
-    }
+    const result = await getMembers(env);
+    const data = result.ok ? result.data : null;
+    console.log(data);
 };
 
 export default {
     scheduled: async (
-        event: ScheduledEvent,
+        _: ScheduledEvent,
         env: Env,
         execContext: ExecutionContext
     ): Promise<void> => execContext.waitUntil(autoAssign(env))

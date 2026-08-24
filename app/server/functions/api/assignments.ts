@@ -1,144 +1,37 @@
-import { neon } from "@neondatabase/serverless";
+import { error, response } from "../../utils";
+import { addAssignment, getAssignments, replaceAssignments } from "../../services/assignments";
 
-const validateDate = (date: string): boolean =>
-    /^\d{4}-\d{2}-\d{2}$/.test(date) && !isNaN(Date.parse(date));
-
-export const onRequestGet: PagesFunction<Env> = async context => {
-    try {
-        const sql = neon(context.env.DATABASE_URL);
-        const [date, minDate, maxDate] = ["date", "min-date", "max-date"].map(p =>
-            new URL(context.request.url).searchParams.get(p)
-        );
-
-        if (
-            [date, minDate, maxDate].some(d => d && !validateDate(d)) ||
-            (minDate && maxDate && Date.parse(minDate) > Date.parse(maxDate)) ||
-            (!date && !minDate && !maxDate) ||
-            (date && (minDate || maxDate))
+export const onRequestGet: PagesFunction<Env> = async ctx => {
+    const params = new URL(ctx.request.url).searchParams;
+    return response(
+        await getAssignments(
+            ctx.env,
+            params.get("date"),
+            params.get("min-date"),
+            params.get("max-date")
         )
-            return Response.json(null, { status: 400 });
-
-        return Response.json(
-            await (() => {
-                if (date)
-                    return sql`
-                        SELECT * FROM assignments a
-                        JOIN chores c ON c.chore_id = a.chore_id
-                        WHERE a.assign_date = ${date}
-                        ORDER BY c.chore_name;
-                    `;
-                else if (minDate && maxDate)
-                    return sql`
-                        SELECT * FROM assignments a
-                        JOIN chores c ON c.chore_id = a.chore_id
-                        WHERE a.assign_date >= ${minDate} AND a.assign_date <= ${maxDate}
-                        ORDER BY c.chore_name;
-                    `;
-                return sql`
-                    SELECT * FROM assignments a
-                    JOIN chores c ON c.chore_id = a.chore_id
-                    JOIN members m ON m.member_id = a.member_id
-                    WHERE a.assign_date >= ${minDate ?? "-infinity"}
-                    AND a.assign_date <= ${maxDate ?? "infinity"}
-                    AND a.assign_date > '-infinity'
-                    ORDER BY c.chore_name, m.member_name;
-                `;
-            })()
-        );
-    } catch (err) {
-        console.error(err);
-        return Response.json(null, { status: 500 });
-    }
+    );
 };
 
-export const onRequestPost: PagesFunction<Env> = async context => {
-    try {
-        const sql = neon(context.env.DATABASE_URL);
-        const data = (await context.request.json()) as DbAssignment | DbAssignment[];
-        const params = new URL(context.request.url).searchParams;
+export const onRequestPost: PagesFunction<Env> = async ctx => {
+    const params = new URL(ctx.request.url).searchParams;
+    const data = (await ctx.request.json().catch(() => null)) as DbAssignment | DbAssignment[];
+    if (!data) return response(error(400, "no assignments provided"));
 
-        switch (params.get("action")) {
-            case "add":
-                if (Array.isArray(data))
-                    return Response.json(
-                        { error: "multiple objects not allowed" },
-                        { status: 400 }
-                    );
-                await sql`
-                    INSERT INTO assignments (
-                        assignment_uuid,
-                        assign_date,
-                        quantity,
-                        chore_id,
-                        member_id
-                    )
-                    VALUES (
-                        ${data.assignment_uuid},
-                        ${data.assign_date},
-                        ${data.quantity},
-                        ${data.chore_id},
-                        ${data.member_id}
-                    )
-                    ON CONFLICT (member_id, chore_id, assign_date)
-                    DO UPDATE SET quantity = assignments.quantity + EXCLUDED.quantity;
-                `;
-                break;
-            case "replace":
-                const date = params.get("date");
-                if (!date || !validateDate(date))
-                    return Response.json({ error: "date invalid" }, { status: 400 });
-                if (!Array.isArray(data))
-                    return Response.json({ error: "must be an array" }, { status: 400 });
-
-                const map = new Map();
-                data.forEach(d => {
-                    const key = `${d.member_id}-${d.chore_id}-${d.assign_date}`;
-                    if (map.has(key)) map.get(key).quantity += d.quantity;
-                    else map.set(key, { ...d });
-                });
-                const summedData = [...map.values()];
-                const uuids = summedData.map(d => d.assignment_uuid);
-
-                await sql.transaction([
-                    uuids.length == 0
-                        ? sql`DELETE FROM assignments WHERE assign_date = ${date};`
-                        : sql`
-                            DELETE FROM assignments
-                            WHERE assign_date = ${date}
-                            AND NOT (assignment_uuid = ANY(${uuids}));
-                        `,
-                    sql`
-                        INSERT INTO assignments (
-                            assignment_uuid,
-                            assign_date,
-                            quantity,
-                            chore_id,
-                            member_id
-                        )
-                        SELECT input.*
-                        FROM JSON_TO_RECORDSET(${JSON.stringify(summedData)}::json)
-                        AS input (
-                            assignment_uuid UUID,
-                            assign_date DATE,
-                            quantity INT,
-                            chore_id INT,
-                            member_id INT
-                        )
-                        ON CONFLICT (assignment_uuid)
-                        DO UPDATE SET
-                            assign_date = EXCLUDED.assign_date,
-                            quantity = EXCLUDED.quantity,
-                            chore_id = EXCLUDED.chore_id,
-                            member_id = EXCLUDED.member_id;
-                    `
-                ]);
-                break;
-            default:
-                return Response.json({ error: "invalid action" }, { status: 400 });
-        }
-        return Response.json(null);
-    } catch (err) {
-        console.error(err);
-        return Response.json(null, { status: 500 });
+    switch (params.get("action")) {
+        case "add":
+            return response(
+                Array.isArray(data)
+                    ? error(400, "must be a single assignment")
+                    : await addAssignment(ctx.env, data)
+            );
+        case "replace":
+            return response(
+                Array.isArray(data)
+                    ? await replaceAssignments(ctx.env, data, params.get("date"))
+                    : error(400, "must be an array of assignments")
+            );
+        default:
+            return response(error(400, "invalid action"));
     }
 };
