@@ -8,7 +8,6 @@ export class TurnsList extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: Array }) turns: UiTurn[] = [];
-    @property({ type: Array }) assignments?: UiAssignment[];
 
     render = () =>
         repeat(
@@ -46,16 +45,6 @@ export class TurnsList extends LitElement {
                             success: {},
                             error: { msToShow: 2000 }
                         }}
-                        ?hidden=${(() => {
-                            const assignment = this.assignments?.find(
-                                a => a.chore.id == t.chore.id
-                            );
-                            if (!assignment) return false;
-                            return (
-                                assignment.quantity >=
-                                (assignment.chore.limitPerDay ?? Infinity)
-                            );
-                        })()}
                         state-button-class="transparent small">
                     </state-actions>
                 </div>

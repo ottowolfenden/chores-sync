@@ -18,10 +18,7 @@ section.addEventListener("open", async () => {
         message: assignmentsDiv.querySelector("status-message")!
     };
 
-    const hideAssignmentsMessage = () => {
-        assignmentsUi.message.status = "success";
-        turnsUi.list.assignments = assignmentsUi.list.assignments;
-    };
+    const hideAssignmentsMessage = () => (assignmentsUi.message.status = "success");
 
     window.addEventListener("assignment-added", hideAssignmentsMessage);
 
@@ -67,7 +64,6 @@ section.addEventListener("open", async () => {
                     success ? assignmentsUi.list.assignments : orgAssignments!
                 );
                 assignmentsUi.list.assignments = newAssignments;
-                turnsUi.list.assignments = assignmentsUi.list.assignments;
                 assignmentsUi.list.requestUpdate();
                 if (assignmentsUi.list.assignments.length == 0) {
                     assignmentsUi.stateActions.state = "success";
@@ -84,7 +80,6 @@ section.addEventListener("open", async () => {
             click: () => {
                 assignmentsUi.list.toggleAttribute("edit-mode", false);
                 assignmentsUi.list.assignments = cloneAndSum(orgAssignments!);
-                turnsUi.list.assignments = assignmentsUi.list.assignments;
             }
         },
         loading: {},
@@ -105,13 +100,10 @@ section.addEventListener("open", async () => {
         (async () => {
             orgAssignments = await getTodayAssignments();
             if (orgAssignments == null) assignmentsUi.message.status = "error";
-            else if (orgAssignments.length == 0) {
-                assignmentsUi.message.status = "empty";
-                turnsUi.list.assignments = assignmentsUi.list.assignments;
-            } else {
+            else if (orgAssignments.length == 0) assignmentsUi.message.status = "empty";
+            else {
                 assignmentsUi.message.status = "success";
                 assignmentsUi.list.assignments = cloneAndSum(orgAssignments);
-                turnsUi.list.assignments = assignmentsUi.list.assignments;
             }
         })()
     ]);
