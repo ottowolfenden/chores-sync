@@ -3,6 +3,7 @@
         "build": "./scripts/build.sh",
         "deploy": "./scripts/deploy.sh",
         "start": "./scripts/start.sh",
+        "start-cron": "./scripts/start-cron.sh",
         "watch": "./scripts/watch.sh"
     },
     "devDependencies": {

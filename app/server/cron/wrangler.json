@@ -1,0 +1,8 @@
+{
+    "$schema": "../../../node_modules/wrangler/config-schema.json",
+    "name": "chores-sync-auto-assign",
+    "main": "index.ts",
+    "compatibility_date": "2026-08-24",
+    "compatibility_flags": ["nodejs_compat"],
+    "triggers": { "crons": ["0 0 * * *"] }
+}
