@@ -4,5 +4,8 @@
     "main": "index.ts",
     "compatibility_date": "2026-08-24",
     "compatibility_flags": ["nodejs_compat"],
+    "observability": {
+        "logs": { "enabled": true, "invocation_logs": true }
+    },
     "triggers": { "crons": ["0 1 * * *"] }
 }
