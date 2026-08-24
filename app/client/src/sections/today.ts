@@ -52,6 +52,46 @@ section.addEventListener("open", async () => {
 
     assignmentsUi.message.status = turnsUi.message.status = "loading";
 
+    assignmentsUi.stateActions.conf = {
+        normal: {
+            icon: "edit",
+            label: "Edit",
+            click: () => assignmentsUi.list.toggleAttribute("edit-mode", true)
+        },
+        active: {
+            click: async () => {
+                assignmentsUi.list.toggleAttribute("edit-mode", false);
+
+                const success = await replaceAssignments(assignmentsUi.list.assignments);
+                const newAssignments = cloneAndSum(
+                    success ? assignmentsUi.list.assignments : orgAssignments!
+                );
+                assignmentsUi.list.assignments = newAssignments;
+                turnsUi.list.assignments = assignmentsUi.list.assignments;
+                assignmentsUi.list.requestUpdate();
+                if (assignmentsUi.list.assignments.length == 0) {
+                    assignmentsUi.stateActions.state = "success";
+                    setTimeout(
+                        () => (assignmentsUi.message.status = "empty"),
+                        assignmentsUi.stateActions.conf.success?.msToShow ??
+                            assignmentsUi.stateActions.defaultConf.success.msToShow
+                    );
+                }
+                return success;
+            }
+        },
+        cancel: {
+            click: () => {
+                assignmentsUi.list.toggleAttribute("edit-mode", false);
+                assignmentsUi.list.assignments = cloneAndSum(orgAssignments!);
+                turnsUi.list.assignments = assignmentsUi.list.assignments;
+            }
+        },
+        loading: {},
+        success: {},
+        error: {}
+    };
+
     await Promise.all([
         (async () => {
             orgTurns = await Context.turns;
@@ -70,49 +110,6 @@ section.addEventListener("open", async () => {
                 assignmentsUi.message.status = "success";
                 assignmentsUi.list.assignments = cloneAndSum(orgAssignments);
                 turnsUi.list.assignments = assignmentsUi.list.assignments;
-
-                assignmentsUi.stateActions.conf = {
-                    normal: {
-                        icon: "edit",
-                        label: "Edit",
-                        click: () => assignmentsUi.list.toggleAttribute("edit-mode", true)
-                    },
-                    active: {
-                        click: async () => {
-                            assignmentsUi.list.toggleAttribute("edit-mode", false);
-
-                            const success = await replaceAssignments(
-                                assignmentsUi.list.assignments
-                            );
-                            const newAssignments = cloneAndSum(
-                                success ? assignmentsUi.list.assignments : orgAssignments!
-                            );
-                            assignmentsUi.list.assignments = newAssignments;
-                            turnsUi.list.assignments = assignmentsUi.list.assignments;
-                            assignmentsUi.list.requestUpdate();
-                            if (assignmentsUi.list.assignments.length == 0) {
-                                assignmentsUi.stateActions.state = "success";
-                                setTimeout(
-                                    () => (assignmentsUi.message.status = "empty"),
-                                    assignmentsUi.stateActions.conf.success?.msToShow ??
-                                        assignmentsUi.stateActions.defaultConf.success.msToShow
-                                );
-                            }
-
-                            return success;
-                        }
-                    },
-                    cancel: {
-                        click: () => {
-                            assignmentsUi.list.toggleAttribute("edit-mode", false);
-                            assignmentsUi.list.assignments = cloneAndSum(orgAssignments!);
-                            turnsUi.list.assignments = assignmentsUi.list.assignments;
-                        }
-                    },
-                    loading: {},
-                    success: {},
-                    error: {}
-                };
             }
         })()
     ]);

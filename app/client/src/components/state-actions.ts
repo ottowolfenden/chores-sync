@@ -81,10 +81,10 @@ export class StateActions extends LitElement {
                     });
             }}>
             <md-icon>
-                ${this.conf[this.state]?.icon ?? this.defaultConf[this.state]?.icon}
+                ${this.conf[this.state]?.icon ?? this.defaultConf[this.state].icon}
             </md-icon>
             <span>
-                ${this.conf[this.state]?.label ?? this.defaultConf[this.state]?.label}
+                ${this.conf[this.state]?.label ?? this.defaultConf[this.state].label}
             </span>
         </button>
     `;
