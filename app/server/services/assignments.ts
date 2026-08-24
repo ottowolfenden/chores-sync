@@ -52,11 +52,7 @@ export const addAssignment = async (env: Env, assignment: DbAssignment): Promise
 
         await sql`
             INSERT INTO assignments (
-                assignment_uuid,
-                assign_date,
-                quantity,
-                chore_id,
-                member_id
+                assignment_uuid, assign_date, quantity, chore_id, member_id
             )
             VALUES (
                 ${assignment.assignment_uuid},
@@ -79,7 +75,7 @@ export const addAssignment = async (env: Env, assignment: DbAssignment): Promise
 export const replaceAssignments = async (
     env: Env,
     assignments: DbAssignment[],
-    date: string | null
+    date: string | null | undefined
 ): Promise<Result> => {
     try {
         const sql = neon(env.DATABASE_URL);
@@ -105,11 +101,7 @@ export const replaceAssignments = async (
                 `,
             sql`
                 INSERT INTO assignments (
-                    assignment_uuid,
-                    assign_date,
-                    quantity,
-                    chore_id,
-                    member_id
+                    assignment_uuid, assign_date, quantity, chore_id, member_id
                 )
                 SELECT input.*
                 FROM JSON_TO_RECORDSET(${JSON.stringify(summedAssignments)}::json)
