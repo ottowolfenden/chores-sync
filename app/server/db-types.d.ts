@@ -13,7 +13,7 @@ type DbChore = {
 };
 
 type DbAssignment = {
-    assignment_uuid: `${string}-${string}-${string}-${string}-${string}`;
+    assignment_uuid: string;
     assign_date: Date;
     quantity: number;
     is_offset: boolean;
