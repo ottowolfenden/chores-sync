@@ -105,8 +105,10 @@ section.addEventListener("open", async () => {
         (async () => {
             orgAssignments = await getTodayAssignments();
             if (orgAssignments == null) assignmentsUi.message.status = "error";
-            else if (orgAssignments.length == 0) assignmentsUi.message.status = "empty";
-            else {
+            else if (orgAssignments.length == 0) {
+                assignmentsUi.message.status = "empty";
+                turnsUi.list.assignments = assignmentsUi.list.assignments;
+            } else {
                 assignmentsUi.message.status = "success";
                 assignmentsUi.list.assignments = cloneAndSum(orgAssignments);
                 turnsUi.list.assignments = assignmentsUi.list.assignments;
