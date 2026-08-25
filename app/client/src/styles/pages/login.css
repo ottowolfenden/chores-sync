@@ -20,6 +20,7 @@ form {
     div {
         display: flex;
         flex-direction: column;
+        width: 300px;
 
         label {
             margin-bottom: 30px;
@@ -27,13 +28,17 @@ form {
             display: flex;
             flex-direction: column;
         }
-        input[name="secret"] {
+
+        input[type="password"] {
             font-family: "Inconsolata", monospace;
-            width: min(44ch, 100vw - 70px);
         }
     }
 
     button[type="submit"] {
         margin-bottom: 20px;
+
+        md-icon {
+            --opsz: 22;
+        }
     }
 }

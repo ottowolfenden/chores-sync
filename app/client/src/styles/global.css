@@ -173,14 +173,14 @@ button {
     }
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
     background-color: var(--surface-container-highest);
     color: var(--on-surface);
     font-size: 16px;
     border: solid var(--outline) 2px;
     border-radius: 10px;
     padding: 8px;
-    width: 150px;
     height: 20px;
     transition: background-color, color, border-color;
     transition-duration: 200ms;
@@ -190,7 +190,8 @@ input[type="text"] {
     }
 }
 
-label:has(input[type="text"]) span {
+label:has(input[type="text"]) span,
+label:has(input[type="password"]) span {
     color: var(--on-surface);
     margin-bottom: 2px;
 
