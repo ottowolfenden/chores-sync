@@ -57,7 +57,7 @@ export class AssignmentsList extends LitElement {
                     <md-icon class="swapped" ?hidden=${a.chosenMember.id == a.turnMember.id}>
                         swap_horiz
                     </md-icon>
-                    <div class="name-dropdown">
+                    <div class="dropdown">
                         <button
                             class="tonal"
                             popovertarget="assignment-popover-${a.uuid}"
