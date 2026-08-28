@@ -118,4 +118,11 @@ turns-list {
     button[disabled] {
         background-color: transparent;
     }
+
+    @media (width <= 350px) {
+        gap: 0 10px;
+        button:has(+ .dropdown) {
+            margin-left: -10px;
+        }
+    }
 }

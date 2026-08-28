@@ -7,12 +7,6 @@ section#today {
         font-weight: 470;
     }
 
-    @media (width <= 350px) {
-        turns-list {
-            gap: 0 10px;
-        }
-    }
-
     @media (width <= 390px) {
         state-actions button[data-cancel] {
             --collapse: 1;
