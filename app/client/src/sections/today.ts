@@ -58,13 +58,13 @@ section.addEventListener("open", async () => {
             icon: "edit",
             label: "Edit",
             click: () => {
-                assignmentsUi.list.editMode = true;
+                assignmentsUi.list.toggleAttribute("edit-mode", true);
                 setAllDisabled(true);
             }
         },
         active: {
             click: async () => {
-                assignmentsUi.list.editMode = false;
+                assignmentsUi.list.toggleAttribute("edit-mode", false);
 
                 const success = await replaceAssignments(assignmentsUi.list.assignments);
                 setAllDisabled(false);
@@ -86,7 +86,7 @@ section.addEventListener("open", async () => {
         },
         cancel: {
             click: () => {
-                assignmentsUi.list.editMode = false;
+                assignmentsUi.list.toggleAttribute("edit-mode", false);
                 setAllDisabled(false);
                 assignmentsUi.list.assignments = cloneAndSum(orgAssignments!);
             }
