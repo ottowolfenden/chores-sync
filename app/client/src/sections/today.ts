@@ -27,6 +27,7 @@ section.addEventListener("open", async () => {
         () => {
             assignmentsUi.stateActions.conf.cancel?.click?.();
             assignmentsUi.stateActions.state = "normal";
+            setAllDisabled(false);
             window.removeEventListener("assignment-added", hideAssignmentsMessage);
         },
         { once: true }
@@ -49,17 +50,24 @@ section.addEventListener("open", async () => {
 
     assignmentsUi.message.status = turnsUi.message.status = "loading";
 
+    const setAllDisabled = (disabled: boolean) =>
+        turnsUi.list.querySelectorAll("button").forEach(b => (b.disabled = disabled));
+
     assignmentsUi.stateActions.conf = {
         normal: {
             icon: "edit",
             label: "Edit",
-            click: () => assignmentsUi.list.toggleAttribute("edit-mode", true)
+            click: () => {
+                assignmentsUi.list.editMode = true;
+                setAllDisabled(true);
+            }
         },
         active: {
             click: async () => {
-                assignmentsUi.list.toggleAttribute("edit-mode", false);
+                assignmentsUi.list.editMode = false;
 
                 const success = await replaceAssignments(assignmentsUi.list.assignments);
+                setAllDisabled(false);
                 const newAssignments = cloneAndSum(
                     success ? assignmentsUi.list.assignments : orgAssignments!
                 );
@@ -78,7 +86,8 @@ section.addEventListener("open", async () => {
         },
         cancel: {
             click: () => {
-                assignmentsUi.list.toggleAttribute("edit-mode", false);
+                assignmentsUi.list.editMode = false;
+                setAllDisabled(false);
                 assignmentsUi.list.assignments = cloneAndSum(orgAssignments!);
             }
         },

@@ -114,4 +114,8 @@ turns-list {
             }
         }
     }
+
+    button[disabled] {
+        background-color: transparent;
+    }
 }
