@@ -18,6 +18,12 @@ assignments-list .assignment {
     transition: height, margin-top, opacity;
     transition-duration: 150ms, 150ms, 80ms;
 
+    @starting-style {
+        height: 0;
+        margin-top: 0;
+        opacity: 0;
+    }
+
     .chore-name {
         color: var(--on-surface-variant);
         flex-grow: 0;
