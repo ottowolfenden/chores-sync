@@ -236,7 +236,7 @@ input[type="checkbox"] {
         height: 32px;
         opacity: 0;
     }
-    0.00001% {
+    0.01% {
         height: 0;
     }
     100% {
