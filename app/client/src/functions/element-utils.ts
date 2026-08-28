@@ -23,7 +23,5 @@ export const withTransition = (
     setTimeout(() => handleEvent(after), delay);
 };
 
-export const queryClosest = (e: Event, selector: string) =>
-    e.target instanceof HTMLElement
-        ? (e.target as HTMLElement).closest<HTMLElement>(selector)
-        : null;
+export const queryClosest = <T extends HTMLElement = HTMLElement>(e: Event, sel: string) =>
+    e.target instanceof HTMLElement ? (e.target as HTMLElement).closest<T>(sel) : null;
