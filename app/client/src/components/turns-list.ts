@@ -3,6 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { addAssignment } from "../functions/db";
 import { Context } from "../classes/context";
+import { queryClosest } from "../functions/element-utils";
 
 @customElement("turns-list")
 export class TurnsList extends LitElement {
@@ -76,9 +77,7 @@ export class TurnsList extends LitElement {
                                     <button
                                         class="tonal"
                                         @click=${async (e: Event) => {
-                                            (e.target as HTMLElement)
-                                                .closest<HTMLElement>("[popover]")
-                                                ?.hidePopover();
+                                            queryClosest(e, "[popover]")?.hidePopover();
                                             await this.addAssignment(t, m);
                                             this.requestUpdate();
                                         }}>

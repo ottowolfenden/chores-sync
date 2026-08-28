@@ -22,3 +22,8 @@ export const withTransition = (
     const delay = parseFloat(duration) * (duration.endsWith("ms") ? 1 : 1000);
     setTimeout(() => handleEvent(after), delay);
 };
+
+export const queryClosest = (e: Event, selector: string) =>
+    e.target instanceof HTMLElement
+        ? (e.target as HTMLElement).closest<HTMLElement>(selector)
+        : null;

@@ -2,7 +2,7 @@ import { LitElement, html, type PropertyValues } from "lit";
 import { customElement, state, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { Context } from "../classes/context";
-import { withTransition } from "../functions/element-utils.js";
+import { queryClosest, withTransition } from "../functions/element-utils.js";
 import { addHaptics } from "../functions/haptics.js";
 import { cloneAndSum } from "../functions/assignments";
 
@@ -41,7 +41,7 @@ export class AssignmentsList extends LitElement {
 
     private removeAssignment = (e: Event, assignment: UiAssignment) =>
         withTransition(
-            (e.target as HTMLElement).closest<HTMLElement>(".assignment"),
+            queryClosest(e, ".assignment"),
             { "height": "0", "opacity": "0", "margin-top": "0" },
             () => (this.assignments = this.assignments.filter(a => a.uuid != assignment.uuid))
         );
@@ -76,9 +76,7 @@ export class AssignmentsList extends LitElement {
                                         <button
                                             class="tonal"
                                             @click=${(e: Event) => {
-                                                (e.target as HTMLElement)
-                                                    .closest<HTMLElement>("[popover]")
-                                                    ?.hidePopover();
+                                                queryClosest(e, "[popover]")?.hidePopover();
                                                 a.chosenMember = m;
                                                 this.requestUpdate();
                                             }}>
