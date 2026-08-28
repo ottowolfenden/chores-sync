@@ -11,21 +11,17 @@ section#today {
         turns-list {
             gap: 0 10px;
         }
-
-        state-actions button {
-            --collapse: 1;
-        }
     }
 
-    @media (width <= 410px) {
-        state-actions:has(button[data-state]:not([hidden])) button {
+    @media (width <= 390px) {
+        state-actions button[data-cancel] {
             --collapse: 1;
         }
     }
 
     @media ((width <= 475px) or ((width <= 615px) and (width >= 550px))) {
-        state-actions button[data-cancel] {
-            --collapse: 1;
+        & > div h2 .suffix {
+            display: none;
         }
     }
 }
