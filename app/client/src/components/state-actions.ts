@@ -37,7 +37,7 @@ export class StateActions extends LitElement {
         cancel: { icon: "close", label: "Cancel" }
     };
 
-    private handleResult = async (success: boolean | void | undefined) => {
+    readonly handleResult = async (success: boolean | void | undefined) => {
         if (this.conf.success && this.conf.error && typeof success == "boolean") {
             this.state = success ? "success" : "error";
             await delay(
