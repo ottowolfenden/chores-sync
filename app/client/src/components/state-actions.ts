@@ -3,13 +3,13 @@ import { customElement, property } from "lit/decorators.js";
 import { delay } from "../functions/timer.js";
 import { withTransition } from "../functions/element-utils.js";
 
-type ButtonConf = {
+export type ButtonConf = {
     icon?: string;
     label?: string;
     click?: (e?: Event) => (void | boolean) | Promise<void | boolean>;
 };
-type IndicatorConf = { icon?: string; label?: string; msToShow?: number };
-type Conf = {
+export type IndicatorConf = { icon?: string; label?: string; msToShow?: number };
+export type Conf = {
     normal?: ButtonConf;
     active?: ButtonConf;
     loading?: Omit<IndicatorConf, "msToShow">;
@@ -17,7 +17,7 @@ type Conf = {
     success?: IndicatorConf;
     cancel?: ButtonConf;
 };
-type State = "normal" | "active" | "loading" | "success" | "error";
+export type State = "normal" | "active" | "loading" | "success" | "error";
 
 @customElement("state-actions")
 export class StateActions extends LitElement {
@@ -52,9 +52,9 @@ export class StateActions extends LitElement {
             data-cancel
             class=${this.cancelClass ?? "outlined"}
             ?hidden=${this.state != "active" || !this.conf.cancel}
-            @click=${async () => {
+            @click=${async (e: Event) => {
                 this.state = "normal";
-                await this.conf.cancel?.click?.();
+                await this.conf.cancel?.click?.(e);
             }}>
             <md-icon>${this.conf.cancel?.icon ?? this.defaultConf.cancel?.icon}</md-icon>
             <span>${this.conf.cancel?.label ?? this.defaultConf.cancel?.label}</span>
