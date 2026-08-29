@@ -53,6 +53,10 @@ body {
     display: none !important;
 }
 
+[data-visible] {
+    display: revert !important;
+}
+
 span,
 div:has(state-actions) > h2 {
     white-space: nowrap;
