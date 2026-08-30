@@ -53,6 +53,7 @@ export class StateActions extends LitElement {
             class=${this.cancelClass ?? "outlined"}
             ?hidden=${this.state != "active" || !this.conf.cancel}
             @click=${async (e: Event) => {
+                e.stopPropagation();
                 this.state = "normal";
                 await this.conf.cancel?.click?.(e);
             }}>
@@ -64,21 +65,17 @@ export class StateActions extends LitElement {
             class=${this.stateClass ?? "filled"}
             ?disabled=${["loading", "error", "success"].includes(this.state)}
             @click=${async (e: Event) => {
-                if (this.state == "normal") {
-                    if (this.conf.active) {
-                        this.state = "active";
-                        await this.conf.normal?.click?.(e);
-                        return;
-                    }
-                    withTransition(e.currentTarget as HTMLElement, undefined, async () => {
-                        this.state = this.conf.loading ? "loading" : this.state;
-                        this.handleResult(await this.conf.normal?.click?.(e));
-                    });
-                } else if (this.state == "active")
-                    withTransition(e.currentTarget as HTMLElement, undefined, async () => {
-                        this.state = this.conf.loading ? "loading" : this.state;
-                        this.handleResult(await this.conf.active?.click?.(e));
-                    });
+                e.stopPropagation();
+                if (this.state == "normal" && this.conf.active) {
+                    this.state = "active";
+                    await this.conf.normal?.click?.(e);
+                    return;
+                }
+                withTransition(e.currentTarget as HTMLElement, undefined, async () => {
+                    this.state = this.conf.loading ? "loading" : this.state;
+                    const type = this.state == "normal" ? "normal" : "active";
+                    this.handleResult(await this.conf[type]?.click?.(e));
+                });
             }}>
             <md-icon>
                 ${this.conf[this.state]?.icon ?? this.defaultConf[this.state].icon}
