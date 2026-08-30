@@ -46,52 +46,54 @@ export class AssignmentsList extends LitElement {
             () => (this.assignments = this.assignments.filter(a => a.uuid != assignment.uuid))
         );
 
+    private readonly getAssignmentHTML = (a: UiAssignment) => html`
+        <div class="assignment">
+            <span class="chore-name">${a.chore.name}</span>
+            <span class="quantity" ?hidden=${a.quantity < 2}>×${a.quantity}</span>
+            <md-icon class="swapped" ?hidden=${a.chosenMember.id == a.turnMember.id}>
+                swap_horiz
+            </md-icon>
+            <div class="dropdown">
+                <button
+                    class="tonal"
+                    popovertarget="assignment-popover-${a.uuid}"
+                    style="anchor-name: --assignment-anchor-${a.uuid}">
+                    <span class="member-name">${a.chosenMember.name}</span>
+                    <md-icon>arrow_drop_down</md-icon>
+                </button>
+                <div
+                    popover
+                    id="assignment-popover-${a.uuid}"
+                    style="position-anchor: --assignment-anchor-${a.uuid}">
+                    ${this.members
+                        .filter(m => m.id != a.chosenMember.id)
+                        .map(
+                            m => html`
+                                <button
+                                    class="tonal"
+                                    @click=${(e: Event) => {
+                                        queryClosest(e, "[popover]")?.hidePopover();
+                                        a.chosenMember = m;
+                                        this.requestUpdate();
+                                    }}>
+                                    <span class="member-name">${m.name}</span>
+                                </button>
+                            `
+                        )}
+                </div>
+            </div>
+            <button
+                class="remove tonal small"
+                @click=${(e: Event) => this.removeAssignment(e, a)}>
+                <md-icon>remove</md-icon>
+            </button>
+        </div>
+    `;
+
     render = () =>
         repeat(
             this.assignments,
             a => a.uuid,
-            a => html`
-                <div class="assignment">
-                    <span class="chore-name">${a.chore.name}</span>
-                    <span class="quantity" ?hidden=${a.quantity < 2}>×${a.quantity}</span>
-                    <md-icon class="swapped" ?hidden=${a.chosenMember.id == a.turnMember.id}>
-                        swap_horiz
-                    </md-icon>
-                    <div class="dropdown">
-                        <button
-                            class="tonal"
-                            popovertarget="assignment-popover-${a.uuid}"
-                            style="anchor-name: --assignment-anchor-${a.uuid}">
-                            <span class="member-name">${a.chosenMember.name}</span>
-                            <md-icon>arrow_drop_down</md-icon>
-                        </button>
-                        <div
-                            popover
-                            id="assignment-popover-${a.uuid}"
-                            style="position-anchor: --assignment-anchor-${a.uuid}">
-                            ${this.members
-                                .filter(m => m.id != a.chosenMember.id)
-                                .map(
-                                    m => html`
-                                        <button
-                                            class="tonal"
-                                            @click=${(e: Event) => {
-                                                queryClosest(e, "[popover]")?.hidePopover();
-                                                a.chosenMember = m;
-                                                this.requestUpdate();
-                                            }}>
-                                            <span class="member-name">${m.name}</span>
-                                        </button>
-                                    `
-                                )}
-                        </div>
-                    </div>
-                    <button
-                        class="remove tonal small"
-                        @click=${(e: Event) => this.removeAssignment(e, a)}>
-                        <md-icon>remove</md-icon>
-                    </button>
-                </div>
-            `
+            a => this.getAssignmentHTML(a)
         );
 }
