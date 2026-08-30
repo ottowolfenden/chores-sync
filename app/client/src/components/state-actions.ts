@@ -72,8 +72,8 @@ export class StateActions extends LitElement {
                     return;
                 }
                 withTransition(e.currentTarget as HTMLElement, undefined, async () => {
-                    this.state = this.conf.loading ? "loading" : this.state;
                     const type = this.state == "normal" ? "normal" : "active";
+                    this.state = this.conf.loading ? "loading" : this.state;
                     this.handleResult(await this.conf[type]?.click?.(e));
                 });
             }}>
