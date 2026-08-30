@@ -1,3 +1,5 @@
+import { ref as litRef } from "lit/directives/ref.js";
+
 export const setTexts = (
     rootEl: HTMLElement,
     selectorToText: Record<string, string | number>
@@ -25,3 +27,5 @@ export const withTransition = (
 
 export const queryClosest = <T extends HTMLElement = HTMLElement>(e: Event, sel: string) =>
     e.target instanceof HTMLElement ? (e.target as HTMLElement).closest<T>(sel) : null;
+
+export const ref = <T extends HTMLElement>(set: (el: T) => void) => litRef(el => set(el as T));

@@ -4,7 +4,7 @@ import { repeat } from "lit/directives/repeat.js";
 import { addAssignment } from "../functions/db";
 import { Context } from "../classes/context";
 import { queryClosest } from "../functions/element-utils";
-import { ref } from "lit/directives/ref.js";
+import { ref } from "../functions/element-utils";
 
 @customElement("turns-list")
 export class TurnsList extends LitElement {
@@ -61,7 +61,7 @@ export class TurnsList extends LitElement {
                                 success: {},
                                 error: { msToShow: 2000 }
                             }}
-                            ${ref(el => (stateActions = el as StateActions))}
+                            ${ref<StateActions>(el => (stateActions = el))}
                             state-button-class="transparent small">
                         </state-actions>
                         <button
