@@ -1,5 +1,6 @@
 import { LitElement, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
+import { repeat } from "lit/directives/repeat.js";
 
 @customElement("section-nav")
 export class SectionNav extends LitElement {
@@ -26,7 +27,9 @@ export class SectionNav extends LitElement {
     }
 
     render = () =>
-        this.sections.map(
+        repeat(
+            this.sections,
+            s => s.fragment,
             s => html`
                 <button
                     href=${s.fragment}
