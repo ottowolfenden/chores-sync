@@ -47,6 +47,11 @@ export class StateActions extends LitElement {
         this.state = "normal";
     };
 
+    readonly cancel = async (e?: Event) => {
+        this.state = "normal";
+        await this.conf.cancel?.click?.(e);
+    };
+
     render = () => html`
         <button
             data-cancel
@@ -54,8 +59,7 @@ export class StateActions extends LitElement {
             ?hidden=${this.state != "active" || !this.conf.cancel}
             @click=${async (e: Event) => {
                 e.stopPropagation();
-                this.state = "normal";
-                await this.conf.cancel?.click?.(e);
+                this.cancel(e);
             }}>
             <md-icon>${this.conf.cancel?.icon ?? this.defaultConf.cancel?.icon}</md-icon>
             <span>${this.conf.cancel?.label ?? this.defaultConf.cancel?.label}</span>

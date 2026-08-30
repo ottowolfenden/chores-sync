@@ -25,8 +25,7 @@ section.addEventListener("open", async () => {
     section.addEventListener(
         "close",
         () => {
-            assignmentsUi.stateActions.conf.cancel?.click?.();
-            assignmentsUi.stateActions.state = "normal";
+            assignmentsUi.stateActions.cancel();
             setAllDisabled(false);
             window.removeEventListener("assignment-added", hideAssignmentsMessage);
         },
