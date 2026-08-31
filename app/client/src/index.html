@@ -43,41 +43,7 @@
                         <span>Expand all</span>
                     </button>
                 </div>
-
-                <ul>
-                    <template>
-                        <li>
-                            <div class="chore">
-                                <span class="chore-name"></span>
-                                <span class="total-count">
-                                    <span class="num"></span><span class="suffix"> total</span>
-                                </span>
-                                <button class="tonal small edit">
-                                    <md-icon>edit</md-icon><span>Edit</span>
-                                </button>
-                                <button class="expand transparent">
-                                    <md-icon>keyboard_arrow_down</md-icon>
-                                </button>
-                            </div>
-                            <ul class="details" inert>
-                                <template>
-                                    <li>
-                                        <span class="member-name"></span>
-                                        <num-input name="chore-count"></num-input>
-                                        <span class="count-text">
-                                            <span class="num"></span
-                                            ><span class="suffix"> times</span>
-                                        </span>
-                                        <span class="offset">
-                                            (<span class="num"></span
-                                            ><span class="suffix"> offset</span>)
-                                        </span>
-                                    </li>
-                                </template>
-                            </ul>
-                        </li>
-                    </template>
-                </ul>
+                <counts-list></counts-list>
                 <status-message></status-message>
             </section>
 

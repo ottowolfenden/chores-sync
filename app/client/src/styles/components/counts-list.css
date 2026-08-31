@@ -1,0 +1,182 @@
+counts-list {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 40px;
+
+    .count {
+        background-color: var(--surface-container-low);
+        color: var(--on-surface);
+        border-radius: 6px;
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 5px;
+        display: flex;
+        flex-direction: column;
+        transition: background-color, color, scale;
+        transition-duration: 100ms;
+
+        &:not([data-edit-mode]) ul.details li num-input,
+        &[data-edit-mode] li .count-text {
+            display: none;
+        }
+
+        &:has(div.chore:focus-visible):not(:has(button:hover)),
+        &:has(div.chore:active):not(:has(button:hover)) {
+            background-color: color-mix(
+                in srgb,
+                var(--on-surface) 5%,
+                var(--surface-container-low)
+            );
+        }
+
+        @media (hover: hover) {
+            &:has(div.chore:hover:not(:active)):not(:has(button:hover)) {
+                background-color: color-mix(
+                    in srgb,
+                    var(--on-surface) 3%,
+                    var(--surface-container-low)
+                );
+            }
+        }
+
+        @media (((width <= 615px) and (width >= 550px)) or (width <= 430px)) {
+            ul.details li .offset .suffix {
+                display: none;
+            }
+
+            &[data-edit-mode] ul.details {
+                grid-template-columns: 2fr 3fr 2fr;
+            }
+
+            state-actions [data-cancel] {
+                --collapse: 1;
+            }
+        }
+
+        @media (width <= 700px) {
+            div.chore:not(:has(+ ul[inert])) {
+                .total-count {
+                    display: none;
+                }
+                state-actions {
+                    margin-left: auto;
+                }
+            }
+        }
+    }
+
+    div.chore {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        cursor: pointer;
+
+        .chore-name {
+            color: var(--on-surface-variant);
+            font-size: 19px;
+            margin-left: 4px;
+        }
+
+        state-actions,
+        .total-count {
+            margin-left: auto;
+        }
+
+        .total-count {
+            font-weight: 470;
+            color: var(--on-secondary-container);
+            flex-shrink: 0;
+            max-width: 5.5em;
+
+            @media (width <= 390px) {
+                .suffix {
+                    display: none;
+                }
+            }
+        }
+
+        &:has(+ ul[inert]) state-actions {
+            display: none;
+        }
+
+        &:not(:has(+ ul[inert])) {
+            button.expand md-icon {
+                rotate: 180deg;
+            }
+            state-actions {
+                margin-left: 10px;
+            }
+        }
+
+        button.expand {
+            --size: 16;
+            --color: var(--secondary);
+            padding: 4px;
+        }
+    }
+
+    ul.details {
+        display: flex;
+        background-color: rgb(from var(--surface-container-lowest) r g b / 0.6);
+        border-radius: 8px;
+        margin: 0 8px 8px 8px;
+        gap: 10px 15px;
+        padding: 12px;
+        display: grid;
+        grid-template-columns: 2fr 3fr 3fr;
+        overflow: hidden;
+        transition: height, padding, margin;
+        transition-duration: 150ms;
+        transition-timing-function: ease-in-out;
+
+        &[inert] {
+            padding: 0 12px;
+            height: 0;
+            margin: 0 8px;
+        }
+
+        li {
+            display: grid;
+            grid-template-columns: subgrid;
+            grid-column: 1 / -1;
+            align-items: center;
+
+            .count-text,
+            num-input {
+                grid-column: 2;
+            }
+
+            num-input input {
+                width: min(4em, 13vw);
+            }
+
+            .count-text {
+                font-weight: 500;
+                text-align: right;
+
+                @media (width <= 370px) {
+                    .suffix {
+                        display: none;
+                    }
+                }
+            }
+
+            .offset {
+                color: rgb(from var(--on-surface-variant) r g b / 0.85);
+                text-align: right;
+
+                &:has(.num:empty) {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    state-actions[state="loading"] button,
+    state-actions[state="success"] button {
+        background-color: transparent;
+        color: var(--secondary);
+    }
+}
