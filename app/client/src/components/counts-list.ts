@@ -12,6 +12,7 @@ export class CountsList extends LitElement {
 
     @property({ type: Array }) counts: UiCount[] = [];
 
+    @state() private oldCounts: UiCount[] | null = null;
     @state() private currentMember?: UiMember | null;
 
     async connectedCallback() {
@@ -43,20 +44,33 @@ export class CountsList extends LitElement {
                             normal: {
                                 icon: "edit",
                                 label: "Edit",
-                                click: () => countDiv.toggleAttribute("data-edit-mode", true)
+                                click: () => {
+                                    countDiv.toggleAttribute("data-edit-mode", true);
+                                    this.oldCounts = structuredClone(this.counts);
+                                }
                             },
                             active: {
                                 click: async () => {
                                     countDiv.toggleAttribute("data-edit-mode", false);
                                     await delay(2000);
-                                    return Math.random() < 0.5;
+                                    const success = Math.random() < 0.5;
+                                    if (!success && this.oldCounts)
+                                        this.counts = structuredClone(this.oldCounts);
+                                    this.oldCounts = null;
+                                    return success;
                                 }
                             },
                             loading: {},
                             success: {},
                             error: {},
                             cancel: {
-                                click: () => countDiv.toggleAttribute("data-edit-mode", false)
+                                click: () => {
+                                    countDiv.toggleAttribute("data-edit-mode", false);
+                                    if (this.oldCounts) {
+                                        this.counts = structuredClone(this.oldCounts);
+                                        this.oldCounts = null;
+                                    }
+                                }
                             }
                         } as Conf}
                         ?hidden=${!this.currentMember?.isAdmin}
