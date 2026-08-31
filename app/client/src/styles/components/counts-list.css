@@ -174,9 +174,15 @@ counts-list {
         }
     }
 
-    state-actions[state="loading"] button,
-    state-actions[state="success"] button {
-        background-color: transparent;
-        color: var(--secondary);
+    state-actions {
+        &[state="loading"] button,
+        &[state="success"] button {
+            background-color: transparent;
+            color: var(--secondary);
+        }
+        &[state="error"] button {
+            background-color: transparent;
+            color: var(--error);
+        }
     }
 }
