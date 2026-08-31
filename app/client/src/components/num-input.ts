@@ -24,9 +24,6 @@ export class NumInput extends LitElement {
         this.dispatchEvent(new Event("change", { bubbles: true }));
     };
 
-    private handleInput = (e: Event) =>
-        (this.value = Number((e.target as HTMLInputElement).value));
-
     firstUpdated = () => addHaptics("button", this);
 
     render = () => html`
@@ -44,7 +41,7 @@ export class NumInput extends LitElement {
             .max=${this.max?.toString() ?? ""}
             .step=${this.step.toString()}
             ?disabled=${this.disabled}
-            @input=${this.handleInput}
+            @input=${(e: Event) => (this.value = Number((e.target as HTMLInputElement).value))}
             @click=${() => this.inputEl.select()} />
         <button
             class="plus tonal small"
