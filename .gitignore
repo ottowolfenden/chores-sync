@@ -1,8 +1,5 @@
 node_modules
 app/client/dist
 .wrangler
-app/server/.wrangler
-
-app/server/functions/.reload
 todo.txt
 .env
