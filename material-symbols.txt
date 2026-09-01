@@ -8,11 +8,10 @@ login
 arrow_drop_down
 remove
 save
-cloud_upload
 check
 error
 close
-cloud_sync
+sync
 sentiment_neutral
 error
 celebration
