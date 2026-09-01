@@ -4,7 +4,7 @@ node fetch-material-symbols.mjs
 rm -rf app/client/dist
 mkdir -p app/client/dist/assets
 
-cp app/client/src/* app/client/dist 2>/dev/null
+cp app/client/src/*.html app/client/src/robots.txt app/client/dist 2>/dev/null
 cp app/client/src/assets/* app/client/dist/assets 2>/dev/null
 cp -r app/client/src/assets/icons app/client/dist/assets
 
