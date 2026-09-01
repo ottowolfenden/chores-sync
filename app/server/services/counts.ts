@@ -3,7 +3,7 @@ import { ok, error } from "../utils";
 
 export const getAllCounts = async (env: Env): Promise<Result<DbCount[]>> => {
     try {
-        const sql = neon(env.DATABASE_URL);
+        const sql = neon(atob(env.DATABASE_URL));
         return ok(
             (await sql`
                 SELECT 
@@ -30,7 +30,7 @@ export const getAllCounts = async (env: Env): Promise<Result<DbCount[]>> => {
 
 export const changeCounts = async (env: Env, counts: DbCount[]): Promise<Result> => {
     try {
-        const sql = neon(env.DATABASE_URL);
+        const sql = neon(atob(env.DATABASE_URL));
 
         if (counts.some(d => !d.is_offset)) return error(400, "non-offset value passed");
         if (counts.some(d => typeof d.total != "number" || isNaN(d.total)))

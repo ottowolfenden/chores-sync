@@ -6,7 +6,7 @@ export const getMembers = async (
     name?: string | null
 ): Promise<Result<DbMember | DbMember[]>> => {
     try {
-        const sql = neon(env.DATABASE_URL);
+        const sql = neon(atob(env.DATABASE_URL));
         if (name) {
             const result = (await sql`
                 SELECT * FROM members

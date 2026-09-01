@@ -11,7 +11,7 @@ export const getAssignments = async (
     maxDate: string | null
 ): Promise<Result<DbAssignment[]>> => {
     try {
-        const sql = neon(env.DATABASE_URL);
+        const sql = neon(atob(env.DATABASE_URL));
 
         if (
             [date, minDate, maxDate].some(d => d && !validateDate(d)) ||
@@ -48,7 +48,7 @@ export const getAssignments = async (
 
 export const addAssignment = async (env: Env, assignment: DbAssignment): Promise<Result> => {
     try {
-        const sql = neon(env.DATABASE_URL);
+        const sql = neon(atob(env.DATABASE_URL));
 
         await sql`
             INSERT INTO assignments (
@@ -78,7 +78,7 @@ export const replaceAssignments = async (
     date: string | null | undefined
 ): Promise<Result> => {
     try {
-        const sql = neon(env.DATABASE_URL);
+        const sql = neon(atob(env.DATABASE_URL));
 
         if (!date || !validateDate(date)) return error(400, "date invalid");
 

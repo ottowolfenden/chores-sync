@@ -3,7 +3,7 @@ import { ok, error } from "../utils";
 
 export const getTurns = async (env: Env): Promise<Result<DbTurn[]>> => {
     try {
-        const sql = neon(env.DATABASE_URL);
+        const sql = neon(atob(env.DATABASE_URL));
 
         const turnData = (await sql`
                 SELECT 
