@@ -74,11 +74,9 @@ export class StateActions extends LitElement {
             @click=${async (e: Event) => {
                 e.stopPropagation();
                 if (this.getConf("withTransition", "cancel"))
-                    withTransition(
-                        e.currentTarget as HTMLElement,
-                        undefined,
-                        async () => await this.cancel(e)
-                    );
+                    await withTransition(e.currentTarget, {
+                        after: async () => await this.cancel(e)
+                    });
                 else this.cancel(e);
             }}>
             <md-icon>${this.getConf("icon", "cancel")}</md-icon>
@@ -101,7 +99,7 @@ export class StateActions extends LitElement {
                     this.handleResult(await this.conf[type]?.click?.(e));
                 };
                 if (this.getConf("withTransition"))
-                    withTransition(e.currentTarget as HTMLElement, undefined, run);
+                    await withTransition(e.currentTarget, { after: run });
                 else await run();
             }}>
             <md-icon ?spin=${this.getConf("spin")}>${this.getConf("icon")}</md-icon>

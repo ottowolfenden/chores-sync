@@ -39,12 +39,12 @@ export class AssignmentsList extends LitElement {
         addHaptics("button");
     }
 
-    private removeAssignment = (e: Event, assignment: UiAssignment) =>
-        withTransition(
-            queryClosest(e, ".assignment"),
-            { "height": "0", "opacity": "0", "margin-top": "0" },
-            () => (this.assignments = this.assignments.filter(a => a.uuid != assignment.uuid))
-        );
+    private removeAssignment = async (e: Event, assignment: UiAssignment) =>
+        await withTransition(queryClosest(e, ".assignment"), {
+            before: { "height": "0", "opacity": "0", "margin-top": "0" },
+            after: () =>
+                (this.assignments = this.assignments.filter(a => a.uuid != assignment.uuid))
+        });
 
     private readonly getAssignmentHTML = (a: UiAssignment) => html`
         <div class="assignment">
@@ -84,7 +84,7 @@ export class AssignmentsList extends LitElement {
             </div>
             <button
                 class="remove tonal small"
-                @click=${(e: Event) => this.removeAssignment(e, a)}>
+                @click=${async (e: Event) => await this.removeAssignment(e, a)}>
                 <md-icon>remove</md-icon>
             </button>
         </div>
