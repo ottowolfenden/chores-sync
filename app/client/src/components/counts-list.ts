@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property, queryAll, state } from "lit/decorators.js";
 import { ref } from "../functions/element-utils";
 import { repeat } from "lit/directives/repeat.js";
 import type { Conf } from "./state-actions";
@@ -11,13 +11,20 @@ export class CountsList extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: Array }) counts: UiCount[] = [];
-
     @state() private oldCounts: UiCount[] | null = null;
     @state() private currentMember?: UiMember | null;
+    @queryAll(".details") detailsULs!: NodeListOf<HTMLElement>;
 
     async connectedCallback() {
         super.connectedCallback();
         this.currentMember = await Context.currentMember;
+    }
+
+    get allCollapsed() {
+        return [...this.detailsULs].every(d => d.inert);
+    }
+    set allCollapsed(collapse: boolean) {
+        [...this.detailsULs].forEach(d => (d.inert = collapse));
     }
 
     private readonly getCountHTML = (c: UiCount) => {
@@ -29,7 +36,12 @@ export class CountsList extends LitElement {
                 <div
                     class="chore"
                     @click=${() => {
-                        detailsUL.toggleAttribute("inert");
+                        detailsUL.inert = !detailsUL.inert;
+                        window.dispatchEvent(
+                            new CustomEvent("count-collapse-toggle", {
+                                detail: { allCollapsed: this.allCollapsed }
+                            })
+                        );
                         if (stateActions.state == "active") stateActions.cancel();
                     }}>
                     <span class="chore-name">${c.choreName}</span>
