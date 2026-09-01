@@ -4,7 +4,6 @@ import { ref } from "../functions/element-utils";
 import { repeat } from "lit/directives/repeat.js";
 import type { Conf } from "./state-actions";
 import { Context } from "../classes/context";
-import { delay } from "../functions/timer";
 import { setCount } from "../functions/db";
 
 @customElement("counts-list")
