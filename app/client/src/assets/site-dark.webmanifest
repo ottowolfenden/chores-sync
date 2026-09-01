@@ -1,0 +1,51 @@
+{
+    "name": "Chores Sync",
+    "short_name": "Chores",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#090e17",
+    "icons": [
+        {
+            "src": "icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/dark/any-44.png",
+            "sizes": "44x44",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/dark/any-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/dark/any-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/dark/maskable-44.png",
+            "sizes": "44x44",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/dark/maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/dark/maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
