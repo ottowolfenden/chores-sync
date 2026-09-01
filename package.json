@@ -3,6 +3,7 @@
         "build": "./scripts/build.sh",
         "deploy": "./scripts/deploy.sh",
         "start": "./scripts/start.sh",
+        "update-env": "./scripts/update-env.sh",
         "watch": "./scripts/watch.sh"
     },
     "devDependencies": {
