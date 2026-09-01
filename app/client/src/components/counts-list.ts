@@ -5,6 +5,7 @@ import { repeat } from "lit/directives/repeat.js";
 import type { Conf } from "./state-actions";
 import { Context } from "../classes/context";
 import { delay } from "../functions/timer";
+import { setCount } from "../functions/db";
 
 @customElement("counts-list")
 export class CountsList extends LitElement {
@@ -52,8 +53,7 @@ export class CountsList extends LitElement {
                             active: {
                                 click: async () => {
                                     countDiv.toggleAttribute("data-edit-mode", false);
-                                    await delay(2000);
-                                    const success = Math.random() < 0.5;
+                                    const success = await setCount(c);
                                     if (!success && this.oldCounts)
                                         this.counts = structuredClone(this.oldCounts);
                                     this.oldCounts = null;
