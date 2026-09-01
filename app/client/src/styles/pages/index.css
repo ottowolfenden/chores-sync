@@ -76,7 +76,7 @@ section-nav {
     }
 }
 
-@media (width <= 385px) {
+@media (width <= 400px) {
     section-nav {
         height: 50px;
 
@@ -86,7 +86,7 @@ section-nav {
     }
 }
 
-@media ((height <= 385px) and (width > 550px)) {
+@media ((height <= 400px) and (width > 550px)) {
     section-nav {
         width: 50px;
 

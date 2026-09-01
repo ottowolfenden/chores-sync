@@ -12,7 +12,7 @@ export class SectionNav extends LitElement {
     private open = (fragment: string) => (window.location.hash = fragment);
     private sections = [
         { name: "Today", icon: "today", fragment: "#today" },
-        { name: "History", icon: "history", fragment: "#history" },
+        { name: "Timeline", icon: "timeline", fragment: "#timeline" },
         { name: "Count", icon: "bar_chart", fragment: "#count" },
         { name: "Settings", icon: "settings", fragment: "#settings" }
     ];

@@ -12,7 +12,7 @@ else
         import("../components/status-message.js"),
         import("../components/turns-list.js"),
         import("../sections/count.js"),
-        import("../sections/history.js"),
+        import("../sections/timeline.js"),
         import("../sections/settings.js"),
         import("../sections/today.js")
     ]);

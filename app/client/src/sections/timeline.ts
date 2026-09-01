@@ -1,6 +1,6 @@
-const section = document.querySelector("section#history")!;
+const section = document.querySelector("section#timeline")!;
 
 section.addEventListener("open", () => {
     section.addEventListener("close", () => {}, { once: true });
-    console.log("history");
+    console.log("timeline");
 });
