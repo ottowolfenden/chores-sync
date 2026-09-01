@@ -8,6 +8,7 @@ export type ButtonConf = {
     spin?: boolean;
     label?: string;
     click?: (e?: Event) => (void | boolean) | Promise<void | boolean>;
+    withTransition?: boolean;
 };
 export type IndicatorConf = {
     icon?: string;
@@ -18,7 +19,7 @@ export type IndicatorConf = {
 export type Conf = {
     normal?: ButtonConf;
     active?: ButtonConf;
-    loading?: Omit<IndicatorConf, "msToShow">;
+    loading?: IndicatorConf;
     error?: IndicatorConf;
     success?: IndicatorConf;
     cancel?: ButtonConf;
@@ -36,7 +37,7 @@ export class StateActions extends LitElement {
 
     readonly defaultConf: Required<Conf> = {
         normal: { icon: "", label: "" },
-        active: { icon: "save", label: "Save" },
+        active: { icon: "save", label: "Save", withTransition: true },
         loading: { icon: "sync", spin: true, label: "Saving" },
         success: { icon: "check", label: "Saved", msToShow: 1000 },
         error: { icon: "error", label: "Failed", msToShow: 1500 },
@@ -46,9 +47,7 @@ export class StateActions extends LitElement {
     readonly handleResult = async (success: boolean | void | undefined) => {
         if (this.conf.success && this.conf.error && typeof success == "boolean") {
             this.state = success ? "success" : "error";
-            await delay(
-                this.conf?.[this.state]?.msToShow ?? this.defaultConf[this.state].msToShow ?? 0
-            );
+            await delay(this.getConf("msToShow") ?? 0);
         }
         this.state = "normal";
     };
@@ -58,6 +57,15 @@ export class StateActions extends LitElement {
         await this.conf.cancel?.click?.(e);
     };
 
+    readonly getConf = <K extends keyof (ButtonConf & IndicatorConf)>(
+        key: K,
+        state: State | "cancel" = this.state
+    ) => {
+        const conf = this.conf[state] as (ButtonConf & IndicatorConf) | undefined;
+        const defaultConf = this.defaultConf[state] as ButtonConf & IndicatorConf;
+        return conf?.[key] ?? defaultConf[key] ?? null;
+    };
+
     render = () => html`
         <button
             data-cancel
@@ -65,10 +73,16 @@ export class StateActions extends LitElement {
             ?hidden=${this.state != "active" || !this.conf.cancel}
             @click=${async (e: Event) => {
                 e.stopPropagation();
-                this.cancel(e);
+                if (this.getConf("withTransition", "cancel"))
+                    withTransition(
+                        e.currentTarget as HTMLElement,
+                        undefined,
+                        async () => await this.cancel(e)
+                    );
+                else this.cancel(e);
             }}>
-            <md-icon>${this.conf.cancel?.icon ?? this.defaultConf.cancel?.icon}</md-icon>
-            <span>${this.conf.cancel?.label ?? this.defaultConf.cancel?.label}</span>
+            <md-icon>${this.getConf("icon", "cancel")}</md-icon>
+            <span>${this.getConf("label", "cancel")}</span>
         </button>
         <button
             data-state
@@ -81,19 +95,17 @@ export class StateActions extends LitElement {
                     await this.conf.normal?.click?.(e);
                     return;
                 }
-                withTransition(e.currentTarget as HTMLElement, undefined, async () => {
+                const run = async () => {
                     const type = this.state == "normal" ? "normal" : "active";
                     this.state = this.conf.loading ? "loading" : this.state;
                     this.handleResult(await this.conf[type]?.click?.(e));
-                });
+                };
+                if (this.getConf("withTransition"))
+                    withTransition(e.currentTarget as HTMLElement, undefined, run);
+                else await run();
             }}>
-            <md-icon
-                ?spin=${this.conf[this.state]?.spin ?? this.defaultConf[this.state]?.spin}>
-                ${this.conf[this.state]?.icon ?? this.defaultConf[this.state].icon}
-            </md-icon>
-            <span>
-                ${this.conf[this.state]?.label ?? this.defaultConf[this.state].label}
-            </span>
+            <md-icon ?spin=${this.getConf("spin")}>${this.getConf("icon")}</md-icon>
+            <span>${this.getConf("label")}</span>
         </button>
     `;
 }
