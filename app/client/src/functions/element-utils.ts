@@ -14,20 +14,20 @@ export const setTexts = (
 
 type TransitionEvent = (() => void) | (() => Promise<void>) | Record<string, string>;
 export const withTransition = async (
-    el: HTMLElement | null,
-    before: TransitionEvent = () => {},
-    after: TransitionEvent = () => {}
+    el: EventTarget | null,
+    events: { before?: TransitionEvent; after?: TransitionEvent }
 ) => {
-    if (!el) return;
-    const handleEvent = async (event: TransitionEvent) => {
+    if (!el || !(el instanceof HTMLElement)) return;
+    const handleEvent = async (event?: TransitionEvent) => {
+        if (!event) return;
         if (typeof event == "function") await event();
         else Object.assign(el.style, event);
     };
-    await handleEvent(before);
+    await handleEvent(events.before);
     const durationStr = getComputedStyle(el).transitionDuration.split(",")[0]?.trim() ?? "";
     const duration = parseFloat(durationStr) * (durationStr.endsWith("ms") ? 1 : 1000);
     if (duration > 0) await delay(duration);
-    await handleEvent(after);
+    await handleEvent(events.after);
 };
 
 export const queryClosest = <T extends HTMLElement = HTMLElement>(e: Event, sel: string) =>
