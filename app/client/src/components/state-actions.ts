@@ -5,10 +5,16 @@ import { withTransition } from "../functions/element-utils.js";
 
 export type ButtonConf = {
     icon?: string;
+    spin?: boolean;
     label?: string;
     click?: (e?: Event) => (void | boolean) | Promise<void | boolean>;
 };
-export type IndicatorConf = { icon?: string; label?: string; msToShow?: number };
+export type IndicatorConf = {
+    icon?: string;
+    spin?: boolean;
+    label?: string;
+    msToShow?: number;
+};
 export type Conf = {
     normal?: ButtonConf;
     active?: ButtonConf;
@@ -31,7 +37,7 @@ export class StateActions extends LitElement {
     readonly defaultConf: Required<Conf> = {
         normal: { icon: "", label: "" },
         active: { icon: "save", label: "Save" },
-        loading: { icon: "cloud_upload", label: "Saving" },
+        loading: { icon: "sync", spin: true, label: "Saving" },
         success: { icon: "check", label: "Saved", msToShow: 1000 },
         error: { icon: "error", label: "Failed", msToShow: 1500 },
         cancel: { icon: "close", label: "Cancel" }
@@ -81,7 +87,8 @@ export class StateActions extends LitElement {
                     this.handleResult(await this.conf[type]?.click?.(e));
                 });
             }}>
-            <md-icon>
+            <md-icon
+                ?spin=${this.conf[this.state]?.spin ?? this.defaultConf[this.state]?.spin}>
                 ${this.conf[this.state]?.icon ?? this.defaultConf[this.state].icon}
             </md-icon>
             <span>

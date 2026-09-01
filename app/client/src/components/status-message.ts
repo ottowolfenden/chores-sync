@@ -1,9 +1,9 @@
 import { LitElement, html, type TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-type Status = "loading" | "empty" | "error" | "success";
-type Message = { icon: string; text: string | TemplateResult };
-type Messages = Record<Exclude<Status, "success">, Message>;
+export type Status = "loading" | "empty" | "error" | "success";
+export type Message = { icon: string; spin?: boolean; text: string | TemplateResult };
+export type Messages = Record<Exclude<Status, "success">, Message>;
 
 @customElement("status-message")
 export class StatusMessage extends LitElement {
@@ -15,7 +15,8 @@ export class StatusMessage extends LitElement {
     @property({ attribute: false })
     messages: Messages = {
         loading: {
-            icon: "cloud_sync",
+            icon: "sync",
+            spin: true,
             text: "Loading, please wait."
         },
         empty: {
@@ -40,7 +41,9 @@ export class StatusMessage extends LitElement {
             ? html`<span></span>`
             : html`
                   <span>
-                      <md-icon class="large">${this.messages[this.status].icon}</md-icon>
+                      <md-icon class="large" ?spin=${this.messages[this.status].spin}>
+                          ${this.messages[this.status].icon}
+                      </md-icon>
                       ${this.messages[this.status].text}
                   </span>
               `;

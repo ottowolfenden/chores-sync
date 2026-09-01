@@ -4,6 +4,12 @@
     font-display: swap;
 }
 
+@keyframes spin {
+    to {
+        rotate: 1turn;
+    }
+}
+
 md-icon {
     --fill: 0;
     --wght: 400;
@@ -33,5 +39,9 @@ md-icon {
         display: block;
         width: auto;
         height: auto;
+    }
+
+    &[spin] {
+        animation: spin 1s linear;
     }
 }
