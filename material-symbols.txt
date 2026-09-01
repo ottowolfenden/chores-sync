@@ -16,7 +16,7 @@ sentiment_neutral
 error
 celebration
 today
-history
+timeline
 bar_chart
 settings
 swap_horiz
