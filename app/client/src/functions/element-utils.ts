@@ -1,4 +1,5 @@
 import { ref as litRef } from "lit/directives/ref.js";
+import { delay } from "./timer";
 
 export const setTexts = (
     rootEl: HTMLElement,
@@ -11,18 +12,22 @@ export const setTexts = (
     });
 };
 
-export const withTransition = (
+type TransitionEvent = (() => void) | (() => Promise<void>) | Record<string, string>;
+export const withTransition = async (
     el: HTMLElement | null,
-    before: (() => void) | Record<string, string> = () => {},
-    after: (() => void) | Record<string, string> = () => {}
+    before: TransitionEvent = () => {},
+    after: TransitionEvent = () => {}
 ) => {
     if (!el) return;
-    const handleEvent = (event: (() => void) | Record<string, string>) =>
-        (typeof event == "function" ? () => event() : () => Object.assign(el.style, event))();
-    handleEvent(before);
-    const duration = getComputedStyle(el).transitionDuration;
-    const delay = parseFloat(duration) * (duration.endsWith("ms") ? 1 : 1000);
-    setTimeout(() => handleEvent(after), delay);
+    const handleEvent = async (event: TransitionEvent) => {
+        if (typeof event == "function") await event();
+        else Object.assign(el.style, event);
+    };
+    await handleEvent(before);
+    const durationStr = getComputedStyle(el).transitionDuration.split(",")[0]?.trim() ?? "";
+    const duration = parseFloat(durationStr) * (durationStr.endsWith("ms") ? 1 : 1000);
+    if (duration > 0) await delay(duration);
+    await handleEvent(after);
 };
 
 export const queryClosest = <T extends HTMLElement = HTMLElement>(e: Event, sel: string) =>
