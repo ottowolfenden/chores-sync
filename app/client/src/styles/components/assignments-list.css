@@ -1,6 +1,11 @@
 assignments-list {
     display: flex;
     flex-direction: column;
+
+    &[data-transition] .assignment {
+        transition: height, margin-top, opacity;
+        transition-duration: 150ms, 150ms, 80ms;
+    }
 }
 
 assignments-list .assignment {
@@ -15,8 +20,6 @@ assignments-list .assignment {
     padding: 0 8px;
     height: 48px;
     margin-top: 5px;
-    transition: height, margin-top, opacity;
-    transition-duration: 150ms, 150ms, 80ms;
 
     @starting-style {
         height: 0;

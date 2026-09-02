@@ -2,6 +2,7 @@ import { html } from "lit";
 import { getTodayAssignments, replaceAssignments } from "../functions/db.js";
 import { Context } from "../classes/context.js";
 import { cloneAndSum } from "../functions/assignments.js";
+import { withTransition } from "../functions/element-utils.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -27,6 +28,7 @@ section.addEventListener("open", async () => {
         () => {
             assignmentsUi.stateActions.cancel();
             setAllDisabled(false);
+            assignmentsUi.list.toggleAttribute("data-transition", false);
             window.removeEventListener("assignment-added", hideAssignmentsMessage);
         },
         { once: true }
@@ -112,6 +114,9 @@ section.addEventListener("open", async () => {
             else {
                 assignmentsUi.message.status = "success";
                 assignmentsUi.list.assignments = cloneAndSum(orgAssignments);
+                withTransition(assignmentsUi.list.querySelector(".assignment"), {
+                    after: () => assignmentsUi.list.toggleAttribute("data-transition", true)
+                });
             }
         })()
     ]);
