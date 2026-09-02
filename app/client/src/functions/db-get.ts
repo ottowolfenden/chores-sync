@@ -1,18 +1,9 @@
 import { Cache } from "../classes/cache";
-
-const timeout = 10000;
+import { request } from "./api-utils";
 
 export const getChores = async (): Promise<UiChore[] | null> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return null;
-    const response = await fetch("/api/chores", {
-        method: "GET",
-        headers: { "Authorization": guess },
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-    if (!response?.ok) return null;
-
-    const data: DbChore[] = await response.json();
+    const { ok, data } = await request<DbChore[]>("GET", "/api/chores");
+    if (!ok || !data) return null;
     return data.map(
         (d): UiChore => ({
             id: d["chore_id"],
@@ -24,24 +15,16 @@ export const getChores = async (): Promise<UiChore[] | null> => {
 };
 
 export const getCounts = async (): Promise<UiCount[] | null> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return null;
-    const response = await fetch("/api/counts", {
-        method: "GET",
-        headers: { "Authorization": guess },
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-    if (!response?.ok) return null;
-
-    const data: DbCount[] = await response.json();
+    const { ok, data } = await request<DbCount[]>("GET", "/api/counts");
+    if (!ok || !data) return null;
     const choreNames = [...new Set(data.map(d => d["chore_name"]))];
     const memberNames = [...new Set(data.map(d => d["member_name"]))];
     return choreNames.map(cn => ({
         choreName: cn,
         memberCounts: memberNames.map(mn => {
             const records = data.filter(d => d["member_name"] == mn && d["chore_name"] == cn);
-            const offsetCount = Number(records?.find(r => r["is_offset"])?.total ?? 0);
-            const nonOffsetCount = Number(records?.find(r => !r["is_offset"])?.total ?? 0);
+            const offsetCount = Number(records.find(r => r["is_offset"])?.total ?? 0);
+            const nonOffsetCount = Number(records.find(r => !r["is_offset"])?.total ?? 0);
             return {
                 memberName: mn,
                 total: offsetCount + nonOffsetCount,
@@ -52,16 +35,8 @@ export const getCounts = async (): Promise<UiCount[] | null> => {
 };
 
 export const getMembers = async (): Promise<UiMember[] | null> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return null;
-    const response = await fetch("/api/members", {
-        method: "GET",
-        headers: { "Authorization": guess },
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-    if (!response?.ok) return null;
-
-    const data: DbMember[] = await response.json();
+    const { ok, data } = await request<DbMember[]>("GET", "/api/members");
+    if (!ok || !data) return null;
     return data.map(
         (d): UiMember => ({
             id: d["member_id"],
@@ -76,17 +51,13 @@ export const getCurrentMember = async (): Promise<UiMember | null> =>
     (await Cache.members.get())?.find(m => m.name == localStorage.getItem("name")) ?? null;
 
 export const getTodayAssignments = async (): Promise<UiAssignment[] | null> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return null;
     const today = new Date().toISOString().split("T")[0];
-    const response = await fetch(`/api/assignments?date=${today}`, {
-        method: "GET",
-        headers: { "Authorization": guess },
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-    if (!response?.ok) return null;
+    const { ok, data } = await request<DbAssignment[]>(
+        "GET",
+        `/api/assignments?date=${today}`
+    );
+    if (!ok || !data) return null;
 
-    const data: DbAssignment[] = await response.json();
     const chores = await Cache.chores.get();
     const members = await Cache.members.get();
     const turns = await Cache.turns.get();
@@ -117,16 +88,8 @@ export const getTodayAssignments = async (): Promise<UiAssignment[] | null> => {
 };
 
 export const getTurns = async (): Promise<UiTurn[] | null> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return null;
-    const response = await fetch("/api/turns", {
-        method: "GET",
-        headers: { "Authorization": guess },
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-    if (!response?.ok) return null;
-
-    const data: DbTurn[] = await response.json();
+    const { ok, data } = await request<DbTurn[]>("GET", "/api/turns");
+    if (!ok || !data) return null;
     const chores = await Cache.chores.get();
     const members = await Cache.members.get();
 
@@ -140,6 +103,7 @@ export const getTurns = async (): Promise<UiTurn[] | null> => {
         )
     )
         return null;
+
     return data.map(
         (d): UiTurn => ({
             chore: chores.find(c => c.id == d["chore_id"])!,
