@@ -27,6 +27,37 @@ export class CountsList extends LitElement {
         [...this.detailsULs].forEach(d => (d.inert = collapse));
     }
 
+    private readonly startEdit = (countDiv: HTMLElement) => {
+        countDiv.toggleAttribute("data-edit-mode", true);
+        this.oldCounts = structuredClone(this.counts);
+    };
+
+    private readonly saveEdit = async (countDiv: HTMLElement, c: UiCount) => {
+        countDiv.toggleAttribute("data-edit-mode", false);
+        const success = await setCount(c);
+        if (!success && this.oldCounts) this.counts = structuredClone(this.oldCounts);
+        this.oldCounts = null;
+        return success;
+    };
+
+    private readonly cancelEdit = async (countDiv: HTMLElement) => {
+        countDiv.toggleAttribute("data-edit-mode", false);
+        if (this.oldCounts) {
+            this.counts = structuredClone(this.oldCounts);
+            this.oldCounts = null;
+        }
+    };
+
+    private readonly changeNum = (e: Event, memberCount: UiCount["memberCounts"][number]) => {
+        const val = Number((e.target as HTMLInputElement).value);
+        memberCount.offset += val - memberCount.total;
+        memberCount.total = val;
+        this.requestUpdate();
+    };
+
+    private readonly formatOffset = (offset: number) =>
+        `${offset > 0 ? "+" : "−"}${Math.abs(offset)}`;
+
     private readonly getCountHTML = (c: UiCount) => {
         let countDiv: HTMLElement;
         let detailsUL: HTMLElement;
@@ -56,33 +87,13 @@ export class CountsList extends LitElement {
                             normal: {
                                 icon: "edit",
                                 label: "Edit",
-                                click: () => {
-                                    countDiv.toggleAttribute("data-edit-mode", true);
-                                    this.oldCounts = structuredClone(this.counts);
-                                }
+                                click: () => this.startEdit(countDiv)
                             },
-                            active: {
-                                click: async () => {
-                                    countDiv.toggleAttribute("data-edit-mode", false);
-                                    const success = await setCount(c);
-                                    if (!success && this.oldCounts)
-                                        this.counts = structuredClone(this.oldCounts);
-                                    this.oldCounts = null;
-                                    return success;
-                                }
-                            },
+                            active: { click: async () => this.saveEdit(countDiv, c) },
                             loading: {},
                             success: {},
                             error: {},
-                            cancel: {
-                                click: () => {
-                                    countDiv.toggleAttribute("data-edit-mode", false);
-                                    if (this.oldCounts) {
-                                        this.counts = structuredClone(this.oldCounts);
-                                        this.oldCounts = null;
-                                    }
-                                }
-                            }
+                            cancel: { click: async () => this.cancelEdit(countDiv) }
                         } as Conf}
                         ?hidden=${!this.currentMember?.isAdmin}
                         state-button-class="tonal small"
@@ -100,23 +111,13 @@ export class CountsList extends LitElement {
                                 <num-input
                                     name="chore-count"
                                     .value=${mc.total}
-                                    @input=${(e: Event) => {
-                                        const val = Number(
-                                            (e.target as HTMLInputElement).value
-                                        );
-                                        mc.offset += val - mc.total;
-                                        mc.total = val;
-                                        this.requestUpdate();
-                                    }}></num-input>
+                                    @input=${(e: Event) => this.changeNum(e, mc)}></num-input>
                                 <span class="count-text">
                                     <span class="num">${mc.total}</span>
                                     <span class="suffix"> times</span>
                                 </span>
                                 <span class="offset" ?hidden=${mc.offset == 0}>
-                                    (<span class="num"
-                                        >${mc.offset > 0 ? "+" : "−"}${Math.abs(
-                                            mc.offset
-                                        )}</span
+                                    (<span class="num">${this.formatOffset(mc.offset)}</span
                                     ><span class="suffix"> offset</span>)
                                 </span>
                             </li>
