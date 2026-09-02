@@ -41,6 +41,10 @@ section-nav {
             }
         }
 
+        &:focus-visible {
+            outline-offset: 0;
+        }
+
         &:active,
         &:focus-visible {
             background-color: color-mix(
