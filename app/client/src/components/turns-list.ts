@@ -55,44 +55,49 @@ export class TurnsList extends LitElement {
 
     private readonly getTurnHTML = (t: UiTurn) => {
         let stateActions: StateActions;
-        return html` <div>
-            <span class="chore-name">${t.chore.name}</span>
-            <span class="member-name">${t.member.name}</span>
-            <state-actions
-                .conf=${{
-                    normal: { icon: "add", click: async () => await this.addAssignment(t) },
-                    loading: {},
-                    success: {},
-                    error: { msToShow: 2000 }
-                }}
-                ${ref<StateActions>(el => (stateActions = el))}
-                state-button-class="transparent small">
-            </state-actions>
-            <button
-                class="transparent small"
-                popovertarget="turn-popover-${t.chore.id}${t.member.id}"
-                style="anchor-name: --turn-anchor-${t.chore.id}${t.member.id}">
-                <md-icon>arrow_drop_down</md-icon>
-            </button>
-            <div class="dropdown">
-                <div
-                    popover
-                    id="turn-popover-${t.chore.id}${t.member.id}"
-                    style="position-anchor: --turn-anchor-${t.chore.id}${t.member.id}">
-                    ${this.members.map(
-                        m => html`
-                            <button
-                                class="tonal"
-                                @click=${async (e: Event) =>
-                                    this.handleDropdownClick(e, t, m, stateActions)}>
-                                <md-icon>add</md-icon>
-                                <span class="member-name">${m.name}</span>
-                            </button>
-                        `
-                    )}
+        return html`
+            <div>
+                <span class="chore-name">${t.chore.name}</span>
+                <span class="member-name">${t.member.name}</span>
+                <state-actions
+                    .conf=${{
+                        normal: {
+                            icon: "add",
+                            click: async () => await this.addAssignment(t)
+                        },
+                        loading: {},
+                        success: {},
+                        error: { msToShow: 2000 }
+                    }}
+                    ${ref<StateActions>(el => (stateActions = el))}
+                    state-button-class="transparent small">
+                </state-actions>
+                <button
+                    class="transparent small"
+                    popovertarget="turn-popover-${t.chore.id}${t.member.id}"
+                    style="anchor-name: --turn-anchor-${t.chore.id}${t.member.id}">
+                    <md-icon>arrow_drop_down</md-icon>
+                </button>
+                <div class="dropdown">
+                    <div
+                        popover
+                        id="turn-popover-${t.chore.id}${t.member.id}"
+                        style="position-anchor: --turn-anchor-${t.chore.id}${t.member.id}">
+                        ${this.members.map(
+                            m => html`
+                                <button
+                                    class="tonal"
+                                    @click=${async (e: Event) =>
+                                        this.handleDropdownClick(e, t, m, stateActions)}>
+                                    <md-icon>add</md-icon>
+                                    <span class="member-name">${m.name}</span>
+                                </button>
+                            `
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>`;
+        `;
     };
 
     render = () =>
