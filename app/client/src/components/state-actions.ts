@@ -75,7 +75,7 @@ export class StateActions extends LitElement {
 
     private readonly handleCancelClick = async (e: Event) => {
         e.stopPropagation();
-        await this.conf.cancel?.beforeTransition?.();
+        this.conf.cancel?.beforeTransition?.();
         if (this.getConf("withTransition", "cancel"))
             await withTransition(e.currentTarget, {
                 after: async () => await this.cancel(e)
@@ -86,7 +86,7 @@ export class StateActions extends LitElement {
     private readonly handleStateClick = async (e: Event) => {
         e.stopPropagation();
         if (this.state == "normal" || this.state == "active")
-            await this.conf[this.state]?.beforeTransition?.();
+            this.conf[this.state]?.beforeTransition?.();
         if (this.state == "normal" && this.conf.active) {
             this.state = "active";
             await this.conf.normal?.click?.(e);
