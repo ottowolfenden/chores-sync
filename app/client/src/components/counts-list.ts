@@ -23,7 +23,7 @@ export class CountsList extends LitElement {
 
     protected update(changed: PropertyValues) {
         super.update(changed);
-        addHaptics(["button", ".count"], this);
+        addHaptics(["button", ".count > .chore"], this);
     }
 
     get allCollapsed() {
@@ -32,6 +32,16 @@ export class CountsList extends LitElement {
     set allCollapsed(collapse: boolean) {
         [...this.detailsULs].forEach(d => (d.inert = collapse));
     }
+
+    private readonly toggleCollapse = (detailsUL: HTMLElement, stateActions: StateActions) => {
+        detailsUL.inert = !detailsUL.inert;
+        window.dispatchEvent(
+            new CustomEvent("count-collapse-toggle", {
+                detail: { allCollapsed: this.allCollapsed }
+            })
+        );
+        if (stateActions.state == "active") stateActions.cancel();
+    };
 
     private readonly startEdit = (countDiv: HTMLElement) => {
         countDiv.toggleAttribute("data-edit-mode", true);
@@ -72,15 +82,7 @@ export class CountsList extends LitElement {
             <div class="count" ${ref(el => (countDiv = el))}>
                 <div
                     class="chore"
-                    @click=${() => {
-                        detailsUL.inert = !detailsUL.inert;
-                        window.dispatchEvent(
-                            new CustomEvent("count-collapse-toggle", {
-                                detail: { allCollapsed: this.allCollapsed }
-                            })
-                        );
-                        if (stateActions.state == "active") stateActions.cancel();
-                    }}>
+                    @click=${() => this.toggleCollapse(detailsUL, stateActions)}>
                     <span class="chore-name">${c.choreName}</span>
                     <span class="total-count" ?data-visible=${!this.currentMember?.isAdmin}>
                         <span class="num">
