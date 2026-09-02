@@ -1,7 +1,8 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, type PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { delay } from "../functions/timer.js";
 import { withTransition } from "../functions/element-utils.js";
+import { addHaptics } from "../functions/haptics.js";
 
 export type ButtonConf = {
     icon?: string;
@@ -34,6 +35,11 @@ export class StateActions extends LitElement {
     @property({ type: String, attribute: "cancel-button-class" }) cancelClass?: string;
     @property({ type: String, attribute: "state-button-class" }) stateClass?: string;
     @property({ type: String, attribute: "state", reflect: true }) state: State = "normal";
+
+    protected update(changed: PropertyValues) {
+        super.update(changed);
+        addHaptics("button", this);
+    }
 
     readonly defaultConf: Required<Conf> = {
         normal: { icon: "", label: "" },

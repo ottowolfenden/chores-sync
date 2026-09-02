@@ -1,10 +1,11 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, type PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { addAssignment } from "../functions/db";
 import { Context } from "../classes/context";
 import { queryClosest } from "../functions/element-utils";
 import { ref } from "../functions/element-utils";
+import { addHaptics } from "../functions/haptics";
 
 @customElement("turns-list")
 export class TurnsList extends LitElement {
@@ -16,6 +17,11 @@ export class TurnsList extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         this.members = (await Context.members) ?? [];
+    }
+
+    protected update(changed: PropertyValues) {
+        super.update(changed);
+        addHaptics("button", this);
     }
 
     private readonly addAssignment = async (

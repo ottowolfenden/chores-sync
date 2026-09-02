@@ -1,12 +1,18 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, type PropertyValues } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
+import { addHaptics } from "../functions/haptics";
 
 @customElement("section-nav")
 export class SectionNav extends LitElement {
     protected createRenderRoot = () => this;
 
     @state() private activeHash = window.location.hash || "#today";
+
+    protected update(changed: PropertyValues) {
+        super.update(changed);
+        addHaptics("button", this);
+    }
 
     private readonly sections = [
         { name: "Today", icon: "today", fragment: "#today" },
