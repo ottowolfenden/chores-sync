@@ -21,10 +21,12 @@ section.addEventListener("open", async () => {
             click: () => (countsList.allCollapsed = true)
         }
     };
+
     message.elsToHide = [countsList, stateActions];
 
-    const refreshStateActions = (e: Event) =>
-        (stateActions.state = (e as CustomEvent).detail.allCollapsed ? "normal" : "active");
+    const refreshStateActions = () =>
+        (stateActions.state = countsList.allCollapsed ? "normal" : "active");
+    refreshStateActions();
     window.addEventListener("count-collapse-toggle", refreshStateActions);
 
     message.status = "loading";
@@ -40,6 +42,7 @@ section.addEventListener("open", async () => {
         "close",
         () => {
             countsList.allCollapsed = true;
+            refreshStateActions();
             window.removeEventListener("count-collapse-toggle", refreshStateActions);
             Context.updateTurns();
         },
