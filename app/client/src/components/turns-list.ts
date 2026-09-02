@@ -18,7 +18,7 @@ export class TurnsList extends LitElement {
         this.members = (await Context.members) ?? [];
     }
 
-    private addAssignment = async (
+    private readonly addAssignment = async (
         turn: UiTurn,
         chosenMember: UiMember = turn.member
     ): Promise<boolean> => {
@@ -41,20 +41,26 @@ export class TurnsList extends LitElement {
         return success;
     };
 
+    private readonly handleDropdownClick = async (
+        e: Event,
+        turn: UiTurn,
+        member: UiMember,
+        stateActions: StateActions
+    ) => {
+        queryClosest(e, "[popover]")?.hidePopover();
+        stateActions.state = "loading";
+        stateActions.handleResult(await this.addAssignment(turn, member));
+        this.requestUpdate();
+    };
+
     private readonly getTurnHTML = (t: UiTurn) => {
         let stateActions: StateActions;
-        return html`<div>
+        return html` <div>
             <span class="chore-name">${t.chore.name}</span>
             <span class="member-name">${t.member.name}</span>
             <state-actions
                 .conf=${{
-                    normal: {
-                        icon: "add",
-                        click: async () => {
-                            console.log("here");
-                            return await this.addAssignment(t);
-                        }
-                    },
+                    normal: { icon: "add", click: async () => await this.addAssignment(t) },
                     loading: {},
                     success: {},
                     error: { msToShow: 2000 }
@@ -77,12 +83,8 @@ export class TurnsList extends LitElement {
                         m => html`
                             <button
                                 class="tonal"
-                                @click=${async (e: Event) => {
-                                    queryClosest(e, "[popover]")?.hidePopover();
-                                    stateActions.state = "loading";
-                                    stateActions.handleResult(await this.addAssignment(t, m));
-                                    this.requestUpdate();
-                                }}>
+                                @click=${async (e: Event) =>
+                                    this.handleDropdownClick(e, t, m, stateActions)}>
                                 <md-icon>add</md-icon>
                                 <span class="member-name">${m.name}</span>
                             </button>
