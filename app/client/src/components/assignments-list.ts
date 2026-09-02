@@ -11,9 +11,7 @@ export class AssignmentsList extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: Array }) assignments: UiAssignment[] = [];
-
     @property({ type: Boolean, attribute: "edit-mode" }) editMode = false;
-
     @state() private members: UiMember[] = [];
 
     async connectedCallback() {
