@@ -43,6 +43,8 @@ export class TurnsList extends LitElement {
                     detail: { assignment }
                 })
             );
+        Cache.counts.refresh();
+        Cache.todayAssignments.refresh();
         this.requestUpdate();
         return success;
     };
@@ -69,6 +71,7 @@ export class TurnsList extends LitElement {
                     .conf=${{
                         normal: {
                             icon: "add",
+                            beforeTransition: () => Cache.counts.invalidate(),
                             click: async () => await this.addAssignment(t)
                         },
                         loading: {},

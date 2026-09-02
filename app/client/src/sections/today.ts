@@ -68,6 +68,8 @@ section.addEventListener("open", async () => {
         active: {
             click: async () => {
                 assignmentsUi.list.toggleAttribute("edit-mode", false);
+                const affectedCaches = [Cache.counts, Cache.todayAssignments];
+                affectedCaches.forEach(c => c.invalidate());
 
                 const success = await replaceAssignments(assignmentsUi.list.assignments);
                 setAllDisabled(false);
@@ -76,6 +78,8 @@ section.addEventListener("open", async () => {
                 );
                 assignmentsUi.list.assignments = newAssignments;
                 assignmentsUi.list.requestUpdate();
+                affectedCaches.forEach(c => c.refresh());
+
                 if (assignmentsUi.list.assignments.length == 0) {
                     assignmentsUi.stateActions.state = "success";
                     setTimeout(
