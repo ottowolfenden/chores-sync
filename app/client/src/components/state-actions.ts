@@ -66,19 +66,38 @@ export class StateActions extends LitElement {
         return conf?.[key] ?? defaultConf[key] ?? null;
     };
 
+    private readonly handleCancelClick = async (e: Event) => {
+        e.stopPropagation();
+        if (this.getConf("withTransition", "cancel"))
+            await withTransition(e.currentTarget, {
+                after: async () => await this.cancel(e)
+            });
+        else this.cancel(e);
+    };
+
+    private readonly handleStateClick = async (e: Event) => {
+        e.stopPropagation();
+        if (this.state == "normal" && this.conf.active) {
+            this.state = "active";
+            await this.conf.normal?.click?.(e);
+            return;
+        }
+        const run = async () => {
+            const type = this.state == "normal" ? "normal" : "active";
+            this.state = this.conf.loading ? "loading" : this.state;
+            this.handleResult(await this.conf[type]?.click?.(e));
+        };
+        if (this.getConf("withTransition"))
+            await withTransition(e.currentTarget, { after: run });
+        else await run();
+    };
+
     render = () => html`
         <button
             data-cancel
             class=${this.cancelClass ?? "outlined"}
             ?hidden=${this.state != "active" || !this.conf.cancel}
-            @click=${async (e: Event) => {
-                e.stopPropagation();
-                if (this.getConf("withTransition", "cancel"))
-                    await withTransition(e.currentTarget, {
-                        after: async () => await this.cancel(e)
-                    });
-                else this.cancel(e);
-            }}>
+            @click=${this.handleCancelClick}>
             <md-icon>${this.getConf("icon", "cancel")}</md-icon>
             <span>${this.getConf("label", "cancel")}</span>
         </button>
@@ -86,22 +105,7 @@ export class StateActions extends LitElement {
             data-state
             class=${this.stateClass ?? "filled"}
             ?disabled=${["loading", "error", "success"].includes(this.state)}
-            @click=${async (e: Event) => {
-                e.stopPropagation();
-                if (this.state == "normal" && this.conf.active) {
-                    this.state = "active";
-                    await this.conf.normal?.click?.(e);
-                    return;
-                }
-                const run = async () => {
-                    const type = this.state == "normal" ? "normal" : "active";
-                    this.state = this.conf.loading ? "loading" : this.state;
-                    this.handleResult(await this.conf[type]?.click?.(e));
-                };
-                if (this.getConf("withTransition"))
-                    await withTransition(e.currentTarget, { after: run });
-                else await run();
-            }}>
+            @click=${this.handleStateClick}>
             <md-icon ?spin=${this.getConf("spin")}>${this.getConf("icon")}</md-icon>
             <span>${this.getConf("label")}</span>
         </button>
