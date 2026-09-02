@@ -11,3 +11,12 @@ export const cloneAndSum = (
     });
     return [...map.values()];
 };
+
+export const toDbAssignment = (uiAssignment: UiAssignment): DbAssignment => ({
+    "assignment_uuid": uiAssignment.uuid,
+    "assign_date": uiAssignment.date,
+    "quantity": uiAssignment.quantity,
+    "is_offset": false,
+    "chore_id": uiAssignment.chore.id,
+    "member_id": uiAssignment.chosenMember.id
+});

@@ -1,7 +1,7 @@
 import { LitElement, html, type PropertyValues } from "lit";
 import { customElement, state, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { Context } from "../classes/context";
+import { Cache } from "../classes/cache";
 import { queryClosest, withTransition } from "../functions/element-utils.js";
 import { addHaptics } from "../functions/haptics.js";
 import { cloneAndSum } from "../functions/assignments";
@@ -17,7 +17,7 @@ export class AssignmentsList extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         window.addEventListener("assignment-added", this.addAssignment);
-        this.members = (await Context.members) ?? [];
+        this.members = (await Cache.members.get()) ?? [];
     }
 
     disconnectedCallback() {

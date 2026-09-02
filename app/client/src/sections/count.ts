@@ -1,5 +1,5 @@
-import { getCounts } from "../functions/db.js";
-import { Context } from "../classes/context.js";
+import { Cache } from "../classes/cache";
+import "../components/counts-list";
 
 const section = document.querySelector("section#count")!;
 
@@ -30,7 +30,7 @@ section.addEventListener("open", async () => {
     window.addEventListener("count-collapse-toggle", refreshStateActions);
 
     message.status = "loading";
-    const counts = await getCounts();
+    const counts = await Cache.counts.get();
     if (counts == null) message.status = "error";
     else if (counts.length == 0) message.status = "empty";
     else {
@@ -44,7 +44,6 @@ section.addEventListener("open", async () => {
             countsList.allCollapsed = true;
             refreshStateActions();
             window.removeEventListener("count-collapse-toggle", refreshStateActions);
-            Context.updateTurns();
         },
         { once: true }
     );

@@ -3,8 +3,8 @@ import { customElement, property, queryAll, state } from "lit/decorators.js";
 import { ref } from "../functions/element-utils";
 import { repeat } from "lit/directives/repeat.js";
 import type { Conf } from "./state-actions";
-import { Context } from "../classes/context";
-import { setCount } from "../functions/db";
+import { Cache } from "../classes/cache";
+import { setCount } from "../functions/db-set.js";
 import { addHaptics } from "../functions/haptics";
 
 @customElement("counts-list")
@@ -18,7 +18,7 @@ export class CountsList extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback();
-        this.currentMember = await Context.currentMember;
+        this.currentMember = await Cache.currentMember.get();
     }
 
     protected update(changed: PropertyValues) {
@@ -48,11 +48,15 @@ export class CountsList extends LitElement {
         this.oldCounts = structuredClone(this.counts);
     };
 
+    private readonly invalidate = () =>
+        [Cache.turns, Cache.counts, Cache.todayAssignments].forEach(c => c.invalidate());
+
     private readonly saveEdit = async (countDiv: HTMLElement, c: UiCount) => {
         countDiv.toggleAttribute("data-edit-mode", false);
         const success = await setCount(c);
         if (!success && this.oldCounts) this.counts = structuredClone(this.oldCounts);
         this.oldCounts = null;
+        [Cache.turns, Cache.counts, Cache.todayAssignments].forEach(c => c.refresh());
         return success;
     };
 
@@ -97,7 +101,10 @@ export class CountsList extends LitElement {
                                 label: "Edit",
                                 click: () => this.startEdit(countDiv)
                             },
-                            active: { click: async () => this.saveEdit(countDiv, c) },
+                            active: {
+                                beforeTransition: this.invalidate,
+                                click: async () => this.saveEdit(countDiv, c)
+                            },
                             loading: {},
                             success: {},
                             error: {},

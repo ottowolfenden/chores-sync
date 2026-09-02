@@ -1,8 +1,10 @@
 import { html } from "lit";
-import { getTodayAssignments, replaceAssignments } from "../functions/db.js";
-import { Context } from "../classes/context.js";
+import { replaceAssignments } from "../functions/db-set.js";
+import { Cache } from "../classes/cache.js";
 import { cloneAndSum } from "../functions/assignments.js";
 import { withTransition } from "../functions/element-utils.js";
+import "../components/assignments-list.js";
+import "../components/turns-list.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -46,8 +48,8 @@ section.addEventListener("open", async () => {
         No chores have been created.<br />Create chores in <a href="#settings">Settings</a>.
     `;
 
-    let orgAssignments: UiAssignment[] | null;
-    let orgTurns: UiTurn[] | null;
+    let assignments: UiAssignment[] | null;
+    let turns: UiTurn[] | null;
 
     assignmentsUi.message.status = turnsUi.message.status = "loading";
 
@@ -70,7 +72,7 @@ section.addEventListener("open", async () => {
                 const success = await replaceAssignments(assignmentsUi.list.assignments);
                 setAllDisabled(false);
                 const newAssignments = cloneAndSum(
-                    success ? assignmentsUi.list.assignments : orgAssignments!
+                    success ? assignmentsUi.list.assignments : assignments!
                 );
                 assignmentsUi.list.assignments = newAssignments;
                 assignmentsUi.list.requestUpdate();
@@ -89,7 +91,7 @@ section.addEventListener("open", async () => {
             click: () => {
                 assignmentsUi.list.toggleAttribute("edit-mode", false);
                 setAllDisabled(false);
-                assignmentsUi.list.assignments = cloneAndSum(orgAssignments!);
+                assignmentsUi.list.assignments = cloneAndSum(assignments!);
             }
         },
         loading: {},
@@ -99,21 +101,21 @@ section.addEventListener("open", async () => {
 
     await Promise.all([
         (async () => {
-            orgTurns = await Context.turns;
-            if (orgTurns == null) turnsUi.message.status = "error";
-            else if (orgTurns.length == 0) turnsUi.message.status = "empty";
+            turns = await Cache.turns.get();
+            if (turns == null) turnsUi.message.status = "error";
+            else if (turns.length == 0) turnsUi.message.status = "empty";
             else {
                 turnsUi.message.status = "success";
-                turnsUi.list.turns = orgTurns;
+                turnsUi.list.turns = turns;
             }
         })(),
         (async () => {
-            orgAssignments = await getTodayAssignments();
-            if (orgAssignments == null) assignmentsUi.message.status = "error";
-            else if (orgAssignments.length == 0) assignmentsUi.message.status = "empty";
+            assignments = await Cache.todayAssignments.get();
+            if (assignments == null) assignmentsUi.message.status = "error";
+            else if (assignments.length == 0) assignmentsUi.message.status = "empty";
             else {
                 assignmentsUi.message.status = "success";
-                assignmentsUi.list.assignments = cloneAndSum(orgAssignments);
+                assignmentsUi.list.assignments = cloneAndSum(assignments);
                 withTransition(assignmentsUi.list.querySelector(".assignment"), {
                     after: () => assignmentsUi.list.toggleAttribute("data-transition", true)
                 });

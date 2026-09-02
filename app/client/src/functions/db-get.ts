@@ -1,4 +1,4 @@
-import { Context } from "../classes/context.js";
+import { Cache } from "../classes/cache";
 
 const timeout = 10000;
 
@@ -51,27 +51,6 @@ export const getCounts = async (): Promise<UiCount[] | null> => {
     }));
 };
 
-export const setCount = async (uiCount: UiCount): Promise<boolean> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return false;
-
-    const response = await fetch("/api/counts", {
-        method: "PUT",
-        body: JSON.stringify(
-            uiCount.memberCounts.map(mc => ({
-                "chore_name": uiCount.choreName,
-                "is_offset": true,
-                "member_name": mc.memberName,
-                "total": mc.offset
-            }))
-        ),
-        headers: { "Authorization": guess },
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-
-    return response?.ok ?? false;
-};
-
 export const getMembers = async (): Promise<UiMember[] | null> => {
     const guess = localStorage.getItem("secret");
     if (!guess) return null;
@@ -93,25 +72,8 @@ export const getMembers = async (): Promise<UiMember[] | null> => {
     );
 };
 
-export const getCurrentMember = async (): Promise<UiMember | null> => {
-    const guess = localStorage.getItem("secret");
-    const name = localStorage.getItem("name");
-    if (!guess || !name) return null;
-    const response = await fetch(`/api/members?name=${encodeURIComponent(name)}`, {
-        method: "GET",
-        headers: { "Authorization": guess },
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-    if (!response?.ok) return null;
-
-    const data: DbMember = await response.json();
-    return {
-        id: data["member_id"],
-        name: data["member_name"],
-        isActive: data["is_active"],
-        isAdmin: data["is_admin"]
-    };
-};
+export const getCurrentMember = async (): Promise<UiMember | null> =>
+    (await Cache.members.get())?.find(m => m.name == localStorage.getItem("name")) ?? null;
 
 export const getTodayAssignments = async (): Promise<UiAssignment[] | null> => {
     const guess = localStorage.getItem("secret");
@@ -125,9 +87,9 @@ export const getTodayAssignments = async (): Promise<UiAssignment[] | null> => {
     if (!response?.ok) return null;
 
     const data: DbAssignment[] = await response.json();
-    const chores = await Context.chores;
-    const members = await Context.members;
-    const turns = await Context.turns;
+    const chores = await Cache.chores.get();
+    const members = await Cache.members.get();
+    const turns = await Cache.turns.get();
 
     if (
         !chores ||
@@ -165,8 +127,8 @@ export const getTurns = async (): Promise<UiTurn[] | null> => {
     if (!response?.ok) return null;
 
     const data: DbTurn[] = await response.json();
-    const chores = await Context.chores;
-    const members = await Context.members;
+    const chores = await Cache.chores.get();
+    const members = await Cache.members.get();
 
     if (
         !chores ||
@@ -184,38 +146,4 @@ export const getTurns = async (): Promise<UiTurn[] | null> => {
             member: members.find(m => m.id == d["member_id"])!
         })
     );
-};
-
-const toDbAssignment = (uiAssignment: UiAssignment): DbAssignment => ({
-    "assignment_uuid": uiAssignment.uuid,
-    "assign_date": uiAssignment.date,
-    "quantity": uiAssignment.quantity,
-    "is_offset": false,
-    "chore_id": uiAssignment.chore.id,
-    "member_id": uiAssignment.chosenMember.id
-});
-
-export const addAssignment = async (uiAssignment: UiAssignment): Promise<boolean> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return false;
-    const response = await fetch("/api/assignments?action=add", {
-        method: "POST",
-        headers: { "Authorization": guess },
-        body: JSON.stringify(toDbAssignment(uiAssignment)),
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-    return response?.ok ?? false;
-};
-
-export const replaceAssignments = async (uiAssignments: UiAssignment[]): Promise<boolean> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return false;
-    const today = new Date().toISOString().split("T")[0];
-    const response = await fetch(`/api/assignments?action=replace&date=${today}`, {
-        method: "POST",
-        headers: { "Authorization": guess },
-        body: JSON.stringify(uiAssignments.map(toDbAssignment)),
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-    return response?.ok ?? false;
 };

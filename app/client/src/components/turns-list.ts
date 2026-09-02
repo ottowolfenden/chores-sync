@@ -1,8 +1,8 @@
 import { LitElement, html, type PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { addAssignment } from "../functions/db";
-import { Context } from "../classes/context";
+import { addAssignment } from "../functions/db-set.js";
+import { Cache } from "../classes/cache";
 import { queryClosest } from "../functions/element-utils";
 import { ref } from "../functions/element-utils";
 import { addHaptics } from "../functions/haptics";
@@ -16,7 +16,7 @@ export class TurnsList extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback();
-        this.members = (await Context.members) ?? [];
+        this.members = (await Cache.members.get()) ?? [];
     }
 
     protected update(changed: PropertyValues) {
