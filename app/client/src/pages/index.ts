@@ -27,3 +27,16 @@ const handleRoute = async () => {
 window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
+
+const updateManifest = () =>
+    document
+        .querySelector(`link[rel="manifest"]`)
+        ?.setAttribute(
+            "href",
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "assets/site-dark.webmanifest"
+                : "assets/site-light.webmanifest"
+        );
+
+updateManifest();
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateManifest);
