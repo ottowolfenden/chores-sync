@@ -41,16 +41,16 @@ section-nav {
             }
         }
 
-        @media (hover: hover) {
-            &:active,
-            &:focus-visible {
-                background-color: color-mix(
-                    in srgb,
-                    var(--on-primary-container) 14%,
-                    var(--primary-container)
-                );
-            }
+        &:active,
+        &:focus-visible {
+            background-color: color-mix(
+                in srgb,
+                var(--on-primary-container) 14%,
+                var(--primary-container)
+            );
+        }
 
+        @media (hover: hover) {
             &:hover:not(:active) {
                 background-color: color-mix(
                     in srgb,
