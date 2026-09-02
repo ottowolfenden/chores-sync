@@ -1,10 +1,11 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, type PropertyValues } from "lit";
 import { customElement, property, queryAll, state } from "lit/decorators.js";
 import { ref } from "../functions/element-utils";
 import { repeat } from "lit/directives/repeat.js";
 import type { Conf } from "./state-actions";
 import { Context } from "../classes/context";
 import { setCount } from "../functions/db";
+import { addHaptics } from "../functions/haptics";
 
 @customElement("counts-list")
 export class CountsList extends LitElement {
@@ -18,6 +19,11 @@ export class CountsList extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         this.currentMember = await Context.currentMember;
+    }
+
+    protected update(changed: PropertyValues) {
+        super.update(changed);
+        addHaptics(["button", ".count"], this);
     }
 
     get allCollapsed() {
