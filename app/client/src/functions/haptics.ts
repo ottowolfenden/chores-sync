@@ -9,7 +9,10 @@ export const addHaptics = (
     let elsToAdd: Element[] = [];
     if (typeof els == "string") elsToAdd = query(els);
     else if (els instanceof Element) elsToAdd = [els];
-    else els.forEach(el => elsToAdd.concat(typeof el == "string" ? query(el) : [el]));
+    else
+        els.forEach(
+            el => (elsToAdd = elsToAdd.concat(typeof el == "string" ? query(el) : [el]))
+        );
 
     const vibrate = () => navigator.vibrate(ms ?? 1);
     elsToAdd.forEach(el => {
