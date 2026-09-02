@@ -39,6 +39,7 @@ section.addEventListener("open", async () => {
     section.addEventListener(
         "close",
         () => {
+            countsList.allCollapsed = true;
             window.removeEventListener("count-collapse-toggle", refreshStateActions);
             Context.updateTurns();
         },
