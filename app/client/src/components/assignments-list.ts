@@ -29,7 +29,7 @@ export class AssignmentsList extends LitElement {
 
     protected update(changed: PropertyValues) {
         super.update(changed);
-        addHaptics("button");
+        addHaptics("button", this);
         this.toggleAttribute("inert", !this.editMode);
     }
 
