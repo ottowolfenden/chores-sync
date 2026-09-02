@@ -8,14 +8,14 @@ export class SectionNav extends LitElement {
 
     @state() private activeHash = window.location.hash || "#today";
 
-    private handleHashChange = () => (this.activeHash = window.location.hash || "#today");
-    private open = (fragment: string) => (window.location.hash = fragment);
-    private sections = [
+    private readonly sections = [
         { name: "Today", icon: "today", fragment: "#today" },
         { name: "Timeline", icon: "timeline", fragment: "#timeline" },
         { name: "Count", icon: "bar_chart", fragment: "#count" },
         { name: "Settings", icon: "settings", fragment: "#settings" }
     ];
+    private readonly handleHashChange = () =>
+        (this.activeHash = window.location.hash || "#today");
 
     connectedCallback() {
         super.connectedCallback();
@@ -33,8 +33,9 @@ export class SectionNav extends LitElement {
             s => html`
                 <button
                     href=${s.fragment}
-                    @click=${() => this.open(s.fragment)}
-                    ?data-active=${this.activeHash == s.fragment}>
+                    @click=${() => (window.location.hash = s.fragment)}
+                    ?data-active=${this.activeHash == s.fragment}
+                    tabindex=${this.activeHash == s.fragment ? -1 : 0}>
                     <md-icon>${s.icon}</md-icon>
                     <span>${s.name}</span>
                 </button>
