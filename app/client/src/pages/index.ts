@@ -1,3 +1,4 @@
+import { Cache } from "../classes/cache.js";
 import { checkAccess } from "../functions/cloudflare.js";
 
 if (!(await checkAccess())) location.replace("login.html");
@@ -40,3 +41,9 @@ const updateManifest = () =>
 
 updateManifest();
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateManifest);
+
+if (location.hash) {
+    if (location.hash != "#count") await Cache.counts.get();
+    if (location.hash != "#today") await Cache.turns.get();
+    await Cache.todayAssignments.get();
+}
