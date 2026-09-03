@@ -20,14 +20,16 @@ section.addEventListener("open", async () => {
         message: assignmentsDiv.querySelector("status-message")!
     };
 
+    const enableStateActions = () => (assignmentsUi.stateActions.stateDisabled = false);
+    const disableStateActions = () => (assignmentsUi.stateActions.stateDisabled = true);
     const handleNewAssignment = () => {
         assignmentsUi.message.status = "success";
-        assignmentsUi.stateActions.stateDisabled = false;
+        enableStateActions();
     };
-    const disableStateActions = () => (assignmentsUi.stateActions.stateDisabled = true);
 
     window.addEventListener("assignment-added", handleNewAssignment);
     window.addEventListener("loading-assignment-add", disableStateActions);
+    window.addEventListener("assignment-add-failed", enableStateActions);
 
     section.addEventListener(
         "close",
@@ -37,6 +39,7 @@ section.addEventListener("open", async () => {
             assignmentsUi.list.classList.remove("animate");
             window.removeEventListener("assignment-added", handleNewAssignment);
             window.removeEventListener("loading-assignment-add", disableStateActions);
+            window.removeEventListener("assignment-add-failed", enableStateActions);
         },
         { once: true }
     );

@@ -38,12 +38,11 @@ export class TurnsList extends LitElement {
             chosenMember: chosenMember
         };
         const success = await addAssignment(assignment);
-        if (success)
-            window.dispatchEvent(
-                new CustomEvent("assignment-added", {
-                    detail: { assignment }
-                })
-            );
+        window.dispatchEvent(
+            new CustomEvent(success ? "assignment-added" : "assignment-add-failed", {
+                detail: { assignment }
+            })
+        );
         Cache.counts.refresh();
         Cache.todayAssignments.refresh();
         this.requestUpdate();
