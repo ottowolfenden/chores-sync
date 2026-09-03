@@ -34,7 +34,8 @@ section.addEventListener("open", async () => {
     section.addEventListener(
         "close",
         () => {
-            assignmentsUi.stateActions.cancel();
+            if (assignmentsUi.stateActions.state == "active")
+                assignmentsUi.stateActions.cancel();
             setAllDisabled(false);
             assignmentsUi.list.classList.remove("animate");
             window.removeEventListener("assignment-added", handleNewAssignment);
