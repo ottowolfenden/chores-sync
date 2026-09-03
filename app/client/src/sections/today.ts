@@ -5,6 +5,7 @@ import { cloneAndSum } from "../functions/assignments.js";
 import { withTransition } from "../functions/element-utils.js";
 import "../components/assignments-list.js";
 import "../components/turns-list.js";
+import { delay } from "../functions/timer.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -30,7 +31,7 @@ section.addEventListener("open", async () => {
         () => {
             assignmentsUi.stateActions.cancel();
             setAllDisabled(false);
-            assignmentsUi.list.toggleAttribute("data-transition", false);
+            assignmentsUi.list.classList.remove("animate");
             window.removeEventListener("assignment-added", hideAssignmentsMessage);
         },
         { once: true }
@@ -50,8 +51,6 @@ section.addEventListener("open", async () => {
 
     let assignments: UiAssignment[] | null;
     let turns: UiTurn[] | null;
-
-    assignmentsUi.message.status = turnsUi.message.status = "loading";
 
     const setAllDisabled = (disabled: boolean) =>
         turnsUi.list.querySelectorAll("button").forEach(b => (b.disabled = disabled));
@@ -103,6 +102,8 @@ section.addEventListener("open", async () => {
         error: {}
     };
 
+    assignmentsUi.message.status = turnsUi.message.status = "loading";
+
     await Promise.all([
         (async () => {
             turns = await Cache.turns.get();
@@ -120,9 +121,7 @@ section.addEventListener("open", async () => {
             else {
                 assignmentsUi.message.status = "success";
                 assignmentsUi.list.assignments = cloneAndSum(assignments);
-                withTransition(assignmentsUi.list.querySelector(".assignment"), {
-                    after: () => assignmentsUi.list.toggleAttribute("data-transition", true)
-                });
+                setTimeout(() => assignmentsUi.list.classList.add("animate"), 150);
             }
         })()
     ]);
