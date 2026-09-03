@@ -1,9 +1,7 @@
 import { request } from "./api-utils";
 import { toDbAssignment } from "./assignments";
 
-const timeout = 10000;
-
-export const setCount = async (uiCount: UiCount): Promise<boolean> =>
+export const setCount = (uiCount: UiCount): Promise<boolean> =>
     request(
         "PUT",
         "/api/counts",
@@ -15,27 +13,16 @@ export const setCount = async (uiCount: UiCount): Promise<boolean> =>
         }))
     ).then(r => r.ok);
 
-export const addAssignment = async (uiAssignment: UiAssignment): Promise<boolean> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return false;
-    const response = await fetch("/api/assignments?action=add", {
-        method: "POST",
-        headers: { "Authorization": guess },
-        body: JSON.stringify(toDbAssignment(uiAssignment)),
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-    return response?.ok ?? false;
-};
+export const addAssignment = (uiAssignment: UiAssignment): Promise<boolean> =>
+    request("POST", "/api/assignments?action=add", toDbAssignment(uiAssignment)).then(
+        r => r.ok
+    );
 
-export const replaceAssignments = async (uiAssignments: UiAssignment[]): Promise<boolean> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return false;
+export const replaceAssignments = (uiAssignments: UiAssignment[]): Promise<boolean> => {
     const today = new Date().toISOString().split("T")[0];
-    const response = await fetch(`/api/assignments?action=replace&date=${today}`, {
-        method: "POST",
-        headers: { "Authorization": guess },
-        body: JSON.stringify(uiAssignments.map(toDbAssignment)),
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-    return response?.ok ?? false;
+    return request(
+        "POST",
+        `/api/assignments?action=replace&date=${today}`,
+        uiAssignments.map(toDbAssignment)
+    ).then(r => r.ok);
 };
