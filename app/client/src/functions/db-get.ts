@@ -1,5 +1,6 @@
 import { Cache } from "../classes/cache";
 import { request } from "./api-utils";
+import { getToday } from "./date-utils";
 
 export const getChores = async (): Promise<UiChore[] | null> => {
     const { ok, data } = await request<DbChore[]>("GET", "/api/chores");
@@ -51,10 +52,9 @@ export const getCurrentMember = async (): Promise<UiMember | null> =>
     (await Cache.members.get())?.find(m => m.name == localStorage.getItem("name")) ?? null;
 
 export const getTodayAssignments = async (): Promise<UiAssignment[] | null> => {
-    const today = new Date().toISOString().split("T")[0];
     const { ok, data } = await request<DbAssignment[]>(
         "GET",
-        `/api/assignments?date=${today}`
+        `/api/assignments?date=${getToday()}`
     );
     if (!ok || !data) return null;
 

@@ -1,5 +1,6 @@
 import { request } from "./api-utils";
 import { toDbAssignment } from "./assignments";
+import { getToday } from "./date-utils";
 
 export const setCount = (uiCount: UiCount): Promise<boolean> =>
     request(
@@ -18,11 +19,9 @@ export const addAssignment = (uiAssignment: UiAssignment): Promise<boolean> =>
         r => r.ok
     );
 
-export const replaceAssignments = (uiAssignments: UiAssignment[]): Promise<boolean> => {
-    const today = new Date().toISOString().split("T")[0];
-    return request(
+export const replaceAssignments = (uiAssignments: UiAssignment[]): Promise<boolean> =>
+    request(
         "POST",
-        `/api/assignments?action=replace&date=${today}`,
+        `/api/assignments?action=replace&date=${getToday()}`,
         uiAssignments.map(toDbAssignment)
     ).then(r => r.ok);
-};
