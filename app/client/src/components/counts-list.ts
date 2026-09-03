@@ -126,7 +126,10 @@ export class CountsList extends LitElement {
                                 <num-input
                                     name="chore-count"
                                     .value=${mc.total}
-                                    @input=${(e: Event) => this.changeNum(e, mc)}></num-input>
+                                    @input=${(e: Event) => this.changeNum(e, mc)}
+                                    @keydown=${async (e: KeyboardEvent) => {
+                                        if (e.key == "Enter") await stateActions.run();
+                                    }}></num-input>
                                 <span class="count-text">
                                     <span class="num">${mc.total}</span>
                                     <span class="suffix"> times</span>
