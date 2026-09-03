@@ -101,13 +101,8 @@ counts-list {
             display: none;
         }
 
-        &:not(:has(+ ul[inert])) {
-            button.expand md-icon {
-                rotate: 180deg;
-            }
-            state-actions {
-                margin-left: 10px;
-            }
+        &:not(:has(+ ul[inert])) state-actions {
+            margin-left: 10px;
         }
 
         button.expand {

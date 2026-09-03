@@ -30,11 +30,22 @@ export class CountsList extends LitElement {
         return [...this.detailsULs].every(d => d.inert);
     }
     set allCollapsed(collapse: boolean) {
-        [...this.detailsULs].forEach(d => (d.inert = collapse));
+        [...this.detailsULs].forEach(d =>
+            this.toggleCollapse(d, d.parentElement?.querySelector("state-actions"), collapse)
+        );
     }
 
-    private readonly toggleCollapse = (detailsUL: HTMLElement, stateActions: StateActions) => {
-        detailsUL.inert = !detailsUL.inert;
+    private readonly toggleCollapse = (
+        detailsUL: HTMLElement,
+        stateActions: StateActions | null | undefined,
+        collapse?: boolean
+    ) => {
+        if (!stateActions) return;
+        collapse ??= !detailsUL.inert;
+        detailsUL.inert = collapse;
+        const icon = detailsUL.parentElement?.querySelector(".expand md-icon");
+        if (icon)
+            icon.textContent = detailsUL.inert ? "keyboard_arrow_down" : "keyboard_arrow_up";
         window.dispatchEvent(
             new CustomEvent("count-collapse-toggle", {
                 detail: { allCollapsed: this.allCollapsed }
