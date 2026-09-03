@@ -32,9 +32,11 @@ export const changeCounts = async (env: Env, counts: DbCount[]): Promise<Result>
     try {
         const sql = neon(atob(env.DATABASE_URL));
 
-        if (counts.some(d => !d.is_offset)) return error(400, "non-offset value passed");
-        if (counts.some(d => typeof d.total != "number" || isNaN(d.total)))
+        if (counts.some(c => !c.is_offset)) return error(400, "only offset values allowed");
+        if (counts.some(c => typeof c.total != "number" || isNaN(c.total)))
             return error(400, "total not a number");
+        if (counts.some(c => Math.abs(c.total) >= 10000))
+            return error(400, "offset magnitude must be < 10000");
 
         await sql`
             INSERT INTO assignments (assign_date, quantity, chore_id, member_id)
