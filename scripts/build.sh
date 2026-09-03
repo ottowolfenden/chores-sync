@@ -2,7 +2,7 @@
 
 set -e
 
-node fetch-material-symbols.mjs
+node scripts/fetch-material-symbols.mjs
 rm -rf app/client/dist
 mkdir -p app/client/dist/assets
 
