@@ -2,10 +2,8 @@ import { html } from "lit";
 import { replaceAssignments } from "../functions/db-set.js";
 import { Cache } from "../classes/cache.js";
 import { cloneAndSum } from "../functions/assignments.js";
-import { withTransition } from "../functions/element-utils.js";
 import "../components/assignments-list.js";
 import "../components/turns-list.js";
-import { delay } from "../functions/timer.js";
 
 const section = document.querySelector("section#today")!;
 
@@ -22,9 +20,14 @@ section.addEventListener("open", async () => {
         message: assignmentsDiv.querySelector("status-message")!
     };
 
-    const hideAssignmentsMessage = () => (assignmentsUi.message.status = "success");
+    const handleNewAssignment = () => {
+        assignmentsUi.message.status = "success";
+        assignmentsUi.stateActions.stateDisabled = false;
+    };
+    const disableStateActions = () => (assignmentsUi.stateActions.stateDisabled = true);
 
-    window.addEventListener("assignment-added", hideAssignmentsMessage);
+    window.addEventListener("assignment-added", handleNewAssignment);
+    window.addEventListener("loading-assignment-add", disableStateActions);
 
     section.addEventListener(
         "close",
@@ -32,7 +35,8 @@ section.addEventListener("open", async () => {
             assignmentsUi.stateActions.cancel();
             setAllDisabled(false);
             assignmentsUi.list.classList.remove("animate");
-            window.removeEventListener("assignment-added", hideAssignmentsMessage);
+            window.removeEventListener("assignment-added", handleNewAssignment);
+            window.removeEventListener("loading-assignment-add", disableStateActions);
         },
         { once: true }
     );

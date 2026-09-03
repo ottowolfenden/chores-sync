@@ -28,6 +28,7 @@ export class TurnsList extends LitElement {
         turn: UiTurn,
         chosenMember: UiMember = turn.member
     ): Promise<boolean> => {
+        window.dispatchEvent(new CustomEvent("loading-assignment-add"));
         const assignment = {
             uuid: crypto.randomUUID(),
             date: new Date(),
