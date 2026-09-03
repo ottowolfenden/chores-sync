@@ -32,10 +32,12 @@ export type State = "normal" | "active" | "loading" | "success" | "error";
 export class StateActions extends LitElement {
     protected createRenderRoot = () => this;
 
-    @property({ type: Object, attribute: "conf" }) conf: Conf = {};
+    @property({ type: Object }) conf: Conf = {};
+    @property({ type: String, reflect: true }) state: State = "normal";
     @property({ type: String, attribute: "cancel-button-class" }) cancelClass?: string;
     @property({ type: String, attribute: "state-button-class" }) stateClass?: string;
-    @property({ type: String, attribute: "state", reflect: true }) state: State = "normal";
+    @property({ type: Boolean }) cancelDisabled: boolean = false;
+    @property({ type: Boolean }) stateDisabled: boolean = false;
 
     protected update(changed: PropertyValues) {
         super.update(changed);
@@ -108,6 +110,7 @@ export class StateActions extends LitElement {
             data-cancel
             class=${this.cancelClass ?? "outlined"}
             ?hidden=${this.state != "active" || !this.conf.cancel}
+            ?disabled=${this.cancelDisabled}
             @click=${this.handleCancelClick}>
             <md-icon>${this.getConf("icon", "cancel")}</md-icon>
             <span>${this.getConf("label", "cancel")}</span>
@@ -115,7 +118,9 @@ export class StateActions extends LitElement {
         <button
             data-state
             class=${this.stateClass ?? "filled"}
-            ?disabled=${["loading", "error", "success"].includes(this.state)}
+            ?disabled=${["loading", "error", "success"].includes(this.state) ||
+            this.stateDisabled}
+            ?data-disabled=${this.stateDisabled}
             @click=${this.handleStateClick}>
             <md-icon ?spin=${this.getConf("spin")}>${this.getConf("icon")}</md-icon>
             <span>${this.getConf("label")}</span>

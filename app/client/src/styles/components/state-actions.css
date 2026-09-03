@@ -12,4 +12,9 @@ state-actions {
         background-color: var(--error-container);
         color: var(--on-error-container);
     }
+
+    button[data-disabled] {
+        color: rgb(from var(--on-surface) r g b / 0.38);
+        background-color: rgb(from var(--on-surface) r g b / 0.1);
+    }
 }
