@@ -64,6 +64,12 @@ export class StateActions extends LitElement {
         await this.conf.cancel?.click?.(e);
     };
 
+    readonly run = async (e?: Event, state?: "normal" | "active") => {
+        state ??= this.state == "normal" ? "normal" : "active";
+        this.state = this.conf.loading ? "loading" : this.state;
+        this.handleResult(await this.conf[state]?.click?.(e));
+    };
+
     readonly getConf = <K extends keyof (ButtonConf & IndicatorConf)>(
         key: K,
         state: State | "cancel" = this.state
@@ -92,14 +98,9 @@ export class StateActions extends LitElement {
             await this.conf.normal?.click?.(e);
             return;
         }
-        const run = async () => {
-            const type = this.state == "normal" ? "normal" : "active";
-            this.state = this.conf.loading ? "loading" : this.state;
-            this.handleResult(await this.conf[type]?.click?.(e));
-        };
         if (this.getConf("withTransition"))
-            await withTransition(e.currentTarget, { after: run });
-        else await run();
+            await withTransition(e.currentTarget, { after: () => this.run(e) });
+        else await this.run(e);
     };
 
     render = () => html`
