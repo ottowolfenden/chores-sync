@@ -1,27 +1,19 @@
+import { request } from "./api-utils";
 import { toDbAssignment } from "./assignments";
 
 const timeout = 10000;
 
-export const setCount = async (uiCount: UiCount): Promise<boolean> => {
-    const guess = localStorage.getItem("secret");
-    if (!guess) return false;
-
-    const response = await fetch("/api/counts", {
-        method: "PUT",
-        body: JSON.stringify(
-            uiCount.memberCounts.map(mc => ({
-                "chore_name": uiCount.choreName,
-                "is_offset": true,
-                "member_name": mc.memberName,
-                "total": mc.offset
-            }))
-        ),
-        headers: { "Authorization": guess },
-        signal: AbortSignal.timeout(timeout)
-    }).catch(() => null);
-
-    return response?.ok ?? false;
-};
+export const setCount = async (uiCount: UiCount): Promise<boolean> =>
+    request(
+        "PUT",
+        "/api/counts",
+        uiCount.memberCounts.map(mc => ({
+            "chore_name": uiCount.choreName,
+            "is_offset": true,
+            "member_name": mc.memberName,
+            "total": mc.offset
+        }))
+    ).then(r => r.ok);
 
 export const addAssignment = async (uiAssignment: UiAssignment): Promise<boolean> => {
     const guess = localStorage.getItem("secret");
