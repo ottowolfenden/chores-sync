@@ -20,3 +20,4 @@ timeline
 bar_chart
 settings
 swap_horiz
+refresh

@@ -50,10 +50,10 @@ section.addEventListener("open", async () => {
 
     assignmentsUi.message.messages.empty = {
         icon: "celebration",
-        text: html` Nothing to do!<br />Assign chores with the plus buttons below.`
+        content: html` Nothing to do!<br />Assign chores with the plus buttons below.`
     };
 
-    turnsUi.message.messages.empty.text = html`
+    turnsUi.message.messages.empty.content = html`
         No chores have been created.<br />Create chores in <a href="#settings">Settings</a>.
     `;
 

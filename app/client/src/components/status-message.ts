@@ -1,8 +1,9 @@
 import { LitElement, html, type TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { addHaptics } from "../functions/haptics";
 
 export type Status = "loading" | "empty" | "error" | "success";
-export type Message = { icon: string; spin?: boolean; text: string | TemplateResult };
+export type Message = { icon: string; spin?: boolean; content: string | TemplateResult };
 export type Messages = Record<Exclude<Status, "success">, Message>;
 
 @customElement("status-message")
@@ -15,21 +16,25 @@ export class StatusMessage extends LitElement {
         loading: {
             icon: "sync",
             spin: true,
-            text: "Loading, please wait."
+            content: "Loading, please wait."
         },
         empty: {
             icon: "sentiment_neutral",
-            text: "Nothing to show."
+            content: "Nothing to show."
         },
         error: {
             icon: "error",
-            text: html`Failed to fetch data.<br />
-                <a href="#" @click=${() => location.reload()}>Retry</a>`
+            content: html`Failed to fetch data.<br />
+                <button @click=${() => location.reload()}>
+                    <md-icon>refresh</md-icon><span>Retry</span>
+                </button>`
         }
     };
 
-    protected updated = () =>
+    updated = () => {
         this.elsToHide?.forEach(el => el?.toggleAttribute("hidden", this.status != "success"));
+        addHaptics("button", this);
+    };
 
     render = () =>
         this.status == "success"
@@ -39,7 +44,7 @@ export class StatusMessage extends LitElement {
                       <md-icon class="large" ?spin=${this.messages[this.status].spin}>
                           ${this.messages[this.status].icon}
                       </md-icon>
-                      ${this.messages[this.status].text}
+                      ${this.messages[this.status].content}
                   </span>
               `;
 }
