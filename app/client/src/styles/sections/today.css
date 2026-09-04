@@ -1,5 +1,5 @@
-section#today {
-    & > div {
+@scope (#today) {
+    :scope > div {
         padding-bottom: 40px;
     }
 
@@ -14,7 +14,7 @@ section#today {
     }
 
     @media ((width <= 475px) or ((width <= 615px) and (width >= 550px))) {
-        & > div h2 .suffix {
+        :scope > div h2 .suffix {
             display: none;
         }
     }
