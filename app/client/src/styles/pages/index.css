@@ -10,6 +10,8 @@ main {
         width: 100%;
         font-size: 19px;
         padding-top: 20px;
+        display: flex;
+        flex-direction: column;
     }
 }
 

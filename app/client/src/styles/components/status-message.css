@@ -27,4 +27,14 @@ status-message {
     &[status="success"] {
         display: none;
     }
+
+    &[display-centered] {
+        background-color: transparent;
+        flex-grow: 1;
+        margin: 0;
+
+        &[status="error"] {
+            color: var(--error);
+        }
+    }
 }

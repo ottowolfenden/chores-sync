@@ -9,11 +9,10 @@ export type Messages = Record<Exclude<Status, "success">, Message>;
 export class StatusMessage extends LitElement {
     protected createRenderRoot = () => this;
 
-    @property({ type: String, attribute: "status", reflect: true })
-    status: Status = "success";
-
-    @property({ attribute: false })
-    messages: Messages = {
+    @property({ type: String, reflect: true }) status: Status = "success";
+    @property({ type: Boolean }) displayCentered = false;
+    @property({ attribute: false }) elsToHide: (Element | null)[] | null = null;
+    @property({ attribute: false }) messages: Messages = {
         loading: {
             icon: "sync",
             spin: true,
@@ -29,9 +28,6 @@ export class StatusMessage extends LitElement {
                 <a href="#" @click=${() => location.reload()}>Retry</a>`
         }
     };
-
-    @property({ attribute: false })
-    elsToHide: (Element | null)[] | null = null;
 
     protected updated = () =>
         this.elsToHide?.forEach(el => el?.toggleAttribute("hidden", this.status != "success"));
