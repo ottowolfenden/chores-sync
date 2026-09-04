@@ -10,7 +10,6 @@ export class StatusMessage extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: String, reflect: true }) status: Status = "success";
-    @property({ type: Boolean }) displayCentered = false;
     @property({ attribute: false }) elsToHide: (Element | null)[] | null = null;
     @property({ attribute: false }) messages: Messages = {
         loading: {

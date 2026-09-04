@@ -28,7 +28,7 @@ status-message {
         display: none;
     }
 
-    &[display-centered] {
+    &.centered {
         background-color: transparent;
         flex-grow: 1;
         margin: 0;
