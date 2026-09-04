@@ -5,7 +5,7 @@ import { customElement, property } from "lit/decorators.js";
 export class MdIcon extends LitElement {
     protected createRenderRoot = () => this;
 
-    @property({ type: Boolean, attribute: "spin" }) spin: boolean = false;
+    @property({ type: Boolean }) spin: boolean = false;
 
     render = () => html`<slot></slot>`;
 }
