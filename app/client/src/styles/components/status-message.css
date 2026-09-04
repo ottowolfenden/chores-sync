@@ -9,11 +9,11 @@ status-message {
     border-radius: 6px;
     text-align: center;
 
-    & > md-icon {
+    md-icon.large {
         margin-bottom: 10px;
     }
 
-    & > span {
+    .content {
         white-space: normal;
         text-overflow: clip;
         overflow: visible;

@@ -44,7 +44,7 @@ export class StatusMessage extends LitElement {
                       <md-icon class="large" ?spin=${this.messages[this.status].spin}>
                           ${this.messages[this.status].icon}
                       </md-icon>
-                      ${this.messages[this.status].content}
+                      <span class="content">${this.messages[this.status].content}</span>
                   </span>
               `;
 }
