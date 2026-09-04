@@ -1,3 +1,5 @@
+import "../components/timeline-list.js";
+
 const section = document.querySelector("section#timeline")!;
 
 section.addEventListener("open", () => {
