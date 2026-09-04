@@ -11,8 +11,13 @@ export class AssignmentsList extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: Array }) assignments: UiAssignment[] = [];
-    @property({ type: Boolean }) editMode = false;
+    @property({ type: Boolean, attribute: "edit-mode", reflect: true }) editMode = false;
     @state() private members: UiMember[] = [];
+
+    protected willUpdate(changed: PropertyValues) {
+        super.willUpdate(changed);
+        this.inert = !this.editMode;
+    }
 
     async connectedCallback() {
         super.connectedCallback();
@@ -28,7 +33,6 @@ export class AssignmentsList extends LitElement {
     protected update(changed: PropertyValues) {
         super.update(changed);
         addHaptics("button", this);
-        this.toggleAttribute("inert", !this.editMode);
     }
 
     private readonly addAssignment = (e: Event) =>

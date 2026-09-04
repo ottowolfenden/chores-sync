@@ -68,13 +68,13 @@ section.addEventListener("open", async () => {
             icon: "edit",
             label: "Edit",
             click: () => {
-                assignmentsUi.list.toggleAttribute("edit-mode", true);
+                assignmentsUi.list.editMode = true;
                 setAllDisabled(true);
             }
         },
         active: {
             click: async () => {
-                assignmentsUi.list.toggleAttribute("edit-mode", false);
+                assignmentsUi.list.editMode = false;
                 const affectedCaches = [Cache.counts, Cache.todayAssignments];
                 affectedCaches.forEach(c => c.invalidate());
 
@@ -100,7 +100,7 @@ section.addEventListener("open", async () => {
         },
         cancel: {
             click: () => {
-                assignmentsUi.list.toggleAttribute("edit-mode", false);
+                assignmentsUi.list.editMode = false;
                 setAllDisabled(false);
                 assignmentsUi.list.assignments = cloneAndSum(assignments!);
             }
