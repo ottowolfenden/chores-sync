@@ -1,5 +1,5 @@
 @scope (#timeline) {
-    :scope {
-        padding-top: 0;
+    button#recentre {
+        margin-right: 10px;
     }
 }
