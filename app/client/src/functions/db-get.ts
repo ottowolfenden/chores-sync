@@ -1,6 +1,6 @@
 import { Cache } from "../classes/cache";
 import { request } from "./api-utils";
-import { getToday } from "./date-utils";
+import { getDateString } from "./date-utils";
 
 export const getChores = async (): Promise<UiChore[] | null> => {
     const { ok, data } = await request<DbChore[]>("GET", "/api/chores");
@@ -54,7 +54,7 @@ export const getCurrentMember = async (): Promise<UiMember | null> =>
 export const getTodayAssignments = async (): Promise<UiAssignment[] | null> => {
     const { ok, data } = await request<DbAssignment[]>(
         "GET",
-        `/api/assignments?date=${getToday()}`
+        `/api/assignments?date=${getDateString()}`
     );
     if (!ok || !data) return null;
 
