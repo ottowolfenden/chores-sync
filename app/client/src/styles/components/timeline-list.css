@@ -1,2 +1,21 @@
 timeline-list {
+    display: block;
+    margin-top: 5px;
+
+    & > div {
+        height: 400px;
+        overflow-y: auto;
+
+        & > div {
+            background-color: var(--surface-container-low);
+            height: 40px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+
+            &[data-expanded] {
+                height: 150px;
+            }
+        }
+    }
 }
