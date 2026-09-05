@@ -13,4 +13,6 @@ export const getDayDiff = (minuend: Date | string, subtrahend: Date | string) =>
     (new Date(minuend).getTime() - new Date(subtrahend).getTime()) / (1000 * 60 * 60 * 24);
 
 export const getDateRange = (min: Date | string, max: Date | string) =>
-    Array.from({ length: getDayDiff(max, min) + 1 }, (_, i) => offsetDate(min, i));
+    Array.from({ length: getDayDiff(max, min) + 1 }, (_, i) =>
+        getDateString(offsetDate(min, i))
+    );

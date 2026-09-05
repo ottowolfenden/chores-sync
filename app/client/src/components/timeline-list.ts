@@ -20,7 +20,7 @@ export class TimelineList extends LitElement {
         this.dates = getDateRange(
             offsetDate(new Date(), this.minIndex),
             offsetDate(new Date(), this.maxIndex)
-        ).map(getDateString);
+        );
     }
 
     firstUpdated = () => this.scrollToDate();
@@ -59,7 +59,7 @@ export class TimelineList extends LitElement {
             opts?.firstDate ?? new Date(),
             this.minIndex - this.batchSize
         );
-        const newDates = getDateRange(firstDate, this.dates[0]).map(getDateString);
+        const newDates = getDateRange(firstDate, this.dates[0]);
 
         this.minIndex -= newDates.length;
         this.dates = [...newDates, ...this.dates];
@@ -78,7 +78,7 @@ export class TimelineList extends LitElement {
             opts?.lastDate ?? new Date(),
             this.maxIndex + this.batchSize
         );
-        const newDates = getDateRange(this.dates.at(-1)!, lastDate).map(getDateString);
+        const newDates = getDateRange(this.dates.at(-1)!, lastDate);
         this.maxIndex += newDates.length;
         this.dates = [...this.dates, ...newDates];
         this.updateComplete.then(() => {
