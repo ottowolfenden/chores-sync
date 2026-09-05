@@ -1,2 +1,5 @@
 @scope (#timeline) {
+    :scope {
+        padding-top: 0;
+    }
 }
