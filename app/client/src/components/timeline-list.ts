@@ -2,6 +2,7 @@ import { LitElement, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { getDateRange, getDateString, offsetDate } from "../functions/date-utils";
+import { instantly } from "../functions/element-utils";
 
 @customElement("timeline-list")
 export class TimelineList extends LitElement {
@@ -19,7 +20,7 @@ export class TimelineList extends LitElement {
 
     firstUpdated = () => this.reset();
 
-    reset = () => {
+    reset = (opts: { collapseAll: boolean } = { collapseAll: false }) => {
         this.minIndex = this.initialMinIndex;
         this.maxIndex = this.initialMaxIndex;
         this.dates = getDateRange(
@@ -27,11 +28,19 @@ export class TimelineList extends LitElement {
             offsetDate(new Date(), this.maxIndex)
         );
         this.requestUpdate();
+        if (opts?.collapseAll)
+            this.container
+                .querySelectorAll<HTMLElement>(":scope > div")
+                .forEach(el =>
+                    instantly(el, () => el.toggleAttribute("data-expanded", false))
+                );
         this.handleScrolling = false;
         setTimeout(() => {
-            this.container.scroll({
-                top: (this.container.scrollHeight - this.container.clientHeight) / 2
-            });
+            if (opts?.collapseAll) this.scrollToDate({ behavior: "instant" });
+            else
+                this.container.scroll({
+                    top: (this.container.scrollHeight - this.container.clientHeight) / 2
+                });
             this.handleScrolling = true;
         }, 1);
     };
@@ -113,13 +122,14 @@ export class TimelineList extends LitElement {
             ${repeat(
                 this.dates,
                 d => d,
-                d =>
-                    html`<div
+                d => html`
+                    <div
                         data-date=${d}
                         @click=${(e: Event) =>
                             (e.target as HTMLElement).toggleAttribute("data-expanded")}>
                         ${d}
-                    </div>`
+                    </div>
+                `
             )}
         </div>
     `;
