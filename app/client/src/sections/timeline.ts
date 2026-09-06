@@ -8,7 +8,6 @@ const ui = {
     selectDateButton: section.querySelector("#select-date")!
 };
 
-window.addEventListener("resize", () => ui.timelineList.reset());
 ui.recentreButton.onclick = () => ui.timelineList.scrollToDate({ expand: true });
 
 section.addEventListener("sectionopen", () => ui.timelineList.reset({ collapseAll: true }));
