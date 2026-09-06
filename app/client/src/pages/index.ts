@@ -1,5 +1,6 @@
 import { Cache } from "../classes/cache.js";
 import { checkAccess } from "../functions/cloudflare.js";
+import { route, refresh } from "../functions/routing.js";
 
 if (!(await checkAccess())) location.replace("login.html");
 else
@@ -15,27 +16,9 @@ else
         import("../sections/today.js")
     ]);
 
-const handleRoute = async () => {
-    document.querySelectorAll("section").forEach(s => {
-        if (!s.hidden) s.dispatchEvent(new CustomEvent("close"));
-        const isTarget = s.id == location.hash.replace("#", "");
-        if (isTarget) s.dispatchEvent(new CustomEvent("open"));
-        s.hidden = !isTarget;
-        document.querySelector("main")?.scroll(0, 0);
-    });
-};
-
-export const refreshSection = (section?: string) => {
-    const sectionEl = [...document.querySelectorAll("section")].find(
-        s => s.id == (section ?? location.hash).replace("#", "")
-    );
-    sectionEl?.dispatchEvent(new CustomEvent("close"));
-    sectionEl?.dispatchEvent(new CustomEvent("open"));
-};
-
-window.addEventListener("hashchange", handleRoute);
+window.addEventListener("hashchange", route);
 if (!location.hash) location.replace("#today");
-handleRoute();
+route();
 
 const updateManifest = () =>
     document
@@ -59,5 +42,5 @@ if (location.hash) {
 document.addEventListener("visibilitychange", () => {
     if (document.visibilityState != "visible") return;
     Cache.caches.forEach(c => c.invalidate());
-    refreshSection();
+    refresh();
 });
