@@ -3,13 +3,13 @@ export const getDateString = (date: Date | string = new Date()): string =>
 
 export const offsetDate = (date: Date | string, days: number) => {
     const clone = new Date(date);
-    clone.setDate(clone.getDate() + days);
+    clone.setUTCDate(clone.getUTCDate() + days);
     return clone;
 };
 
 export const getDateOnlyVal = (date: Date | string = new Date()) => {
     date = new Date(date);
-    return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+    return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 };
 
 export const getDayDiff = (minuend: Date | string, subtrahend: Date | string) =>
@@ -21,7 +21,7 @@ export const getDateRange = (min: Date | string, max: Date | string) =>
     );
 
 export const formatDate = (date: Date | string, opts: Intl.DateTimeFormatOptions) =>
-    new Intl.DateTimeFormat("en-GB", opts).format(new Date(date));
+    new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", ...opts }).format(new Date(date));
 
 export const getNextDate = (dayName: string) => {
     for (let i = 1; i <= 7; i++) {
@@ -32,7 +32,7 @@ export const getNextDate = (dayName: string) => {
 };
 
 export const formatDayOfMonth = (date: Date) => {
-    const n = date.getDate();
+    const n = date.getUTCDate();
     return `${n}${n >= 11 && n <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[n % 10] ?? "th")}`;
 };
 
@@ -40,8 +40,8 @@ export const formatDateRelative = (date: Date | string): string => {
     date = new Date(date);
     const val = getDateOnlyVal;
     const today = new Date();
-    const isSameYr = date.getFullYear() == today.getFullYear();
-    const isSameMonth = date.getMonth() == today.getMonth();
+    const isSameYr = date.getUTCFullYear() == today.getUTCFullYear();
+    const isSameMonth = date.getUTCMonth() == today.getUTCMonth();
     const isPast = val(date) < val(today);
 
     if (val(date) == val(today)) return "Today";
@@ -53,6 +53,6 @@ export const formatDateRelative = (date: Date | string): string => {
         formatDate(date, { weekday: "long" }),
         formatDayOfMonth(date),
         ...(!isSameMonth || isPast ? [formatDate(date, { month: "short" })] : []),
-        ...(isSameYr ? [] : [formatDate(date, { year: "numeric" })])
+        ...(!isSameYr ? [formatDate(date, { year: "numeric" })] : [])
     ].join(" ");
 };
