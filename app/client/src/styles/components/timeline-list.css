@@ -17,6 +17,8 @@ timeline-list {
             display: flex;
             align-items: center;
             border-radius: 6px;
+            transition: height 100ms;
+            cursor: pointer;
 
             &[data-expanded] {
                 height: 150px;
