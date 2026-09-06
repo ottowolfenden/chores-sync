@@ -1,4 +1,4 @@
-import { LitElement, html, type PropertyValues } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { getDateRange, getDateString, offsetDate } from "../functions/date-utils";
@@ -11,22 +11,28 @@ export class TimelineList extends LitElement {
     @state() private dates: string[] = [];
     @state() private minIndex = -10;
     @state() private maxIndex = 10;
-    private isPrepending = false;
+    private handleScrolling = true;
     private readonly threshold = 200;
     private readonly batchSize = 15;
 
-    connectedCallback() {
-        super.connectedCallback();
+    firstUpdated = () => this.reset();
+
+    reset = () => {
+        this.minIndex = -10;
+        this.maxIndex = 10;
         this.dates = getDateRange(
             offsetDate(new Date(), this.minIndex),
             offsetDate(new Date(), this.maxIndex)
         );
-    }
-
-    firstUpdated = () => setTimeout(() => this.scrollToDate({ behavior: "instant" }), 1);
-
-    private getDateEl = (date: Date | string) =>
-        this.container.querySelector(`[data-date="${getDateString(date)}"]`);
+        this.requestUpdate();
+        this.handleScrolling = false;
+        setTimeout(() => {
+            this.container.scroll({
+                top: (this.container.scrollHeight - this.container.clientHeight) / 2
+            });
+            this.handleScrolling = true;
+        }, 1);
+    };
 
     scrollToDate = (opts?: {
         date?: string | Date;
@@ -49,8 +55,11 @@ export class TimelineList extends LitElement {
         el.scrollIntoView({ behavior: opts?.behavior ?? "smooth", block: "center" });
     };
 
+    private getDateEl = (date: Date | string) =>
+        this.container.querySelector(`[data-date="${getDateString(date)}"]`);
+
     private prependDates = (opts?: { firstDate: Date | string; onElsAdded: () => void }) => {
-        this.isPrepending = true;
+        this.handleScrolling = false;
 
         if (!this.dates[0]) return;
 
@@ -69,7 +78,7 @@ export class TimelineList extends LitElement {
             const newScrollHeight = this.container.scrollHeight;
             this.container.scroll(0, oldScrollTop + (newScrollHeight - oldScrollHeight));
             if (opts && this.getDateEl(firstDate)) opts.onElsAdded();
-            this.isPrepending = false;
+            this.handleScrolling = true;
         });
     };
 
@@ -88,7 +97,7 @@ export class TimelineList extends LitElement {
     };
 
     private handleScroll = () => {
-        if (this.isPrepending) return;
+        if (!this.handleScrolling) return;
         const { scrollTop, scrollHeight, clientHeight } = this.container;
         if (scrollTop < this.threshold) this.prependDates();
         else if (scrollHeight - (scrollTop + clientHeight) < this.threshold)

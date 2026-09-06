@@ -11,11 +11,13 @@ section.addEventListener("open", () => {
 
     const recentre = () => ui.timelineList.scrollToDate();
     ui.recentreButton.addEventListener("click", recentre);
+    ui.timelineList.reset();
 
     section.addEventListener(
         "close",
         () => {
             ui.recentreButton.removeEventListener("click", recentre);
+            ui.timelineList.reset();
         },
         { once: true }
     );
