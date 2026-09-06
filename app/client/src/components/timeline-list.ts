@@ -20,7 +20,7 @@ export class TimelineList extends LitElement {
 
     firstUpdated = () => this.reset();
 
-    reset = (opts: { collapseAll: boolean } = { collapseAll: false }) => {
+    reset = ({ collapseAll = false }: { collapseAll?: boolean } = {}) => {
         this.minIndex = this.initialMinIndex;
         this.maxIndex = this.initialMaxIndex;
         this.dates = getDateRange(
@@ -28,7 +28,7 @@ export class TimelineList extends LitElement {
             offsetDate(new Date(), this.maxIndex)
         );
         this.requestUpdate();
-        if (opts?.collapseAll)
+        if (collapseAll)
             this.container
                 .querySelectorAll<HTMLElement>(":scope > div")
                 .forEach(el =>
@@ -36,7 +36,7 @@ export class TimelineList extends LitElement {
                 );
         this.handleScrolling = false;
         setTimeout(() => {
-            if (opts?.collapseAll) this.scrollToDate({ behavior: "instant" });
+            if (collapseAll) this.scrollToDate({ behavior: "instant" });
             else
                 this.container.scroll({
                     top: (this.container.scrollHeight - this.container.clientHeight) / 2
@@ -45,43 +45,44 @@ export class TimelineList extends LitElement {
         }, 1);
     };
 
-    scrollToDate = (opts?: {
+    scrollToDate = ({
+        date = new Date(),
+        behavior = "smooth",
+        expand = false
+    }: {
         date?: string | Date;
         behavior?: ScrollBehavior;
         expand?: boolean;
-    }) => {
-        const date = new Date(opts?.date ?? new Date());
+    } = {}) => {
+        date = new Date(date);
         const el = this.getDateEl(date);
         if (!el) {
             const [first, last] = [this.dates[0], this.dates.at(-1)];
             if (!first || !last) return;
             const onElsAdded = () => {
-                if (this.getDateEl(date)) this.scrollToDate(opts);
+                if (this.getDateEl(date)) this.scrollToDate({ date, behavior, expand });
             };
-            if (date < new Date(first)) this.prependDates({ firstDate: date, onElsAdded });
-            else if (date > new Date(last)) this.appendDates({ lastDate: date, onElsAdded });
+            if (date < new Date(first)) this.prependDates({ targetDate: date, onElsAdded });
+            else if (date > new Date(last)) this.appendDates({ targetDate: date, onElsAdded });
             return;
         }
-        if (opts && opts.expand) el.toggleAttribute("data-expanded", true);
-        el.scrollIntoView({ behavior: opts?.behavior ?? "smooth", block: "center" });
+        if (expand) instantly(el, () => el.toggleAttribute("data-expanded", true));
+        el.scrollIntoView({ behavior, block: "center" });
     };
 
-    recentre = () => this.scrollToDate();
-
     private getDateEl = (date: Date | string) =>
-        this.container.querySelector(`[data-date="${getDateString(date)}"]`);
+        this.container.querySelector<HTMLElement>(`[data-date="${getDateString(date)}"]`);
 
-    private prependDates = (opts?: { firstDate: Date | string; onElsAdded: () => void }) => {
+    private prependDates = ({
+        targetDate = new Date(),
+        onElsAdded = () => {}
+    }: { targetDate?: Date | string; onElsAdded?: () => void } = {}) => {
         this.handleScrolling = false;
-
         if (!this.dates[0]) return;
 
         const oldScrollHeight = this.container.scrollHeight;
         const oldScrollTop = this.container.scrollTop;
-        const firstDate = offsetDate(
-            opts?.firstDate ?? new Date(),
-            this.minIndex - this.batchSize
-        );
+        const firstDate = offsetDate(targetDate, this.minIndex - this.batchSize);
         const newDates = getDateRange(firstDate, this.dates[0]);
 
         this.minIndex -= newDates.length;
@@ -90,22 +91,22 @@ export class TimelineList extends LitElement {
         this.updateComplete.then(() => {
             const newScrollHeight = this.container.scrollHeight;
             this.container.scroll(0, oldScrollTop + (newScrollHeight - oldScrollHeight));
-            if (opts && this.getDateEl(firstDate)) opts.onElsAdded();
+            if (this.getDateEl(firstDate)) onElsAdded();
             this.handleScrolling = true;
         });
     };
 
-    private appendDates = (opts?: { lastDate: Date | string; onElsAdded: () => void }) => {
+    private appendDates = ({
+        targetDate = new Date(),
+        onElsAdded = () => {}
+    }: { targetDate?: Date | string; onElsAdded?: () => void } = {}) => {
         if (!this.dates.at(-1)) return;
-        const lastDate = offsetDate(
-            opts?.lastDate ?? new Date(),
-            this.maxIndex + this.batchSize
-        );
+        const lastDate = offsetDate(targetDate, this.maxIndex + this.batchSize);
         const newDates = getDateRange(this.dates.at(-1)!, lastDate);
         this.maxIndex += newDates.length;
         this.dates = [...this.dates, ...newDates];
         this.updateComplete.then(() => {
-            if (opts && this.getDateEl(lastDate)) opts.onElsAdded();
+            if (this.getDateEl(lastDate)) onElsAdded();
         });
     };
 
