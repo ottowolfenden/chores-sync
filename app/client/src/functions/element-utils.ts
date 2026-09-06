@@ -29,5 +29,6 @@ export const instantly = (el: HTMLElement, callback: () => void) => {
     const orgTransition = el.style.transition;
     el.style.transition = "none";
     callback();
+    el.offsetHeight;
     el.style.transition = orgTransition;
 };
