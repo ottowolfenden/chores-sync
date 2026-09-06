@@ -1,5 +1,5 @@
 import { LitElement, html, type PropertyValues } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property, queryAll, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { addAssignment } from "../functions/db-set.js";
 import { Cache } from "../classes/cache";
@@ -13,6 +13,7 @@ export class TurnsList extends LitElement {
 
     @property({ type: Array }) turns: UiTurn[] = [];
     @state() private members: UiMember[] = [];
+    @queryAll("button") buttons!: NodeListOf<HTMLButtonElement>;
 
     async connectedCallback() {
         super.connectedCallback();
@@ -22,6 +23,13 @@ export class TurnsList extends LitElement {
     protected update(changed: PropertyValues) {
         super.update(changed);
         addHaptics("button", this);
+    }
+
+    get allDisabled() {
+        return [...this.buttons].every(b => b.disabled);
+    }
+    set allDisabled(disabled: boolean) {
+        this.buttons.forEach(b => (b.disabled = disabled));
     }
 
     private readonly addAssignment = async (
