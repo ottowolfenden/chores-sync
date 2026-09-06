@@ -9,14 +9,15 @@ section.addEventListener("open", () => {
         selectDateButton: section.querySelector("#select-date")!
     };
 
-    const recentre = () => ui.timelineList.scrollToDate();
-    ui.recentreButton.addEventListener("click", recentre);
+    window.addEventListener("resize", ui.timelineList.reset);
+    ui.recentreButton.addEventListener("click", ui.timelineList.recentre);
     ui.timelineList.reset();
 
     section.addEventListener(
         "close",
         () => {
-            ui.recentreButton.removeEventListener("click", recentre);
+            window.removeEventListener("resize", ui.timelineList.reset);
+            ui.recentreButton.removeEventListener("click", ui.timelineList.recentre);
             ui.timelineList.reset();
         },
         { once: true }
