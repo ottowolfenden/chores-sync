@@ -1,8 +1,13 @@
 import { LitElement, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { getDateRange, getDateString, offsetDate } from "../functions/date-utils";
 import { instantly } from "../functions/element-utils";
+import {
+    getDateRange,
+    getDateString,
+    offsetDate,
+    formatDateRelative
+} from "../functions/date-utils";
 
 @customElement("timeline-list")
 export class TimelineList extends LitElement {
@@ -10,8 +15,8 @@ export class TimelineList extends LitElement {
 
     private readonly initialMinIndex = -50;
     private readonly initialMaxIndex = 50;
-    private readonly threshold = 200;
-    private readonly batchSize = 15;
+    private readonly threshold = 400;
+    private readonly batchSize = 30;
     private handleScrolling = true;
     @query(":scope > div") private container!: HTMLElement;
     @state() private dates: string[] = [];
@@ -130,7 +135,7 @@ export class TimelineList extends LitElement {
                         data-date=${d}
                         @click=${(e: Event) =>
                             (e.target as HTMLElement).toggleAttribute("data-expanded")}>
-                        ${d}
+                        ${formatDateRelative(d)}
                     </div>
                 `
             )}
