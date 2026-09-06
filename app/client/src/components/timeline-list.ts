@@ -7,19 +7,21 @@ import { getDateRange, getDateString, offsetDate } from "../functions/date-utils
 export class TimelineList extends LitElement {
     protected createRenderRoot = () => this;
 
-    @query(":scope > div") private container!: HTMLElement;
-    @state() private dates: string[] = [];
-    @state() private minIndex = -10;
-    @state() private maxIndex = 10;
-    private handleScrolling = true;
+    private readonly initialMinIndex = -50;
+    private readonly initialMaxIndex = 50;
     private readonly threshold = 200;
     private readonly batchSize = 15;
+    private handleScrolling = true;
+    @query(":scope > div") private container!: HTMLElement;
+    @state() private dates: string[] = [];
+    @state() private minIndex = this.initialMinIndex;
+    @state() private maxIndex = this.initialMaxIndex;
 
     firstUpdated = () => this.reset();
 
     reset = () => {
-        this.minIndex = -10;
-        this.maxIndex = 10;
+        this.minIndex = this.initialMinIndex;
+        this.maxIndex = this.initialMaxIndex;
         this.dates = getDateRange(
             offsetDate(new Date(), this.minIndex),
             offsetDate(new Date(), this.maxIndex)
@@ -54,6 +56,8 @@ export class TimelineList extends LitElement {
         if (opts && opts.expand) el.toggleAttribute("data-expanded", true);
         el.scrollIntoView({ behavior: opts?.behavior ?? "smooth", block: "center" });
     };
+
+    recentre = () => this.scrollToDate();
 
     private getDateEl = (date: Date | string) =>
         this.container.querySelector(`[data-date="${getDateString(date)}"]`);
