@@ -47,7 +47,7 @@ export const formatDateRelative = (date: Date | string): string => {
     if (val(date) == val(today)) return "Today";
     if (val(date) == val(offsetDate(today, -1))) return "Yesterday";
     if (val(date) == val(offsetDate(today, 1))) return "Tomorrow";
-    if (val(date) > val(today) && val(date) <= val(getNextDate("Sunday")))
+    if (!isPast && val(date) <= val(getNextDate("Sunday")))
         return formatDate(date, { weekday: "long" });
     return [
         formatDate(date, { weekday: "long" }),
