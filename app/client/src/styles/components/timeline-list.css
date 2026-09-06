@@ -1,9 +1,13 @@
 timeline-list {
-    display: block;
+    display: flex;
     margin-top: 5px;
+    flex: 1;
+    min-height: 0;
 
     & > div {
-        height: 400px;
+        flex-grow: 1;
+        min-height: 0;
+        width: 100%;
         overflow-y: auto;
 
         & > div {
@@ -12,6 +16,7 @@ timeline-list {
             margin-bottom: 5px;
             display: flex;
             align-items: center;
+            border-radius: 6px;
 
             &[data-expanded] {
                 height: 150px;

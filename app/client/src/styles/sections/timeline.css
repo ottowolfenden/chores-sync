@@ -1,4 +1,10 @@
 @scope (#timeline) {
+    :scope {
+        padding-top: 0;
+    }
+    div:has(h2) {
+        margin-top: 20px;
+    }
     button#recentre {
         margin-right: 10px;
     }

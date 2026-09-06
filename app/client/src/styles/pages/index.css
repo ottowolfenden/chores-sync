@@ -72,7 +72,6 @@ section-nav {
     }
 
     main {
-        display: block;
         width: 700px;
         flex: unset;
     }
