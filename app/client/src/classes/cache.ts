@@ -2,6 +2,7 @@ import * as Db from "../functions/db-get.js";
 
 export type CacheData<T = unknown> = {
     get: () => Promise<T>;
+    getExists: () => boolean;
     invalidate: () => null;
     refresh: () => Promise<T>;
 };
@@ -10,6 +11,7 @@ const createCache = <T>(dbFunc: () => Promise<T>): CacheData<T> => {
     let cachePromise: Promise<T> | null = null;
     return {
         get: async (): Promise<T> => (cachePromise ??= dbFunc()),
+        getExists: () => cachePromise != null,
         invalidate: () => (cachePromise = null),
         refresh: async (): Promise<T> => {
             cachePromise = null;
