@@ -1,6 +1,4 @@
 const section = document.querySelector("section#settings")!;
 
-section.addEventListener("open", () => {
-    section.addEventListener("close", () => {}, { once: true });
-    console.log("settings");
-});
+section.addEventListener("sectionopen", () => console.log("settings opened"));
+section.addEventListener("sectionclose", () => console.log("settings closed"));

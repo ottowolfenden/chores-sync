@@ -8,12 +8,8 @@ const ui = {
     selectDateButton: section.querySelector("#select-date")!
 };
 
-section.addEventListener("open", () => {
-    onresize = () => ui.timelineList.reset();
-    ui.recentreButton.onclick = () => ui.timelineList.scrollToDate({ expand: true });
-    ui.timelineList.reset({ collapseAll: true });
+window.addEventListener("resize", () => ui.timelineList.reset());
+ui.recentreButton.onclick = () => ui.timelineList.scrollToDate({ expand: true });
 
-    (section as HTMLElement & { onclose: () => void }).onclose = () => console.log("hello");
-});
-
-section.addEventListener("close", () => ui.timelineList.reset({ collapseAll: true }));
+section.addEventListener("sectionopen", () => ui.timelineList.reset({ collapseAll: true }));
+section.addEventListener("sectionclose", () => ui.timelineList.reset({ collapseAll: true }));

@@ -3,49 +3,47 @@ import "../components/counts-list";
 
 const section = document.querySelector("section#count")!;
 
-section.addEventListener("open", async () => {
-    const stateActions = section.querySelector("state-actions")!;
-    const countsList = section.querySelector("counts-list")!;
-    const message = section.querySelector("status-message")!;
+const ui = {
+    stateActions: section.querySelector("state-actions")!,
+    list: section.querySelector("counts-list")!,
+    message: section.querySelector("status-message")!
+};
 
-    stateActions.conf = {
-        normal: {
-            icon: "expand_content",
-            label: "Expand all",
-            click: () => (countsList.allCollapsed = false)
-        },
-        active: {
-            icon: "collapse_content",
-            label: "Collapse all",
-            withTransition: false,
-            click: () => (countsList.allCollapsed = true)
-        }
-    };
-
-    message.elsToHide = [countsList, stateActions];
-    message.caches = [Cache.counts, Cache.members];
-
-    const refreshStateActions = () =>
-        (stateActions.state = countsList.allCollapsed ? "normal" : "active");
-    refreshStateActions();
-    window.addEventListener("count-collapse-toggle", refreshStateActions);
-
-    message.status = "loading";
-    const counts = await Cache.counts.get();
-    if (counts == null) message.status = "error";
-    else if (counts.length == 0) message.status = "empty";
-    else {
-        message.status = "success";
-        countsList.counts = counts;
+ui.stateActions.conf = {
+    normal: {
+        icon: "expand_content",
+        label: "Expand all",
+        click: () => (ui.list.allCollapsed = false)
+    },
+    active: {
+        icon: "collapse_content",
+        label: "Collapse all",
+        withTransition: false,
+        click: () => (ui.list.allCollapsed = true)
     }
+};
 
-    section.addEventListener(
-        "close",
-        () => {
-            countsList.allCollapsed = true;
-            refreshStateActions();
-            window.removeEventListener("count-collapse-toggle", refreshStateActions);
-        },
-        { once: true }
-    );
+ui.message.elsToHide = [ui.list, ui.stateActions];
+ui.message.caches = [Cache.counts, Cache.members];
+
+const refreshStateActions = () =>
+    (ui.stateActions.state = ui.list.allCollapsed ? "normal" : "active");
+
+window.addEventListener("count-collapse-toggle", refreshStateActions);
+
+section.addEventListener("sectionopen", async () => {
+    refreshStateActions();
+    if (!Cache.counts.isCached) ui.message.status = "loading";
+    const counts = await Cache.counts.get();
+    if (counts == null) ui.message.status = "error";
+    else if (counts.length == 0) ui.message.status = "empty";
+    else {
+        ui.message.status = "success";
+        ui.list.counts = counts;
+    }
+});
+
+section.addEventListener("sectionclose", () => {
+    ui.list.allCollapsed = true;
+    refreshStateActions();
 });
