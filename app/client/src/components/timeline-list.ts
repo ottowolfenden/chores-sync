@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, type PropertyValues } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { getDateRange, getDateString, offsetDate } from "../functions/date-utils";
@@ -9,8 +9,8 @@ export class TimelineList extends LitElement {
 
     @query(":scope > div") private container!: HTMLElement;
     @state() private dates: string[] = [];
-    @state() private minIndex = -20;
-    @state() private maxIndex = 20;
+    @state() private minIndex = -10;
+    @state() private maxIndex = 10;
     private isPrepending = false;
     private readonly threshold = 200;
     private readonly batchSize = 15;
@@ -23,7 +23,7 @@ export class TimelineList extends LitElement {
         );
     }
 
-    firstUpdated = () => this.scrollToDate();
+    firstUpdated = () => setTimeout(() => this.scrollToDate({ behavior: "instant" }), 1);
 
     private getDateEl = (date: Date | string) =>
         this.container.querySelector(`[data-date="${getDateString(date)}"]`);
