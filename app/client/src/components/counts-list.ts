@@ -30,7 +30,7 @@ export class CountsList extends LitElement {
         return [...this.detailsULs].every(d => d.inert);
     }
     set allCollapsed(collapse: boolean) {
-        [...this.detailsULs].forEach(d =>
+        this.detailsULs.forEach(d =>
             this.toggleCollapse(d, d.parentElement?.querySelector("state-actions"), collapse)
         );
     }
