@@ -47,6 +47,12 @@ section.addEventListener("open", async () => {
 
     assignmentsUi.message.elsToHide = [assignmentsUi.list, assignmentsUi.stateActions];
     turnsUi.message.elsToHide = [turnsUi.list];
+    turnsUi.message.caches = assignmentsUi.message.caches = [
+        Cache.chores,
+        Cache.members,
+        Cache.turns,
+        Cache.todayAssignments
+    ];
 
     assignmentsUi.message.messages.empty = {
         icon: "celebration",

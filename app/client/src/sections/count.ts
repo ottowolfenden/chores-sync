@@ -23,6 +23,7 @@ section.addEventListener("open", async () => {
     };
 
     message.elsToHide = [countsList, stateActions];
+    message.caches = [Cache.counts, Cache.members];
 
     const refreshStateActions = () =>
         (stateActions.state = countsList.allCollapsed ? "normal" : "active");

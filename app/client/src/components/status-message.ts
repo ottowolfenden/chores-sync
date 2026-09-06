@@ -1,6 +1,8 @@
 import { LitElement, html, type TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { addHaptics } from "../functions/haptics";
+import { refresh } from "../functions/routing";
+import type { CacheData } from "../classes/cache";
 
 export type Status = "loading" | "empty" | "error" | "success";
 export type Message = { icon: string; spin?: boolean; content: string | TemplateResult };
@@ -12,6 +14,7 @@ export class StatusMessage extends LitElement {
 
     @property({ type: String, reflect: true }) status: Status = "success";
     @property({ attribute: false }) elsToHide: (Element | null)[] | null = null;
+    @property({ attribute: false }) caches: CacheData[] = [];
     @property({ attribute: false }) messages: Messages = {
         loading: {
             icon: "sync",
@@ -25,7 +28,11 @@ export class StatusMessage extends LitElement {
         error: {
             icon: "error",
             content: html`Failed to fetch data.<br />
-                <button @click=${() => location.reload()}>
+                <button
+                    @click=${() => {
+                        this.caches.forEach(c => c.invalidate());
+                        refresh();
+                    }}>
                     <md-icon>refresh</md-icon><span>Retry</span>
                 </button>`
         }
