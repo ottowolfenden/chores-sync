@@ -1,17 +1,17 @@
 export const route = async () => {
     document.querySelectorAll("section").forEach(s => {
-        if (!s.hidden) s.dispatchEvent(new CustomEvent("close"));
+        if (!s.hidden) s.dispatchEvent(new CustomEvent("sectionclose"));
         const isTarget = s.id == location.hash.replace("#", "");
-        if (isTarget) s.dispatchEvent(new CustomEvent("open"));
+        if (isTarget) s.dispatchEvent(new CustomEvent("sectionopen"));
         s.hidden = !isTarget;
         document.querySelector("main")?.scroll(0, 0);
     });
 };
 
 export const refresh = () => {
-    const sectionEl = [...document.querySelectorAll("section")].find(
+    const section = [...document.querySelectorAll("section")].find(
         s => s.id == location.hash.replace("#", "")
     );
-    sectionEl?.dispatchEvent(new CustomEvent("close"));
-    sectionEl?.dispatchEvent(new CustomEvent("open"));
+    section?.dispatchEvent(new CustomEvent("sectionclose"));
+    section?.dispatchEvent(new CustomEvent("sectionopen"));
 };
