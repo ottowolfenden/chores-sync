@@ -1,0 +1,28 @@
+timeline-list {
+    display: flex;
+    margin-top: 5px;
+    flex: 1;
+    min-height: 0;
+
+    & > div {
+        flex-grow: 1;
+        min-height: 0;
+        width: 100%;
+        overflow-y: auto;
+
+        & > div {
+            background-color: var(--surface-container-low);
+            height: 40px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            border-radius: 6px;
+            transition: height 100ms;
+            cursor: pointer;
+
+            &[data-expanded] {
+                height: 150px;
+            }
+        }
+    }
+}
