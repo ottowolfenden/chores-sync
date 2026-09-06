@@ -1,6 +1,12 @@
 import * as Db from "../functions/db-get.js";
 
-const createCache = <T>(dbFunc: () => Promise<T>) => {
+export type CacheData<T = unknown> = {
+    get: () => Promise<T>;
+    invalidate: () => null;
+    refresh: () => Promise<T>;
+};
+
+const createCache = <T>(dbFunc: () => Promise<T>): CacheData<T> => {
     let cachePromise: Promise<T> | null = null;
     return {
         get: async (): Promise<T> => (cachePromise ??= dbFunc()),
@@ -22,7 +28,7 @@ export class Cache {
     static readonly todayAssignments = createCache(Db.getTodayAssignments);
     static readonly counts = createCache(Db.getCounts);
 
-    static readonly caches = [
+    static readonly caches: CacheData[] = [
         Cache.chores,
         Cache.members,
         Cache.currentMember,
