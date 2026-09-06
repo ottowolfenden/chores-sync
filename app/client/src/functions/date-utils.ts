@@ -1,7 +1,5 @@
-export const getDateString = (date?: Date | string): string => {
-    date ??= new Date();
-    return new Date(date).toISOString().split("T")[0]!;
-};
+export const getDateString = (date: Date | string = new Date()): string =>
+    new Date(date).toISOString().split("T")[0]!;
 
 export const offsetDate = (date: Date | string, days: number) => {
     const clone = new Date(date);
