@@ -2,24 +2,18 @@ import "../components/timeline-list.js";
 
 const section = document.querySelector("section#timeline")!;
 
+const ui = {
+    timelineList: section.querySelector("timeline-list")!,
+    recentreButton: section.querySelector<HTMLButtonElement>("#recentre")!,
+    selectDateButton: section.querySelector("#select-date")!
+};
+
 section.addEventListener("open", () => {
-    const ui = {
-        timelineList: section.querySelector("timeline-list")!,
-        recentreButton: section.querySelector("#recentre")!,
-        selectDateButton: section.querySelector("#select-date")!
-    };
+    onresize = () => ui.timelineList.reset();
+    ui.recentreButton.onclick = () => ui.timelineList.scrollToDate({ expand: true });
+    ui.timelineList.reset({ collapseAll: true });
 
-    window.addEventListener("resize", ui.timelineList.reset);
-    ui.recentreButton.addEventListener("click", ui.timelineList.recentre);
-    ui.timelineList.reset();
-
-    section.addEventListener(
-        "close",
-        () => {
-            window.removeEventListener("resize", ui.timelineList.reset);
-            ui.recentreButton.removeEventListener("click", ui.timelineList.recentre);
-            ui.timelineList.reset();
-        },
-        { once: true }
-    );
+    (section as HTMLElement & { onclose: () => void }).onclose = () => console.log("hello");
 });
+
+section.addEventListener("close", () => ui.timelineList.reset({ collapseAll: true }));
