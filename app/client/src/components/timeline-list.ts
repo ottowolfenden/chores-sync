@@ -28,17 +28,18 @@ export class TimelineList extends LitElement {
     private getDateEl = (date: Date | string) =>
         this.container.querySelector(`[data-date="${getDateString(date)}"]`);
 
-    scrollToDate = (
-        date?: string | Date,
-        opts?: { behavior?: ScrollBehavior; expand?: boolean }
-    ) => {
-        date = new Date(date ?? new Date());
+    scrollToDate = (opts?: {
+        date?: string | Date;
+        behavior?: ScrollBehavior;
+        expand?: boolean;
+    }) => {
+        const date = new Date(opts?.date ?? new Date());
         const el = this.getDateEl(date);
         if (!el) {
             const [first, last] = [this.dates[0], this.dates.at(-1)];
             if (!first || !last) return;
             const onElsAdded = () => {
-                if (this.getDateEl(date)) this.scrollToDate(date, opts);
+                if (this.getDateEl(date)) this.scrollToDate(opts);
             };
             if (date < new Date(first)) this.prependDates({ firstDate: date, onElsAdded });
             else if (date > new Date(last)) this.appendDates({ lastDate: date, onElsAdded });
