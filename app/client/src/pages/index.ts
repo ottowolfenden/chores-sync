@@ -25,6 +25,14 @@ const handleRoute = async () => {
     });
 };
 
+export const refreshSection = (section?: string) => {
+    const sectionEl = [...document.querySelectorAll("section")].find(
+        s => s.id == (section ?? location.hash).replace("#", "")
+    );
+    sectionEl?.dispatchEvent(new CustomEvent("close"));
+    sectionEl?.dispatchEvent(new CustomEvent("open"));
+};
+
 window.addEventListener("hashchange", handleRoute);
 if (!location.hash) location.replace("#today");
 handleRoute();
@@ -47,3 +55,9 @@ if (location.hash) {
     if (location.hash != "#today") await Cache.turns.get();
     await Cache.todayAssignments.get();
 }
+
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState != "visible") return;
+    Cache.caches.forEach(c => c.invalidate());
+    refreshSection();
+});
