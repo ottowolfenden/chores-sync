@@ -4,6 +4,17 @@ timeline-list {
     min-height: 0;
     position: relative;
 
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 30px;
+        pointer-events: none;
+        background: linear-gradient(to top, transparent, var(--surface-container-lowest));
+    }
+
     & > div {
         flex-grow: 1;
         min-height: 0;
@@ -65,31 +76,5 @@ timeline-list {
                 padding: 4px;
             }
         }
-    }
-
-    &::after,
-    &::before {
-        --position: top;
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        height: 50px;
-        pointer-events: none;
-        background: linear-gradient(
-            to var(--position),
-            transparent,
-            var(--surface-container-lowest)
-        );
-    }
-
-    &::before {
-        top: 0;
-        --position: top;
-    }
-
-    &::after {
-        bottom: 0;
-        --position: bottom;
     }
 }
