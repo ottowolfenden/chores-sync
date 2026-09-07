@@ -36,7 +36,7 @@ export const formatDayOfMonth = (date: Date) => {
     return `${n}${n >= 11 && n <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[n % 10] ?? "th")}`;
 };
 
-export const formatDateRelative = (date: Date | string): string => {
+export const formatDateRelative = (date: Date | string) => {
     date = new Date(date);
     const val = getDateOnlyVal;
     const today = new Date();
@@ -55,4 +55,9 @@ export const formatDateRelative = (date: Date | string): string => {
         ...(!isSameMonth || isPast ? [formatDate(date, { month: "short" })] : []),
         ...(!isSameYr ? [formatDate(date, { year: "numeric" })] : [])
     ].join(" ");
+};
+
+export const formatDateShort = (date: Date | string) => {
+    date = new Date(date);
+    return formatDate(date, { day: "2-digit", month: "2-digit", year: "2-digit" });
 };
