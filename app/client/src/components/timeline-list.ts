@@ -172,7 +172,10 @@ export class TimelineList extends LitElement {
     render = () => html`
         <div
             @scroll=${this.handleScroll}
-            @wheel=${() => this.dispatchEvent(new Event("scroll"))}>
+            @wheel=${() => this.dispatchEvent(new Event("userscroll"))}
+            @pointermove=${(e: PointerEvent) => {
+                if (e.pointerType != "mouse") this.dispatchEvent(new Event("userscroll"));
+            }}>
             ${repeat(
                 this.dates,
                 d => d,

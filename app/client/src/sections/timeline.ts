@@ -9,7 +9,7 @@ const ui = {
 };
 
 Object.assign(ui.recentreButton.style, { opacity: "0", scale: "0.4" });
-ui.timelineList.addEventListener("scroll", () => {
+ui.timelineList.addEventListener("userscroll", () => {
     withTransition(ui.recentreButton, {
         before: () => (ui.recentreButton.hidden = false),
         after: { opacity: "", scale: "" }
@@ -23,5 +23,9 @@ ui.recentreButton.onclick = async () => {
     ui.timelineList.recentre();
 };
 
-section.addEventListener("sectionopen", () => ui.timelineList.reset({ collapseAll: true }));
+section.addEventListener("sectionopen", () => {
+    ui.timelineList.reset({ collapseAll: true });
+    ui.recentreButton.hidden = true;
+    Object.assign(ui.recentreButton.style, { opacity: "0", scale: "0.4" });
+});
 section.addEventListener("sectionclose", () => ui.timelineList.reset({ collapseAll: true }));
