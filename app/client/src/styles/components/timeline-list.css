@@ -4,17 +4,6 @@ timeline-list {
     min-height: 0;
     position: relative;
 
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 30px;
-        pointer-events: none;
-        background: linear-gradient(to top, transparent, var(--surface-container-lowest));
-    }
-
     & > div {
         flex-grow: 1;
         min-height: 0;

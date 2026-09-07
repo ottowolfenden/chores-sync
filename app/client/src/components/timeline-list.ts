@@ -170,7 +170,9 @@ export class TimelineList extends LitElement {
     };
 
     render = () => html`
-        <div @scroll=${this.handleScroll}>
+        <div
+            @scroll=${this.handleScroll}
+            @wheel=${() => this.dispatchEvent(new Event("scroll"))}>
             ${repeat(
                 this.dates,
                 d => d,
