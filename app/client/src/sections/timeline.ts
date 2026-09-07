@@ -4,8 +4,7 @@ const section = document.querySelector("section#timeline")!;
 
 const ui = {
     timelineList: section.querySelector("timeline-list")!,
-    recentreButton: section.querySelector<HTMLButtonElement>("#recentre")!,
-    selectDateButton: section.querySelector("#select-date")!
+    recentreButton: section.querySelector<HTMLButtonElement>("#recentre")!
 };
 
 ui.recentreButton.onclick = () => ui.timelineList.scrollToDate({ expand: true });
