@@ -52,8 +52,8 @@ export const formatDateRelative = (date: Date | string) => {
     return [
         formatDate(date, { weekday: "long" }),
         formatDayOfMonth(date),
-        ...(!isSameMonth || isPast ? [formatDate(date, { month: "short" })] : []),
-        ...(!isSameYr ? [formatDate(date, { year: "numeric" })] : [])
+        ...(isSameMonth ? [] : [formatDate(date, { month: "short" })]),
+        ...(isSameYr ? [] : [formatDate(date, { year: "numeric" })])
     ].join(" ");
 };
 
