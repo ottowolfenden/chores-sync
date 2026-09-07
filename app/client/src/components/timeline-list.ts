@@ -7,8 +7,10 @@ import {
     getDateString,
     offsetDate,
     formatDateRelative,
-    formatDateShort
+    formatDateShort,
+    getBirthdaysMatch
 } from "../functions/date-utils";
+import { Cache } from "../classes/cache";
 
 @customElement("timeline-list")
 export class TimelineList extends LitElement {
@@ -35,8 +37,9 @@ export class TimelineList extends LitElement {
     @state() private dates: string[] = [];
     @state() private minIndex = this.initialMinIndex;
     @state() private maxIndex = this.initialMaxIndex;
+    @state() private members: UiMember[] = [];
 
-    connectedCallback() {
+    async connectedCallback() {
         super.connectedCallback();
         Object.values(this.relFormatMedia).forEach(
             media =>
@@ -44,6 +47,12 @@ export class TimelineList extends LitElement {
                     if (location.hash == "#timeline") this.requestUpdate();
                 })
         );
+        this.members = (await Cache.members.get()) ?? [];
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        Object.values(this.relFormatMedia).forEach(media => (media.onchange = null));
     }
 
     firstUpdated = () => this.reset();
@@ -160,34 +169,35 @@ export class TimelineList extends LitElement {
             this.appendDates();
     };
 
-    render = () => {
-        return html`
-            <div @scroll=${this.handleScroll}>
-                ${repeat(
-                    this.dates,
-                    d => d,
-                    d => html`
-                        <div
-                            data-date=${d}
+    render = () => html`
+        <div @scroll=${this.handleScroll}>
+            ${repeat(
+                this.dates,
+                d => d,
+                d => html`
+                    <div
+                        data-date=${d}
+                        @click=${(e: Event) =>
+                            (e.target as HTMLElement).toggleAttribute("data-expanded")}>
+                        <span class="rel-date">
+                            ${formatDateRelative(d, this.relFormatOpts)}
+                        </span>
+                        ${getBirthdaysMatch(this.members, d)
+                            ? html`<md-icon class="birthday">cake</md-icon>`
+                            : ""}
+                        <span class="short-date">${formatDateShort(d)}</span>
+                        <button
+                            class="expand transparent"
+                            tabindex="-1"
                             @click=${(e: Event) =>
-                                (e.target as HTMLElement).toggleAttribute("data-expanded")}>
-                            <span class="rel-date">
-                                ${formatDateRelative(d, this.relFormatOpts)}
-                            </span>
-                            <span class="short-date">${formatDateShort(d)}</span>
-                            <button
-                                class="expand transparent"
-                                tabindex="-1"
-                                @click=${(e: Event) =>
-                                    queryClosest(e, "[data-date]")?.toggleAttribute(
-                                        "data-expanded"
-                                    )}>
-                                <md-icon>${"keyboard_arrow_down"}</md-icon>
-                            </button>
-                        </div>
-                    `
-                )}
-            </div>
-        `;
-    };
+                                queryClosest(e, "[data-date]")?.toggleAttribute(
+                                    "data-expanded"
+                                )}>
+                            <md-icon>${"keyboard_arrow_down"}</md-icon>
+                        </button>
+                    </div>
+                `
+            )}
+        </div>
+    `;
 }

@@ -63,3 +63,13 @@ export const formatDateShort = (date: Date | string) => {
     date = new Date(date);
     return formatDate(date, { day: "2-digit", month: "2-digit", year: "2-digit" });
 };
+
+export const getBirthdaysMatch = (members: UiMember[], date: string | Date): boolean =>
+    members
+        .map(m => m.dateOfBirth)
+        .filter(b => b != null)
+        .some(
+            b =>
+                b.getUTCDate() == new Date(date).getUTCDate() &&
+                b.getUTCMonth() == new Date(date).getUTCMonth()
+        );

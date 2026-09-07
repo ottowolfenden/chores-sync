@@ -22,3 +22,4 @@ settings
 swap_horiz
 refresh
 view_day
+cake
