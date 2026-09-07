@@ -1,6 +1,5 @@
 timeline-list {
     display: flex;
-    margin-top: 5px;
     flex: 1;
     min-height: 0;
 
@@ -12,16 +11,49 @@ timeline-list {
 
         & > div {
             background-color: var(--surface-container-low);
-            height: 40px;
+            height: 50px;
             margin-bottom: 5px;
             display: flex;
             align-items: center;
             border-radius: 6px;
-            transition: height 100ms;
             cursor: pointer;
+            padding: 0 10px;
+            gap: 10px;
+            transition: height, background-color, color;
+            transition-duration: 100ms;
 
             &[data-expanded] {
                 height: 150px;
+            }
+
+            &:active:not(:has(button:active)) {
+                background-color: color-mix(
+                    in srgb,
+                    var(--on-surface) 5%,
+                    var(--surface-container-low)
+                );
+            }
+
+            @media (hover: hover) {
+                &:hover:not(:has(button:hover)):not(:active) {
+                    background-color: color-mix(
+                        in srgb,
+                        var(--on-surface) 3%,
+                        var(--surface-container-low)
+                    );
+                }
+            }
+
+            .short-date {
+                margin-left: auto;
+                font-size: 16px;
+                color: var(--on-surface-variant);
+            }
+
+            button.expand {
+                --size: 16;
+                --color: var(--secondary);
+                padding: 4px;
             }
         }
     }

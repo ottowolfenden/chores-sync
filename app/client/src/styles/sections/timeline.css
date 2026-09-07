@@ -2,7 +2,10 @@
     :scope {
         padding-top: 0;
     }
+
     div:has(h2) {
         margin-top: 20px;
+        box-shadow: 0 -5px 20px 25px var(--surface-container-lowest);
+        z-index: 1;
     }
 }
