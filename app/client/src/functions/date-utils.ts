@@ -36,24 +36,26 @@ export const formatDayOfMonth = (date: Date) => {
     return `${n}${n >= 11 && n <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[n % 10] ?? "th")}`;
 };
 
-export const formatDateRelative = (date: Date | string) => {
+export const formatDateRelative = (
+    date: Date | string,
+    { collapseWeekday = false, collapseMonth = false, collapseDay = false }
+) => {
     date = new Date(date);
     const val = getDateOnlyVal;
     const today = new Date();
-    const isSameYr = date.getUTCFullYear() == today.getUTCFullYear();
-    const isSameMonth = date.getUTCMonth() == today.getUTCMonth();
-    const isPast = val(date) < val(today);
+    const yrSame = date.getUTCFullYear() == today.getUTCFullYear();
+    const monthSame = yrSame && date.getUTCMonth() == today.getUTCMonth();
 
     if (val(date) == val(today)) return "Today";
     if (val(date) == val(offsetDate(today, -1))) return "Yesterday";
     if (val(date) == val(offsetDate(today, 1))) return "Tomorrow";
-    if (!isPast && val(date) <= val(getNextDate("Sunday")))
+    if (val(date) > val(today) && val(date) <= val(getNextDate("Sunday")))
         return formatDate(date, { weekday: "long" });
     return [
-        formatDate(date, { weekday: "long" }),
-        formatDayOfMonth(date),
-        ...(isSameMonth ? [] : [formatDate(date, { month: "short" })]),
-        ...(isSameYr ? [] : [formatDate(date, { year: "numeric" })])
+        formatDate(date, { weekday: collapseWeekday ? "short" : "long" }),
+        !yrSame && collapseDay ? date.getUTCDate() : formatDayOfMonth(date),
+        ...(!monthSame ? [formatDate(date, { month: collapseMonth ? "short" : "long" })] : []),
+        ...(!yrSame ? [formatDate(date, { year: "numeric" })] : [])
     ].join(" ");
 };
 

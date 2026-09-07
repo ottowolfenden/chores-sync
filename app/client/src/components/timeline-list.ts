@@ -19,10 +19,32 @@ export class TimelineList extends LitElement {
     private readonly threshold = 400;
     private readonly batchSize = 30;
     private handleScrolling = true;
+    private readonly relFormatMedia = {
+        collapseWeekday: matchMedia("(width <= 450px)"),
+        collapseMonth: matchMedia("(width <= 650px)"),
+        collapseDay: matchMedia("(width <= 350px)")
+    };
+    private get relFormatOpts() {
+        return {
+            collapseWeekday: this.relFormatMedia.collapseWeekday.matches,
+            collapseMonth: this.relFormatMedia.collapseMonth.matches,
+            collapseDay: this.relFormatMedia.collapseDay.matches
+        };
+    }
     @query(":scope > div") private container!: HTMLElement;
     @state() private dates: string[] = [];
     @state() private minIndex = this.initialMinIndex;
     @state() private maxIndex = this.initialMaxIndex;
+
+    connectedCallback() {
+        super.connectedCallback();
+        Object.values(this.relFormatMedia).forEach(
+            media =>
+                (media.onchange = () => {
+                    if (location.hash == "#timeline") this.requestUpdate();
+                })
+        );
+    }
 
     firstUpdated = () => this.reset();
 
@@ -138,30 +160,34 @@ export class TimelineList extends LitElement {
             this.appendDates();
     };
 
-    render = () => html`
-        <div @scroll=${this.handleScroll}>
-            ${repeat(
-                this.dates,
-                d => d,
-                d => html`
-                    <div
-                        data-date=${d}
-                        @click=${(e: Event) =>
-                            (e.target as HTMLElement).toggleAttribute("data-expanded")}>
-                        <span class="rel-date">${formatDateRelative(d)}</span>
-                        <span class="short-date">${formatDateShort(d)}</span>
-                        <button
-                            class="expand transparent"
-                            tabindex="-1"
+    render = () => {
+        return html`
+            <div @scroll=${this.handleScroll}>
+                ${repeat(
+                    this.dates,
+                    d => d,
+                    d => html`
+                        <div
+                            data-date=${d}
                             @click=${(e: Event) =>
-                                queryClosest(e, "[data-date]")?.toggleAttribute(
-                                    "data-expanded"
-                                )}>
-                            <md-icon>${"keyboard_arrow_down"}</md-icon>
-                        </button>
-                    </div>
-                `
-            )}
-        </div>
-    `;
+                                (e.target as HTMLElement).toggleAttribute("data-expanded")}>
+                            <span class="rel-date">
+                                ${formatDateRelative(d, this.relFormatOpts)}
+                            </span>
+                            <span class="short-date">${formatDateShort(d)}</span>
+                            <button
+                                class="expand transparent"
+                                tabindex="-1"
+                                @click=${(e: Event) =>
+                                    queryClosest(e, "[data-date]")?.toggleAttribute(
+                                        "data-expanded"
+                                    )}>
+                                <md-icon>${"keyboard_arrow_down"}</md-icon>
+                            </button>
+                        </div>
+                    `
+                )}
+            </div>
+        `;
+    };
 }
