@@ -1,7 +1,8 @@
 timeline-list {
     display: flex;
-    flex: 1;
+    flex-grow: 1;
     min-height: 0;
+    position: relative;
 
     & > div {
         flex-grow: 1;
@@ -56,5 +57,31 @@ timeline-list {
                 padding: 4px;
             }
         }
+    }
+
+    &::after,
+    &::before {
+        --position: top;
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 50px;
+        pointer-events: none;
+        background: linear-gradient(
+            to var(--position),
+            transparent,
+            var(--surface-container-lowest)
+        );
+    }
+
+    &::before {
+        top: 0;
+        --position: top;
+    }
+
+    &::after {
+        bottom: 0;
+        --position: bottom;
     }
 }
