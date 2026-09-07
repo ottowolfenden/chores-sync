@@ -7,7 +7,7 @@ const ui = {
     recentreButton: section.querySelector<HTMLButtonElement>("#recentre")!
 };
 
-ui.recentreButton.onclick = () => ui.timelineList.scrollToDate({ expand: true });
+ui.recentreButton.onclick = () => ui.timelineList.recentre();
 
 section.addEventListener("sectionopen", () => ui.timelineList.reset({ collapseAll: true }));
 section.addEventListener("sectionclose", () => ui.timelineList.reset({ collapseAll: true }));

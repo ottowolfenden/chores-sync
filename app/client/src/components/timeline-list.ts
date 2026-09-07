@@ -26,7 +26,10 @@ export class TimelineList extends LitElement {
 
     firstUpdated = () => this.reset();
 
-    reset = ({ collapseAll = false }: { collapseAll?: boolean } = {}) => {
+    reset = ({
+        collapseAll = false,
+        type = "middle"
+    }: { collapseAll?: boolean; type?: "today" | "middle" | "noscroll" } = {}) => {
         this.minIndex = this.initialMinIndex;
         this.maxIndex = this.initialMaxIndex;
         this.dates = getDateRange(
@@ -40,10 +43,11 @@ export class TimelineList extends LitElement {
                 .forEach(el =>
                     instantly(el, () => el.toggleAttribute("data-expanded", false))
                 );
+        if (type == "noscroll") return;
         this.handleScrolling = false;
         setTimeout(() => {
-            if (collapseAll) this.scrollToDate({ behavior: "instant" });
-            else
+            if (type == "today") this.scrollToDate({ behavior: "instant" });
+            else if (type == "middle")
                 this.container.scroll({
                     top: (this.container.scrollHeight - this.container.clientHeight) / 2
                 });
@@ -74,6 +78,14 @@ export class TimelineList extends LitElement {
         }
         if (expand) instantly(el, () => el.toggleAttribute("data-expanded", true));
         el.scrollIntoView({ behavior, block: "center" });
+    };
+
+    recentre = () => {
+        this.scrollToDate();
+        this.container.onscrollend = () => {
+            this.reset({ type: "noscroll" });
+            this.container.onscrollend = null;
+        };
     };
 
     private getDateEl = (date: Date | string) =>
