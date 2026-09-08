@@ -24,7 +24,7 @@ export class AssignmentsStateActions extends StateActions {
         active: {
             click: async () => {
                 this.assignmentsList.editMode = false;
-                const affectedCaches = [Cache.counts, Cache.todayAssignments];
+                const affectedCaches = [Cache.counts, Cache.assignmentsToday];
                 affectedCaches.forEach(c => c.invalidate());
 
                 const success = await replaceAssignments(this.assignmentsList.assignments);

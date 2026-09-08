@@ -60,14 +60,14 @@ export class CountsList extends LitElement {
     };
 
     private readonly invalidate = () =>
-        [Cache.turns, Cache.counts, Cache.todayAssignments].forEach(c => c.invalidate());
+        [Cache.turnsToday, Cache.counts, Cache.assignmentsToday].forEach(c => c.invalidate());
 
     private readonly saveEdit = async (countDiv: HTMLElement, c: UiCount) => {
         countDiv.toggleAttribute("data-edit-mode", false);
         const success = await setCount(c);
         if (!success && this.oldCounts) this.counts = structuredClone(this.oldCounts);
         this.oldCounts = null;
-        [Cache.turns, Cache.counts, Cache.todayAssignments].forEach(c => c.refresh());
+        [Cache.turnsToday, Cache.counts, Cache.assignmentsToday].forEach(c => c.refresh());
         return success;
     };
 

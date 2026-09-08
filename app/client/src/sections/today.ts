@@ -38,8 +38,8 @@ ui.turns.message.elsToHide = [ui.turns.list];
 ui.turns.message.caches = ui.assignments.message.caches = [
     Cache.chores,
     Cache.members,
-    Cache.turns,
-    Cache.todayAssignments
+    Cache.turnsToday,
+    Cache.assignmentsToday
 ];
 ui.turns.message.messages.empty.content = html`
     No chores have been created.<br />
@@ -60,12 +60,12 @@ let assignments: UiAssignment[] | null;
 let turns: UiTurn[] | null;
 
 section.addEventListener("sectionopen", async () => {
-    if (!Cache.turns.isCached) ui.turns.message.status = "loading";
-    if (!Cache.todayAssignments.isCached) ui.assignments.message.status = "loading";
+    if (!Cache.turnsToday.isCached) ui.turns.message.status = "loading";
+    if (!Cache.assignmentsToday.isCached) ui.assignments.message.status = "loading";
 
     await Promise.all([
         (async () => {
-            turns = await Cache.turns.get();
+            turns = await Cache.turnsToday.get();
             if (turns == null) ui.turns.message.status = "error";
             else if (turns.length == 0) ui.turns.message.status = "empty";
             else {
@@ -75,7 +75,7 @@ section.addEventListener("sectionopen", async () => {
             }
         })(),
         (async () => {
-            assignments = await Cache.todayAssignments.get();
+            assignments = await Cache.assignmentsToday.get();
             if (assignments == null) ui.assignments.message.status = "error";
             else if (assignments.length == 0) ui.assignments.message.status = "empty";
             else {
