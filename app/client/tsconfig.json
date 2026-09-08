@@ -17,6 +17,7 @@
         "noUncheckedSideEffectImports": true,
         "moduleDetection": "force",
         "skipLibCheck": true,
+        "noUnusedLocals": true,
         "experimentalDecorators": true,
         "useDefineForClassFields": false,
         "types": ["../server/db-types.d.ts", "./ui-types.d.ts"]

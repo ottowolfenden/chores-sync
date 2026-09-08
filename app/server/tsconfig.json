@@ -15,6 +15,7 @@
         "noUncheckedSideEffectImports": true,
         "moduleDetection": "force",
         "skipLibCheck": true,
+        "noUnusedLocals": true,
         "types": ["@cloudflare/workers-types", "./db-types.d.ts", "./server-types.d.ts"],
         "lib": ["ESNext"]
     }
