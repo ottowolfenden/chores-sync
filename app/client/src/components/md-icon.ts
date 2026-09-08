@@ -7,5 +7,7 @@ export class MdIcon extends LitElement {
 
     @property({ type: Boolean }) spin: boolean = false;
 
+    setIcon = (icon: string) => (this.textContent = icon);
+
     render = () => html`<slot></slot>`;
 }
