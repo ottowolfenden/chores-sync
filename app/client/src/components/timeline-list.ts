@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { instantly, queryClosest, setText } from "../functions/element-utils";
+import { instantly, queryClosest } from "../functions/element-utils";
 import {
     getDateRange,
     getDateString,
@@ -129,10 +129,9 @@ export class TimelineList extends LitElement {
         const dateEl = e ? queryClosest(e, "[data-date]") : this.getDateEl(date);
         const expanded = dateEl?.toggleAttribute("data-expanded");
         if (expanded) this.collapseAll({ exclude: dateEl });
-        setText(
-            dateEl?.querySelector(".expand md-icon"),
-            expanded ? "keyboard_arrow_up" : "keyboard_arrow_down"
-        );
+        dateEl
+            ?.querySelector<MdIcon>(".expand md-icon")
+            ?.setIcon(expanded ? "keyboard_arrow_up" : "keyboard_arrow_down");
     };
 
     private collapseAll = ({
@@ -140,14 +139,14 @@ export class TimelineList extends LitElement {
         instant = false
     }: { exclude?: HTMLElement | null; instant?: boolean } = {}) => {
         const toggle = (el: HTMLElement) => el.toggleAttribute("data-expanded", false);
-        this.container
-            .querySelectorAll<HTMLElement>(
-                "[data-date]" +
-                    (exclude?.dataset.date
-                        ? `:not([data-date="${exclude?.dataset.date}"])`
-                        : "")
-            )
-            .forEach(instant ? el => instantly(el, () => toggle(el)) : toggle);
+        const selector = exclude?.dataset.date
+            ? `[data-date]:not([data-date="${exclude?.dataset.date}"])`
+            : "[data-date]";
+        this.container.querySelectorAll<HTMLElement>(selector).forEach(el => {
+            if (instant) instantly(el, () => toggle(el));
+            else toggle(el);
+            el.querySelector<MdIcon>(".expand md-icon")?.setIcon("keyboard_arrow_down");
+        });
     };
 
     private getDateEl = (date: Date | string = new Date()) =>
