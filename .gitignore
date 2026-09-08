@@ -3,3 +3,4 @@ app/client/dist
 .wrangler
 todo.txt
 .env
+app/server/functions/.reload
