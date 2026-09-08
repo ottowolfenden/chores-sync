@@ -11,6 +11,8 @@ const ui = {
     recentreIcon: section.querySelector("#recentre md-icon")!
 };
 
+const inactiveRecentreButtonStyle = { opacity: "0", scale: "0.4" };
+
 const refreshRecentreIcon = () =>
     (ui.recentreIcon.textContent =
         ui.timelineList.getScrolledDirection() == "up" ? "arrow_downward" : "arrow_upward");
@@ -27,7 +29,7 @@ ui.timelineList.addEventListener("userscroll", () =>
 
 ui.recentreButton.onclick = async () => {
     withTransition(ui.recentreButton, {
-        before: { opacity: "0", scale: "0.4" },
+        before: inactiveRecentreButtonStyle,
         after: () => (ui.recentreButton.hidden = true)
     });
     ui.timelineList.recentre();
@@ -36,7 +38,7 @@ ui.recentreButton.onclick = async () => {
 section.addEventListener("sectionopen", () => {
     ui.timelineList.reset({ collapseAll: true });
     ui.recentreButton.hidden = true;
-    Object.assign(ui.recentreButton.style, { opacity: "0", scale: "0.4" });
+    Object.assign(ui.recentreButton.style, inactiveRecentreButtonStyle);
     addHaptics(ui.recentreButton);
 });
 section.addEventListener("sectionclose", () => ui.timelineList.reset({ collapseAll: true }));
