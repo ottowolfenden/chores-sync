@@ -52,7 +52,7 @@ export const formatDateRelative = (
     if (val(date) > val(today) && val(date) <= val(getNextDate("Sunday")))
         return formatDate(date, { weekday: "long" });
     return [
-        formatDate(date, { weekday: collapseWeekday ? "short" : "long" }),
+        ...(yrSame ? [formatDate(date, { weekday: collapseWeekday ? "short" : "long" })] : []),
         !yrSame && collapseDay ? date.getUTCDate() : formatDayOfMonth(date),
         ...(!monthSame ? [formatDate(date, { month: collapseMonth ? "short" : "long" })] : []),
         ...(!yrSame ? [formatDate(date, { year: "numeric" })] : [])
