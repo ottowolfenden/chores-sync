@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { instantly, queryClosest } from "../functions/element-utils";
+import { instantly, queryClosest, setText } from "../functions/element-utils";
 import {
     getDateRange,
     getDateString,
@@ -68,12 +68,7 @@ export class TimelineList extends LitElement {
             offsetDate(new Date(), this.maxIndex)
         );
         this.requestUpdate();
-        if (collapseAll)
-            this.container
-                .querySelectorAll<HTMLElement>(":scope > div")
-                .forEach(el =>
-                    instantly(el, () => el.toggleAttribute("data-expanded", false))
-                );
+        if (collapseAll) this.collapseAll({ instant: true });
         if (type == "noscroll") return;
         this.handleScrolling = false;
         setTimeout(() => {
@@ -112,6 +107,7 @@ export class TimelineList extends LitElement {
     };
 
     recentre = () => {
+        this.collapseAll();
         this.scrollToDate();
         this.container.onscrollend = () => {
             this.reset({ type: "noscroll" });
@@ -127,6 +123,31 @@ export class TimelineList extends LitElement {
             .map(r => r.top + r.height / 2) as [number, number];
         if (todayCentre == containerCentre) return null;
         return todayCentre > containerCentre ? "up" : "down";
+    };
+
+    toggleExpand = ({ date, e }: { date?: Date | string; e?: Event }) => {
+        const dateEl = e ? queryClosest(e, "[data-date]") : this.getDateEl(date);
+        const expanded = dateEl?.toggleAttribute("data-expanded");
+        if (expanded) this.collapseAll({ exclude: dateEl });
+        setText(
+            dateEl?.querySelector(".expand md-icon"),
+            expanded ? "keyboard_arrow_up" : "keyboard_arrow_down"
+        );
+    };
+
+    private collapseAll = ({
+        exclude,
+        instant = false
+    }: { exclude?: HTMLElement | null; instant?: boolean } = {}) => {
+        const toggle = (el: HTMLElement) => el.toggleAttribute("data-expanded", false);
+        this.container
+            .querySelectorAll<HTMLElement>(
+                "[data-date]" +
+                    (exclude?.dataset.date
+                        ? `:not([data-date="${exclude?.dataset.date}"])`
+                        : "")
+            )
+            .forEach(instant ? el => instantly(el, () => toggle(el)) : toggle);
     };
 
     private getDateEl = (date: Date | string = new Date()) =>
@@ -193,10 +214,7 @@ export class TimelineList extends LitElement {
                 this.dates,
                 d => d,
                 d => html`
-                    <div
-                        data-date=${d}
-                        @click=${(e: Event) =>
-                            (e.target as HTMLElement).toggleAttribute("data-expanded")}>
+                    <div data-date=${d} @click=${(e: Event) => this.toggleExpand({ e })}>
                         <span class="rel-date">
                             ${formatDateRelative(d, this.relFormatOpts)}
                         </span>
@@ -204,14 +222,8 @@ export class TimelineList extends LitElement {
                             ? html`<md-icon class="birthday">cake</md-icon>`
                             : ""}
                         <span class="short-date">${formatDateShort(d)}</span>
-                        <button
-                            class="expand transparent"
-                            tabindex="-1"
-                            @click=${(e: Event) =>
-                                queryClosest(e, "[data-date]")?.toggleAttribute(
-                                    "data-expanded"
-                                )}>
-                            <md-icon>${"keyboard_arrow_down"}</md-icon>
+                        <button class="expand transparent" tabindex="-1">
+                            <md-icon>keyboard_arrow_down</md-icon>
                         </button>
                     </div>
                 `

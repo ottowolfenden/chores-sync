@@ -4,66 +4,106 @@ timeline-list {
     min-height: 0;
     position: relative;
 
-    & > div {
+    .container {
         flex-grow: 1;
         min-height: 0;
         width: 100%;
         overflow-y: auto;
+    }
 
-        & > div {
-            background-color: var(--surface-container-low);
-            height: 50px;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            border-radius: 6px;
-            cursor: pointer;
-            padding: 0 10px;
-            gap: 10px;
-            transition: height, background-color, color;
-            transition-duration: 100ms;
+    .container > div {
+        --background-color: var(--surface-container-low);
+        --color: var(--on-surface);
+        --duration: 100ms;
+        background-color: var(--background-color);
+        color: var(--color);
+        height: 50px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        border-radius: 6px;
+        cursor: pointer;
+        padding: 0 10px;
+        gap: 10px;
+        transition: height, background-color, color, border-radius, padding, opacity;
+        transition-duration: var(--duration);
 
-            &[data-expanded] {
-                height: 150px;
-            }
+        &:active:not(:has(button:active)) {
+            background-color: color-mix(in srgb, var(--color) 5%, var(--background-color));
+        }
 
-            &:active:not(:has(button:active)) {
-                background-color: color-mix(
-                    in srgb,
-                    var(--on-surface) 5%,
-                    var(--surface-container-low)
-                );
-            }
-
-            @media (hover: hover) {
-                &:hover:not(:has(button:hover)):not(:active) {
-                    background-color: color-mix(
-                        in srgb,
-                        var(--on-surface) 3%,
-                        var(--surface-container-low)
-                    );
-                }
-            }
-
-            md-icon.birthday {
-                --opsz: 22;
-                display: inline-block;
-                color: var(--on-surface-variant);
-                opacity: 0.8;
-            }
-
-            .short-date {
-                margin-left: auto;
-                flex-shrink: 0;
-                font-size: 16px;
-                color: var(--on-surface-variant);
-            }
-
-            button.expand {
-                --size: 16;
-                --color: var(--secondary);
-                padding: 4px;
+        @media (hover: hover) {
+            &:hover:not(:has(button:hover)):not(:active) {
+                background-color: color-mix(in srgb, var(--color) 3%, var(--background-color));
             }
         }
+
+        .rel-date {
+            transition: font-weight, font-size, margin;
+            transition-duration: var(--duration);
+        }
+
+        md-icon.birthday {
+            --opsz: 22;
+            display: inline-block;
+            color: var(--on-surface-variant);
+            opacity: 0.8;
+        }
+
+        .short-date {
+            margin-left: auto;
+            flex-shrink: 0;
+            font-size: 16px;
+            color: var(--on-surface-variant);
+            transition: opacity var(--duration);
+        }
+
+        button.expand {
+            --size: 16;
+            --color: var(--secondary);
+            padding: 4px;
+        }
+    }
+
+    .container > div[data-expanded] {
+        --background-color: var(--secondary-container);
+        --color: var(--on-secondary-container);
+        padding: 0 12px;
+        height: 62px;
+        border-radius: 17px 17px 6px 6px;
+        display: flex;
+        align-items: center;
+
+        .rel-date {
+            margin: 5px;
+            font-weight: 500;
+            font-size: 22px;
+            margin-right: auto;
+        }
+
+        .short-date {
+            opacity: 0;
+        }
+
+        button.expand {
+            --size: 18;
+        }
+
+        button:not(.expand) {
+            --size: 15;
+
+            &.outlined {
+                --color: var(--secondary);
+            }
+
+            &.filled {
+                --background-color: var(--secondary);
+                --color: var(--on-secondary);
+            }
+        }
+    }
+
+    .container:has(> div[data-expanded]) div:not([data-expanded]) {
+        opacity: 0.6;
     }
 }
