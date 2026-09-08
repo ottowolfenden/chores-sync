@@ -33,7 +33,7 @@ export class TimelineList extends LitElement {
             collapseDay: this.relFormatMedia.collapseDay.matches
         };
     }
-    @query(":scope > div") private container!: HTMLElement;
+    @query(".container") private container!: HTMLElement;
     @state() private dates: string[] = [];
     @state() private minIndex = this.initialMinIndex;
     @state() private maxIndex = this.initialMaxIndex;
@@ -119,7 +119,17 @@ export class TimelineList extends LitElement {
         };
     };
 
-    private getDateEl = (date: Date | string) =>
+    getScrolledDirection = () => {
+        const todayEl = this.getDateEl();
+        if (!todayEl) return null;
+        const [todayCentre, containerCentre] = [todayEl, this.container]
+            .map(r => r.getBoundingClientRect())
+            .map(r => r.top + r.height / 2) as [number, number];
+        if (todayCentre == containerCentre) return null;
+        return todayCentre > containerCentre ? "up" : "down";
+    };
+
+    private getDateEl = (date: Date | string = new Date()) =>
         this.container.querySelector<HTMLElement>(`[data-date="${getDateString(date)}"]`);
 
     private prependDates = ({
@@ -163,6 +173,7 @@ export class TimelineList extends LitElement {
 
     private handleScroll = () => {
         if (!this.handleScrolling) return;
+        this.dispatchEvent(new Event("scroll"));
         const { scrollTop, scrollHeight, clientHeight } = this.container;
         if (scrollTop < this.threshold) this.prependDates();
         else if (scrollHeight - (scrollTop + clientHeight) < this.threshold)
@@ -171,7 +182,9 @@ export class TimelineList extends LitElement {
 
     render = () => html`
         <div
+            class="container"
             @scroll=${this.handleScroll}
+            @scrollend=${() => this.dispatchEvent(new Event("scrollend"))}
             @wheel=${() => this.dispatchEvent(new Event("userscroll"))}
             @pointermove=${(e: PointerEvent) => {
                 if (e.pointerType != "mouse") this.dispatchEvent(new Event("userscroll"));
