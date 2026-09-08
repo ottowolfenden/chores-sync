@@ -4,17 +4,20 @@ timeline-list {
     min-height: 0;
     position: relative;
 
-    .container {
+    ol {
         flex-grow: 1;
         min-height: 0;
         width: 100%;
         overflow-y: auto;
+
+        & > li {
+            transition: margin 100ms;
+        }
     }
 
-    .container > div {
+    [data-date] {
         --background-color: var(--surface-container-low);
         --color: var(--on-surface);
-        --duration: 100ms;
         background-color: var(--background-color);
         color: var(--color);
         height: 50px;
@@ -26,21 +29,25 @@ timeline-list {
         padding: 0 10px;
         gap: 10px;
         transition: height, background-color, color, border-radius, padding, opacity;
-        transition-duration: var(--duration);
+        transition-duration: 100ms;
 
         &:active:not(:has(button:active)) {
-            background-color: color-mix(in srgb, var(--color) 5%, var(--background-color));
+            background-color: color-mix(in srgb, var(--color) 12%, var(--background-color));
         }
 
         @media (hover: hover) {
             &:hover:not(:has(button:hover)):not(:active) {
-                background-color: color-mix(in srgb, var(--color) 3%, var(--background-color));
+                background-color: color-mix(in srgb, var(--color) 6%, var(--background-color));
             }
+        }
+
+        state-actions {
+            display: none;
         }
 
         .rel-date {
             transition: font-weight, font-size, margin;
-            transition-duration: var(--duration);
+            transition-duration: 100ms;
         }
 
         md-icon.birthday {
@@ -55,7 +62,6 @@ timeline-list {
             flex-shrink: 0;
             font-size: 16px;
             color: var(--on-surface-variant);
-            transition: opacity var(--duration);
         }
 
         button.expand {
@@ -65,7 +71,7 @@ timeline-list {
         }
     }
 
-    .container > div[data-expanded] {
+    [data-date][data-expanded] {
         --background-color: var(--secondary-container);
         --color: var(--on-secondary-container);
         padding: 0 12px;
@@ -81,8 +87,12 @@ timeline-list {
             margin-right: auto;
         }
 
+        state-actions {
+            display: revert;
+        }
+
         .short-date {
-            opacity: 0;
+            display: none;
         }
 
         button.expand {
@@ -103,7 +113,11 @@ timeline-list {
         }
     }
 
-    .container:has(> div[data-expanded]) div:not([data-expanded]) {
+    ol:has([data-date][data-expanded]) [data-date]:not([data-expanded]) {
         opacity: 0.6;
+    }
+
+    ol > li:has([data-date][data-expanded]) {
+        margin: 25px 0;
     }
 }
