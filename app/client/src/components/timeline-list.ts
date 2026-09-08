@@ -224,9 +224,11 @@ export class TimelineList extends LitElement {
                             <span class="rel-date">
                                 ${formatDateRelative(d, this.relFormatOpts)}
                             </span>
-                            ${getBirthdaysMatch(this.members, d)
-                                ? html`<md-icon class="birthday">cake</md-icon>`
-                                : ""}
+                            <md-icon
+                                class="birthday"
+                                ?hidden=${!getBirthdaysMatch(this.members, d)}>
+                                cake
+                            </md-icon>
                             <state-actions .conf=${{}}></state-actions>
                             <span class="short-date">${formatDateShort(d)}</span>
                             <button class="expand transparent" tabindex="-1">

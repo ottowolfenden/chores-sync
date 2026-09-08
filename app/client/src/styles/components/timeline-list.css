@@ -91,7 +91,8 @@ timeline-list {
             display: revert;
         }
 
-        .short-date {
+        .short-date,
+        md-icon.birthday {
             display: none;
         }
 
