@@ -1,4 +1,5 @@
-state-actions {
+state-actions,
+assignments-state-actions {
     display: flex;
     gap: 12px;
 

@@ -64,7 +64,8 @@ main {
 }
 
 span,
-div:has(state-actions) > h2 {
+div:has(state-actions) > h2,
+div:has(assignments-state-actions) > h2 {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -323,6 +324,7 @@ input[type="checkbox"] {
 
         span {
             margin-left: 12px;
+            transition: none;
         }
     }
 
@@ -348,7 +350,6 @@ input[type="checkbox"] {
             margin-bottom: 4px;
             padding: 0 12px;
             animation: 100ms linear 0s dropdown-expand;
-            transition-property: scale, background-color, color, outline-color;
 
             &:last-child {
                 margin-bottom: 0;
@@ -356,6 +357,7 @@ input[type="checkbox"] {
 
             .member-name {
                 margin-left: 0;
+                transition: none;
             }
         }
     }
