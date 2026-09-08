@@ -1,6 +1,7 @@
 import "../components/timeline-list.js";
 import { withTransition } from "../functions/element-utils.js";
 import { addHaptics } from "../functions/haptics.js";
+import { throttle } from "../functions/timer.js";
 
 const section = document.querySelector("section#timeline")!;
 
@@ -18,13 +19,7 @@ const refreshRecentreIcon = () =>
         ui.timelineList.getScrolledDirection() == "up" ? "arrow_downward" : "arrow_upward");
 
 ui.timelineList.addEventListener("scrollend", refreshRecentreIcon);
-
-let lastIconRefresh = -Infinity;
-ui.timelineList.addEventListener("scroll", () => {
-    if (lastIconRefresh + 500 > Date.now()) return;
-    refreshRecentreIcon();
-    lastIconRefresh = Date.now();
-});
+ui.timelineList.addEventListener("scroll", throttle(refreshRecentreIcon, 500));
 
 ui.timelineList.addEventListener("userscroll", () =>
     withTransition(ui.recentreButton, {
