@@ -1,9 +1,11 @@
 import { neon } from "@neondatabase/serverless";
-import { ok, error } from "../utils";
+import { ok, error, getDateIsValid } from "../utils";
 
-export const getTurns = async (env: Env): Promise<Result<DbTurn[]>> => {
+export const getTurns = async (env: Env, date: string | null): Promise<Result<DbTurn[]>> => {
     try {
         const sql = neon(atob(env.DATABASE_URL));
+
+        if (date != null && !getDateIsValid(date)) return error(400, "date invalid");
 
         const turnData = (await sql`
                 SELECT 
@@ -16,7 +18,7 @@ export const getTurns = async (env: Env): Promise<Result<DbTurn[]>> => {
                 LEFT JOIN assignments a
                     ON a.chore_id = c.chore_id
                     AND a.member_id = m.member_id
-                    AND a.assign_date < CURRENT_DATE
+                    AND a.assign_date < ${date ?? new Date()}
                 GROUP BY c.chore_id, m.member_id
                 ORDER BY c.chore_name;
             `) as DbTurnData[];
