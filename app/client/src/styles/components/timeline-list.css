@@ -28,7 +28,7 @@ timeline-list {
         cursor: pointer;
         padding: 0 10px;
         gap: 10px;
-        transition: height, background-color, color, border-radius, padding, opacity;
+        transition-property: height, background-color, color, border-radius, padding, opacity;
         transition-duration: 100ms;
 
         &:active:not(:has(button:active)) {
@@ -46,7 +46,7 @@ timeline-list {
         }
 
         .rel-date {
-            transition: font-weight, font-size, margin;
+            transition-property: font-weight, font-size, margin;
             transition-duration: 100ms;
         }
 

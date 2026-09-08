@@ -13,7 +13,7 @@
         right: 30px;
         padding: 15px;
         z-index: 1;
-        transition: opacity, scale, background-color, color;
+        transition-property: opacity, scale, background-color, color;
         transition-duration: 100ms;
     }
 }

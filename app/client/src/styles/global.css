@@ -101,7 +101,7 @@ button {
     padding: calc(var(--size) * 0.4px);
     padding-left: calc(var(--size) * 0.4px + (var(--size) * 0.4px * (1 - var(--collapse))));
     padding-right: calc(var(--size) * 0.4px + (var(--size) * 0.7px * (1 - var(--collapse))));
-    transition: scale, background-color, color, outline-color, padding, font-size;
+    transition-property: scale, background-color, color, outline-color, padding, font-size;
     transition-duration: 100ms;
     border: none;
 
@@ -214,7 +214,7 @@ input[type="password"] {
     border-radius: 10px;
     padding: 8px;
     height: 20px;
-    transition: background-color, color, border-color;
+    transition-property: background-color, color, border-color;
     transition-duration: 200ms;
 
     &[data-invalid] {
@@ -242,7 +242,7 @@ input[type="checkbox"] {
     display: grid;
     place-content: center;
     cursor: pointer;
-    transition: background-color, color, border-color;
+    transition-property: background-color, color, border-color;
     transition-duration: 200ms;
 
     &:checked {
@@ -348,6 +348,7 @@ input[type="checkbox"] {
             margin-bottom: 4px;
             padding: 0 12px;
             animation: 100ms linear 0s dropdown-expand;
+            transition-property: scale, background-color, color, outline-color;
 
             &:last-child {
                 margin-bottom: 0;

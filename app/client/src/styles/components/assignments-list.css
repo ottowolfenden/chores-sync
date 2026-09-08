@@ -23,7 +23,7 @@ assignments-list .assignment {
     padding: 0 8px;
     height: 48px;
     margin-top: 5px;
-    transition: height, margin-top, opacity;
+    transition-property: height, margin-top, opacity;
     transition-duration: 150ms, 150ms, 80ms;
 
     .chore-name {
