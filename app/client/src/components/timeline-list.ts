@@ -130,11 +130,10 @@ export class TimelineList extends LitElement {
     toggleExpand = ({ date, e }: { date?: Date | string; e?: Event }) => {
         const dateEl = e ? queryClosest(e, "[data-date]") : this.getDateEl(date);
         const expanded = dateEl?.toggleAttribute("data-expanded");
-        if (
-            expanded &&
-            this.container.querySelectorAll("[data-date][data-expanded]").length > 1
-        )
+        const expandedEls = this.container.querySelectorAll("[data-date][data-expanded]");
+        if (expanded && expandedEls.length > 1)
             this.collapseAll({ exclude: dateEl, instant: true });
+        this.dispatchEvent(new Event("userscroll"));
         dateEl
             ?.querySelector<MdIcon>(".expand md-icon")
             ?.setIcon(expanded ? "keyboard_arrow_up" : "keyboard_arrow_down");
