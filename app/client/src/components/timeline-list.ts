@@ -2,6 +2,7 @@ import { LitElement, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { instantly, queryClosest } from "../functions/element-utils";
+import { Cache } from "../classes/cache";
 import {
     getDateRange,
     getDateString,
@@ -10,7 +11,6 @@ import {
     formatDateShort,
     getBirthdaysMatch
 } from "../functions/date-utils";
-import { Cache } from "../classes/cache";
 
 @customElement("timeline-list")
 export class TimelineList extends LitElement {
@@ -33,7 +33,7 @@ export class TimelineList extends LitElement {
             collapseDay: this.relFormatMedia.collapseDay.matches
         };
     }
-    @query(".container") private container!: HTMLElement;
+    @query(":scope > ol") private container!: HTMLElement;
     @state() private dates: string[] = [];
     @state() private minIndex = this.initialMinIndex;
     @state() private maxIndex = this.initialMaxIndex;
@@ -84,10 +84,12 @@ export class TimelineList extends LitElement {
     scrollToDate = ({
         date = new Date(),
         behavior = "smooth",
+        block = "center",
         expand = false
     }: {
         date?: string | Date;
         behavior?: ScrollBehavior;
+        block?: ScrollLogicalPosition;
         expand?: boolean;
     } = {}) => {
         date = new Date(date);
@@ -96,14 +98,14 @@ export class TimelineList extends LitElement {
             const [first, last] = [this.dates[0], this.dates.at(-1)];
             if (!first || !last) return;
             const onElsAdded = () => {
-                if (this.getDateEl(date)) this.scrollToDate({ date, behavior, expand });
+                if (this.getDateEl(date)) this.scrollToDate({ date, behavior, block, expand });
             };
             if (date < new Date(first)) this.prependDates({ targetDate: date, onElsAdded });
             else if (date > new Date(last)) this.appendDates({ targetDate: date, onElsAdded });
             return;
         }
         if (expand) instantly(el, () => el.toggleAttribute("data-expanded", true));
-        el.scrollIntoView({ behavior, block: "center" });
+        el.scrollIntoView({ behavior, block });
     };
 
     recentre = () => {
@@ -128,10 +130,12 @@ export class TimelineList extends LitElement {
     toggleExpand = ({ date, e }: { date?: Date | string; e?: Event }) => {
         const dateEl = e ? queryClosest(e, "[data-date]") : this.getDateEl(date);
         const expanded = dateEl?.toggleAttribute("data-expanded");
-        if (expanded) this.collapseAll({ exclude: dateEl });
+        if (expanded) this.collapseAll({ exclude: dateEl, instant: true });
         dateEl
             ?.querySelector<MdIcon>(".expand md-icon")
             ?.setIcon(expanded ? "keyboard_arrow_up" : "keyboard_arrow_down");
+        if (expanded && dateEl?.dataset.date)
+            this.scrollToDate({ date: dateEl?.dataset.date, block: "start" });
     };
 
     private collapseAll = ({
@@ -143,7 +147,7 @@ export class TimelineList extends LitElement {
             ? `[data-date]:not([data-date="${exclude?.dataset.date}"])`
             : "[data-date]";
         this.container.querySelectorAll<HTMLElement>(selector).forEach(el => {
-            if (instant) instantly(el, () => toggle(el));
+            if (instant) instantly([el, el.parentElement!], () => toggle(el));
             else toggle(el);
             el.querySelector<MdIcon>(".expand md-icon")?.setIcon("keyboard_arrow_down");
         });
@@ -201,8 +205,7 @@ export class TimelineList extends LitElement {
     };
 
     render = () => html`
-        <div
-            class="container"
+        <ol
             @scroll=${this.handleScroll}
             @scrollend=${() => this.dispatchEvent(new Event("scrollend"))}
             @wheel=${() => this.dispatchEvent(new Event("userscroll"))}
@@ -213,20 +216,23 @@ export class TimelineList extends LitElement {
                 this.dates,
                 d => d,
                 d => html`
-                    <div data-date=${d} @click=${(e: Event) => this.toggleExpand({ e })}>
-                        <span class="rel-date">
-                            ${formatDateRelative(d, this.relFormatOpts)}
-                        </span>
-                        ${getBirthdaysMatch(this.members, d)
-                            ? html`<md-icon class="birthday">cake</md-icon>`
-                            : ""}
-                        <span class="short-date">${formatDateShort(d)}</span>
-                        <button class="expand transparent" tabindex="-1">
-                            <md-icon>keyboard_arrow_down</md-icon>
-                        </button>
-                    </div>
+                    <li>
+                        <div data-date=${d} @click=${(e: Event) => this.toggleExpand({ e })}>
+                            <span class="rel-date">
+                                ${formatDateRelative(d, this.relFormatOpts)}
+                            </span>
+                            ${getBirthdaysMatch(this.members, d)
+                                ? html`<md-icon class="birthday">cake</md-icon>`
+                                : ""}
+                            <state-actions .conf=${{}}></state-actions>
+                            <span class="short-date">${formatDateShort(d)}</span>
+                            <button class="expand transparent" tabindex="-1">
+                                <md-icon>keyboard_arrow_down</md-icon>
+                            </button>
+                        </div>
+                    </li>
                 `
             )}
-        </div>
+        </ol>
     `;
 }
