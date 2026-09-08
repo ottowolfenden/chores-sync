@@ -1,5 +1,6 @@
 import "../components/timeline-list.js";
 import { withTransition } from "../functions/element-utils.js";
+import { addHaptics } from "../functions/haptics.js";
 
 const section = document.querySelector("section#timeline")!;
 
@@ -10,6 +11,7 @@ const ui = {
 };
 
 Object.assign(ui.recentreButton.style, { opacity: "0", scale: "0.4" });
+addHaptics(ui.recentreButton);
 
 const refreshRecentreIcon = () =>
     (ui.recentreIcon.textContent =
