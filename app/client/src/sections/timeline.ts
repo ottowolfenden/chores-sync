@@ -16,7 +16,7 @@ const refreshRecentreIcon = () =>
         ui.timelineList.getScrolledDirection() == "up" ? "arrow_downward" : "arrow_upward");
 
 ui.timelineList.addEventListener("scrollend", refreshRecentreIcon);
-ui.timelineList.addEventListener("scroll", throttle(refreshRecentreIcon, 500));
+ui.timelineList.addEventListener("scroll", throttle(refreshRecentreIcon, 200));
 
 ui.timelineList.addEventListener("userscroll", () =>
     withTransition(ui.recentreButton, {
