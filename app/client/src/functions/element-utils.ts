@@ -32,3 +32,7 @@ export const instantly = (el: HTMLElement, callback: () => void) => {
     el.offsetHeight;
     el.style.transition = orgTransition;
 };
+
+export const setText = (el: Element | null | undefined, text: unknown) => {
+    if (el && text) el.textContent = text.toString();
+};
