@@ -196,13 +196,16 @@ export class TimelineList extends LitElement {
         exclude,
         instant = false
     }: { exclude?: HTMLElement | null; instant?: boolean } = {}) => {
-        const toggle = (el: HTMLElement) => el.toggleAttribute("data-expanded", false);
-        const selector = exclude?.dataset.date
-            ? `[data-date]:not([data-date="${exclude?.dataset.date}"])`
-            : "[data-date]";
+        const collapse = (el: HTMLElement) => {
+            el.toggleAttribute("data-expanded", false);
+            if (el.dataset.date) this.handleExpand(el.dataset.date, false);
+        };
+        const selector =
+            "[data-date][data-expanded]" +
+            (exclude?.dataset.date ? `:not([data-date="${exclude?.dataset.date}"])` : "");
         this.container.querySelectorAll<HTMLElement>(selector).forEach(el => {
-            if (instant) instantly([el, el.parentElement!], () => toggle(el));
-            else toggle(el);
+            if (instant) instantly([el, el.parentElement!], () => collapse(el));
+            else collapse(el);
             el.querySelector<MdIcon>(".expand md-icon")?.setIcon("keyboard_arrow_down");
         });
     };
