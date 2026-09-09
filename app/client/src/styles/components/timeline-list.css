@@ -57,7 +57,8 @@ timeline-list {
         }
 
         assignments-state-actions,
-        button.add {
+        button.add,
+        [popover]:has(turns-list) {
             display: none;
         }
 
@@ -103,7 +104,8 @@ timeline-list {
         }
 
         assignments-state-actions,
-        button.add {
+        button.add,
+        [popover]:has(turns-list) {
             display: flex;
         }
 

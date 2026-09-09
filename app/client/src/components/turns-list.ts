@@ -3,15 +3,16 @@ import { customElement, property, queryAll, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { addAssignment } from "../functions/db-set.js";
 import { Cache } from "../classes/cache";
-import { queryClosest } from "../functions/element-utils";
-import { ref } from "../functions/element-utils";
+import { queryClosest, ref } from "../functions/element-utils";
 import { vibrate } from "../functions/haptics.js";
+import { getDateString } from "../functions/date-utils.js";
 
 @customElement("turns-list")
 export class TurnsList extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: Array }) turns: UiTurn[] = [];
+    @property({ type: String }) date: string = getDateString();
     @state() private members: UiMember[] = [];
     @queryAll("button") buttons!: NodeListOf<HTMLButtonElement>;
 
@@ -34,7 +35,7 @@ export class TurnsList extends LitElement {
         window.dispatchEvent(new CustomEvent("loading-assignment-add"));
         const assignment = {
             uuid: crypto.randomUUID(),
-            date: new Date(),
+            date: new Date(this.date),
             quantity: 1,
             chore: turn.chore,
             turnMember: turn.member,
@@ -67,6 +68,7 @@ export class TurnsList extends LitElement {
 
     private readonly getTurnHTML = (t: UiTurn) => {
         let stateActions: StateActions;
+        const id = `${t.chore.id}${t.member.id}${this.date}`;
         return html`
             <div>
                 <span class="chore-name">${t.chore.name}</span>
@@ -87,15 +89,15 @@ export class TurnsList extends LitElement {
                 </state-actions>
                 <button
                     class="transparent small"
-                    popovertarget="turn-popover-${t.chore.id}${t.member.id}"
-                    style="anchor-name: --turn-anchor-${t.chore.id}${t.member.id}">
+                    popovertarget="turn-popover-${id}"
+                    style="anchor-name: --turn-anchor-${id}">
                     <md-icon>arrow_drop_down</md-icon>
                 </button>
                 <div class="dropdown">
                     <div
                         popover
-                        id="turn-popover-${t.chore.id}${t.member.id}"
-                        style="position-anchor: --turn-anchor-${t.chore.id}${t.member.id}">
+                        id="turn-popover-${id}"
+                        style="position-anchor: --turn-anchor-${id}">
                         ${this.members.map(
                             m => html`
                                 <button

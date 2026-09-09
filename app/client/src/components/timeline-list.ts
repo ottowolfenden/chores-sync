@@ -183,17 +183,18 @@ export class TimelineList extends LitElement {
 
         let turns = await getTurns(date);
         let assignments = await getAssignments(date, turns);
-        if (turns == null || assignments == null) message.status = "error";
-        else if (assignments.length == 0) {
-            message.status = "empty";
-            addButton?.toggleAttribute("disabled", false);
-        } else {
+        if (turns == null || assignments == null) {
+            message.status = "error";
+            return;
+        } else if (assignments.length == 0) message.status = "empty";
+        else {
             message.status = "success";
-            addButton?.toggleAttribute("disabled", false);
             if (stateActions) Object.assign(stateActions, { assignments, turns });
             assignmentsList.assignments = cloneAndSum(assignments);
             setTimeout(() => assignmentsList.classList.add("animate"), 150);
         }
+        addButton?.toggleAttribute("disabled", false);
+        turnsList.turns = turns;
     };
 
     private getRelFormatOpts = () => ({
@@ -297,7 +298,11 @@ export class TimelineList extends LitElement {
                             </md-icon>
                             ${this.currentMember?.isAdmin || d == getDateString()
                                 ? html`
-                                      <button class="add filled" tabindex="-1">
+                                      <button
+                                          class="add filled"
+                                          tabindex="-1"
+                                          @click=${(e: Event) => e.stopPropagation()}
+                                          popovertarget="popover-${d}">
                                           <md-icon>add</md-icon><span>Add</span>
                                       </button>
                                       <assignments-state-actions></assignments-state-actions>
@@ -309,7 +314,9 @@ export class TimelineList extends LitElement {
                             </button>
                         </div>
                         <assignments-list></assignments-list>
-                        <turns-list hidden></turns-list>
+                        <div popover id="popover-${d}">
+                            <turns-list date=${d}></turns-list>
+                        </div>
                         <status-message hide-retry></status-message>
                     </li>
                 `
