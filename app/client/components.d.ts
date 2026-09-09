@@ -1,5 +1,7 @@
 declare global {
     type AssignmentsList = import("./src/components/assignments-list").AssignmentsList;
+    type AssignmentsStateActions =
+        import("./src/components/assignments-state-actions").AssignmentsStateActions;
     type CountsList = import("./src/components/counts-list").CountsList;
     type MdIcon = import("./src/components/md-icon").MdIcon;
     type StateActions = import("./src/components/state-actions").StateActions;
@@ -11,6 +13,7 @@ declare global {
 
     interface HTMLElementTagNameMap {
         "assignments-list": AssignmentsList;
+        "assignments-state-actions": AssignmentsStateActions;
         "counts-list": CountsList;
         "md-icon": MdIcon;
         "state-actions": StateActions;

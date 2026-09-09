@@ -8,7 +8,7 @@
     }
 
     @media (width <= 390px) {
-        state-actions button[data-cancel] {
+        assignments-state-actions button[data-cancel] {
             --collapse: 1;
         }
     }

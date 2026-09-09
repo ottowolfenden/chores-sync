@@ -35,8 +35,8 @@ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", upd
 
 if (location.hash) {
     if (location.hash != "#count") await Cache.counts.get();
-    if (location.hash != "#today") await Cache.turns.get();
-    await Cache.todayAssignments.get();
+    if (location.hash != "#today") await Cache.turnsToday.get();
+    await Cache.assignmentsToday.get();
 }
 
 document.addEventListener("visibilitychange", () => {

@@ -100,7 +100,9 @@ section-nav {
 div:has(> h2) {
     background-color: var(--secondary-container);
     color: var(--on-secondary-container);
-    padding: 12px;
+    height: 57px;
+    padding: 0 12px;
+    flex-shrink: 0;
     border-radius: 17px 17px 6px 6px;
     display: flex;
     align-items: center;

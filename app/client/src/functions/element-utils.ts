@@ -25,10 +25,13 @@ export const queryClosest = <T extends HTMLElement = HTMLElement>(e: Event, sel:
 
 export const ref = <T extends HTMLElement>(set: (el: T) => void) => litRef(el => set(el as T));
 
-export const instantly = (el: HTMLElement, callback: () => void) => {
-    const orgTransition = el.style.transition;
-    el.style.transition = "none";
-    callback();
-    el.offsetHeight;
-    el.style.transition = orgTransition;
+export const instantly = <T = void>(
+    els: HTMLElement | HTMLElement[],
+    callback: () => T
+): T => {
+    els = Array.isArray(els) ? els : [els];
+    els.forEach(el => (el.style.transition = "none"));
+    const result = callback();
+    requestAnimationFrame(() => els.forEach(el => (el.style.transition = "")));
+    return result;
 };

@@ -21,5 +21,6 @@ bar_chart
 settings
 swap_horiz
 refresh
-view_day
-calendar_today
+cake
+arrow_upward
+arrow_downward

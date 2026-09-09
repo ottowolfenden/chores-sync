@@ -1,10 +1,9 @@
-DROP SCHEMA public CASCADE; CREATE schema public;
-
 CREATE TABLE members (
     member_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     member_name TEXT NOT NULL UNIQUE,
     is_active BOOLEAN NOT NULL DEFAULT true,
-    is_admin BOOLEAN NOT NULL DEFAULT true
+    is_admin BOOLEAN NOT NULL DEFAULT true,
+    date_of_birth DATE
 );
 
 CREATE TABLE chores (

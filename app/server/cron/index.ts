@@ -3,7 +3,8 @@ import { getTurns } from "../services/turns";
 import { replaceAssignments } from "../services/assignments";
 
 const autoAssign = async (env: Env) => {
-    const turnsResult = await getTurns(env);
+    const today = new Date().toISOString().split("T")[0]!;
+    const turnsResult = await getTurns(env, today);
     const choresResult = await getAllChores(env);
     const turns = turnsResult.ok ? turnsResult.data : null;
     const chores = choresResult.ok ? choresResult.data : null;
@@ -11,7 +12,6 @@ const autoAssign = async (env: Env) => {
     if (!turns || !chores || !chores.every(c => turns.some(t => t.chore_id == c.chore_id)))
         return;
 
-    const today = new Date().toISOString().split("T")[0];
     const assignments: DbAssignment[] = chores
         .filter(c => c.is_daily)
         .map(c => ({

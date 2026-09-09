@@ -12,7 +12,7 @@ counts-list {
         margin-top: 5px;
         display: flex;
         flex-direction: column;
-        transition: background-color, color, scale;
+        transition-property: background-color, color, scale;
         transition-duration: 100ms;
 
         &:not([data-edit-mode]) ul.details li num-input,
@@ -122,7 +122,7 @@ counts-list {
         display: grid;
         grid-template-columns: 2fr 3fr 3fr;
         overflow: hidden;
-        transition: height, padding, margin;
+        transition-property: height, padding, margin;
         transition-duration: 150ms;
         transition-timing-function: ease-in-out;
 

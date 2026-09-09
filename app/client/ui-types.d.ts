@@ -3,6 +3,7 @@ type UiMember = {
     name: string;
     isActive: boolean;
     isAdmin: boolean;
+    dateOfBirth: Date | null;
 };
 
 type UiChore = {

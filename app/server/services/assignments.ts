@@ -1,8 +1,5 @@
 import { neon } from "@neondatabase/serverless";
-import { ok, error } from "../utils";
-
-const validateDate = (date: string): boolean =>
-    /^\d{4}-\d{2}-\d{2}$/.test(date) && !isNaN(Date.parse(date));
+import { ok, error, getDateIsValid } from "../utils";
 
 export const getAssignments = async (
     env: Env,
@@ -14,7 +11,7 @@ export const getAssignments = async (
         const sql = neon(atob(env.DATABASE_URL));
 
         if (
-            [date, minDate, maxDate].some(d => d && !validateDate(d)) ||
+            [date, minDate, maxDate].some(d => d && !getDateIsValid(d)) ||
             (minDate && maxDate && Date.parse(minDate) > Date.parse(maxDate)) ||
             (!date && !minDate && !maxDate) ||
             (date && (minDate || maxDate))
@@ -80,7 +77,7 @@ export const replaceAssignments = async (
     try {
         const sql = neon(atob(env.DATABASE_URL));
 
-        if (!date || !validateDate(date)) return error(400, "date invalid");
+        if (!date || !getDateIsValid(date)) return error(400, "date invalid");
 
         const map = new Map();
         assignments.forEach(a => {

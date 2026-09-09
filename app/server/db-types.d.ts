@@ -3,6 +3,7 @@ type DbMember = {
     member_name: string;
     is_active: boolean;
     is_admin: boolean;
+    date_of_birth: Date | null;
 };
 
 type DbChore = {

@@ -28,16 +28,16 @@ export class Cache {
     static readonly chores = createCache(Db.getChores);
     static readonly members = createCache(Db.getMembers);
     static readonly currentMember = createCache(Db.getCurrentMember);
-    static readonly turns = createCache(Db.getTurns);
-    static readonly todayAssignments = createCache(Db.getTodayAssignments);
+    static readonly turnsToday = createCache(Db.getTurns);
+    static readonly assignmentsToday = createCache(Db.getAssignments);
     static readonly counts = createCache(Db.getCounts);
 
     static readonly caches: CacheData[] = [
         Cache.chores,
         Cache.members,
         Cache.currentMember,
-        Cache.turns,
-        Cache.todayAssignments,
+        Cache.turnsToday,
+        Cache.assignmentsToday,
         Cache.counts
     ];
 }

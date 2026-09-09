@@ -19,9 +19,12 @@ export const addAssignment = (uiAssignment: UiAssignment): Promise<boolean> =>
         r => r.ok
     );
 
-export const replaceAssignments = (uiAssignments: UiAssignment[]): Promise<boolean> =>
+export const replaceAssignments = (
+    uiAssignments: UiAssignment[],
+    date: string = getDateString()
+): Promise<boolean> =>
     request(
         "POST",
-        `/api/assignments?action=replace&date=${getDateString()}`,
+        `/api/assignments?action=replace&date=${date}`,
         uiAssignments.map(toDbAssignment)
     ).then(r => r.ok);

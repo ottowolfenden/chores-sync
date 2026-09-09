@@ -11,3 +11,6 @@ export const response = <T>(result: Result<T>) =>
         : Response.json(result.message ? { error: result.message } : null, {
               status: result.status
           });
+
+export const getDateIsValid = (date: string): boolean =>
+    /^\d{4}-\d{2}-\d{2}$/.test(date) && !isNaN(Date.parse(date));

@@ -1,26 +1,63 @@
 import { LitElement, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { getDateRange, getDateString, offsetDate } from "../functions/date-utils";
-import { instantly } from "../functions/element-utils";
+import { instantly, queryClosest } from "../functions/element-utils";
+import { Cache } from "../classes/cache";
+import { getAssignments, getTurns } from "../functions/db-get";
+import { cloneAndSum } from "../functions/assignments";
+import {
+    getDateRange,
+    getDateString,
+    offsetDate,
+    formatDateRelative,
+    formatDateShort,
+    getBirthdaysMatch
+} from "../functions/date-utils";
 
 @customElement("timeline-list")
 export class TimelineList extends LitElement {
     protected createRenderRoot = () => this;
 
-    private readonly initialMinIndex = -50;
-    private readonly initialMaxIndex = 50;
-    private readonly threshold = 200;
-    private readonly batchSize = 15;
+    private readonly initialMinIndex = -20;
+    private readonly initialMaxIndex = 20;
+    private readonly threshold = 400;
+    private readonly batchSize = 30;
+    private readonly relFormatMedia = {
+        collapseWeekday: matchMedia("(width <= 450px)"),
+        collapseMonth: matchMedia("(width <= 650px)"),
+        collapseDay: matchMedia("(width <= 350px)")
+    };
     private handleScrolling = true;
-    @query(":scope > div") private container!: HTMLElement;
+
     @state() private dates: string[] = [];
     @state() private minIndex = this.initialMinIndex;
     @state() private maxIndex = this.initialMaxIndex;
+    @state() private members: UiMember[] = [];
+
+    @query(":scope > ol") private container!: HTMLElement;
+
+    async connectedCallback() {
+        super.connectedCallback();
+        Object.values(this.relFormatMedia).forEach(
+            media =>
+                (media.onchange = () => {
+                    if (location.hash == "#timeline") this.requestUpdate();
+                })
+        );
+        this.members = (await Cache.members.get()) ?? [];
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        Object.values(this.relFormatMedia).forEach(media => (media.onchange = null));
+    }
 
     firstUpdated = () => this.reset();
 
-    reset = ({ collapseAll = false }: { collapseAll?: boolean } = {}) => {
+    reset = ({
+        collapseAll = false,
+        type = "middle"
+    }: { collapseAll?: boolean; type?: "today" | "middle" | "noscroll" } = {}) => {
         this.minIndex = this.initialMinIndex;
         this.maxIndex = this.initialMaxIndex;
         this.dates = getDateRange(
@@ -28,16 +65,12 @@ export class TimelineList extends LitElement {
             offsetDate(new Date(), this.maxIndex)
         );
         this.requestUpdate();
-        if (collapseAll)
-            this.container
-                .querySelectorAll<HTMLElement>(":scope > div")
-                .forEach(el =>
-                    instantly(el, () => el.toggleAttribute("data-expanded", false))
-                );
+        if (collapseAll) this.collapseAll({ instant: true });
+        if (type == "noscroll") return;
         this.handleScrolling = false;
         setTimeout(() => {
-            if (collapseAll) this.scrollToDate({ behavior: "instant" });
-            else
+            if (type == "today") this.scrollToDate({ behavior: "instant" });
+            else if (type == "middle")
                 this.container.scroll({
                     top: (this.container.scrollHeight - this.container.clientHeight) / 2
                 });
@@ -48,10 +81,12 @@ export class TimelineList extends LitElement {
     scrollToDate = ({
         date = new Date(),
         behavior = "smooth",
+        block = "center",
         expand = false
     }: {
         date?: string | Date;
         behavior?: ScrollBehavior;
+        block?: ScrollLogicalPosition;
         expand?: boolean;
     } = {}) => {
         date = new Date(date);
@@ -60,18 +95,125 @@ export class TimelineList extends LitElement {
             const [first, last] = [this.dates[0], this.dates.at(-1)];
             if (!first || !last) return;
             const onElsAdded = () => {
-                if (this.getDateEl(date)) this.scrollToDate({ date, behavior, expand });
+                if (this.getDateEl(date)) this.scrollToDate({ date, behavior, block, expand });
             };
             if (date < new Date(first)) this.prependDates({ targetDate: date, onElsAdded });
             else if (date > new Date(last)) this.appendDates({ targetDate: date, onElsAdded });
             return;
         }
         if (expand) instantly(el, () => el.toggleAttribute("data-expanded", true));
-        el.scrollIntoView({ behavior, block: "center" });
+        el.scrollIntoView({ behavior, block });
     };
 
-    private getDateEl = (date: Date | string) =>
-        this.container.querySelector<HTMLElement>(`[data-date="${getDateString(date)}"]`);
+    recentre = () => {
+        this.collapseAll();
+        this.scrollToDate();
+        this.container.onscrollend = () => {
+            this.reset({ type: "noscroll" });
+            this.container.onscrollend = null;
+        };
+    };
+
+    getScrolledDirection = () => {
+        const todayEl = this.getDateEl();
+        if (!todayEl) return null;
+        const [todayCentre, containerCentre] = [todayEl, this.container]
+            .map(r => r.getBoundingClientRect())
+            .map(r => r.top + r.height / 2) as [number, number];
+        if (todayCentre == containerCentre) return null;
+        return todayCentre > containerCentre ? "up" : "down";
+    };
+
+    toggleExpand = ({ date, e }: { date?: Date | string | null; e?: Event }) => {
+        const dateEl = e ? queryClosest(e, "[data-date]") : this.getDateEl(date);
+        date = date ? getDateString(date) : dateEl?.getAttribute("data-date");
+        if (!dateEl || !date) return;
+
+        const others = this.container.querySelectorAll<HTMLElement>(
+            `[data-date][data-expanded]:not([data-date="${date}"])`
+        );
+        const expanded = dateEl?.toggleAttribute("data-expanded");
+        if (expanded && others.length > 0)
+            this.collapseAll({ exclude: dateEl, instant: true });
+        others.forEach(el => this.handleExpand(el.dataset.date, false));
+
+        this.dispatchEvent(new Event("userscroll"));
+        if (!expanded) this.dispatchEvent(new Event("scrollend"));
+        dateEl
+            ?.querySelector<MdIcon>(".expand md-icon")
+            ?.setIcon(expanded ? "keyboard_arrow_up" : "keyboard_arrow_down");
+        if (expanded && dateEl?.dataset.date)
+            this.scrollToDate({ date: dateEl?.dataset.date, block: "start" });
+        this.handleExpand(date, expanded);
+    };
+
+    private handleExpand = async (date: string | undefined, expanded: boolean) => {
+        if (!date) return;
+        const li = this.container.querySelector(`li:has([data-date="${date}"])`);
+        const assignmentsList = li?.querySelector("assignments-list");
+        const turnsList = li?.querySelector("turns-list");
+        const message = li?.querySelector("status-message");
+        const stateActions = li?.querySelector("assignments-state-actions");
+        const addButton = li?.querySelector<HTMLButtonElement>("button.add");
+
+        if (!assignmentsList || !turnsList || !message || !stateActions || !addButton) return;
+        if (!expanded) {
+            assignmentsList.assignments = [];
+            turnsList.turns = [];
+            message.removeAttribute("success");
+            addButton.disabled = true;
+            assignmentsList.classList.remove("animate");
+            return;
+        }
+
+        message.elsToHide = [assignmentsList, stateActions];
+        Object.assign(stateActions, { assignmentsList, turnsList, message, addButton, date });
+        message.status = "loading";
+        addButton.disabled = true;
+
+        let turns = await getTurns(date);
+        let assignments = await getAssignments(date, turns);
+        if (turns == null || assignments == null) message.status = "error";
+        else if (assignments.length == 0) {
+            message.status = "empty";
+            addButton.disabled = false;
+        } else {
+            message.status = "success";
+            addButton.disabled = false;
+            Object.assign(stateActions, { assignments, turns });
+            assignmentsList.assignments = cloneAndSum(assignments);
+            setTimeout(() => assignmentsList.classList.add("animate"), 150);
+        }
+    };
+
+    private getRelFormatOpts = () => ({
+        collapseWeekday: this.relFormatMedia.collapseWeekday.matches,
+        collapseMonth: this.relFormatMedia.collapseMonth.matches,
+        collapseDay: this.relFormatMedia.collapseDay.matches
+    });
+
+    private collapseAll = ({
+        exclude,
+        instant = false
+    }: { exclude?: HTMLElement | null; instant?: boolean } = {}) => {
+        const collapse = (el: HTMLElement) => {
+            el.toggleAttribute("data-expanded", false);
+            if (el.dataset.date) this.handleExpand(el.dataset.date, false);
+        };
+        const selector =
+            "[data-date][data-expanded]" +
+            (exclude?.dataset.date ? `:not([data-date="${exclude?.dataset.date}"])` : "");
+        this.container.querySelectorAll<HTMLElement>(selector).forEach(el => {
+            if (instant) instantly([el, el.parentElement!], () => collapse(el));
+            else collapse(el);
+            el.querySelector<MdIcon>(".expand md-icon")?.setIcon("keyboard_arrow_down");
+        });
+    };
+
+    private getDateEl = (date?: Date | string | null) =>
+        this.container.querySelector<HTMLElement>(
+            `[data-date="${getDateString(date ?? new Date())}"]`
+        );
 
     private prependDates = ({
         targetDate = new Date(),
@@ -83,7 +225,7 @@ export class TimelineList extends LitElement {
         const oldScrollHeight = this.container.scrollHeight;
         const oldScrollTop = this.container.scrollTop;
         const firstDate = offsetDate(targetDate, this.minIndex - this.batchSize);
-        const newDates = getDateRange(firstDate, this.dates[0]);
+        const newDates = getDateRange(firstDate, offsetDate(this.dates[0], -1));
 
         this.minIndex -= newDates.length;
         this.dates = [...newDates, ...this.dates];
@@ -102,9 +244,11 @@ export class TimelineList extends LitElement {
     }: { targetDate?: Date | string; onElsAdded?: () => void } = {}) => {
         if (!this.dates.at(-1)) return;
         const lastDate = offsetDate(targetDate, this.maxIndex + this.batchSize);
-        const newDates = getDateRange(this.dates.at(-1)!, lastDate);
+        const newDates = getDateRange(offsetDate(this.dates.at(-1)!, 1), lastDate);
+
         this.maxIndex += newDates.length;
         this.dates = [...this.dates, ...newDates];
+
         this.updateComplete.then(() => {
             if (this.getDateEl(lastDate)) onElsAdded();
         });
@@ -112,6 +256,7 @@ export class TimelineList extends LitElement {
 
     private handleScroll = () => {
         if (!this.handleScrolling) return;
+        this.dispatchEvent(new Event("scroll"));
         const { scrollTop, scrollHeight, clientHeight } = this.container;
         if (scrollTop < this.threshold) this.prependDates();
         else if (scrollHeight - (scrollTop + clientHeight) < this.threshold)
@@ -119,19 +264,51 @@ export class TimelineList extends LitElement {
     };
 
     render = () => html`
-        <div @scroll=${this.handleScroll}>
+        <ol
+            @scroll=${this.handleScroll}
+            @scrollend=${() => this.dispatchEvent(new Event("scrollend"))}
+            @wheel=${() => this.dispatchEvent(new Event("userscroll"))}
+            @pointermove=${(e: PointerEvent) => {
+                if (e.pointerType != "mouse") this.dispatchEvent(new Event("userscroll"));
+            }}>
             ${repeat(
                 this.dates,
                 d => d,
                 d => html`
-                    <div
-                        data-date=${d}
-                        @click=${(e: Event) =>
-                            (e.target as HTMLElement).toggleAttribute("data-expanded")}>
-                        ${d}
-                    </div>
+                    <li>
+                        <div data-date=${d} @click=${(e: Event) => this.toggleExpand({ e })}>
+                            <span class="rel-date">
+                                ${formatDateRelative(d, this.getRelFormatOpts())}
+                            </span>
+                            <md-icon
+                                class="birthday"
+                                ?hidden=${!getBirthdaysMatch(this.members, d)}>
+                                cake
+                            </md-icon>
+                            <button
+                                class="add filled"
+                                tabindex="-1"
+                                style="display:none!important">
+                                <!-- 
+
+                                DISPLAY NONE ABOVE
+                                IS TEMPORARY
+                                
+                                -->
+                                <md-icon>add</md-icon><span>Add</span>
+                            </button>
+                            <assignments-state-actions></assignments-state-actions>
+                            <span class="short-date">${formatDateShort(d)}</span>
+                            <button class="expand transparent" tabindex="-1">
+                                <md-icon>keyboard_arrow_down</md-icon>
+                            </button>
+                        </div>
+                        <assignments-list></assignments-list>
+                        <turns-list hidden></turns-list>
+                        <status-message hide-retry></status-message>
+                    </li>
                 `
             )}
-        </div>
+        </ol>
     `;
 }

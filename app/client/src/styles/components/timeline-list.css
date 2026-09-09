@@ -1,28 +1,145 @@
 timeline-list {
     display: flex;
-    margin-top: 5px;
-    flex: 1;
+    flex-grow: 1;
     min-height: 0;
+    position: relative;
 
-    & > div {
+    ol {
         flex-grow: 1;
         min-height: 0;
         width: 100%;
         overflow-y: auto;
 
-        & > div {
-            background-color: var(--surface-container-low);
-            height: 40px;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            border-radius: 6px;
-            transition: height 100ms;
-            cursor: pointer;
+        & > li {
+            transition: margin 100ms;
 
-            &[data-expanded] {
-                height: 150px;
+            &:has([data-date]:not([data-expanded])) assignments-list,
+            &:has([data-date]:not([data-expanded])) status-message {
+                display: none;
+            }
+
+            status-message {
+                transition:
+                    height 100ms,
+                    opacity 150ms;
+                @starting-style {
+                    height: 0;
+                    opacity: 0;
+                }
             }
         }
+    }
+
+    [data-date] {
+        --background-color: var(--surface-container-low);
+        --color: var(--on-surface);
+        background-color: var(--background-color);
+        color: var(--color);
+        height: 50px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        border-radius: 6px;
+        cursor: pointer;
+        padding: 0 10px;
+        gap: 10px;
+        transition-property: height, background-color, color, border-radius, padding, opacity;
+        transition-duration: 100ms;
+
+        &:active:not(:has(button:active)) {
+            background-color: color-mix(in srgb, var(--color) 12%, var(--background-color));
+        }
+
+        @media (hover: hover) {
+            &:hover:not(:has(button:hover)):not(:active) {
+                background-color: color-mix(in srgb, var(--color) 6%, var(--background-color));
+            }
+        }
+
+        assignments-state-actions,
+        button.add {
+            display: none;
+        }
+
+        .rel-date {
+            transition-property: font-weight, font-size, margin;
+            transition-duration: 100ms;
+        }
+
+        md-icon.birthday {
+            --opsz: 22;
+            display: inline-block;
+            color: var(--on-surface-variant);
+            opacity: 0.8;
+        }
+
+        .short-date {
+            margin-left: auto;
+            flex-shrink: 0;
+            font-size: 16px;
+            color: var(--on-surface-variant);
+        }
+
+        button.expand {
+            --size: 16;
+            --color: var(--secondary);
+            padding: 4px;
+        }
+    }
+
+    [data-date][data-expanded] {
+        --background-color: var(--secondary-container);
+        --color: var(--on-secondary-container);
+        padding: 0 12px;
+        height: 57px;
+        border-radius: 17px 17px 6px 6px;
+        margin-bottom: 0;
+
+        .rel-date {
+            margin: 5px;
+            font-weight: 500;
+            font-size: 22px;
+            margin-right: auto;
+        }
+
+        assignments-state-actions,
+        button.add {
+            display: flex;
+        }
+
+        button.add md-icon {
+            scale: 1.15;
+        }
+
+        .short-date,
+        md-icon.birthday {
+            display: none;
+        }
+
+        button.expand {
+            --size: 18;
+        }
+
+        assignments-state-actions button,
+        button.add {
+            --size: 15;
+
+            &.outlined {
+                --color: var(--secondary);
+            }
+
+            &.filled {
+                --background-color: var(--secondary);
+                --color: var(--on-secondary);
+            }
+        }
+    }
+
+    ol:has([data-date][data-expanded]) [data-date]:not([data-expanded]) {
+        opacity: 0.6;
+    }
+
+    ol > li:has([data-date][data-expanded]) {
+        margin: 25px 0;
     }
 }

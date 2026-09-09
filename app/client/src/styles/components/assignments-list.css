@@ -23,7 +23,7 @@ assignments-list .assignment {
     padding: 0 8px;
     height: 48px;
     margin-top: 5px;
-    transition: height, margin-top, opacity;
+    transition-property: height, margin-top, opacity;
     transition-duration: 150ms, 150ms, 80ms;
 
     .chore-name {
@@ -32,6 +32,10 @@ assignments-list .assignment {
         flex-shrink: 1;
         margin-left: 6px;
         font-size: 18px;
+    }
+
+    .member-name {
+        font-weight: 470;
     }
 
     .quantity {

@@ -43,7 +43,8 @@ export const getMembers = async (): Promise<UiMember[] | null> => {
             id: d["member_id"],
             name: d["member_name"],
             isActive: d["is_active"],
-            isAdmin: d["is_admin"]
+            isAdmin: d["is_admin"],
+            dateOfBirth: d["date_of_birth"] ? new Date(d["date_of_birth"]) : null
         })
     );
 };
@@ -51,16 +52,16 @@ export const getMembers = async (): Promise<UiMember[] | null> => {
 export const getCurrentMember = async (): Promise<UiMember | null> =>
     (await Cache.members.get())?.find(m => m.name == localStorage.getItem("name")) ?? null;
 
-export const getTodayAssignments = async (): Promise<UiAssignment[] | null> => {
-    const { ok, data } = await request<DbAssignment[]>(
-        "GET",
-        `/api/assignments?date=${getDateString()}`
-    );
+export const getAssignments = async (
+    date: string = getDateString(),
+    turns: UiTurn[] | null = null
+): Promise<UiAssignment[] | null> => {
+    const { ok, data } = await request<DbAssignment[]>("GET", `/api/assignments?date=${date}`);
     if (!ok || !data) return null;
 
     const chores = await Cache.chores.get();
     const members = await Cache.members.get();
-    const turns = await Cache.turns.get();
+    turns = date == getDateString() ? await Cache.turnsToday.get() : turns;
 
     if (
         !chores ||
@@ -87,8 +88,8 @@ export const getTodayAssignments = async (): Promise<UiAssignment[] | null> => {
     );
 };
 
-export const getTurns = async (): Promise<UiTurn[] | null> => {
-    const { ok, data } = await request<DbTurn[]>("GET", "/api/turns");
+export const getTurns = async (date: string = getDateString()): Promise<UiTurn[] | null> => {
+    const { ok, data } = await request<DbTurn[]>("GET", `/api/turns?date=${date}`);
     if (!ok || !data) return null;
     const chores = await Cache.chores.get();
     const members = await Cache.members.get();

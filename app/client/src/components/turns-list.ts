@@ -52,7 +52,7 @@ export class TurnsList extends LitElement {
             })
         );
         Cache.counts.refresh();
-        Cache.todayAssignments.refresh();
+        Cache.assignmentsToday.refresh();
         this.requestUpdate();
         return success;
     };
