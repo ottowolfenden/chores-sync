@@ -33,6 +33,7 @@ export class TimelineList extends LitElement {
     @state() private minIndex = this.initialMinIndex;
     @state() private maxIndex = this.initialMaxIndex;
     @state() private members: UiMember[] = [];
+    @state() private currentMember?: UiMember | null;
 
     @query(":scope > ol") private container!: HTMLElement;
 
@@ -44,6 +45,7 @@ export class TimelineList extends LitElement {
                     if (location.hash == "#timeline") this.requestUpdate();
                 })
         );
+        this.currentMember = await Cache.currentMember.get();
         this.members = (await Cache.members.get()) ?? [];
     }
 
@@ -153,34 +155,41 @@ export class TimelineList extends LitElement {
         const assignmentsList = li?.querySelector("assignments-list");
         const turnsList = li?.querySelector("turns-list");
         const message = li?.querySelector("status-message");
-        const stateActions = li?.querySelector("assignments-state-actions");
-        const addButton = li?.querySelector<HTMLButtonElement>("button.add");
+        const stateActions = li?.querySelector("assignments-state-actions") ?? null;
+        const addButton = li?.querySelector<HTMLButtonElement>("button.add") ?? null;
 
-        if (!assignmentsList || !turnsList || !message || !stateActions || !addButton) return;
+        if (!assignmentsList || !turnsList || !message) return;
         if (!expanded) {
             assignmentsList.assignments = [];
             turnsList.turns = [];
             message.removeAttribute("success");
-            addButton.disabled = true;
+            addButton?.toggleAttribute("disabled", true);
             assignmentsList.classList.remove("animate");
             return;
         }
 
         message.elsToHide = [assignmentsList, stateActions];
-        Object.assign(stateActions, { assignmentsList, turnsList, message, addButton, date });
+        if (stateActions)
+            Object.assign(stateActions, {
+                assignmentsList,
+                turnsList,
+                message,
+                addButton,
+                date
+            });
         message.status = "loading";
-        addButton.disabled = true;
+        addButton?.toggleAttribute("disabled", true);
 
         let turns = await getTurns(date);
         let assignments = await getAssignments(date, turns);
         if (turns == null || assignments == null) message.status = "error";
         else if (assignments.length == 0) {
             message.status = "empty";
-            addButton.disabled = false;
+            addButton?.toggleAttribute("disabled", false);
         } else {
             message.status = "success";
-            addButton.disabled = false;
-            Object.assign(stateActions, { assignments, turns });
+            addButton?.toggleAttribute("disabled", false);
+            if (stateActions) Object.assign(stateActions, { assignments, turns });
             assignmentsList.assignments = cloneAndSum(assignments);
             setTimeout(() => assignmentsList.classList.add("animate"), 150);
         }
@@ -285,19 +294,14 @@ export class TimelineList extends LitElement {
                                 ?hidden=${!getBirthdaysMatch(this.members, d)}>
                                 cake
                             </md-icon>
-                            <button
-                                class="add filled"
-                                tabindex="-1"
-                                style="display:none!important">
-                                <!-- 
-
-                                DISPLAY NONE ABOVE
-                                IS TEMPORARY
-                                
-                                -->
-                                <md-icon>add</md-icon><span>Add</span>
-                            </button>
-                            <assignments-state-actions></assignments-state-actions>
+                            ${this.currentMember?.isAdmin || d == getDateString()
+                                ? html`
+                                      <button class="add filled" tabindex="-1">
+                                          <md-icon>add</md-icon><span>Add</span>
+                                      </button>
+                                      <assignments-state-actions></assignments-state-actions>
+                                  `
+                                : ""}
                             <span class="short-date">${formatDateShort(d)}</span>
                             <button class="expand transparent" tabindex="-1">
                                 <md-icon>keyboard_arrow_down</md-icon>
