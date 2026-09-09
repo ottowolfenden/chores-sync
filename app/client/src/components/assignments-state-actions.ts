@@ -1,9 +1,10 @@
 import { customElement, property } from "lit/decorators.js";
 import { StateActions, type Conf, type State } from "./state-actions";
-import { Cache } from "../classes/cache";
+import { Cache, type CacheData } from "../classes/cache";
 import { replaceAssignments } from "../functions/db-set";
 import { cloneAndSum } from "../functions/assignments";
 import { vibrate } from "../functions/haptics";
+import { getDateString } from "../functions/date-utils";
 
 @customElement("assignments-state-actions")
 export class AssignmentsStateActions extends StateActions {
@@ -30,7 +31,11 @@ export class AssignmentsStateActions extends StateActions {
         active: {
             click: async () => {
                 this.assignmentsList.editMode = false;
-                const affectedCaches = [Cache.counts, Cache.assignmentsToday];
+                const affectedCaches: CacheData[] = [
+                    Cache.counts,
+                    Cache.assignmentsToday,
+                    ...(this.date && this.date != getDateString() ? [Cache.turnsToday] : [])
+                ];
                 affectedCaches.forEach(c => c.invalidate());
 
                 const success = await replaceAssignments(
