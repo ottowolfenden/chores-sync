@@ -53,14 +53,15 @@ export const getCurrentMember = async (): Promise<UiMember | null> =>
     (await Cache.members.get())?.find(m => m.name == localStorage.getItem("name")) ?? null;
 
 export const getAssignments = async (
-    date: string = getDateString()
+    date: string = getDateString(),
+    turns: UiTurn[] | null = null
 ): Promise<UiAssignment[] | null> => {
     const { ok, data } = await request<DbAssignment[]>("GET", `/api/assignments?date=${date}`);
     if (!ok || !data) return null;
 
     const chores = await Cache.chores.get();
     const members = await Cache.members.get();
-    const turns = await Cache.turnsToday.get();
+    turns = date == getDateString() ? await Cache.turnsToday.get() : turns;
 
     if (
         !chores ||
