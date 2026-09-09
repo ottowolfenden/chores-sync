@@ -42,8 +42,9 @@ timeline-list {
         border-radius: 6px;
         cursor: pointer;
         padding: 0 10px;
-        gap: 10px;
-        transition-property: height, background-color, color, border-radius, padding, opacity;
+        gap: 7px;
+        transition-property:
+            height, background-color, color, border-radius, padding, opacity, gap;
         transition-duration: 100ms;
 
         &:active:not(:has(button:active)) {
@@ -94,12 +95,14 @@ timeline-list {
         height: 57px;
         border-radius: 17px 17px 6px 6px;
         margin-bottom: 0;
+        gap: 10px;
 
         .rel-date {
             margin: 5px;
             font-weight: 500;
             font-size: 22px;
             margin-right: auto;
+            padding-right: 7px;
         }
 
         assignments-state-actions,
@@ -131,6 +134,18 @@ timeline-list {
             &.filled {
                 --background-color: var(--secondary);
                 --color: var(--on-secondary);
+            }
+        }
+
+        @media ((width <= 470px) or ((width <= 600px) and (width >= 550px))) {
+            button.add {
+                --collapse: 1;
+            }
+        }
+
+        @media (width <= 385px) {
+            button.expand {
+                display: none;
             }
         }
     }
@@ -184,8 +199,21 @@ timeline-list {
             outline: none;
         }
 
-        button.done md-icon {
-            scale: 1.15;
+        div:has(h2) {
+            gap: 15px;
+            button.done md-icon {
+                scale: 1.15;
+            }
+            @media (width <= 400px) {
+                .prefix {
+                    display: none;
+                }
+            }
+            @media (width <= 350px) {
+                button.done {
+                    --collapse: 1;
+                }
+            }
         }
 
         @media (width < 550px) {

@@ -23,7 +23,9 @@ export class TimelineList extends LitElement {
     private readonly threshold = 400;
     private readonly batchSize = 30;
     private readonly relFormatMedia = {
-        collapseWeekday: matchMedia("(width <= 450px)"),
+        collapseWeekday: matchMedia(
+            "((width <= 560px) or ((width <= 700px) and (width >= 550px)))"
+        ),
         collapseMonth: matchMedia("(width <= 650px)"),
         collapseDay: matchMedia("(width <= 350px)")
     };
@@ -295,7 +297,7 @@ export class TimelineList extends LitElement {
                                 ${ref<HTMLDialogElement>(el => (dialog = el))}>
                                 <div>
                                     <h2>
-                                        Turns
+                                        <span class="prefix">Turns</span>
                                         ${formatDateRelative(d, {
                                             collapseWeekday: true,
                                             collapseMonth: true,
