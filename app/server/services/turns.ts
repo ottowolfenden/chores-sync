@@ -3,7 +3,7 @@ import { ok, error, getDateIsValid } from "../utils";
 
 export const getTurns = async (env: Env, date: string | null): Promise<Result<DbTurn[]>> => {
     try {
-        const sql = neon(atob(env.DATABASE_URL));
+        const sql = neon(atob(env["DATABASE_URL"]));
 
         if (date != null && !getDateIsValid(date)) return error(400, "date invalid");
 
@@ -25,21 +25,23 @@ export const getTurns = async (env: Env, date: string | null): Promise<Result<Db
 
         if (turnData.length == 0) return ok([]);
 
-        const choreIds = [...new Set(turnData.map(td => td.chore_id))];
+        const choreIds = [...new Set(turnData.map(td => td["chore_id"]))];
         const toNum = (date: number | Date) =>
             date instanceof Date ? date.getTime() : -Infinity;
 
         const turns: DbTurn[] = choreIds.map(cId => {
-            let possible = turnData.filter(td => td.chore_id == cId);
+            let possible = turnData.filter(td => td["chore_id"] == cId);
 
-            const minTotal = Math.min(...possible.map(p => p.total));
-            possible = possible.filter(p => p.total == minTotal);
+            const minTotal = Math.min(...possible.map(p => p["total"]));
+            possible = possible.filter(p => p["total"] == minTotal);
             if (possible.length == 1 && possible[0])
-                return { chore_id: cId, member_id: possible[0].member_id };
+                return { "chore_id": cId, "member_id": possible[0]["member_id"] };
 
-            const oldestTimestamp = Math.min(...possible.map(p => toNum(p.last_assign_date)));
-            possible = possible.filter(p => toNum(p.last_assign_date) == oldestTimestamp);
-            if (possible[0]) return { chore_id: cId, member_id: possible[0].member_id };
+            const oldestTimestamp = Math.min(
+                ...possible.map(p => toNum(p["last_assign_date"]))
+            );
+            possible = possible.filter(p => toNum(p["last_assign_date"]) == oldestTimestamp);
+            if (possible[0]) return { "chore_id": cId, "member_id": possible[0]["member_id"] };
             else throw new Error("failed to determine turn");
         });
 

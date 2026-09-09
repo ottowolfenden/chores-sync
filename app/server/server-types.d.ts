@@ -1,4 +1,4 @@
-type Env = { DATABASE_URL: string; SECRET: string };
+type Env = { "DATABASE_URL": string; "SECRET": string };
 
 type Success<T = void> = { ok: true; data?: T };
 

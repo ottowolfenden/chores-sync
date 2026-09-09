@@ -8,7 +8,7 @@ export const getAssignments = async (
     maxDate: string | null
 ): Promise<Result<DbAssignment[]>> => {
     try {
-        const sql = neon(atob(env.DATABASE_URL));
+        const sql = neon(atob(env["DATABASE_URL"]));
 
         if (
             [date, minDate, maxDate].some(d => d && !getDateIsValid(d)) ||
@@ -45,18 +45,18 @@ export const getAssignments = async (
 
 export const addAssignment = async (env: Env, assignment: DbAssignment): Promise<Result> => {
     try {
-        const sql = neon(atob(env.DATABASE_URL));
+        const sql = neon(atob(env["DATABASE_URL"]));
 
         await sql`
             INSERT INTO assignments (
                 assignment_uuid, assign_date, quantity, chore_id, member_id
             )
             VALUES (
-                ${assignment.assignment_uuid},
-                ${assignment.assign_date},
-                ${assignment.quantity},
-                ${assignment.chore_id},
-                ${assignment.member_id}
+                ${assignment["assignment_uuid"]},
+                ${assignment["assign_date"]},
+                ${assignment["quantity"]},
+                ${assignment["chore_id"]},
+                ${assignment["member_id"]}
             )
             ON CONFLICT (member_id, chore_id, assign_date)
             DO UPDATE SET quantity = assignments.quantity + EXCLUDED.quantity;
@@ -75,18 +75,18 @@ export const replaceAssignments = async (
     date: string | null | undefined
 ): Promise<Result> => {
     try {
-        const sql = neon(atob(env.DATABASE_URL));
+        const sql = neon(atob(env["DATABASE_URL"]));
 
         if (!date || !getDateIsValid(date)) return error(400, "date invalid");
 
         const map = new Map();
         assignments.forEach(a => {
-            const key = `${a.member_id}-${a.chore_id}-${a.assign_date}`;
-            if (map.has(key)) map.get(key).quantity += a.quantity;
+            const key = `${a["member_id"]}-${a["chore_id"]}-${a["assign_date"]}`;
+            if (map.has(key)) map.get(key)["quantity"] += a["quantity"];
             else map.set(key, { ...a });
         });
         const summedAssignments = [...map.values()];
-        const uuids = summedAssignments.map(a => a.assignment_uuid);
+        const uuids = summedAssignments.map(a => a["assignment_uuid"]);
 
         await sql.transaction([
             uuids.length == 0

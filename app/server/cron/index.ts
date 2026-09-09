@@ -9,18 +9,22 @@ const autoAssign = async (env: Env) => {
     const turns = turnsResult.ok ? turnsResult.data : null;
     const chores = choresResult.ok ? choresResult.data : null;
 
-    if (!turns || !chores || !chores.every(c => turns.some(t => t.chore_id == c.chore_id)))
+    if (
+        !turns ||
+        !chores ||
+        !chores.every(c => turns.some(t => t["chore_id"] == c["chore_id"]))
+    )
         return;
 
     const assignments: DbAssignment[] = chores
-        .filter(c => c.is_daily)
+        .filter(c => c["is_daily"])
         .map(c => ({
-            assignment_uuid: crypto.randomUUID(),
-            assign_date: new Date(),
-            quantity: 1,
-            is_offset: false,
-            chore_id: c.chore_id,
-            member_id: turns.find(t => t.chore_id == c.chore_id)!.member_id
+            "assignment_uuid": crypto.randomUUID(),
+            "assign_date": new Date(),
+            "quantity": 1,
+            "is_offset": false,
+            "chore_id": c["chore_id"],
+            "member_id": turns.find(t => t["chore_id"] == c["chore_id"])!["member_id"]
         }));
 
     await replaceAssignments(env, assignments, today);
