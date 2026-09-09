@@ -161,6 +161,7 @@ export class TimelineList extends LitElement {
         if (!assignmentsList || !turnsList || !message) return;
         if (!expanded) {
             assignmentsList.assignments = [];
+            stateActions?.cancel();
             turnsList.turns = [];
             message.removeAttribute("success");
             addButton?.toggleAttribute("disabled", true);
