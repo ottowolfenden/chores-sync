@@ -128,10 +128,15 @@ export class TimelineList extends LitElement {
         const dateEl = e ? queryClosest(e, "[data-date]") : this.getDateEl(date);
         date = date ? getDateString(date) : dateEl?.getAttribute("data-date");
         if (!dateEl || !date) return;
+
+        const others = this.container.querySelectorAll<HTMLElement>(
+            `[data-date][data-expanded]:not([data-date="${date}"])`
+        );
         const expanded = dateEl?.toggleAttribute("data-expanded");
-        const expandedEls = this.container.querySelectorAll("[data-date][data-expanded]");
-        if (expanded && expandedEls.length > 1)
+        if (expanded && others.length > 0)
             this.collapseAll({ exclude: dateEl, instant: true });
+        others.forEach(el => this.handleExpand(el.dataset.date, false));
+
         this.dispatchEvent(new Event("userscroll"));
         if (!expanded) this.dispatchEvent(new Event("scrollend"));
         dateEl
@@ -142,7 +147,8 @@ export class TimelineList extends LitElement {
         this.handleExpand(date, expanded);
     };
 
-    private handleExpand = async (date: string, expanded: boolean) => {
+    private handleExpand = async (date: string | undefined, expanded: boolean) => {
+        if (!date) return;
         const li = this.container.querySelector(`li:has([data-date="${date}"])`);
         const assignmentsList = li?.querySelector("assignments-list");
         const turnsList = li?.querySelector("turns-list");
