@@ -64,8 +64,7 @@ main {
 }
 
 span,
-div:has(state-actions) > h2,
-div:has(assignments-state-actions) > h2 {
+h2 {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
