@@ -1,6 +1,5 @@
 node_modules
 app/client/dist
 .wrangler
-todo.txt
+todo.md
 .env
-app/server/functions/.reload
