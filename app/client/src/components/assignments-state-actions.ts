@@ -10,12 +10,12 @@ import { getDateString } from "../functions/date-utils";
 export class AssignmentsStateActions extends StateActions {
     protected createRenderRoot = () => this;
 
-    @property({ type: Array, attribute: false }) assignments!: UiAssignment[];
-    @property({ type: Array, attribute: false }) turns!: UiTurn[];
-    @property({ type: Object, attribute: false }) assignmentsList!: AssignmentsList;
-    @property({ type: Object, attribute: false }) turnsList!: TurnsList;
-    @property({ type: Object, attribute: false }) message!: StatusMessage;
-    @property({ type: Object, attribute: false }) addButton?: HTMLButtonElement;
+    @property({ attribute: false }) assignments!: UiAssignment[];
+    @property({ attribute: false }) turns!: UiTurn[];
+    @property({ attribute: false }) assignmentsList!: AssignmentsList;
+    @property({ attribute: false }) turnsList!: TurnsList;
+    @property({ attribute: false }) message!: StatusMessage;
+    @property({ attribute: false }) addButton?: HTMLButtonElement;
 
     @property({ type: String }) date?: string;
     @property({ type: String, reflect: true }) state: State = "normal";
@@ -25,7 +25,7 @@ export class AssignmentsStateActions extends StateActions {
             label: "Edit",
             click: () => {
                 this.assignmentsList.editMode = this.turnsList.allDisabled = true;
-                if (this.addButton) this.addButton.hidden = true;
+                this.addButton?.toggleAttribute("hidden", true);
             }
         },
         active: {
@@ -44,7 +44,6 @@ export class AssignmentsStateActions extends StateActions {
                 );
                 vibrate(success);
                 this.turnsList.allDisabled = false;
-                if (this.addButton) this.addButton.hidden = false;
                 this.assignmentsList.assignments = cloneAndSum(
                     success ? this.assignmentsList.assignments : this.assignments
                 );
@@ -64,12 +63,12 @@ export class AssignmentsStateActions extends StateActions {
         cancel: {
             click: () => {
                 this.assignmentsList.editMode = this.turnsList.allDisabled = false;
-                if (this.addButton) this.addButton.hidden = false;
+                this.addButton?.toggleAttribute("hidden", false);
                 this.assignmentsList.assignments = cloneAndSum(this.assignments);
             }
         },
         loading: {},
-        success: {},
-        error: {}
+        success: { finished: () => this.addButton?.toggleAttribute("hidden", false) },
+        error: { finished: () => this.addButton?.toggleAttribute("hidden", false) }
     };
 }

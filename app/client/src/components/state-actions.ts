@@ -7,15 +7,16 @@ export type ButtonConf = {
     icon?: string;
     spin?: boolean;
     label?: string;
+    withTransition?: boolean;
     click?: (e?: Event) => (void | boolean) | Promise<void | boolean>;
     beforeTransition?: () => void;
-    withTransition?: boolean;
 };
 export type IndicatorConf = {
     icon?: string;
     spin?: boolean;
     label?: string;
     msToShow?: number;
+    finished?: () => void;
 };
 export type Conf = {
     normal?: ButtonConf;
@@ -50,6 +51,7 @@ export class StateActions extends LitElement {
     readonly handleResult = async (success: boolean | void | undefined) => {
         if (this.conf.success && this.conf.error && typeof success == "boolean") {
             this.state = success ? "success" : "error";
+            this.conf[this.state]?.finished?.();
             await delay(this.getConf("msToShow") ?? 0);
         }
         this.state = "normal";
@@ -63,7 +65,9 @@ export class StateActions extends LitElement {
     readonly run = async (e?: Event, state?: "normal" | "active") => {
         state ??= this.state == "normal" ? "normal" : "active";
         this.state = this.conf.loading ? "loading" : this.state;
-        this.handleResult(await this.conf[state]?.click?.(e));
+        const success = await this.conf[state]?.click?.(e);
+        this.conf.loading?.finished?.();
+        this.handleResult(success);
     };
 
     readonly getConf = <K extends keyof (ButtonConf & IndicatorConf)>(
