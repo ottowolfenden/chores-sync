@@ -38,7 +38,7 @@ export const formatDayOfMonth = (date: Date) => {
 
 export const formatDateRelative = (
     date: Date | string,
-    { collapseWeekday = false, collapseMonth = false, collapseDay = false }
+    { collapseWeekday = false, collapseMonth = false, collapseDay = false } = {}
 ) => {
     date = new Date(date);
     const val = getDateOnlyVal;
