@@ -1,6 +1,5 @@
 import "../components/timeline-list.js";
 import { withTransition } from "../functions/element-utils.js";
-import { addHaptics } from "../functions/haptics.js";
 import { throttle } from "../functions/timer.js";
 
 const section = document.querySelector("section#timeline")!;
@@ -39,6 +38,5 @@ section.addEventListener("sectionopen", () => {
     ui.timelineList.reset({ collapseAll: true });
     ui.recentreButton.hidden = true;
     Object.assign(ui.recentreButton.style, inactiveRecentreButtonStyle);
-    addHaptics(ui.recentreButton);
 });
 section.addEventListener("sectionclose", () => ui.timelineList.reset({ collapseAll: true }));

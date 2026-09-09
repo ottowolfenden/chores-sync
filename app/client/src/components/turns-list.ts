@@ -1,11 +1,11 @@
-import { LitElement, html, type PropertyValues } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property, queryAll, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { addAssignment } from "../functions/db-set.js";
 import { Cache } from "../classes/cache";
 import { queryClosest } from "../functions/element-utils";
 import { ref } from "../functions/element-utils";
-import { addHaptics } from "../functions/haptics";
+import { vibrate } from "../functions/haptics.js";
 
 @customElement("turns-list")
 export class TurnsList extends LitElement {
@@ -18,11 +18,6 @@ export class TurnsList extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         this.members = (await Cache.members.get()) ?? [];
-    }
-
-    protected update(changed: PropertyValues) {
-        super.update(changed);
-        addHaptics("button", this);
     }
 
     get allDisabled() {
@@ -46,6 +41,7 @@ export class TurnsList extends LitElement {
             chosenMember: chosenMember
         };
         const success = await addAssignment(assignment);
+        vibrate(success);
         window.dispatchEvent(
             new CustomEvent(success ? "assignment-added" : "assignment-add-failed", {
                 detail: { assignment }

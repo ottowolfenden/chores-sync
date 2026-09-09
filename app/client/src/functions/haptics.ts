@@ -1,22 +1,25 @@
+import { queryAll } from "./element-utils";
+
 export const addHaptics = (
     els: string | Element | (Element | string)[],
-    rootNode?: ParentNode,
-    ms?: number
+    {
+        event = "click",
+        rootNode = document,
+        ms = 1
+    }: { event?: string; rootNode?: ParentNode; ms?: number } = {}
 ) => {
     if (!("vibrate" in navigator)) return;
-
-    const query = (sel: string) => [...(rootNode ?? document).querySelectorAll(sel)];
-    let elsToAdd: Element[] = [];
-    if (typeof els == "string") elsToAdd = query(els);
-    else if (els instanceof Element) elsToAdd = [els];
-    else
-        els.forEach(
-            el => (elsToAdd = elsToAdd.concat(typeof el == "string" ? query(el) : [el]))
-        );
-
-    const vibrate = () => navigator.vibrate(ms ?? 1);
-    elsToAdd.forEach(el => {
-        el.removeEventListener("click", vibrate);
-        el.addEventListener("click", vibrate);
+    const vibrate = () => navigator.vibrate(ms);
+    queryAll(els, rootNode).forEach(el => {
+        el.removeEventListener(event, vibrate);
+        el.addEventListener(event, vibrate);
     });
+};
+
+const patterns = { "success": [3], "error": [50, 110, 50, 110, 50] };
+
+export const vibrate = (event: "success" | "error" | boolean) => {
+    if (!("vibrate" in navigator)) return;
+    if (typeof event == "boolean") event = event ? "success" : "error";
+    navigator.vibrate(patterns[event]);
 };

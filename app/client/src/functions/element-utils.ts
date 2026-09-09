@@ -35,3 +35,15 @@ export const instantly = <T = void>(
     requestAnimationFrame(() => els.forEach(el => (el.style.transition = "")));
     return result;
 };
+
+export const queryAll = (
+    els: string | Element | (Element | string)[],
+    rootNode: ParentNode = document
+) => {
+    const query = (sel: string) => [...rootNode.querySelectorAll(sel)];
+    let result: Element[] = [];
+    if (typeof els == "string") result = query(els);
+    else if (els instanceof Element) result = [els];
+    else els.forEach(el => (result = result.concat(typeof el == "string" ? query(el) : [el])));
+    return result;
+};

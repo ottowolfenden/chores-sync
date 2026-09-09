@@ -1,6 +1,5 @@
 import { LitElement, html, type TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { addHaptics } from "../functions/haptics";
 import { refresh } from "../functions/routing";
 import type { CacheData } from "../classes/cache";
 
@@ -51,7 +50,6 @@ export class StatusMessage extends LitElement {
         this.elsToDisable?.forEach(el =>
             el?.toggleAttribute("disabled", this.status != "success")
         );
-        addHaptics("button", this);
     };
 
     render = () =>

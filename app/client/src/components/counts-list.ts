@@ -1,11 +1,11 @@
-import { LitElement, html, type PropertyValues } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property, queryAll, state } from "lit/decorators.js";
 import { ref } from "../functions/element-utils";
 import { repeat } from "lit/directives/repeat.js";
 import type { Conf } from "./state-actions";
 import { Cache } from "../classes/cache";
 import { setCount } from "../functions/db-set.js";
-import { addHaptics } from "../functions/haptics";
+import { vibrate } from "../functions/haptics";
 
 @customElement("counts-list")
 export class CountsList extends LitElement {
@@ -19,11 +19,6 @@ export class CountsList extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         this.currentMember = await Cache.currentMember.get();
-    }
-
-    protected update(changed: PropertyValues) {
-        super.update(changed);
-        addHaptics(["button", ".count > .chore"], this);
     }
 
     get allCollapsed() {
@@ -65,6 +60,7 @@ export class CountsList extends LitElement {
     private readonly saveEdit = async (countDiv: HTMLElement, c: UiCount) => {
         countDiv.toggleAttribute("data-edit-mode", false);
         const success = await setCount(c);
+        vibrate(success);
         if (!success && this.oldCounts) this.counts = structuredClone(this.oldCounts);
         this.oldCounts = null;
         [Cache.turnsToday, Cache.counts, Cache.assignmentsToday].forEach(c => c.refresh());

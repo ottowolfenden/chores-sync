@@ -3,6 +3,7 @@ import { StateActions, type Conf, type State } from "./state-actions";
 import { Cache } from "../classes/cache";
 import { replaceAssignments } from "../functions/db-set";
 import { cloneAndSum } from "../functions/assignments";
+import { vibrate } from "../functions/haptics";
 
 @customElement("assignments-state-actions")
 export class AssignmentsStateActions extends StateActions {
@@ -36,6 +37,7 @@ export class AssignmentsStateActions extends StateActions {
                     this.assignmentsList.assignments,
                     this.date
                 );
+                vibrate(success);
                 this.turnsList.allDisabled = false;
                 if (this.addButton) this.addButton.hidden = false;
                 this.assignmentsList.assignments = cloneAndSum(

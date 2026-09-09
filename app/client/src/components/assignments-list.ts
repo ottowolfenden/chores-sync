@@ -3,7 +3,6 @@ import { customElement, state, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { Cache } from "../classes/cache";
 import { queryClosest, withTransition } from "../functions/element-utils.js";
-import { addHaptics } from "../functions/haptics.js";
 import { cloneAndSum } from "../functions/assignments";
 
 @customElement("assignments-list")
@@ -28,11 +27,6 @@ export class AssignmentsList extends LitElement {
     disconnectedCallback() {
         super.disconnectedCallback();
         window.removeEventListener("assignment-added", this.addAssignment);
-    }
-
-    protected update(changed: PropertyValues) {
-        super.update(changed);
-        addHaptics("button", this);
     }
 
     private readonly addAssignment = (e: Event) =>
