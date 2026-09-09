@@ -285,7 +285,16 @@ export class TimelineList extends LitElement {
                                 ?hidden=${!getBirthdaysMatch(this.members, d)}>
                                 cake
                             </md-icon>
-                            <button class="add filled" tabindex="-1" disabled>
+                            <button
+                                class="add filled"
+                                tabindex="-1"
+                                style="display:none!important">
+                                <!-- 
+
+                                DISPLAY NONE ABOVE
+                                IS TEMPORARY
+                                
+                                -->
                                 <md-icon>add</md-icon><span>Add</span>
                             </button>
                             <assignments-state-actions></assignments-state-actions>
