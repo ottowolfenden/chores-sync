@@ -46,7 +46,8 @@ timeline-list {
             }
         }
 
-        assignments-state-actions {
+        assignments-state-actions,
+        button.add {
             display: none;
         }
 
@@ -91,8 +92,13 @@ timeline-list {
             margin-right: auto;
         }
 
-        assignments-state-actions {
+        assignments-state-actions,
+        button.add {
             display: flex;
+        }
+
+        button.add md-icon {
+            scale: 1.15;
         }
 
         .short-date,
@@ -104,7 +110,8 @@ timeline-list {
             --size: 18;
         }
 
-        button:not(.expand) {
+        assignments-state-actions button,
+        button.add {
             --size: 15;
 
             &.outlined {

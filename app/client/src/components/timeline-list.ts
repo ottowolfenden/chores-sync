@@ -230,6 +230,9 @@ export class TimelineList extends LitElement {
                                 ?hidden=${!getBirthdaysMatch(this.members, d)}>
                                 cake
                             </md-icon>
+<button class="add filled">
+                                <md-icon>add</md-icon><span>Add</span>
+                            </button>
                             <assignments-state-actions></assignments-state-actions>
                             <span class="short-date">${formatDateShort(d)}</span>
                             <button class="expand transparent" tabindex="-1">
