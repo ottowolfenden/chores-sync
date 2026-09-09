@@ -34,6 +34,10 @@ assignments-list .assignment {
         font-size: 18px;
     }
 
+    .member-name {
+        font-weight: 470;
+    }
+
     .quantity {
         background-color: var(--surface-container-highest);
         color: var(--on-surface);
