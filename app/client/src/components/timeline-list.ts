@@ -129,6 +129,7 @@ export class TimelineList extends LitElement {
         if (expanded && expandedEls.length > 1)
             this.collapseAll({ exclude: dateEl, instant: true });
         this.dispatchEvent(new Event("userscroll"));
+        if (!expanded) this.dispatchEvent(new Event("scrollend"));
         dateEl
             ?.querySelector<MdIcon>(".expand md-icon")
             ?.setIcon(expanded ? "keyboard_arrow_up" : "keyboard_arrow_down");
