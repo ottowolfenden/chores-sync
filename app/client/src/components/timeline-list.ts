@@ -161,6 +161,7 @@ export class TimelineList extends LitElement {
         }
 
         message.elsToHide = [assignmentsList, stateActions];
+        Object.assign(stateActions, { assignmentsList, turnsList, message, addButton, date });
         message.status = "loading";
         addButton.disabled = true;
 
@@ -173,14 +174,7 @@ export class TimelineList extends LitElement {
         } else {
             message.status = "success";
             addButton.disabled = false;
-            Object.assign(stateActions, {
-                assignments,
-                turns,
-                assignmentsList,
-                turnsList,
-                message,
-                addButton
-            });
+            Object.assign(stateActions, { assignments, turns });
             assignmentsList.assignments = cloneAndSum(assignments);
             setTimeout(() => assignmentsList.classList.add("animate"), 150);
         }

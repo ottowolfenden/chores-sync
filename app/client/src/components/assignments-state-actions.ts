@@ -15,6 +15,7 @@ export class AssignmentsStateActions extends StateActions {
     @property({ type: Object, attribute: false }) message!: StatusMessage;
     @property({ type: Object, attribute: false }) addButton?: HTMLButtonElement;
 
+    @property({ type: String }) date?: string;
     @property({ type: String, reflect: true }) state: State = "normal";
     @property({ type: Object }) conf: Conf = {
         normal: {
@@ -31,7 +32,10 @@ export class AssignmentsStateActions extends StateActions {
                 const affectedCaches = [Cache.counts, Cache.assignmentsToday];
                 affectedCaches.forEach(c => c.invalidate());
 
-                const success = await replaceAssignments(this.assignmentsList.assignments);
+                const success = await replaceAssignments(
+                    this.assignmentsList.assignments,
+                    this.date
+                );
                 this.turnsList.allDisabled = false;
                 if (this.addButton) this.addButton.hidden = false;
                 this.assignmentsList.assignments = cloneAndSum(
