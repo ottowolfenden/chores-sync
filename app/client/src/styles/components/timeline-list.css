@@ -80,7 +80,7 @@ timeline-list {
         --background-color: var(--secondary-container);
         --color: var(--on-secondary-container);
         padding: 0 12px;
-        height: 62px;
+        height: 57px;
         border-radius: 17px 17px 6px 6px;
         margin-bottom: 0;
 
