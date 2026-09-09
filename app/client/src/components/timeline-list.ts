@@ -3,6 +3,8 @@ import { customElement, query, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { instantly, queryClosest } from "../functions/element-utils";
 import { Cache } from "../classes/cache";
+import { getAssignments, getTurns } from "../functions/db-get";
+import { cloneAndSum } from "../functions/assignments";
 import {
     getDateRange,
     getDateString,
@@ -122,8 +124,10 @@ export class TimelineList extends LitElement {
         return todayCentre > containerCentre ? "up" : "down";
     };
 
-    toggleExpand = ({ date, e }: { date?: Date | string; e?: Event }) => {
+    toggleExpand = ({ date, e }: { date?: Date | string | null; e?: Event }) => {
         const dateEl = e ? queryClosest(e, "[data-date]") : this.getDateEl(date);
+        date = date ? getDateString(date) : dateEl?.getAttribute("data-date");
+        if (!dateEl || !date) return;
         const expanded = dateEl?.toggleAttribute("data-expanded");
         const expandedEls = this.container.querySelectorAll("[data-date][data-expanded]");
         if (expanded && expandedEls.length > 1)
@@ -135,6 +139,50 @@ export class TimelineList extends LitElement {
             ?.setIcon(expanded ? "keyboard_arrow_up" : "keyboard_arrow_down");
         if (expanded && dateEl?.dataset.date)
             this.scrollToDate({ date: dateEl?.dataset.date, block: "start" });
+        this.handleExpand(date, expanded);
+    };
+
+    private handleExpand = async (date: string, expanded: boolean) => {
+        const li = this.container.querySelector(`li:has([data-date="${date}"])`);
+        const assignmentsList = li?.querySelector("assignments-list");
+        const turnsList = li?.querySelector("turns-list");
+        const message = li?.querySelector("status-message");
+        const stateActions = li?.querySelector("assignments-state-actions");
+        const addButton = li?.querySelector<HTMLButtonElement>("button.add");
+
+        if (!assignmentsList || !turnsList || !message || !stateActions || !addButton) return;
+        if (!expanded) {
+            assignmentsList.assignments = [];
+            turnsList.turns = [];
+            message.removeAttribute("success");
+            addButton.disabled = true;
+            assignmentsList.classList.remove("animate");
+            return;
+        }
+
+        message.elsToHide = [assignmentsList, stateActions];
+        message.status = "loading";
+        addButton.disabled = true;
+
+        let turns = await getTurns(date);
+        let assignments = await getAssignments(date, turns);
+        if (turns == null || assignments == null) message.status = "error";
+        else if (assignments.length == 0) {
+            message.status = "empty";
+            addButton.disabled = false;
+        } else {
+            message.status = "success";
+            addButton.disabled = false;
+            Object.assign(stateActions, {
+                assignments,
+                turns,
+                assignmentsList,
+                turnsList,
+                message
+            });
+            assignmentsList.assignments = cloneAndSum(assignments);
+            setTimeout(() => assignmentsList.classList.add("animate"), 150);
+        }
     };
 
     private getRelFormatOpts = () => ({
@@ -158,8 +206,10 @@ export class TimelineList extends LitElement {
         });
     };
 
-    private getDateEl = (date: Date | string = new Date()) =>
-        this.container.querySelector<HTMLElement>(`[data-date="${getDateString(date)}"]`);
+    private getDateEl = (date?: Date | string | null) =>
+        this.container.querySelector<HTMLElement>(
+            `[data-date="${getDateString(date ?? new Date())}"]`
+        );
 
     private prependDates = ({
         targetDate = new Date(),
@@ -231,7 +281,7 @@ export class TimelineList extends LitElement {
                                 ?hidden=${!getBirthdaysMatch(this.members, d)}>
                                 cake
                             </md-icon>
-<button class="add filled">
+                            <button class="add filled" tabindex="-1" disabled>
                                 <md-icon>add</md-icon><span>Add</span>
                             </button>
                             <assignments-state-actions></assignments-state-actions>
@@ -241,7 +291,8 @@ export class TimelineList extends LitElement {
                             </button>
                         </div>
                         <assignments-list></assignments-list>
-                        <status-message status="loading"></status-message>
+                        <turns-list hidden></turns-list>
+                        <status-message hide-retry></status-message>
                     </li>
                 `
             )}
