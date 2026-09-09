@@ -16,7 +16,7 @@ export const addHaptics = (
     });
 };
 
-const patterns = { "success": [3], "error": [50, 110, 50, 110, 50] };
+const patterns = { "success": [3], "error": [40, 90, 40, 90, 40] };
 
 export const vibrate = (event: "success" | "error" | boolean) => {
     if (!("vibrate" in navigator)) return;
