@@ -13,13 +13,17 @@ export class AssignmentsStateActions extends StateActions {
     @property({ type: Object, attribute: false }) assignmentsList!: AssignmentsList;
     @property({ type: Object, attribute: false }) turnsList!: TurnsList;
     @property({ type: Object, attribute: false }) message!: StatusMessage;
+    @property({ type: Object, attribute: false }) addButton?: HTMLButtonElement;
 
     @property({ type: String, reflect: true }) state: State = "normal";
     @property({ type: Object }) conf: Conf = {
         normal: {
             icon: "edit",
             label: "Edit",
-            click: () => (this.assignmentsList.editMode = this.turnsList.allDisabled = true)
+            click: () => {
+                this.assignmentsList.editMode = this.turnsList.allDisabled = true;
+                if (this.addButton) this.addButton.hidden = true;
+            }
         },
         active: {
             click: async () => {
@@ -29,6 +33,7 @@ export class AssignmentsStateActions extends StateActions {
 
                 const success = await replaceAssignments(this.assignmentsList.assignments);
                 this.turnsList.allDisabled = false;
+                if (this.addButton) this.addButton.hidden = false;
                 this.assignmentsList.assignments = cloneAndSum(
                     success ? this.assignmentsList.assignments : this.assignments
                 );
@@ -47,8 +52,8 @@ export class AssignmentsStateActions extends StateActions {
         },
         cancel: {
             click: () => {
-                this.assignmentsList.editMode = false;
-                this.turnsList.allDisabled = false;
+                this.assignmentsList.editMode = this.turnsList.allDisabled = false;
+                if (this.addButton) this.addButton.hidden = false;
                 this.assignmentsList.assignments = cloneAndSum(this.assignments);
             }
         },

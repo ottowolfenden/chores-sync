@@ -178,7 +178,8 @@ export class TimelineList extends LitElement {
                 turns,
                 assignmentsList,
                 turnsList,
-                message
+                message,
+                addButton
             });
             assignmentsList.assignments = cloneAndSum(assignments);
             setTimeout(() => assignmentsList.classList.add("animate"), 150);
