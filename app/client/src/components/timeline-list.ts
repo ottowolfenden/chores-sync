@@ -20,24 +20,19 @@ export class TimelineList extends LitElement {
     private readonly initialMaxIndex = 20;
     private readonly threshold = 400;
     private readonly batchSize = 30;
-    private handleScrolling = true;
     private readonly relFormatMedia = {
         collapseWeekday: matchMedia("(width <= 450px)"),
         collapseMonth: matchMedia("(width <= 650px)"),
         collapseDay: matchMedia("(width <= 350px)")
     };
-    private get relFormatOpts() {
-        return {
-            collapseWeekday: this.relFormatMedia.collapseWeekday.matches,
-            collapseMonth: this.relFormatMedia.collapseMonth.matches,
-            collapseDay: this.relFormatMedia.collapseDay.matches
-        };
-    }
-    @query(":scope > ol") private container!: HTMLElement;
+    private handleScrolling = true;
+
     @state() private dates: string[] = [];
     @state() private minIndex = this.initialMinIndex;
     @state() private maxIndex = this.initialMaxIndex;
     @state() private members: UiMember[] = [];
+
+    @query(":scope > ol") private container!: HTMLElement;
 
     async connectedCallback() {
         super.connectedCallback();
@@ -141,6 +136,12 @@ export class TimelineList extends LitElement {
             this.scrollToDate({ date: dateEl?.dataset.date, block: "start" });
     };
 
+    private getRelFormatOpts = () => ({
+        collapseWeekday: this.relFormatMedia.collapseWeekday.matches,
+        collapseMonth: this.relFormatMedia.collapseMonth.matches,
+        collapseDay: this.relFormatMedia.collapseDay.matches
+    });
+
     private collapseAll = ({
         exclude,
         instant = false
@@ -222,19 +223,21 @@ export class TimelineList extends LitElement {
                     <li>
                         <div data-date=${d} @click=${(e: Event) => this.toggleExpand({ e })}>
                             <span class="rel-date">
-                                ${formatDateRelative(d, this.relFormatOpts)}
+                                ${formatDateRelative(d, this.getRelFormatOpts())}
                             </span>
                             <md-icon
                                 class="birthday"
                                 ?hidden=${!getBirthdaysMatch(this.members, d)}>
                                 cake
                             </md-icon>
-                            <state-actions .conf=${{}}></state-actions>
+                            <assignments-state-actions></assignments-state-actions>
                             <span class="short-date">${formatDateShort(d)}</span>
                             <button class="expand transparent" tabindex="-1">
                                 <md-icon>keyboard_arrow_down</md-icon>
                             </button>
                         </div>
+                        <assignments-list></assignments-list>
+                        <status-message status="loading"></status-message>
                     </li>
                 `
             )}

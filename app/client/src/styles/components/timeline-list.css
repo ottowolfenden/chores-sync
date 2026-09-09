@@ -12,6 +12,11 @@ timeline-list {
 
         & > li {
             transition: margin 100ms;
+
+            &:has([data-date]:not([data-expanded])) assignments-list,
+            &:has([data-date]:not([data-expanded])) status-message {
+                display: none;
+            }
         }
     }
 
@@ -41,7 +46,7 @@ timeline-list {
             }
         }
 
-        state-actions {
+        assignments-state-actions {
             display: none;
         }
 
@@ -77,8 +82,7 @@ timeline-list {
         padding: 0 12px;
         height: 62px;
         border-radius: 17px 17px 6px 6px;
-        display: flex;
-        align-items: center;
+        margin-bottom: 0;
 
         .rel-date {
             margin: 5px;
@@ -87,8 +91,8 @@ timeline-list {
             margin-right: auto;
         }
 
-        state-actions {
-            display: revert;
+        assignments-state-actions {
+            display: flex;
         }
 
         .short-date,
