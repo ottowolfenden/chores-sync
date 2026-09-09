@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { instantly, queryClosest } from "../functions/element-utils";
+import { instantly, queryClosest, ref } from "../functions/element-utils";
 import { Cache } from "../classes/cache";
 import { getAssignments, getTurns } from "../functions/db-get";
 import { cloneAndSum } from "../functions/assignments";
@@ -153,15 +153,17 @@ export class TimelineList extends LitElement {
         if (!date) return;
         const li = this.container.querySelector(`li:has([data-date="${date}"])`);
         const assignmentsList = li?.querySelector("assignments-list");
+        const turnsDialog = li?.querySelector("dialog");
         const turnsList = li?.querySelector("turns-list");
         const message = li?.querySelector("status-message");
         const stateActions = li?.querySelector("assignments-state-actions") ?? null;
         const addButton = li?.querySelector<HTMLButtonElement>("button.add") ?? null;
 
-        if (!assignmentsList || !turnsList || !message) return;
+        if (!assignmentsList || !turnsList || !turnsDialog || !message) return;
         if (!expanded) {
             assignmentsList.assignments = [];
             stateActions?.cancel();
+            turnsDialog.close();
             turnsList.turns = [];
             message.removeAttribute("success");
             addButton?.toggleAttribute("disabled", true);
@@ -175,8 +177,7 @@ export class TimelineList extends LitElement {
                 assignmentsList,
                 turnsList,
                 message,
-                addButton,
-                date
+                addButton
             });
         message.status = "loading";
         addButton?.toggleAttribute("disabled", true);
@@ -285,41 +286,64 @@ export class TimelineList extends LitElement {
             ${repeat(
                 this.dates,
                 d => d,
-                d => html`
-                    <li>
-                        <div data-date=${d} @click=${(e: Event) => this.toggleExpand({ e })}>
-                            <span class="rel-date">
-                                ${formatDateRelative(d, this.getRelFormatOpts())}
-                            </span>
-                            <md-icon
-                                class="birthday"
-                                ?hidden=${!getBirthdaysMatch(this.members, d)}>
-                                cake
-                            </md-icon>
-                            ${this.currentMember?.isAdmin || d == getDateString()
-                                ? html`
-                                      <button
-                                          class="add filled"
-                                          tabindex="-1"
-                                          @click=${(e: Event) => e.stopPropagation()}
-                                          popovertarget="popover-${d}">
-                                          <md-icon>add</md-icon><span>Add</span>
-                                      </button>
-                                      <assignments-state-actions></assignments-state-actions>
-                                  `
-                                : ""}
-                            <span class="short-date">${formatDateShort(d)}</span>
-                            <button class="expand transparent" tabindex="-1">
-                                <md-icon>keyboard_arrow_down</md-icon>
-                            </button>
-                        </div>
-                        <assignments-list></assignments-list>
-                        <div popover id="popover-${d}">
-                            <turns-list date=${d}></turns-list>
-                        </div>
-                        <status-message hide-retry></status-message>
-                    </li>
-                `
+                d => {
+                    let dialog: HTMLDialogElement;
+                    return html`
+                        <li>
+                            <dialog
+                                closedby="any"
+                                ${ref<HTMLDialogElement>(el => (dialog = el))}>
+                                <div>
+                                    <h2>
+                                        Turns
+                                        ${formatDateRelative(d, {
+                                            collapseWeekday: true,
+                                            collapseMonth: true,
+                                            collapseDay: true
+                                        })}
+                                    </h2>
+                                    <button class="done filled" @click=${() => dialog.close()}>
+                                        <md-icon>check</md-icon><span>Done</span>
+                                    </button>
+                                </div>
+                                <turns-list date=${d}></turns-list>
+                            </dialog>
+                            <div
+                                data-date=${d}
+                                @click=${(e: Event) => this.toggleExpand({ e })}>
+                                <span class="rel-date">
+                                    ${formatDateRelative(d, this.getRelFormatOpts())}
+                                </span>
+                                <md-icon
+                                    class="birthday"
+                                    ?hidden=${!getBirthdaysMatch(this.members, d)}>
+                                    cake
+                                </md-icon>
+                                ${this.currentMember?.isAdmin || d == getDateString()
+                                    ? html`
+                                          <button
+                                              class="add filled"
+                                              tabindex="-1"
+                                              @click=${(e: Event) => {
+                                                  e.stopPropagation();
+                                                  dialog.showModal();
+                                              }}>
+                                              <md-icon>add</md-icon><span>Add</span>
+                                          </button>
+                                          <assignments-state-actions date=${d}>
+                                          </assignments-state-actions>
+                                      `
+                                    : ""}
+                                <span class="short-date">${formatDateShort(d)}</span>
+                                <button class="expand transparent" tabindex="-1">
+                                    <md-icon>keyboard_arrow_down</md-icon>
+                                </button>
+                            </div>
+                            <assignments-list></assignments-list>
+                            <status-message hide-retry></status-message>
+                        </li>
+                    `;
+                }
             )}
         </ol>
     `;

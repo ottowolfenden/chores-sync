@@ -57,8 +57,7 @@ timeline-list {
         }
 
         assignments-state-actions,
-        button.add,
-        [popover]:has(turns-list) {
+        button.add {
             display: none;
         }
 
@@ -104,8 +103,7 @@ timeline-list {
         }
 
         assignments-state-actions,
-        button.add,
-        [popover]:has(turns-list) {
+        button.add {
             display: flex;
         }
 
@@ -143,5 +141,55 @@ timeline-list {
 
     ol > li:has([data-date][data-expanded]) {
         margin: 25px 0;
+    }
+
+    dialog {
+        opacity: 0;
+        translate: 0 110svh;
+        background-color: var(--surface-container-lowest);
+        border: none;
+        padding: 5px;
+        border-radius: 19.5px 19.5px 8.5px 8.5px;
+        width: min(700px, 70vw);
+
+        &,
+        &::backdrop {
+            transition-property: opacity, translate, overlay, display, background-color;
+            transition-duration: 150ms;
+            transition-behavior: allow-discrete;
+        }
+
+        &::backdrop {
+            background-color: transparent;
+        }
+
+        &:open {
+            opacity: 1;
+            translate: 0;
+
+            @starting-style {
+                translate: 0 110svh;
+                opacity: 0;
+            }
+        }
+
+        &:open::backdrop {
+            background-color: rgb(from var(--surface-container-lowest) r g b / 0.7);
+            @starting-style {
+                background-color: transparent;
+            }
+        }
+
+        &::focus-visible {
+            outline: none;
+        }
+
+        button.done md-icon {
+            scale: 1.15;
+        }
+
+        @media (width < 550px) {
+            width: 100%;
+        }
     }
 }
