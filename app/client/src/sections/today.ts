@@ -52,9 +52,11 @@ ui.assignments.message.messages.empty = {
     content: html`Nothing to do!<br />Assign chores with the plus buttons below.`
 };
 
-ui.assignments.stateActions.assignmentsList = ui.assignments.list;
-ui.assignments.stateActions.turnsList = ui.turns.list;
-ui.assignments.stateActions.message = ui.assignments.message;
+Object.assign(ui.assignments.stateActions, {
+    assignmentsList: ui.assignments.list,
+    turnsList: ui.turns.list,
+    message: ui.assignments.message
+});
 
 let assignments: UiAssignment[] | null;
 let turns: UiTurn[] | null;
