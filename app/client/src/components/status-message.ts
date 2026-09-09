@@ -13,18 +13,11 @@ export class StatusMessage extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: String, reflect: true }) status: Status = "success";
-    @property({ attribute: false }) elsToHide: (Element | null)[] | null = null;
-    @property({ attribute: false }) caches: CacheData[] = [];
-    @property({ attribute: false }) messages: Messages = {
-        loading: {
-            icon: "sync",
-            spin: true,
-            content: "Loading, please wait."
-        },
-        empty: {
-            icon: "sentiment_neutral",
-            content: "Nothing to show."
-        },
+    @property({ type: Array, attribute: "els-to-hide" }) elsToHide: (Element | null)[] = [];
+    @property({ type: Array }) caches: CacheData[] = [];
+    @property({ type: Object }) messages: Messages = {
+        loading: { icon: "sync", spin: true, content: "Loading, please wait." },
+        empty: { icon: "sentiment_neutral", content: "Nothing to show." },
         error: {
             icon: "error",
             content: html`Failed to fetch data.<br />
