@@ -17,6 +17,16 @@ timeline-list {
             &:has([data-date]:not([data-expanded])) status-message {
                 display: none;
             }
+
+            status-message {
+                transition:
+                    height 100ms,
+                    opacity 150ms;
+                @starting-style {
+                    height: 0;
+                    opacity: 0;
+                }
+            }
         }
     }
 
