@@ -5,5 +5,10 @@ import { customElement } from "lit/decorators.js";
 export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
-    render = () => html`easter egg game`;
+    render = () => html`
+        <div class="stats"></div>
+        <div class="container">
+            <md-icon class="player">directions_bike</md-icon>
+        </div>
+    `;
 }
