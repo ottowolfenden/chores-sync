@@ -58,6 +58,12 @@ export class StatusMessage extends LitElement {
         return typeof content == "function" ? content() : content;
     };
 
+    private handleEasterEggClick = (e: Event) => {
+        vibrate(3 ** (this.easterEggClicks + 1));
+        addAnimClass(e.target as HTMLElement, "shake");
+        this.easterEggClicks = (this.easterEggClicks + 1) % this.easterEggIcons.length;
+    };
+
     updated = () => {
         this.elsToHide?.forEach(el => el?.toggleAttribute("hidden", this.status != "success"));
         this.elsToDisable?.forEach(el =>
@@ -72,13 +78,7 @@ export class StatusMessage extends LitElement {
                     <md-icon
                         class="large"
                         style="--shake-intensity: ${this.easterEggClicks + 1}"
-                        @click=${(e: Event) => {
-                            vibrate(3 ** (this.easterEggClicks + 1));
-                            addAnimClass(e.target as HTMLElement, "shake");
-                            this.easterEggClicks =
-                                (this.easterEggClicks + 1) % this.easterEggIcons.length;
-                            console.log(this.easterEggClicks);
-                        }}>
+                        @click=${this.handleEasterEggClick}>
                         ${this.easterEggIcons[this.easterEggClicks]}
                     </md-icon>
                     <span class="content">Nothing to show.</span>
