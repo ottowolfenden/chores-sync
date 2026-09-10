@@ -12,7 +12,6 @@ check
 error
 close
 sync
-sentiment_neutral
 error
 celebration
 today
@@ -24,3 +23,9 @@ refresh
 cake
 arrow_upward
 arrow_downward
+sentiment_neutral
+sentiment_content
+sentiment_satisfied
+sentiment_excited
+sentiment_stressed
+sentiment_very_dissatisfied
