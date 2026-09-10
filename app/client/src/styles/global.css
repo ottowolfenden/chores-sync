@@ -1,5 +1,6 @@
 @import "components/assignments-list.css";
 @import "components/counts-list.css";
+@import "components/easter-egg-game.css";
 @import "components/md-icon.css";
 @import "components/num-input.css";
 @import "components/section-nav.css";
@@ -9,6 +10,7 @@
 @import "components/turns-list.css";
 
 @import "sections/count.css";
+@import "sections/easter-egg.css";
 @import "sections/timeline.css";
 @import "sections/settings.css";
 @import "sections/today.css";

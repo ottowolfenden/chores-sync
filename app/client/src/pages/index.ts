@@ -11,6 +11,7 @@ else
         import("../components/section-nav.js"),
         import("../components/status-message.js"),
         import("../sections/count.js"),
+        import("../sections/easter-egg.js"),
         import("../sections/timeline.js"),
         import("../sections/settings.js"),
         import("../sections/today.js")
