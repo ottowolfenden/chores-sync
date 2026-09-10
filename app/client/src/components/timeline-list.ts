@@ -163,13 +163,14 @@ export class TimelineList extends LitElement {
 
         if (!assignmentsList || !turnsList || !turnsDialog || !message) return;
         if (!expanded) {
-            assignmentsList.assignments = [];
-            stateActions?.cancel();
-            turnsDialog.close();
-            turnsList.turns = [];
-            message.removeAttribute("success");
-            addButton?.toggleAttribute("disabled", true);
-            assignmentsList.classList.remove("animate");
+            this.cleanupExpand(
+                assignmentsList,
+                stateActions,
+                turnsDialog,
+                turnsList,
+                message,
+                addButton
+            );
             return;
         }
 
@@ -206,6 +207,24 @@ export class TimelineList extends LitElement {
         }
         addButton?.toggleAttribute("disabled", false);
         turnsList.turns = turns;
+    };
+
+    private cleanupExpand = (
+        assignmentsList: AssignmentsList,
+        stateActions: AssignmentsStateActions | null,
+        turnsDialog: HTMLDialogElement,
+        turnsList: TurnsList,
+        message: StatusMessage,
+        addButton: HTMLButtonElement | null
+    ) => {
+        assignmentsList.assignments = [];
+        assignmentsList.classList.remove("animate");
+        stateActions?.cancel();
+        turnsDialog.close();
+        turnsList.turns = [];
+        message.removeAttribute("success");
+        message.easterEggClicks = 0;
+        addButton?.toggleAttribute("disabled", true);
     };
 
     private getRelFormatOpts = () => ({

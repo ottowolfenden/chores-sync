@@ -1,5 +1,5 @@
 import { LitElement, html, type TemplateResult } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { refresh } from "../functions/routing";
 import type { CacheData } from "../classes/cache";
 import { vibrate } from "../functions/haptics";
@@ -21,8 +21,9 @@ export class StatusMessage extends LitElement {
     @property({ type: Array }) elsToHide: (Element | null)[] = [];
     @property({ type: Array }) elsToDisable: (Element | null)[] = [];
     @property({ type: Array }) caches: CacheData[] = [];
-    @property({ type: Boolean, attribute: "hide-retry" }) hideRetry: boolean = false;
-    @property({ type: Boolean, attribute: "easter-egg" }) easterEggEnabled: boolean = false;
+    @property({ type: Boolean, attribute: "hide-retry" }) hideRetry = false;
+    @property({ type: Boolean, attribute: "easter-egg" }) easterEggEnabled = false;
+    @property({ type: Number }) easterEggClicks = 0;
     @property({ type: Object }) messages: Messages = {
         loading: { icon: "sync", spin: true, content: "Loading, please wait." },
         empty: { icon: "sentiment_neutral", content: "Nothing to show." },
@@ -42,7 +43,6 @@ export class StatusMessage extends LitElement {
         }
     };
 
-    @state() private easterEggClicks = 0;
     private readonly easterEggIcons = [
         "sentiment_neutral",
         "sentiment_content",
