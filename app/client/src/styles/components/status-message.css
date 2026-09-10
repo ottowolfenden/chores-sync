@@ -45,4 +45,8 @@ status-message {
             color: var(--error);
         }
     }
+
+    &[easter-egg][status="empty"] md-icon.large {
+        cursor: pointer;
+    }
 }
