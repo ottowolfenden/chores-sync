@@ -18,8 +18,9 @@ export const addHaptics = (
 
 const patterns = { "success": [3], "error": [40, 90, 40, 90, 40] };
 
-export const vibrate = (event: "success" | "error" | boolean) => {
+export const vibrate = (param: "success" | "error" | boolean | number) => {
     if (!("vibrate" in navigator)) return;
-    if (typeof event == "boolean") event = event ? "success" : "error";
-    navigator.vibrate(patterns[event]);
+    if (typeof param == "boolean") param = param ? "success" : "error";
+    if (typeof param == "string") navigator.vibrate(patterns[param]);
+    if (typeof param == "number") navigator.vibrate(param);
 };
