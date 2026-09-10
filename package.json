@@ -4,7 +4,8 @@
         "deploy": "./scripts/deploy.sh",
         "start": "./scripts/start.sh",
         "update-env": "./scripts/update-env.sh",
-        "watch": "./scripts/watch.sh"
+        "watch": "./scripts/watch.sh",
+        "fetch-material-symbols": "node ./scripts/fetch-material-symbols.mjs"
     },
     "devDependencies": {
         "@cloudflare/workers-types": "^5.20260810.1",
