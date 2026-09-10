@@ -1,7 +1,9 @@
 import { LitElement, html, type TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { refresh } from "../functions/routing";
 import type { CacheData } from "../classes/cache";
+import { vibrate } from "../functions/haptics";
+import { addAnimClass } from "../functions/element-utils";
 
 export type Status = "loading" | "empty" | "error" | "success";
 export type Message = {
@@ -20,6 +22,7 @@ export class StatusMessage extends LitElement {
     @property({ type: Array }) elsToDisable: (Element | null)[] = [];
     @property({ type: Array }) caches: CacheData[] = [];
     @property({ type: Boolean, attribute: "hide-retry" }) hideRetry: boolean = false;
+    @property({ type: Boolean, attribute: "easter-egg" }) easterEggEnabled: boolean = false;
     @property({ type: Object }) messages: Messages = {
         loading: { icon: "sync", spin: true, content: "Loading, please wait." },
         empty: { icon: "sentiment_neutral", content: "Nothing to show." },
@@ -39,6 +42,16 @@ export class StatusMessage extends LitElement {
         }
     };
 
+    @state() private easterEggClicks = 0;
+    private readonly easterEggIcons = [
+        "sentiment_neutral",
+        "sentiment_content",
+        "sentiment_satisfied",
+        "sentiment_excited",
+        "sentiment_stressed",
+        "sentiment_very_dissatisfied"
+    ];
+
     private getContent = () => {
         if (this.status == "success") return "";
         const content = this.messages[this.status].content;
@@ -52,8 +65,26 @@ export class StatusMessage extends LitElement {
         );
     };
 
-    render = () =>
-        this.status == "success"
+    render = () => {
+        if (this.status == "empty" && this.easterEggEnabled)
+            return html`
+                <span>
+                    <md-icon
+                        class="large"
+                        style="--shake-intensity: ${this.easterEggClicks + 1}"
+                        @click=${(e: Event) => {
+                            vibrate(3 ** (this.easterEggClicks + 1));
+                            addAnimClass(e.target as HTMLElement, "shake");
+                            this.easterEggClicks =
+                                (this.easterEggClicks + 1) % this.easterEggIcons.length;
+                            console.log(this.easterEggClicks);
+                        }}>
+                        ${this.easterEggIcons[this.easterEggClicks]}
+                    </md-icon>
+                    <span class="content">Nothing to show.</span>
+                </span>
+            `;
+        return this.status == "success"
             ? html`<span></span>`
             : html`
                   <span>
@@ -63,4 +94,5 @@ export class StatusMessage extends LitElement {
                       <span class="content">${this.getContent()}</span>
                   </span>
               `;
+    };
 }

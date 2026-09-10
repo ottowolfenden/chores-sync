@@ -350,7 +350,7 @@ export class TimelineList extends LitElement {
                                 </button>
                             </div>
                             <assignments-list></assignments-list>
-                            <status-message hide-retry></status-message>
+                            <status-message hide-retry easter-egg></status-message>
                         </li>
                     `;
                 }
