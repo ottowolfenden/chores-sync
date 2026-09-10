@@ -4,12 +4,11 @@ import { addAssignment, getAssignments, replaceAssignments } from "../../service
 export const onRequestGet: PagesFunction<Env> = async ctx => {
     const params = new URL(ctx.request.url).searchParams;
     return response(
-        await getAssignments(
-            ctx.env,
-            params.get("date"),
-            params.get("min-date"),
-            params.get("max-date")
-        )
+        await getAssignments(ctx.env, {
+            date: params.get("date"),
+            minDate: params.get("min-date"),
+            maxDate: params.get("max-date")
+        })
     );
 };
 

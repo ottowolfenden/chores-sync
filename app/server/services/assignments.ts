@@ -3,9 +3,11 @@ import { ok, error, getDateIsValid } from "../utils";
 
 export const getAssignments = async (
     env: Env,
-    date: string | null,
-    minDate: string | null,
-    maxDate: string | null
+    {
+        date = null,
+        minDate = null,
+        maxDate = null
+    }: { date?: string | null; minDate?: string | null; maxDate?: string | null } = {}
 ): Promise<Result<DbAssignment[]>> => {
     try {
         const sql = neon(atob(env["DATABASE_URL"]));
