@@ -41,7 +41,7 @@ md-icon {
         height: auto;
     }
 
-    &[spin] {
+    &.spin {
         animation-name: spin;
         animation-duration: 1.2s;
         animation-iteration-count: infinite;

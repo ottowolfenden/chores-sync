@@ -57,7 +57,7 @@ export class StatusMessage extends LitElement {
             ? html`<span></span>`
             : html`
                   <span>
-                      <md-icon class="large" ?spin=${this.messages[this.status].spin}>
+                      <md-icon class="large ${this.messages[this.status].spin ? "spin" : ""}">
                           ${this.messages[this.status].icon}
                       </md-icon>
                       <span class="content">${this.getContent()}</span>

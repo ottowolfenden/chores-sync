@@ -120,7 +120,9 @@ export class StateActions extends LitElement {
             this.stateDisabled}
             ?data-disabled=${this.stateDisabled}
             @click=${this.handleStateClick}>
-            <md-icon ?spin=${this.getConf("spin")}>${this.getConf("icon")}</md-icon>
+            <md-icon class="${this.getConf("spin") ? "spin" : ""}">
+                ${this.getConf("icon")}
+            </md-icon>
             <span>${this.getConf("label")}</span>
         </button>
     `;
