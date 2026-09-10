@@ -60,6 +60,8 @@ export class StatusMessage extends LitElement {
 
     private handleEasterEggClick = (e: Event) => {
         vibrate(3 ** (this.easterEggClicks + 1));
+        if (this.easterEggClicks == this.easterEggIcons.length - 1)
+            location.hash = "#easter-egg";
         addAnimClass(e.target as HTMLElement, "shake");
         this.easterEggClicks = (this.easterEggClicks + 1) % this.easterEggIcons.length;
     };
