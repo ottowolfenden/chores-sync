@@ -14,11 +14,22 @@ cp app/client/src/*.html app/client/src/robots.txt app/client/dist 2>/dev/null |
 cp app/client/src/assets/* app/client/dist/assets 2>/dev/null || true
 cp -r app/client/src/assets/icons app/client/dist/assets
 
-esbuild 'app/client/src/**/*.ts' 'app/client/src/**/*.css' \
-    --outdir=app/client/dist \
-    --asset-names=assets/fonts/[name] \
-    --bundle --format=esm --target=esnext \
-    --minify --loader:.woff2=file --log-level=warning
+esbuildopts=(
+    --outdir=app/client/dist
+    --bundle
+    --asset-names=assets/fonts/[name]
+    --format=esm
+    --target=esnext
+    --loader:.woff2=file
+)
+
+if [[ $1 == "--deploy-mode" ]]; then
+    esbuildopts+=(--minify)
+else
+    esbuildopts+=(--log-level=warning)
+fi
+
+esbuild 'app/client/src/**/*.ts' 'app/client/src/**/*.css' "${esbuildopts[@]}"
 
 touch app/server/functions/.reload
 (sleep 0.1 && rm -f app/server/functions/.reload) &
