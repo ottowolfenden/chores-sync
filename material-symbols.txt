@@ -29,3 +29,4 @@ sentiment_satisfied
 sentiment_excited
 sentiment_stressed
 sentiment_very_dissatisfied
+directions_bike
