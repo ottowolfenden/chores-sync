@@ -6,16 +6,14 @@ import { repeat } from "lit/directives/repeat.js";
 export class SectionNav extends LitElement {
     protected createRenderRoot = () => this;
 
-    @state() private activeHash = window.location.hash || "#today";
-
+    @state() private activeHash = location.hash || "#today";
     private readonly sections = [
         { name: "Today", icon: "today", fragment: "#today" },
         { name: "Timeline", icon: "timeline", fragment: "#timeline" },
         { name: "Count", icon: "bar_chart", fragment: "#count" },
         { name: "Settings", icon: "settings", fragment: "#settings" }
     ];
-    private readonly handleHashChange = () =>
-        (this.activeHash = window.location.hash || "#today");
+    private readonly handleHashChange = () => (this.activeHash = location.hash);
 
     connectedCallback() {
         super.connectedCallback();
@@ -33,7 +31,7 @@ export class SectionNav extends LitElement {
             s => html`
                 <button
                     href=${s.fragment}
-                    @click=${() => (window.location.hash = s.fragment)}
+                    @click=${() => (location.hash = s.fragment)}
                     ?data-active=${this.activeHash == s.fragment}
                     tabindex=${this.activeHash == s.fragment ? -1 : 0}>
                     <md-icon>${s.icon}</md-icon>
