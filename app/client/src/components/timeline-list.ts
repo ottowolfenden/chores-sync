@@ -173,6 +173,14 @@ export class TimelineList extends LitElement {
             return;
         }
 
+        const addAssignment = (e: Event) => {
+            message.status = "success";
+            assignmentsList.classList.add("animate");
+            assignmentsList.addAssignment(e);
+        };
+        turnsList.removeEventListener("assignment-added", addAssignment);
+        turnsList.addEventListener("assignment-added", addAssignment);
+
         message.elsToHide = [assignmentsList, stateActions];
         if (stateActions)
             Object.assign(stateActions, {
