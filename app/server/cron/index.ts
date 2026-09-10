@@ -1,6 +1,6 @@
 import { getAllChores } from "../services/chores";
 import { getTurns } from "../services/turns";
-import { replaceAssignments } from "../services/assignments";
+import { getAssignments, replaceAssignments } from "../services/assignments";
 
 const autoAssign = async (env: Env) => {
     const today = new Date().toISOString().split("T")[0]!;
@@ -16,6 +16,10 @@ const autoAssign = async (env: Env) => {
     )
         return;
 
+    const result = await getAssignments(env, { date: today });
+    const existingAssignments = result.ok ? result.data : null;
+    if (!existingAssignments) return;
+
     const assignments: DbAssignment[] = chores
         .filter(c => c["is_daily"])
         .map(c => ({
@@ -25,15 +29,14 @@ const autoAssign = async (env: Env) => {
             "is_offset": false,
             "chore_id": c["chore_id"],
             "member_id": turns.find(t => t["chore_id"] == c["chore_id"])!["member_id"]
-        }));
+        }))
+        .filter(a => !existingAssignments.some(ea => ea["chore_id"] == a["chore_id"]))
+        .concat(existingAssignments);
 
     await replaceAssignments(env, assignments, today);
 };
 
 export default {
-    scheduled: async (
-        _: ScheduledEvent,
-        env: Env,
-        execContext: ExecutionContext
-    ): Promise<void> => execContext.waitUntil(autoAssign(env))
+    scheduled: async (_: ScheduledEvent, env: Env, execCtx: ExecutionContext) =>
+        execCtx.waitUntil(autoAssign(env))
 };
