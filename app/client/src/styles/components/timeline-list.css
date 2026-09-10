@@ -138,7 +138,8 @@ timeline-list {
         }
 
         @media ((width <= 470px) or ((width <= 600px) and (width >= 550px))) {
-            button.add {
+            button.add,
+            assignments-state-actions button[data-cancel] {
                 --collapse: 1;
             }
         }
