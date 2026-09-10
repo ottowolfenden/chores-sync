@@ -20,16 +20,10 @@ export class AssignmentsList extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback();
-        window.addEventListener("assignment-added", this.addAssignment);
         this.members = (await Cache.members.get()) ?? [];
     }
 
-    disconnectedCallback() {
-        super.disconnectedCallback();
-        window.removeEventListener("assignment-added", this.addAssignment);
-    }
-
-    private readonly addAssignment = (e: Event) =>
+    addAssignment = (e: Event) =>
         (this.assignments = cloneAndSum([
             ...this.assignments,
             (e as CustomEvent).detail.assignment

@@ -32,7 +32,7 @@ export class TurnsList extends LitElement {
         turn: UiTurn,
         chosenMember: UiMember = turn.member
     ): Promise<boolean> => {
-        window.dispatchEvent(new CustomEvent("loading-assignment-add"));
+        this.dispatchEvent(new Event("loading-assignment-add"));
         const assignment = {
             uuid: crypto.randomUUID(),
             date: new Date(this.date),
@@ -43,7 +43,7 @@ export class TurnsList extends LitElement {
         };
         const success = await addAssignment(assignment);
         vibrate(success);
-        window.dispatchEvent(
+        this.dispatchEvent(
             new CustomEvent(success ? "assignment-added" : "assignment-add-failed", {
                 detail: { assignment }
             })

@@ -21,15 +21,16 @@ const ui = {
     }
 };
 
-window.addEventListener("assignment-added", () => {
+ui.turns.list.addEventListener("assignment-added", (e: Event) => {
     ui.assignments.message.status = "success";
     ui.assignments.stateActions.stateDisabled = false;
+    ui.assignments.list.addAssignment(e);
 });
-window.addEventListener(
+ui.turns.list.addEventListener(
     "loading-assignment-add",
     () => (ui.assignments.stateActions.stateDisabled = true)
 );
-window.addEventListener(
+ui.turns.list.addEventListener(
     "assignment-add-failed",
     () => (ui.assignments.stateActions.stateDisabled = false)
 );
