@@ -48,7 +48,7 @@ export const queryAll = (
     return result;
 };
 
-export const runAnim = (el: HTMLElement) => {
-    el.classList.add("animate");
-    el.addEventListener("animationend", () => el.classList.remove("animate"));
+export const addAnimClass = (el: HTMLElement, className: string = "animate") => {
+    el.classList.add(className);
+    el.addEventListener("animationend", () => el.classList.remove(className));
 };
