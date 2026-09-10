@@ -1,9 +1,12 @@
 import { neon } from "@neondatabase/serverless";
 import { ok, error } from "../utils";
 
-export const getAllCounts = async (env: Env): Promise<Result<DbCount[]>> => {
+export const getAllCounts = async (
+    env: Env,
+    date = new Date()
+): Promise<Result<DbCount[]>> => {
     try {
-        const sql = neon(atob(env.DATABASE_URL));
+        const sql = neon(atob(env["DATABASE_URL"]));
         return ok(
             (await sql`
                 SELECT 
@@ -18,6 +21,7 @@ export const getAllCounts = async (env: Env): Promise<Result<DbCount[]>> => {
                     ON a.chore_id = c.chore_id
                     AND a.member_id = m.member_id
                     AND a.is_offset = o.is_offset
+                WHERE a.assign_date < ${date}
                 GROUP BY c.chore_name, m.member_name, o.is_offset
                 ORDER BY c.chore_name, m.member_name, o.is_offset;
             `) as DbCount[]
@@ -30,7 +34,7 @@ export const getAllCounts = async (env: Env): Promise<Result<DbCount[]>> => {
 
 export const changeCounts = async (env: Env, counts: DbCount[]): Promise<Result> => {
     try {
-        const sql = neon(atob(env.DATABASE_URL));
+        const sql = neon(atob(env["DATABASE_URL"]));
 
         if (counts.some(c => !c["is_offset"])) return error(400, "only offset values allowed");
         if (counts.some(c => typeof c["total"] != "number" || isNaN(c["total"])))

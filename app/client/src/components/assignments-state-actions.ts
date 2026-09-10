@@ -4,7 +4,7 @@ import { Cache, type CacheData } from "../classes/cache";
 import { replaceAssignments } from "../functions/db-set";
 import { cloneAndSum } from "../functions/assignments";
 import { vibrate } from "../functions/haptics";
-import { getDateString } from "../functions/date-utils";
+import { getDayDiff } from "../functions/date-utils";
 
 @customElement("assignments-state-actions")
 export class AssignmentsStateActions extends StateActions {
@@ -32,9 +32,10 @@ export class AssignmentsStateActions extends StateActions {
             click: async () => {
                 this.assignmentsList.editMode = false;
                 const affectedCaches: CacheData[] = [
-                    Cache.counts,
                     Cache.assignmentsToday,
-                    ...(this.date && this.date != getDateString() ? [Cache.turnsToday] : [])
+                    ...(!this.date || getDayDiff(new Date(), this.date) > 0
+                        ? [Cache.counts, Cache.turnsToday]
+                        : [])
                 ];
                 affectedCaches.forEach(c => c.invalidate());
 
