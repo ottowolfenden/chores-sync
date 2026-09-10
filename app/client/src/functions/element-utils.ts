@@ -47,3 +47,8 @@ export const queryAll = (
     else els.forEach(el => (result = result.concat(typeof el == "string" ? query(el) : [el])));
     return result;
 };
+
+export const runAnim = (el: HTMLElement) => {
+    el.classList.add("animate");
+    el.addEventListener("animationend", () => el.classList.remove("animate"));
+};
