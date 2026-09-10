@@ -77,7 +77,7 @@ md-icon {
         --shake-intensity: 1;
         --d: calc(var(--shake-intensity) * 1.2px);
         animation-name: shake;
-        animation-duration: calc(var(--shake-intensity) * 40ms);
+        animation-duration: calc(40ms + (var(--shake-intensity) * 25ms));
         animation-timing-function: linear;
     }
 }
