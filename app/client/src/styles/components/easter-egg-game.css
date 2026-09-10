@@ -6,7 +6,7 @@ easter-egg-game {
         max-height: 370px;
     }
 
-    @media (height >= 430px) {
+    @media ((width >= 550px) and (height >= 430px)) {
         max-height: 340px;
         padding-top: 10px;
     }
