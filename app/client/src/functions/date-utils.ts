@@ -38,7 +38,7 @@ export const formatDayOfMonth = (date: Date) => {
 
 export const formatDateRelative = (
     date: Date | string,
-    { collapseWeekday = false, collapseMonth = false, collapseDay = false } = {}
+    { collapseDayName = false, collapseMonth = false, collapseDayNum = false } = {}
 ) => {
     date = new Date(date);
     const val = getDateOnlyVal;
@@ -46,14 +46,17 @@ export const formatDateRelative = (
     const yrSame = date.getUTCFullYear() == today.getUTCFullYear();
     const monthSame = yrSame && date.getUTCMonth() == today.getUTCMonth();
 
+    collapseDayName &&= !monthSame;
+    collapseDayNum &&= !yrSame;
+
     if (val(date) == val(today)) return "Today";
     if (val(date) == val(offsetDate(today, -1))) return "Yesterday";
     if (val(date) == val(offsetDate(today, 1))) return "Tomorrow";
     if (val(date) > val(today) && val(date) <= val(getNextDate("Sunday")))
         return formatDate(date, { weekday: "long" });
     return [
-        ...(yrSame ? [formatDate(date, { weekday: collapseWeekday ? "short" : "long" })] : []),
-        !yrSame && collapseDay ? date.getUTCDate() : formatDayOfMonth(date),
+        ...(yrSame ? [formatDate(date, { weekday: collapseDayName ? "short" : "long" })] : []),
+        collapseDayNum ? date.getUTCDate() : formatDayOfMonth(date),
         ...(!monthSame ? [formatDate(date, { month: collapseMonth ? "short" : "long" })] : []),
         ...(!yrSame ? [formatDate(date, { year: "numeric" })] : [])
     ].join(" ");

@@ -23,11 +23,11 @@ export class TimelineList extends LitElement {
     private readonly threshold = 400;
     private readonly batchSize = 30;
     private readonly relFormatMedia = {
-        collapseWeekday: matchMedia(
+        collapseDayName: matchMedia(
             "((width <= 560px) or ((width <= 700px) and (width >= 550px)))"
         ),
         collapseMonth: matchMedia("(width <= 650px)"),
-        collapseDay: matchMedia("(width <= 350px)")
+        collapseDayNum: matchMedia("(width <= 350px)")
     };
     private handleScrolling = true;
 
@@ -201,9 +201,9 @@ export class TimelineList extends LitElement {
     };
 
     private getRelFormatOpts = () => ({
-        collapseWeekday: this.relFormatMedia.collapseWeekday.matches,
+        collapseDayName: this.relFormatMedia.collapseDayName.matches,
         collapseMonth: this.relFormatMedia.collapseMonth.matches,
-        collapseDay: this.relFormatMedia.collapseDay.matches
+        collapseDayNum: this.relFormatMedia.collapseDayNum.matches
     });
 
     private collapseAll = ({
@@ -299,9 +299,9 @@ export class TimelineList extends LitElement {
                                     <h2>
                                         <span class="prefix">Turns</span>
                                         ${formatDateRelative(d, {
-                                            collapseWeekday: true,
+                                            collapseDayName: true,
                                             collapseMonth: true,
-                                            collapseDay: true
+                                            collapseDayNum: true
                                         })}
                                     </h2>
                                     <button class="done filled" @click=${() => dialog.close()}>
