@@ -1,4 +1,4 @@
-@keyframes flip-up {
+@keyframes jump-to-top {
     0% {
         bottom: var(--platform-height);
         scale: 1 1;
@@ -23,7 +23,7 @@
     }
 }
 
-@keyframes flip-down {
+@keyframes jump-to-bottom {
     0% {
         bottom: calc(100% - var(--platform-height) - var(--player-height) - 5px);
         scale: 1 -1;
