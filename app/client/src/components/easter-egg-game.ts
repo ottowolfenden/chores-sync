@@ -1,21 +1,28 @@
-import { LitElement, html } from "lit";
-import { customElement, query } from "lit/decorators.js";
+import { LitElement, html, nothing } from "lit";
+import { customElement, query, state } from "lit/decorators.js";
 import { delay, throttle } from "../functions/timer";
 import { instantly } from "../functions/element-utils";
+import { repeat } from "lit/directives/repeat.js";
 
 export type Pos = "top" | "bottom";
-export type Step = { delay: number; pos?: Pos };
+export type Step = { id: number; time: number; pos?: Pos };
 
 @customElement("easter-egg-game")
 export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     @query(".player") private player!: MdIcon;
+    @state() private running = false;
     private active = false;
-    private running = false;
     private runId = 0;
     private pos: Pos = "bottom";
-    private steps: Step[] = [{ delay: 1000 }, { delay: 3000, pos: "top" }];
+    private steps: Step[] = [
+        { id: 0, time: 1000 },
+        { id: 1, time: 2000, pos: "bottom" },
+        { id: 2, time: 3000, pos: "top" },
+        { id: 3, time: 4000 },
+        { id: 4, time: 5000, pos: "bottom" }
+    ];
 
     disconnectedCallback() {
         super.disconnectedCallback();
@@ -40,26 +47,35 @@ export class EasterEggGame extends LitElement {
         const id = ++this.runId;
         console.log("started");
 
+        let prevTime = 0;
+
         for (const step of this.steps) {
-            await delay(step.delay);
+            await delay(step.time - prevTime);
             if (id != this.runId) return;
-            console.log(step.pos);
+            this.requestUpdate();
+            console.log(this.steps);
+            console.log({
+                step: step.id,
+                expected: step.pos,
+                actual: this.pos
+            });
             if (step.pos && step.pos != this.pos) {
                 console.log("fail");
+                this.stop();
                 break;
             }
+            prevTime = step.time;
         }
+        console.log("finished successfully");
         this.stop();
     };
 
     private stop = () => {
         this.running = false;
         this.runId++;
-        if (this.pos == "top")
-            instantly(this.player, () => (this.player.style.animationName = "jump-to-bottom"));
+        instantly(this.player, () => (this.player.style.animationName = "jump-to-bottom"));
         this.pos = "bottom";
         this.player.onanimationend = null;
-        console.log("finished successfully");
     };
 
     private invert = (pos: Pos): Pos => (pos == "top" ? "bottom" : "top");
@@ -80,8 +96,29 @@ export class EasterEggGame extends LitElement {
             class="container"
             @mousedown=${() => (this.running ? this.handlePress : this.start)()}>
             <md-icon class="player">directions_bike</md-icon>
-            <!-- <div class="platform"></div>
-            <div class="platform" data-top></div> -->
+            ${this.running
+                ? html`
+                      <div class="track">
+                          ${repeat(
+                              this.steps,
+                              s => s.id,
+                              s => html`
+                                  <div class="step">
+                                      ${s.pos !== "bottom"
+                                          ? html` <div class="platform top"></div> `
+                                          : nothing}
+                                      ${s.pos !== "top"
+                                          ? html` <div class="platform bottom"></div> `
+                                          : nothing}
+                                  </div>
+                              `
+                          )}
+                      </div>
+                  `
+                : html`
+                      <div class="platform top"></div>
+                      <div class="platform bottom"></div>
+                  `}
         </div>
     `;
 }

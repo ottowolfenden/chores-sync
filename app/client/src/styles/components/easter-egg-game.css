@@ -48,9 +48,18 @@
     }
 }
 
+@keyframes move-track {
+    to {
+        translate: calc(-1 * var(--step-width)) 0;
+    }
+}
+
 easter-egg-game {
     --platform-height: 60px;
     --player-height: calc(var(--platform-height) - 17px);
+    --step-width: 180px;
+    --scroll-duration: 1s;
+
     margin: 0 -20px;
     height: calc(100% - 20px - 30px);
 
@@ -69,18 +78,14 @@ easter-egg-game {
     }
 
     .container {
-        background-color: alpha(from blue / 0.05);
         height: 100%;
         position: relative;
         overflow: hidden;
-
-        & > * {
-            position: absolute;
-        }
     }
 
     md-icon.player {
         --opsz: 50;
+        position: absolute;
         color: var(--primary);
         height: var(--player-height);
         bottom: var(--platform-height);
@@ -91,16 +96,42 @@ easter-egg-game {
         animation-fill-mode: forwards;
     }
 
+    .track {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        display: flex;
+        animation-name: move-track;
+        animation-duration: var(--scroll-duration);
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+
+    .step {
+        position: relative;
+        flex: 0 0 var(--step-width);
+        width: var(--step-width);
+        height: 100%;
+    }
+
     .platform {
-        --width: 100px;
-        width: var(--width);
+        position: absolute;
+        width: var(--step-width);
         height: var(--platform-height);
         background-color: var(--secondary-container);
         border-radius: 13px;
-        bottom: 0;
+    }
 
-        &[data-top] {
-            top: 0;
-        }
+    .platform.top {
+        top: 0;
+    }
+
+    .platform.bottom {
+        bottom: 0;
+    }
+
+    .container > .platform {
+        left: 0;
     }
 }
