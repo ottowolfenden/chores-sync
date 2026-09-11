@@ -1,4 +1,63 @@
+@keyframes move-left {
+    from {
+        left: 100%;
+    }
+    to {
+        left: calc(var(--width) * -1);
+    }
+}
+
+@keyframes flip-up {
+    0% {
+        bottom: var(--platform-height);
+        scale: 1 1;
+    }
+    20% {
+        bottom: var(--platform-height);
+        rotate: -20deg;
+        scale: 1 1;
+    }
+    50% {
+        rotate: -90deg;
+        scale: 1 1;
+    }
+    50.0001% {
+        rotate: -90deg;
+        scale: 1 -1;
+    }
+    100% {
+        bottom: calc(100% - var(--platform-height) - var(--player-height) - 5px);
+        scale: 1 -1;
+    }
+}
+
+@keyframes flip-down {
+    0% {
+        bottom: calc(100% - var(--platform-height) - var(--player-height) - 5px);
+        scale: 1 -1;
+    }
+    20% {
+        bottom: calc(100% - var(--platform-height) - var(--player-height) - 5px);
+        rotate: 20deg;
+        scale: 1 -1;
+    }
+    50% {
+        rotate: 90deg;
+        scale: 1 -1;
+    }
+    50.0001% {
+        rotate: 90deg;
+        scale: 1 1;
+    }
+    100% {
+        bottom: var(--platform-height);
+        scale: 1 1;
+    }
+}
+
 easter-egg-game {
+    --platform-height: 60px;
+    --player-height: calc(var(--platform-height) - 17px);
     margin: 0 -20px;
     height: calc(100% - 20px - 30px);
 
@@ -12,21 +71,47 @@ easter-egg-game {
     }
 
     .stats {
-        background-color: blue;
+        background-color: alpha(from red / 0.05);
         height: 30px;
     }
 
     .container {
-        background-color: red;
+        background-color: alpha(from blue / 0.05);
         height: 100%;
         position: relative;
+        overflow: hidden;
+
+        & > * {
+            position: absolute;
+        }
     }
 
     md-icon.player {
         --opsz: 50;
         color: var(--primary);
-        position: absolute;
-        bottom: 70px;
+        height: var(--player-height);
+        bottom: var(--platform-height);
         left: 60px;
+        z-index: 1;
+        animation-duration: 400ms;
+        animation-timing-function: ease;
+        animation-fill-mode: forwards;
+    }
+
+    .platform {
+        --width: 100px;
+        width: var(--width);
+        height: var(--platform-height);
+        background-color: var(--secondary-container);
+        border-radius: 13px;
+        bottom: 0;
+        animation-name: move-left;
+        animation-duration: 2s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+
+        &[data-top] {
+            top: 0;
+        }
     }
 }
