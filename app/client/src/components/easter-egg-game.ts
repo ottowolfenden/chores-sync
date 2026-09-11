@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { customElement, query, state } from "lit/decorators.js";
+import { customElement, query } from "lit/decorators.js";
 import { throttle } from "../functions/timer";
 
 @customElement("easter-egg-game")
@@ -7,8 +7,8 @@ export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     @query(".player") private player!: MdIcon;
-    @state() private active = false;
-    @state() private started = false;
+    private active = false;
+    private started = false;
     private pos: "top" | "bottom" = "bottom";
 
     disconnectedCallback() {
@@ -50,7 +50,7 @@ export class EasterEggGame extends LitElement {
         <div class="stats"></div>
         <div
             class="container"
-            @mousedown=${(() => (this.started ? this.handlePress : this.start))()}>
+            @mousedown=${() => (this.started ? this.handlePress : this.start)()}>
             <md-icon class="player">directions_bike</md-icon>
             <div class="platform"></div>
             <div class="platform" data-top></div>
