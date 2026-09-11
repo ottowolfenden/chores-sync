@@ -6,7 +6,6 @@ tsc -p app/client/tsconfig.json --noEmit
 tsc -p app/server/tsconfig.json --noEmit
 
 node scripts/fetch-material-symbols.mjs
-node scripts/fetch-material-symbols.mjs easter-egg
 
 rm -rf app/client/dist
 mkdir -p app/client/dist/assets
