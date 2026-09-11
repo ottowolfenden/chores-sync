@@ -1,8 +1,16 @@
 import fs from "node:fs";
 
 try {
+    const isEasterEgg = process.argv[2] == "easter-egg";
     const icons = [
-        ...new Set(fs.readFileSync("material-symbols.txt", "utf-8").trim().split(/\s+/).sort())
+        ...new Set(
+            fs
+                .readFileSync("material-symbols.txt", "utf-8")
+                .split("EASTER EGG ICONS")
+                [isEasterEgg ? 1 : 0].trim()
+                .split(/\s+/)
+                .sort()
+        )
     ].join(",");
     const cssUrl =
         "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:" +
@@ -21,7 +29,10 @@ try {
     const fontUrl = css.substring(start, end);
     const font = await fetch(fontUrl).then(r => r.arrayBuffer());
 
-    fs.writeFileSync("app/client/src/assets/fonts/material-symbols.woff2", Buffer.from(font));
+    fs.writeFileSync(
+        `app/client/src/assets/fonts/material-symbols${isEasterEgg ? "-easter-egg" : ""}.woff2`,
+        Buffer.from(font)
+    );
 
     console.log("successfully downloaded material symbols");
 } catch (err) {
