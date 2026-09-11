@@ -1,8 +1,10 @@
 import { LitElement, html } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import { delay, throttle } from "../functions/timer";
+import { instantly } from "../functions/element-utils";
 
-export type Step = { delay: number; allowed: ["top"] | ["bottom"] | ["top", "bottom"] };
+export type Pos = "top" | "bottom";
+export type Step = { delay: number; pos?: Pos };
 
 @customElement("easter-egg-game")
 export class EasterEggGame extends LitElement {
@@ -12,11 +14,8 @@ export class EasterEggGame extends LitElement {
     private active = false;
     private running = false;
     private runId = 0;
-    private pos: "top" | "bottom" = "bottom";
-    private steps: Step[] = [
-        { delay: 1000, allowed: ["top", "bottom"] },
-        { delay: 4000, allowed: ["top"] }
-    ];
+    private pos: Pos = "bottom";
+    private steps: Step[] = [{ delay: 1000 }, { delay: 3000, pos: "top" }];
 
     disconnectedCallback() {
         super.disconnectedCallback();
@@ -44,7 +43,7 @@ export class EasterEggGame extends LitElement {
         for (const step of this.steps) {
             await delay(step.delay);
             if (id != this.runId) return;
-            console.log(step.allowed);
+            console.log(!step.pos || step.pos == this.pos);
         }
         this.stop();
     };
@@ -52,6 +51,9 @@ export class EasterEggGame extends LitElement {
     private stop = () => {
         this.running = false;
         this.runId++;
+        if (this.pos == "top")
+            instantly(this.player, () => (this.player.style.animationName = "jump-to-bottom"));
+        this.pos = "bottom";
         console.log("stopped");
     };
 
