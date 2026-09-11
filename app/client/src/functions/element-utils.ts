@@ -30,9 +30,11 @@ export const instantly = <T = void>(
     callback: () => T
 ): T => {
     els = Array.isArray(els) ? els : [els];
-    els.forEach(el => (el.style.transition = "none"));
+    els.forEach(el => (el.style.transition = el.style.animation = "none"));
     const result = callback();
-    requestAnimationFrame(() => els.forEach(el => (el.style.transition = "")));
+    requestAnimationFrame(() =>
+        els.forEach(el => (el.style.transition = el.style.animation = ""))
+    );
     return result;
 };
 
