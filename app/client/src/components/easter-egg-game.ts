@@ -43,7 +43,11 @@ export class EasterEggGame extends LitElement {
         for (const step of this.steps) {
             await delay(step.delay);
             if (id != this.runId) return;
-            console.log(!step.pos || step.pos == this.pos);
+            console.log(step.pos);
+            if (step.pos && step.pos != this.pos) {
+                console.log("fail");
+                break;
+            }
         }
         this.stop();
     };
@@ -54,8 +58,11 @@ export class EasterEggGame extends LitElement {
         if (this.pos == "top")
             instantly(this.player, () => (this.player.style.animationName = "jump-to-bottom"));
         this.pos = "bottom";
-        console.log("stopped");
+        this.player.onanimationend = null;
+        console.log("finished successfully");
     };
+
+    private invert = (pos: Pos): Pos => (pos == "top" ? "bottom" : "top");
 
     private handleKeydown = (e: KeyboardEvent) => {
         if (["Enter", " "].includes(e.key)) (this.running ? this.handlePress : this.start)();
@@ -63,8 +70,8 @@ export class EasterEggGame extends LitElement {
     };
 
     private handlePress = throttle(() => {
-        this.pos = this.pos == "top" ? "bottom" : "top";
-        this.player.style.animationName = `jump-to-${this.pos}`;
+        this.player.style.animationName = `jump-to-${this.invert(this.pos)}`;
+        this.player.onanimationend = () => (this.pos = this.invert(this.pos));
     }, 400);
 
     render = () => html`
