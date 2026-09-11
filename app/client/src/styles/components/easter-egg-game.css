@@ -1,12 +1,3 @@
-@keyframes move-left {
-    from {
-        left: 100%;
-    }
-    to {
-        left: calc(var(--width) * -1);
-    }
-}
-
 @keyframes flip-up {
     0% {
         bottom: var(--platform-height);
@@ -20,6 +11,7 @@
     50% {
         rotate: -90deg;
         scale: 1 1;
+        translate: 15px 0;
     }
     50.0001% {
         rotate: -90deg;
@@ -44,6 +36,7 @@
     50% {
         rotate: 90deg;
         scale: 1 -1;
+        translate: 15px 0;
     }
     50.0001% {
         rotate: 90deg;
@@ -105,10 +98,6 @@ easter-egg-game {
         background-color: var(--secondary-container);
         border-radius: 13px;
         bottom: 0;
-        animation-name: move-left;
-        animation-duration: 2s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
 
         &[data-top] {
             top: 0;
