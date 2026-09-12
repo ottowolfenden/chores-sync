@@ -1,5 +1,6 @@
 [
     {
+        "for": "app",
         "path": "app/client/src/assets/fonts/material-symbols.woff2",
         "config": "opsz,wght,FILL@20..48,100..700,0..1",
         "icons": [
@@ -37,6 +38,7 @@
         ]
     },
     {
+        "for": "easter-egg",
         "path": "app/client/src/assets/fonts/material-symbols-easter-egg.woff2",
         "config": "opsz,wght@20..48,100..700",
         "icons": [
