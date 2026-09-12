@@ -1,18 +1,17 @@
 import { LitElement, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
-import { getRandFrom, getRandsFrom, shuffle } from "../functions/rand-utils";
+import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
 import materialSymbols from "../assets/material-symbols.json";
 
-export type Symbol = { icon: string; rotation: number; size: number };
-export type Card = { variation: number; symbols: Symbol[] };
+export type Symbol = { icon: string; rotation: number };
+export type Card = { symbols: Symbol[]; variation: number; rotation: number };
 
 @customElement("easter-egg-game")
 export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     private readonly numPerCard = 8;
-
-    @state() private cards?: [Card, Card];
+    @state() private cards?: Card[];
 
     connectedCallback() {
         super.connectedCallback();
@@ -23,38 +22,36 @@ export class EasterEggGame extends LitElement {
         let symbols = [
             ...new Set(materialSymbols.find(obj => obj.for == "easter-egg")?.icons)
         ];
-        if (!symbols) return;
         const match = getRandFrom(symbols);
-        symbols = symbols.filter(s => s != match);
-        const symbols1 = getRandsFrom(symbols, this.numPerCard - 1);
-        symbols = symbols.filter(s => !symbols1.some(s1 => s1 == s));
-        const symbols2 = getRandsFrom(symbols, this.numPerCard - 1);
-
-        this.cards = [
-            {
-                variation: 1,
-                symbols: shuffle([match, ...symbols1]).map(icon => ({
-                    icon,
-                    rotation: 0,
-                    size: 0
-                }))
-            },
-            {
-                variation: 1,
-                symbols: shuffle([match, ...symbols2]).map(icon => ({
-                    icon,
-                    rotation: 0,
-                    size: 0
-                }))
-            }
-        ];
+        if (!match) return;
+        const symbols1 = getRandsFrom(
+            symbols.filter(s => s != match),
+            this.numPerCard - 1
+        );
+        const symbols2 = getRandsFrom(
+            symbols.filter(s => s != match && !symbols1.some(s1 => s1 == s)),
+            this.numPerCard - 1
+        );
+        this.cards = [symbols1, symbols2].map(symbols => ({
+            symbols: shuffle([match, ...symbols]).map(icon => ({
+                icon,
+                rotation: getRandInt(0, 360)
+            })),
+            variation: getRandInt(1, 10),
+            rotation: getRandInt(0, 360)
+        }));
     };
 
     render = () =>
         this.cards?.map(
             c => html`
-                <div class="card">
-                    ${c.symbols.map(s => html`<md-icon>${s.icon}</md-icon>`)}
+                <div
+                    class="card"
+                    data-variation=${c.variation}
+                    style="rotate:${c.rotation}deg">
+                    ${c.symbols.map(
+                        s => html`<md-icon style="rotate:${s.rotation}deg">${s.icon}</md-icon>`
+                    )}
                 </div>
             `
         );
