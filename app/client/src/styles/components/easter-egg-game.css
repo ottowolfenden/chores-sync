@@ -4,9 +4,17 @@
 }
 
 easter-egg-game {
-    background-color: red;
+    display: flex;
 
     md-icon {
         font-family: "Material Symbols Outlined Easter Egg";
+        font-size: 30px;
+    }
+
+    .card {
+        background-color: var(--surface-container-low);
+        flex-grow: 1;
+        margin: 10px;
+        aspect-ratio: 1 / 1;
     }
 }
