@@ -45,9 +45,7 @@
             "festival",
             "local_shipping",
             "smart_toy",
-            "mobile",
             "photo_camera",
-            "egg",
             "book_2",
             "owl",
             "snail",
@@ -101,7 +99,10 @@
             "eyeglasses_2",
             "print",
             "crown",
-            "stroller"
+            "stroller",
+            "speaker",
+            "star",
+            "filter_drama"
         ]
     }
 ]
