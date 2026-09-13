@@ -34,7 +34,8 @@
             "sentiment_satisfied",
             "sentiment_excited",
             "sentiment_stressed",
-            "sentiment_very_dissatisfied"
+            "sentiment_very_dissatisfied",
+            "play_arrow"
         ]
     },
     {
