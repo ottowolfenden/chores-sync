@@ -1,8 +1,9 @@
 import { LitElement, html } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
 import type { Conf } from "./state-actions";
 import materialSymbols from "../assets/material-symbols.json";
+import { withTransition } from "../functions/element-utils";
 
 export type Symbol = { icon: string; rotation: number };
 export type Card = { symbols: Symbol[]; variation: number; rotation: number };
@@ -21,6 +22,7 @@ export class EasterEggGame extends LitElement {
     @property({ type: Boolean }) running: boolean = false;
     @state() private timeRemaining = this.gameDuration;
     @state() private cards: Card[] = this.emptyCards;
+    @query(".cards-container") private cardsContainer!: HTMLDivElement;
     private timer?: number;
 
     private start = () => {
@@ -37,7 +39,14 @@ export class EasterEggGame extends LitElement {
     private reset = () => {
         this.running = false;
         this.resetTimer();
-        this.cards = this.emptyCards;
+        this.cardsContainer.querySelector("button");
+        withTransition(this.cardsContainer.querySelector("button"), {
+            before: () => this.cardsContainer.classList.add("resetting"),
+            after: () => {
+                this.cards = this.emptyCards;
+                this.cardsContainer.classList.remove("resetting");
+            }
+        });
     };
 
     private resetTimer = () => {

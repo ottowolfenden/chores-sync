@@ -10,6 +10,11 @@ easter-egg-game {
 
     .cards-container {
         display: flex;
+        gap: 20px;
+
+        &.resetting button {
+            scale: 0;
+        }
     }
 
     state-actions {
@@ -28,7 +33,6 @@ easter-egg-game {
     .card {
         background-color: var(--surface-container-low);
         flex-grow: 1;
-        margin: 10px;
         aspect-ratio: 1 / 1;
         border-radius: 50%;
         position: relative;
@@ -38,6 +42,10 @@ easter-egg-game {
             --icon-size: 30px;
             position: absolute;
             padding: 4cqw;
+
+            @starting-style {
+                scale: 0;
+            }
 
             md-icon {
                 font-family: "Material Symbols Outlined Easter Egg";
