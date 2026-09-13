@@ -10,7 +10,8 @@ easter-egg-game {
 
     .cards-container {
         display: flex;
-        background-color: blue;
+        align-self: center;
+        width: 100%;
         gap: 10px;
 
         &.resetting button {
@@ -21,7 +22,7 @@ easter-egg-game {
     @container (max-aspect-ratio: 3 / 4) {
         .cards-container {
             flex-direction: column;
-            height: calc(100cqh - 180px);
+            height: calc(100cqh - 160px);
             align-items: center;
         }
         .card {
@@ -30,6 +31,14 @@ easter-egg-game {
             aspect-ratio: 1 / 1;
             flex-shrink: 0;
             flex-basis: 50%;
+        }
+    }
+
+    @container (min-aspect-ratio: 3 / 4) {
+        @media (height <= 490px) {
+            .cards-container {
+                width: calc(140cqh);
+            }
         }
     }
 
