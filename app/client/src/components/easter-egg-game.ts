@@ -13,7 +13,7 @@ export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     private readonly numPerCard = 8;
-    private readonly gameDuration = 40_000;
+    private readonly gameDuration = 400_000;
     private readonly dangerZone = 0.2 * this.gameDuration;
     private readonly emptyCards: Card[] = [
         { symbols: [], variation: 0, rotation: 0 },
@@ -73,7 +73,7 @@ export class EasterEggGame extends LitElement {
                 icon,
                 rotation: getRandInt(0, 360)
             })),
-            variation: 1,
+            variation: getRandInt(1, 5),
             rotation: getRandInt(0, 360)
         }));
     };
@@ -82,7 +82,26 @@ export class EasterEggGame extends LitElement {
         <div class="cards-container">
             ${this.cards.map(
                 c => html`
-                    <div class="card" data-variation=${c.variation}>
+                    <div
+                        class="card"
+                        data-variation=${c.variation}
+                        style="rotate:${c.rotation}deg"
+                        @click=${(e: MouseEvent) => {
+                            const rect = (e.target as HTMLElement).getBoundingClientRect();
+                            (e.target as HTMLElement).style.setProperty(
+                                "--opacity",
+                                getComputedStyle(e.target as HTMLElement).getPropertyValue(
+                                    "--opacity"
+                                ) == "0"
+                                    ? "1"
+                                    : "0"
+                            );
+                            console.clear();
+                            console.log({
+                                top: Math.round(((e.clientY - rect.top) / rect.height) * 100),
+                                left: Math.round(((e.clientX - rect.left) / rect.width) * 100)
+                            });
+                        }}>
                         ${c.symbols.map(
                             s => html`
                                 <button class="transparent">

@@ -35,15 +35,16 @@ easter-egg-game {
     }
 
     @container (min-aspect-ratio: 3 / 4) {
-        @media (height <= 490px) {
+        @media ((height <= 490px) and (width >= 735px)) {
             .cards-container {
-                width: calc(140cqh);
+                width: 140cqh;
             }
         }
     }
 
     state-actions {
         align-self: center;
+        margin-bottom: 10px;
 
         button {
             --size: 18;
@@ -66,6 +67,7 @@ easter-egg-game {
     }
 
     .card {
+        --opacity: 0;
         background-color: var(--surface-container-low);
         flex-grow: 1;
         flex-basis: 0;
@@ -74,10 +76,27 @@ easter-egg-game {
         position: relative;
         container-type: inline-size;
 
+        /* TEMP */
+        counter-reset: child;
+
         > button {
             --icon-size: 13cqw;
             position: absolute;
             padding: 4cqw;
+            background-color: alpha(from red / calc(var(--opacity) * 0.3));
+            pointer-events: none;
+
+            /* TEMP */
+            counter-increment: child;
+            &::before {
+                position: absolute;
+                opacity: var(--opacity);
+                content: counter(child);
+                top: 10px;
+                left: 10px;
+                color: rgb(129, 129, 129);
+                font: 12px monospace;
+            }
 
             @starting-style {
                 scale: 0;
@@ -91,9 +110,216 @@ easter-egg-game {
 
         &[data-variation="1"] {
             > :nth-child(1) {
-                top: 50%;
-                left: 15%;
+                top: 48%;
+                left: 10%;
                 --icon-size: 20cqw;
+            }
+            > :nth-child(2) {
+                top: 24%;
+                left: 11%;
+                --icon-size: 13cqw;
+            }
+            > :nth-child(3) {
+                top: 53%;
+                left: 63%;
+                --icon-size: 16cqw;
+            }
+            > :nth-child(4) {
+                top: 69%;
+                left: 40%;
+                --icon-size: 15cqw;
+            }
+            > :nth-child(5) {
+                top: 35%;
+                left: 40%;
+                --icon-size: 17cqw;
+            }
+            > :nth-child(6) {
+                top: 8%;
+                left: 31%;
+                --icon-size: 12cqw;
+            }
+            > :nth-child(7) {
+                top: 12%;
+                left: 56%;
+                --icon-size: 14cqw;
+            }
+            > :nth-child(8) {
+                top: 33%;
+                left: 73%;
+                --icon-size: 13cqw;
+            }
+        }
+
+        &[data-variation="2"] {
+            > :nth-child(1) {
+                top: 54%;
+                left: 8%;
+                --icon-size: 13cqw;
+            }
+            > :nth-child(2) {
+                top: 21%;
+                left: 11%;
+                --icon-size: 13cqw;
+            }
+            > :nth-child(3) {
+                top: 65%;
+                left: 55%;
+                --icon-size: 15cqw;
+            }
+            > :nth-child(4) {
+                top: 69%;
+                left: 30%;
+                --icon-size: 15cqw;
+            }
+            > :nth-child(5) {
+                top: 35%;
+                left: 28%;
+                --icon-size: 20cqw;
+            }
+            > :nth-child(6) {
+                top: 8%;
+                left: 31%;
+                --icon-size: 12cqw;
+            }
+            > :nth-child(7) {
+                top: 9%;
+                left: 56%;
+                --icon-size: 14cqw;
+            }
+            > :nth-child(8) {
+                top: 34%;
+                left: 62%;
+                --icon-size: 21cqw;
+            }
+        }
+
+        &[data-variation="3"] {
+            > :nth-child(1) {
+                top: 55%;
+                left: 13%;
+                --icon-size: 16cqw;
+            }
+            > :nth-child(2) {
+                top: 23%;
+                left: 8%;
+                --icon-size: 17cqw;
+            }
+            > :nth-child(3) {
+                top: 58%;
+                left: 63%;
+                --icon-size: 15cqw;
+            }
+            > :nth-child(4) {
+                top: 71%;
+                left: 40%;
+                --icon-size: 16cqw;
+            }
+            > :nth-child(5) {
+                top: 35%;
+                left: 40%;
+                --icon-size: 18cqw;
+            }
+            > :nth-child(6) {
+                top: 8%;
+                left: 31%;
+                --icon-size: 16cqw;
+            }
+            > :nth-child(7) {
+                top: 12%;
+                left: 58%;
+                --icon-size: 14cqw;
+            }
+            > :nth-child(8) {
+                top: 33%;
+                left: 73%;
+                --icon-size: 15cqw;
+            }
+        }
+
+        &[data-variation="4"] {
+            > :nth-child(1) {
+                top: 48%;
+                left: 10%;
+                --icon-size: 17cqw;
+            }
+            > :nth-child(2) {
+                top: 24%;
+                left: 11%;
+                --icon-size: 13cqw;
+            }
+            > :nth-child(3) {
+                top: 56%;
+                left: 59%;
+                --icon-size: 16cqw;
+            }
+            > :nth-child(4) {
+                top: 65%;
+                left: 31%;
+                --icon-size: 20cqw;
+            }
+            > :nth-child(5) {
+                top: 37%;
+                left: 40%;
+                --icon-size: 15cqw;
+            }
+            > :nth-child(6) {
+                top: 6%;
+                left: 31%;
+                --icon-size: 20cqw;
+            }
+            > :nth-child(7) {
+                top: 17%;
+                left: 62%;
+                --icon-size: 12cqw;
+            }
+            > :nth-child(8) {
+                top: 36%;
+                left: 73%;
+                --icon-size: 13cqw;
+            }
+        }
+
+        &[data-variation="5"] {
+            > :nth-child(1) {
+                top: 40%;
+                left: 25%;
+                --icon-size: 17cqw;
+            }
+            > :nth-child(2) {
+                top: 24%;
+                left: 9%;
+                --icon-size: 13cqw;
+            }
+            > :nth-child(3) {
+                top: 61%;
+                left: 65%;
+                --icon-size: 12cqw;
+            }
+            > :nth-child(4) {
+                top: 69%;
+                left: 40%;
+                --icon-size: 15cqw;
+            }
+            > :nth-child(5) {
+                top: 38%;
+                left: 54%;
+                --icon-size: 15cqw;
+            }
+            > :nth-child(6) {
+                top: 8%;
+                left: 31%;
+                --icon-size: 14cqw;
+            }
+            > :nth-child(7) {
+                top: 12%;
+                left: 58%;
+                --icon-size: 14cqw;
+            }
+            > :nth-child(8) {
+                top: 65%;
+                left: 16%;
+                --icon-size: 12cqw;
             }
         }
     }
