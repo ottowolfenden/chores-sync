@@ -36,7 +36,9 @@
             "sentiment_stressed",
             "sentiment_very_dissatisfied",
             "play_arrow",
-            "restart_alt"
+            "restart_alt",
+            "favorite",
+            "heart_broken"
         ]
     },
     {
