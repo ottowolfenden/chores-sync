@@ -25,7 +25,7 @@ export class EasterEggGame extends LitElement {
     @query(".cards-container") private cardsContainer!: HTMLDivElement;
     private timer?: number;
 
-    private start = () => {
+    start = () => {
         if (this.running) return;
         this.generateCards();
         this.running = true;
@@ -36,7 +36,7 @@ export class EasterEggGame extends LitElement {
         }, 200);
     };
 
-    private reset = () => {
+    reset = () => {
         this.running = false;
         this.resetTimer();
         this.cardsContainer.querySelector("button");
