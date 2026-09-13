@@ -67,7 +67,6 @@ easter-egg-game {
     }
 
     .card {
-        --opacity: 0;
         background-color: var(--surface-container-low);
         flex-grow: 1;
         flex-basis: 0;
@@ -76,27 +75,10 @@ easter-egg-game {
         position: relative;
         container-type: inline-size;
 
-        /* TEMP */
-        counter-reset: child;
-
         > button {
             --icon-size: 13cqw;
             position: absolute;
             padding: 4cqw;
-            background-color: alpha(from red / calc(var(--opacity) * 0.3));
-            pointer-events: none;
-
-            /* TEMP */
-            counter-increment: child;
-            &::before {
-                position: absolute;
-                opacity: var(--opacity);
-                content: counter(child);
-                top: 10px;
-                left: 10px;
-                color: rgb(129, 129, 129);
-                font: 12px monospace;
-            }
 
             @starting-style {
                 scale: 0;

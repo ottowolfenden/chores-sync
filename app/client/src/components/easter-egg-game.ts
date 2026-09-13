@@ -2,22 +2,22 @@ import { LitElement, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
 import type { Conf } from "./state-actions";
-import materialSymbols from "../assets/material-symbols.json";
 import { withTransition } from "../functions/element-utils";
+import materialSymbols from "../assets/material-symbols.json";
 
 export type Symbol = { icon: string; rotation: number };
-export type Card = { symbols: Symbol[]; variation: number; rotation: number };
+export type Card = { symbols: Symbol[]; variation: 1 | 2 | 3 | 4 | 5; rotation: number };
 
 @customElement("easter-egg-game")
 export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     private readonly numPerCard = 8;
-    private readonly gameDuration = 400_000;
+    private readonly gameDuration = 40_000;
     private readonly dangerZone = 0.2 * this.gameDuration;
     private readonly emptyCards: Card[] = [
-        { symbols: [], variation: 0, rotation: 0 },
-        { symbols: [], variation: 0, rotation: 0 }
+        { symbols: [], variation: 1, rotation: 0 },
+        { symbols: [], variation: 1, rotation: 0 }
     ];
     @property({ type: Boolean }) running: boolean = false;
     @state() private timeRemaining = this.gameDuration;
@@ -73,7 +73,7 @@ export class EasterEggGame extends LitElement {
                 icon,
                 rotation: getRandInt(0, 360)
             })),
-            variation: getRandInt(1, 5),
+            variation: getRandInt(1, 5) as 1 | 2 | 3 | 4 | 5,
             rotation: getRandInt(0, 360)
         }));
     };
@@ -85,23 +85,7 @@ export class EasterEggGame extends LitElement {
                     <div
                         class="card"
                         data-variation=${c.variation}
-                        style="rotate:${c.rotation}deg"
-                        @click=${(e: MouseEvent) => {
-                            const rect = (e.target as HTMLElement).getBoundingClientRect();
-                            (e.target as HTMLElement).style.setProperty(
-                                "--opacity",
-                                getComputedStyle(e.target as HTMLElement).getPropertyValue(
-                                    "--opacity"
-                                ) == "0"
-                                    ? "1"
-                                    : "0"
-                            );
-                            console.clear();
-                            console.log({
-                                top: Math.round(((e.clientY - rect.top) / rect.height) * 100),
-                                left: Math.round(((e.clientX - rect.left) / rect.width) * 100)
-                            });
-                        }}>
+                        style="rotate:${c.rotation}deg">
                         ${c.symbols.map(
                             s => html`
                                 <button class="transparent">
