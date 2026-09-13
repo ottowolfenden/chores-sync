@@ -106,20 +106,23 @@ export class CountsList extends LitElement {
                             normal: {
                                 icon: "edit",
                                 label: "Edit",
+                                class: "tonal small",
                                 click: () => this.startEdit(countDiv)
                             },
                             active: {
+                                class: "tonal small",
                                 beforeTransition: this.invalidate,
                                 click: async () => this.saveEdit(countDiv, c)
                             },
                             loading: {},
                             success: {},
                             error: {},
-                            cancel: { click: async () => this.cancelEdit(countDiv) }
+                            cancel: {
+                                class: "outlined small",
+                                click: async () => this.cancelEdit(countDiv)
+                            }
                         } as Conf}
                         ?hidden=${!this.currentMember?.isAdmin}
-                        state-button-class="tonal small"
-                        cancel-button-class="outlined small"
                         ${ref<StateActions>(el => (stateActions = el))}></state-actions>
                     <button class="expand transparent">
                         <md-icon>keyboard_arrow_down</md-icon>

@@ -5,8 +5,9 @@ import { withTransition } from "../functions/element-utils.js";
 
 export type ButtonConf = {
     icon?: string;
-    spin?: boolean;
     label?: string;
+    class?: string;
+    spin?: boolean;
     withTransition?: boolean;
     click?: (e?: Event) => (void | boolean) | Promise<void | boolean>;
     beforeTransition?: () => void;
@@ -34,18 +35,16 @@ export class StateActions extends LitElement {
 
     @property({ type: Object }) conf: Conf = {};
     @property({ type: String, reflect: true }) state: State = "normal";
-    @property({ type: String, attribute: "cancel-button-class" }) cancelClass?: string;
-    @property({ type: String, attribute: "state-button-class" }) stateClass?: string;
     @property({ type: Boolean }) cancelDisabled: boolean = false;
     @property({ type: Boolean }) stateDisabled: boolean = false;
 
     readonly defaultConf: Required<Conf> = {
-        normal: { icon: "", label: "" },
-        active: { icon: "save", label: "Save", withTransition: true },
+        normal: { icon: "", label: "", class: "filled" },
+        active: { icon: "save", label: "Save", class: "filled", withTransition: true },
         loading: { icon: "sync", spin: true, label: "Saving" },
         success: { icon: "check", label: "Saved", msToShow: 1000 },
         error: { icon: "error", label: "Failed", msToShow: 1500 },
-        cancel: { icon: "close", label: "Cancel" }
+        cancel: { icon: "close", label: "Cancel", class: "outlined" }
     };
 
     readonly handleResult = async (success: boolean | void | undefined) => {
@@ -106,7 +105,7 @@ export class StateActions extends LitElement {
     render = () => html`
         <button
             data-cancel
-            class=${this.cancelClass ?? "outlined"}
+            class=${this.getConf("class", "cancel")!}
             ?hidden=${this.state != "active" || !this.conf.cancel}
             ?disabled=${this.cancelDisabled}
             @click=${this.handleCancelClick}>
@@ -115,7 +114,7 @@ export class StateActions extends LitElement {
         </button>
         <button
             data-state
-            class=${this.stateClass ?? "filled"}
+            class=${this.getConf("class") ?? ""}
             ?disabled=${["loading", "error", "success"].includes(this.state) ||
             this.stateDisabled}
             ?data-disabled=${this.stateDisabled}
