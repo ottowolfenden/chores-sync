@@ -1,14 +1,23 @@
 @font-face {
     font-family: "Material Symbols Outlined Easter Egg";
-    src: url(../../assets/fonts/material-symbols-easter-egg.woff2);
+    src: url(../../assets/fonts/material-symbols-easter-egg.woff2?t=2026-09-13);
 }
 
 easter-egg-game {
     display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-    md-icon {
-        font-family: "Material Symbols Outlined Easter Egg";
-        font-size: 30px;
+    .cards-container {
+        display: flex;
+    }
+
+    state-actions {
+        align-self: center;
+
+        button {
+            --size: 18;
+        }
     }
 
     .card {
@@ -16,5 +25,33 @@ easter-egg-game {
         flex-grow: 1;
         margin: 10px;
         aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        position: relative;
+        container-type: inline-size;
+
+        & > button {
+            --icon-size: 30px;
+            position: absolute;
+            padding: 4cqw;
+
+            md-icon {
+                font-family: "Material Symbols Outlined Easter Egg";
+                font-size: var(--icon-size);
+            }
+        }
+
+        &[data-variation="1"] {
+            & > :nth-child(1) {
+                background-color: red;
+                top: 50%;
+                left: 10%;
+                --icon-size: 20cqw;
+            }
+        }
+    }
+
+    progress {
+        width: auto;
+        margin: 0 20px;
     }
 }
