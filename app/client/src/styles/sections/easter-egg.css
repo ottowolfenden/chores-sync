@@ -1,2 +1,5 @@
 @scope (#easter-egg) {
+    :scope {
+        container-type: size;
+    }
 }

@@ -10,10 +10,26 @@ easter-egg-game {
 
     .cards-container {
         display: flex;
-        gap: 20px;
+        background-color: blue;
+        gap: 10px;
 
         &.resetting button {
             scale: 0;
+        }
+    }
+
+    @container (max-aspect-ratio: 3 / 4) {
+        .cards-container {
+            flex-direction: column;
+            height: calc(100cqh - 180px);
+            align-items: center;
+        }
+        .card {
+            width: auto;
+            height: 50%;
+            aspect-ratio: 1 / 1;
+            flex-shrink: 0;
+            flex-basis: 50%;
         }
     }
 
@@ -30,9 +46,20 @@ easter-egg-game {
         }
     }
 
+    progress {
+        width: auto;
+        margin: 0 20px;
+
+        &.danger {
+            --background-color: var(--error-container);
+            --color: var(--error);
+        }
+    }
+
     .card {
         background-color: var(--surface-container-low);
         flex-grow: 1;
+        flex-basis: 0;
         aspect-ratio: 1 / 1;
         border-radius: 50%;
         position: relative;
@@ -57,19 +84,9 @@ easter-egg-game {
             & > :nth-child(1) {
                 background-color: red;
                 top: 50%;
-                left: 10%;
+                left: 15%;
                 --icon-size: 20cqw;
             }
-        }
-    }
-
-    progress {
-        width: auto;
-        margin: 0 20px;
-
-        &.danger {
-            --background-color: var(--error-container);
-            --color: var(--error);
         }
     }
 }
