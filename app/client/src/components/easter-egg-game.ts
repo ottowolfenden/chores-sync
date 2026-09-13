@@ -1,8 +1,8 @@
 import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
-import materialSymbols from "../assets/material-symbols.json";
 import type { Conf } from "./state-actions";
+import materialSymbols from "../assets/material-symbols.json";
 
 export type Symbol = { icon: string; rotation: number };
 export type Card = { symbols: Symbol[]; variation: number; rotation: number };
@@ -13,15 +13,15 @@ export class EasterEggGame extends LitElement {
 
     private readonly numPerCard = 8;
     private readonly gameDuration = 40_000;
+    private readonly dangerZone = 0.2 * this.gameDuration;
     private readonly emptyCards: Card[] = [
         { symbols: [], variation: 0, rotation: 0 },
         { symbols: [], variation: 0, rotation: 0 }
     ];
-    private timer?: number;
-
     @property({ type: Boolean }) running: boolean = false;
-    @state() timeRemaining = this.gameDuration;
+    @state() private timeRemaining = this.gameDuration;
     @state() private cards: Card[] = this.emptyCards;
+    private timer?: number;
 
     private start = () => {
         if (this.running) return;
@@ -30,7 +30,7 @@ export class EasterEggGame extends LitElement {
         const endTime = Date.now() + this.gameDuration;
         this.timer = setInterval(() => {
             this.timeRemaining = Math.max(endTime - Date.now(), 0);
-            if (this.timeRemaining == 0) this.resetTimer();
+            if (this.timeRemaining == 0) this.reset();
         }, 200);
     };
 
@@ -87,8 +87,12 @@ export class EasterEggGame extends LitElement {
                 `
             )}
         </div>
-        <progress value=${this.timeRemaining} max=${this.gameDuration}></progress>
+        <progress
+            value=${this.timeRemaining}
+            max=${this.gameDuration}
+            class=${this.timeRemaining <= this.dangerZone ? "danger" : ""}></progress>
         <state-actions
+            state=${this.running ? "active" : "normal"}
             .conf=${{
                 normal: {
                     icon: "play_arrow",
