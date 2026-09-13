@@ -35,7 +35,8 @@
             "sentiment_excited",
             "sentiment_stressed",
             "sentiment_very_dissatisfied",
-            "play_arrow"
+            "play_arrow",
+            "restart_alt"
         ]
     },
     {
@@ -103,7 +104,8 @@
             "stroller",
             "speaker",
             "star",
-            "filter_drama"
+            "filter_drama",
+            "key"
         ]
     }
 ]
