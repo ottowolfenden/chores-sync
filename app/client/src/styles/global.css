@@ -369,3 +369,29 @@ input[type="checkbox"] {
         outline-color: var(--color);
     }
 }
+
+progress {
+    --background-color: var(--primary-container);
+    --color: var(--primary);
+    appearance: none;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 13px;
+
+    &::-moz-progress-bar {
+        background-color: var(--background-color);
+        border-radius: calc(infinity * 1px);
+    }
+
+    &::-webkit-progress-bar {
+        background-color: var(--background-color);
+        border-radius: calc(infinity * 1px);
+    }
+
+    &::-webkit-progress-value {
+        background-color: var(--color);
+        border-radius: calc(infinity * 1px);
+        transition: width 500ms ease;
+    }
+}
