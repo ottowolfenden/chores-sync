@@ -13,32 +13,35 @@ export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     private readonly numPerCard = 8;
-    private readonly gameDuration = 3_000;
+    private readonly duration = 40_000;
     private readonly maxLives = 3;
+    private readonly penalty = 2000;
+    private readonly boost = 1000;
     private readonly emptyCards: Card[] = [
         { symbols: [], variation: 1, rotation: 0 },
         { symbols: [], variation: 1, rotation: 0 }
     ];
 
     @state() private running: boolean = false;
-    @state() private timeRemaining = this.gameDuration;
+    @state() private timeRemaining = this.duration;
     @state() private cards: Card[] = this.emptyCards;
     @state() private currentScore = 0;
     @state() private lives = this.maxLives;
     @query(".cards-container") private cardsContainer!: HTMLDivElement;
 
     private timer?: number;
+    private endTime: number = Infinity;
     private get dangerZone() {
-        return this.timeRemaining <= 0.2 * this.gameDuration && this.timeRemaining != 0;
+        return this.timeRemaining <= 0.2 * this.duration && this.timeRemaining != 0;
     }
 
     start = () => {
         if (this.running) return;
         this.generateCards();
         this.running = true;
-        const endTime = Date.now() + this.gameDuration;
+        this.endTime = Date.now() + this.duration;
         this.timer = setInterval(() => {
-            this.timeRemaining = Math.max(endTime - Date.now(), 0);
+            this.timeRemaining = Math.max(this.endTime - Date.now(), 0);
             if (this.timeRemaining == 0) this.stop();
         }, 200);
     };
@@ -57,16 +60,24 @@ export class EasterEggGame extends LitElement {
     reset = () => {
         this.running = false;
         this.stop();
-        this.timeRemaining = this.gameDuration;
+        this.timeRemaining = this.duration;
         this.lives = this.maxLives;
     };
 
     private handleChoice = (symbol: Symbol) => {
-        if (this.cards.flatMap(c => c.symbols).filter(s => s.icon == symbol.icon).length == 2)
+        if (
+            this.cards.flatMap(c => c.symbols).filter(s => s.icon == symbol.icon).length == 2
+        ) {
             this.currentScore++;
-        else this.lives--;
+            this.timeRemaining = Math.min(this.timeRemaining + this.boost, this.duration);
+            this.endTime += this.boost;
+        } else {
+            this.lives--;
+            this.timeRemaining = Math.max(this.timeRemaining - this.penalty, 0);
+            this.endTime = Math.max(this.endTime - this.penalty, 0);
+        }
+
         if (this.lives == 0) this.stop();
-        console.log(this.currentScore);
         this.generateCards();
     };
 
@@ -119,7 +130,7 @@ export class EasterEggGame extends LitElement {
         </div>
         <div class="current-stats ${this.dangerZone ? "danger" : ""}">
             <span>${Math.round(this.timeRemaining / 1000)}</span>
-            <progress value=${this.timeRemaining} max=${this.gameDuration}></progress>
+            <progress value=${this.timeRemaining} max=${this.duration}></progress>
             <div class="lives">
                 ${Array.from(
                     { length: this.lives },
