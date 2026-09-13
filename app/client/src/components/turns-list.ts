@@ -77,6 +77,7 @@ export class TurnsList extends LitElement {
                     .conf=${{
                         normal: {
                             icon: "add",
+                            class: "transparent small",
                             beforeTransition: () => Cache.counts.invalidate(),
                             click: async () => await this.addAssignment(t)
                         },
