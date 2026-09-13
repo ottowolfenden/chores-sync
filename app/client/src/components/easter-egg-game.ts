@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
+import { customElement, query, state } from "lit/decorators.js";
 import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
 import type { Conf } from "./state-actions";
 import { withTransition } from "../functions/element-utils";
@@ -13,17 +13,24 @@ export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     private readonly numPerCard = 8;
-    private readonly gameDuration = 40_000;
-    private readonly dangerZone = 0.2 * this.gameDuration;
+    private readonly gameDuration = 3_000;
+    private readonly maxLives = 3;
     private readonly emptyCards: Card[] = [
         { symbols: [], variation: 1, rotation: 0 },
         { symbols: [], variation: 1, rotation: 0 }
     ];
-    @property({ type: Boolean }) running: boolean = false;
+
+    @state() private running: boolean = false;
     @state() private timeRemaining = this.gameDuration;
     @state() private cards: Card[] = this.emptyCards;
+    @state() private currentScore = 0;
+    @state() private lives = this.maxLives;
     @query(".cards-container") private cardsContainer!: HTMLDivElement;
+
     private timer?: number;
+    private get dangerZone() {
+        return this.timeRemaining <= 0.2 * this.gameDuration && this.timeRemaining != 0;
+    }
 
     start = () => {
         if (this.running) return;
@@ -32,14 +39,12 @@ export class EasterEggGame extends LitElement {
         const endTime = Date.now() + this.gameDuration;
         this.timer = setInterval(() => {
             this.timeRemaining = Math.max(endTime - Date.now(), 0);
-            if (this.timeRemaining == 0) this.reset();
+            if (this.timeRemaining == 0) this.stop();
         }, 200);
     };
 
-    reset = () => {
-        this.running = false;
-        this.resetTimer();
-        this.cardsContainer.querySelector("button");
+    stop = () => {
+        clearInterval(this.timer);
         withTransition(this.cardsContainer.querySelector("button"), {
             before: () => this.cardsContainer.classList.add("resetting"),
             after: () => {
@@ -49,9 +54,20 @@ export class EasterEggGame extends LitElement {
         });
     };
 
-    private resetTimer = () => {
-        clearInterval(this.timer);
+    reset = () => {
+        this.running = false;
+        this.stop();
         this.timeRemaining = this.gameDuration;
+        this.lives = this.maxLives;
+    };
+
+    private handleChoice = (symbol: Symbol) => {
+        if (this.cards.flatMap(c => c.symbols).filter(s => s.icon == symbol.icon).length == 2)
+            this.currentScore++;
+        else this.lives--;
+        if (this.lives == 0) this.stop();
+        console.log(this.currentScore);
+        this.generateCards();
     };
 
     private generateCards = () => {
@@ -88,7 +104,9 @@ export class EasterEggGame extends LitElement {
                         style="rotate:${c.rotation}deg">
                         ${c.symbols.map(
                             s => html`
-                                <button class="transparent">
+                                <button
+                                    class="transparent"
+                                    @click=${() => this.handleChoice(s)}>
                                     <md-icon style="rotate:${s.rotation}deg">
                                         ${s.icon}
                                     </md-icon>
@@ -99,10 +117,24 @@ export class EasterEggGame extends LitElement {
                 `
             )}
         </div>
-        <progress
-            value=${this.timeRemaining}
-            max=${this.gameDuration}
-            class=${this.timeRemaining <= this.dangerZone ? "danger" : ""}></progress>
+        <div class="current-stats ${this.dangerZone ? "danger" : ""}">
+            <span>${Math.round(this.timeRemaining / 1000)}</span>
+            <progress value=${this.timeRemaining} max=${this.gameDuration}></progress>
+            <div class="lives">
+                ${Array.from(
+                    { length: this.lives },
+                    () => html`
+                        <md-icon class="life ${this.dangerZone ? "shake" : ""}">
+                            favorite
+                        </md-icon>
+                    `
+                )}
+                ${Array.from(
+                    { length: this.maxLives - this.lives },
+                    () => html`<md-icon class="lost-life">heart_broken</md-icon>`
+                )}
+            </div>
+        </div>
         <state-actions
             state=${this.running ? "active" : "normal"}
             .conf=${{

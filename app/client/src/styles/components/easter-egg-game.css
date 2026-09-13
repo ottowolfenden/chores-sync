@@ -13,6 +13,7 @@ easter-egg-game {
         align-self: center;
         width: 100%;
         gap: 10px;
+        padding: 10px 10px 0 10px;
 
         &.resetting button {
             scale: 0;
@@ -56,11 +57,59 @@ easter-egg-game {
         }
     }
 
-    progress {
+    .current-stats {
         width: auto;
-        margin: 0 20px;
+        display: flex;
+        align-items: center;
 
-        &.danger {
+        span {
+            flex-shrink: 0;
+            width: 1.7em;
+            text-align: right;
+            color: var(--primary);
+            font-weight: 570;
+            white-space: normal;
+            text-overflow: clip;
+            overflow: visible;
+        }
+
+        progress {
+            margin: 0 12px;
+        }
+
+        .lives {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+
+            md-icon {
+                --opsz: 23;
+                margin: 0;
+            }
+
+            md-icon.life {
+                --fill: 1;
+                color: var(--primary);
+
+                &.shake {
+                    animation-iteration-count: infinite;
+                    animation-duration: 220ms;
+                }
+            }
+
+            md-icon.lost-life {
+                color: rgb(from var(--on-surface-variant) r g b / 0.65);
+            }
+        }
+    }
+
+    .current-stats.danger {
+        span,
+        md-icon.life {
+            color: var(--error);
+        }
+        progress {
             --background-color: var(--error-container);
             --color: var(--error);
         }
