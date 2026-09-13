@@ -10,7 +10,7 @@ timeline-list {
         width: 100%;
         overflow-y: auto;
 
-        & > li {
+        > li {
             transition: margin 100ms;
 
             &:has([data-date]:not([data-expanded])) assignments-list,

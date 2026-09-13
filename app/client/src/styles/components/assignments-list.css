@@ -76,7 +76,7 @@ assignments-list:not([edit-mode]) .assignment {
         max-width: 40%;
         width: auto;
 
-        & > button {
+        > button {
             max-width: 100%;
             width: fit-content;
             background-color: var(--surface-container-low);

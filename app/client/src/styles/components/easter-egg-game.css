@@ -74,7 +74,7 @@ easter-egg-game {
         position: relative;
         container-type: inline-size;
 
-        & > button {
+        > button {
             --icon-size: 13cqw;
             position: absolute;
             padding: 4cqw;
@@ -90,7 +90,7 @@ easter-egg-game {
         }
 
         &[data-variation="1"] {
-            & > :nth-child(1) {
+            > :nth-child(1) {
                 top: 50%;
                 left: 15%;
                 --icon-size: 20cqw;

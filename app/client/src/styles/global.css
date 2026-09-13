@@ -116,7 +116,7 @@ button {
         --collapse: 1;
     }
 
-    & > span {
+    > span {
         margin-left: calc(var(--size) * 0.4px);
         transition: margin-left 100ms;
 
@@ -161,7 +161,7 @@ button {
             var(--size) * 0.3px + (var(--size) * 0.3px * (1 - var(--collapse)))
         );
 
-        & > span {
+        > span {
             margin-left: calc(var(--size) * 0.2px);
         }
     }
@@ -293,7 +293,7 @@ input[type="checkbox"] {
     width: 30%;
     flex-shrink: 0;
 
-    & > button {
+    > button {
         --background-color: var(--primary-container);
         --color: var(--on-primary-container);
         display: flex;
@@ -329,7 +329,7 @@ input[type="checkbox"] {
         }
     }
 
-    & > [popover] {
+    > [popover] {
         position-area: bottom;
         width: anchor-size(width);
         background-color: var(--surface-container-low);
@@ -363,8 +363,8 @@ input[type="checkbox"] {
         }
     }
 
-    & > button:focus-visible,
-    & > [popover] button:focus-visible {
+    > button:focus-visible,
+    > [popover] button:focus-visible {
         outline-offset: -2px;
         outline-color: var(--color);
     }
