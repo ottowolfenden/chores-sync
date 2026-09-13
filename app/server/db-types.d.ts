@@ -4,6 +4,7 @@ type DbMember = {
     "is_active": boolean;
     "is_admin": boolean;
     "date_of_birth": Date | null;
+    "easter_egg_high_score": number;
 };
 
 type DbChore = {

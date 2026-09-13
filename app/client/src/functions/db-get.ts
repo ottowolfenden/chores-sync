@@ -44,7 +44,8 @@ export const getMembers = async (): Promise<UiMember[] | null> => {
             name: d["member_name"],
             isActive: d["is_active"],
             isAdmin: d["is_admin"],
-            dateOfBirth: d["date_of_birth"] ? new Date(d["date_of_birth"]) : null
+            dateOfBirth: d["date_of_birth"] ? new Date(d["date_of_birth"]) : null,
+            easterEggHighScore: d["easter_egg_high_score"]
         })
     );
 };

@@ -3,7 +3,8 @@ CREATE TABLE members (
     member_name TEXT NOT NULL UNIQUE,
     is_active BOOLEAN NOT NULL DEFAULT true,
     is_admin BOOLEAN NOT NULL DEFAULT true,
-    date_of_birth DATE
+    date_of_birth DATE,
+    easter_egg_high_score INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE chores (
