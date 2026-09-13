@@ -1,7 +1,8 @@
 import "../components/easter-egg-game";
 
 const section = document.querySelector("section#easter-egg")!;
-// const game = section.querySelector("easter-egg-game")!;
 
-section.addEventListener("sectionopen", () => {});
+section.addEventListener("sectionopen", () =>
+    document.fonts.load(`400 1em "Material Symbols Outlined Easter Egg"`)
+);
 section.addEventListener("sectionclose", () => {});
