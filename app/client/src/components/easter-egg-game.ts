@@ -1,8 +1,9 @@
 import { LitElement, html } from "lit";
-import { customElement, query, state } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
 import type { Conf } from "./state-actions";
 import { withTransition } from "../functions/element-utils";
+import { updateEasterEggHighScore } from "../functions/db-set";
 import materialSymbols from "../assets/material-symbols.json";
 
 export type Symbol = { icon: string; rotation: number };
@@ -13,7 +14,7 @@ export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     private readonly numPerCard = 8;
-    private readonly duration = 40_000;
+    private readonly duration = 60_000;
     private readonly maxLives = 3;
     private readonly penalty = 2000;
     private readonly boost = 1000;
@@ -22,10 +23,11 @@ export class EasterEggGame extends LitElement {
         { symbols: [], variation: 1, rotation: 0 }
     ];
 
-    @state() private running: boolean = false;
+    @property({ type: Boolean }) running = false;
+    @property({ type: Object }) currentMember?: UiMember | null;
     @state() private timeRemaining = this.duration;
     @state() private cards: Card[] = this.emptyCards;
-    @state() private currentScore = 0;
+    @state() private score = 0;
     @state() private lives = this.maxLives;
     @query(".cards-container") private cardsContainer!: HTMLDivElement;
 
@@ -55,6 +57,10 @@ export class EasterEggGame extends LitElement {
                 this.cardsContainer.classList.remove("resetting");
             }
         });
+        if (this.currentMember && this.score > this.currentMember.easterEggHighScore) {
+            this.currentMember.easterEggHighScore = this.score;
+            updateEasterEggHighScore(this.currentMember);
+        }
     };
 
     reset = () => {
@@ -62,13 +68,14 @@ export class EasterEggGame extends LitElement {
         this.stop();
         this.timeRemaining = this.duration;
         this.lives = this.maxLives;
+        this.score = 0;
     };
 
     private handleChoice = (symbol: Symbol) => {
         if (
             this.cards.flatMap(c => c.symbols).filter(s => s.icon == symbol.icon).length == 2
         ) {
-            this.currentScore++;
+            this.score++;
             this.timeRemaining = Math.min(this.timeRemaining + this.boost, this.duration);
             this.endTime += this.boost;
         } else {
@@ -106,6 +113,18 @@ export class EasterEggGame extends LitElement {
     };
 
     render = () => html`
+        <div class="scores">
+            <div class="score" ?hidden=${!this.running}>
+                <md-icon>numbers</md-icon>
+                <span>${this.score}</span>
+            </div>
+            <div class="high-score">
+                <md-icon>trophy</md-icon>
+                <span>
+                    ${Math.max(this.currentMember?.easterEggHighScore ?? 0, this.score)}
+                </span>
+            </div>
+        </div>
         <div class="cards-container">
             ${this.cards.map(
                 c => html`
@@ -128,7 +147,7 @@ export class EasterEggGame extends LitElement {
                 `
             )}
         </div>
-        <div class="current-stats ${this.dangerZone ? "danger" : ""}">
+        <div class="stats ${this.dangerZone ? "danger" : ""}">
             <span>${Math.round(this.timeRemaining / 1000)}</span>
             <progress value=${this.timeRemaining} max=${this.duration}></progress>
             <div class="lives">

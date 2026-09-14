@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Material Symbols Outlined Easter Egg";
-    src: url(../../assets/fonts/material-symbols-easter-egg.woff2?t=2026-09-13);
+    src: url(../../assets/fonts/material-symbols-easter-egg.woff2?t=2026-09-14);
 }
 
 easter-egg-game {
@@ -13,7 +13,13 @@ easter-egg-game {
         align-self: center;
         width: 100%;
         gap: 10px;
-        padding: 10px 10px 0 10px;
+        padding: 0 10px;
+
+        button {
+            @starting-style {
+                scale: 0;
+            }
+        }
 
         &.resetting button {
             scale: 0;
@@ -43,21 +49,60 @@ easter-egg-game {
         }
     }
 
-    state-actions {
-        align-self: center;
-        margin-bottom: 10px;
+    .card {
+        background-color: var(--surface-container-low);
+        flex-grow: 1;
+        flex-basis: 0;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        position: relative;
+        container-type: inline-size;
 
-        button {
-            --size: 18;
-        }
+        > button {
+            --icon-size: 13cqw;
+            position: absolute;
+            padding: 4cqw;
 
-        &[state="active"] button {
-            --background-color: var(--primary-container);
-            --color: var(--on-primary-container);
+            md-icon {
+                font-family: "Material Symbols Outlined Easter Egg";
+                font-size: var(--icon-size);
+            }
         }
     }
 
-    .current-stats {
+    .scores {
+        display: flex;
+        justify-content: center;
+
+        .score {
+            margin-right: 15px;
+            transition-property: scale, margin-right;
+            transition-duration: 100ms;
+
+            @starting-style {
+                scale: 0;
+                margin-right: 0;
+            }
+        }
+
+        .score,
+        .high-score {
+            display: flex;
+            align-items: center;
+            background-color: var(--surface-container);
+            padding: 10px 12px;
+            border-radius: calc(infinity * 1px);
+
+            span {
+                font-weight: 500;
+                text-overflow: clip;
+                text-align: center;
+                width: 4ch;
+            }
+        }
+    }
+
+    .stats {
         width: auto;
         display: flex;
         align-items: center;
@@ -102,7 +147,7 @@ easter-egg-game {
         }
     }
 
-    .current-stats.danger {
+    .stats.danger {
         span,
         md-icon.life {
             color: var(--error);
@@ -113,243 +158,232 @@ easter-egg-game {
         }
     }
 
-    .card {
-        background-color: var(--surface-container-low);
-        flex-grow: 1;
-        flex-basis: 0;
-        aspect-ratio: 1 / 1;
-        border-radius: 50%;
-        position: relative;
-        container-type: inline-size;
+    state-actions {
+        align-self: center;
+        margin-bottom: 10px;
 
-        > button {
+        button {
+            --size: 18;
+        }
+
+        &[state="active"] button {
+            --background-color: var(--primary-container);
+            --color: var(--on-primary-container);
+        }
+    }
+
+    .card[data-variation="1"] {
+        > :nth-child(1) {
+            top: 48%;
+            left: 10%;
+            --icon-size: 20cqw;
+        }
+        > :nth-child(2) {
+            top: 24%;
+            left: 11%;
             --icon-size: 13cqw;
-            position: absolute;
-            padding: 4cqw;
-
-            @starting-style {
-                scale: 0;
-            }
-
-            md-icon {
-                font-family: "Material Symbols Outlined Easter Egg";
-                font-size: var(--icon-size);
-            }
         }
-
-        &[data-variation="1"] {
-            > :nth-child(1) {
-                top: 48%;
-                left: 10%;
-                --icon-size: 20cqw;
-            }
-            > :nth-child(2) {
-                top: 24%;
-                left: 11%;
-                --icon-size: 13cqw;
-            }
-            > :nth-child(3) {
-                top: 53%;
-                left: 63%;
-                --icon-size: 16cqw;
-            }
-            > :nth-child(4) {
-                top: 69%;
-                left: 40%;
-                --icon-size: 15cqw;
-            }
-            > :nth-child(5) {
-                top: 35%;
-                left: 40%;
-                --icon-size: 17cqw;
-            }
-            > :nth-child(6) {
-                top: 8%;
-                left: 31%;
-                --icon-size: 12cqw;
-            }
-            > :nth-child(7) {
-                top: 12%;
-                left: 56%;
-                --icon-size: 14cqw;
-            }
-            > :nth-child(8) {
-                top: 33%;
-                left: 73%;
-                --icon-size: 13cqw;
-            }
+        > :nth-child(3) {
+            top: 53%;
+            left: 63%;
+            --icon-size: 16cqw;
         }
-
-        &[data-variation="2"] {
-            > :nth-child(1) {
-                top: 54%;
-                left: 8%;
-                --icon-size: 13cqw;
-            }
-            > :nth-child(2) {
-                top: 21%;
-                left: 11%;
-                --icon-size: 13cqw;
-            }
-            > :nth-child(3) {
-                top: 65%;
-                left: 55%;
-                --icon-size: 15cqw;
-            }
-            > :nth-child(4) {
-                top: 69%;
-                left: 30%;
-                --icon-size: 15cqw;
-            }
-            > :nth-child(5) {
-                top: 35%;
-                left: 28%;
-                --icon-size: 20cqw;
-            }
-            > :nth-child(6) {
-                top: 8%;
-                left: 31%;
-                --icon-size: 12cqw;
-            }
-            > :nth-child(7) {
-                top: 9%;
-                left: 56%;
-                --icon-size: 14cqw;
-            }
-            > :nth-child(8) {
-                top: 34%;
-                left: 62%;
-                --icon-size: 21cqw;
-            }
+        > :nth-child(4) {
+            top: 69%;
+            left: 40%;
+            --icon-size: 15cqw;
         }
-
-        &[data-variation="3"] {
-            > :nth-child(1) {
-                top: 55%;
-                left: 13%;
-                --icon-size: 16cqw;
-            }
-            > :nth-child(2) {
-                top: 23%;
-                left: 8%;
-                --icon-size: 17cqw;
-            }
-            > :nth-child(3) {
-                top: 58%;
-                left: 63%;
-                --icon-size: 15cqw;
-            }
-            > :nth-child(4) {
-                top: 71%;
-                left: 40%;
-                --icon-size: 16cqw;
-            }
-            > :nth-child(5) {
-                top: 35%;
-                left: 40%;
-                --icon-size: 18cqw;
-            }
-            > :nth-child(6) {
-                top: 8%;
-                left: 31%;
-                --icon-size: 16cqw;
-            }
-            > :nth-child(7) {
-                top: 12%;
-                left: 58%;
-                --icon-size: 14cqw;
-            }
-            > :nth-child(8) {
-                top: 33%;
-                left: 73%;
-                --icon-size: 15cqw;
-            }
+        > :nth-child(5) {
+            top: 35%;
+            left: 40%;
+            --icon-size: 17cqw;
         }
-
-        &[data-variation="4"] {
-            > :nth-child(1) {
-                top: 48%;
-                left: 10%;
-                --icon-size: 17cqw;
-            }
-            > :nth-child(2) {
-                top: 24%;
-                left: 11%;
-                --icon-size: 13cqw;
-            }
-            > :nth-child(3) {
-                top: 56%;
-                left: 59%;
-                --icon-size: 16cqw;
-            }
-            > :nth-child(4) {
-                top: 65%;
-                left: 31%;
-                --icon-size: 20cqw;
-            }
-            > :nth-child(5) {
-                top: 37%;
-                left: 40%;
-                --icon-size: 15cqw;
-            }
-            > :nth-child(6) {
-                top: 6%;
-                left: 31%;
-                --icon-size: 20cqw;
-            }
-            > :nth-child(7) {
-                top: 17%;
-                left: 62%;
-                --icon-size: 12cqw;
-            }
-            > :nth-child(8) {
-                top: 36%;
-                left: 73%;
-                --icon-size: 13cqw;
-            }
+        > :nth-child(6) {
+            top: 8%;
+            left: 31%;
+            --icon-size: 12cqw;
         }
+        > :nth-child(7) {
+            top: 12%;
+            left: 56%;
+            --icon-size: 14cqw;
+        }
+        > :nth-child(8) {
+            top: 33%;
+            left: 73%;
+            --icon-size: 13cqw;
+        }
+    }
 
-        &[data-variation="5"] {
-            > :nth-child(1) {
-                top: 40%;
-                left: 25%;
-                --icon-size: 17cqw;
-            }
-            > :nth-child(2) {
-                top: 24%;
-                left: 9%;
-                --icon-size: 13cqw;
-            }
-            > :nth-child(3) {
-                top: 61%;
-                left: 65%;
-                --icon-size: 12cqw;
-            }
-            > :nth-child(4) {
-                top: 69%;
-                left: 40%;
-                --icon-size: 15cqw;
-            }
-            > :nth-child(5) {
-                top: 38%;
-                left: 54%;
-                --icon-size: 15cqw;
-            }
-            > :nth-child(6) {
-                top: 8%;
-                left: 31%;
-                --icon-size: 14cqw;
-            }
-            > :nth-child(7) {
-                top: 12%;
-                left: 58%;
-                --icon-size: 14cqw;
-            }
-            > :nth-child(8) {
-                top: 65%;
-                left: 16%;
-                --icon-size: 12cqw;
-            }
+    .card[data-variation="2"] {
+        > :nth-child(1) {
+            top: 54%;
+            left: 8%;
+            --icon-size: 13cqw;
+        }
+        > :nth-child(2) {
+            top: 21%;
+            left: 11%;
+            --icon-size: 13cqw;
+        }
+        > :nth-child(3) {
+            top: 65%;
+            left: 55%;
+            --icon-size: 15cqw;
+        }
+        > :nth-child(4) {
+            top: 69%;
+            left: 30%;
+            --icon-size: 15cqw;
+        }
+        > :nth-child(5) {
+            top: 35%;
+            left: 28%;
+            --icon-size: 20cqw;
+        }
+        > :nth-child(6) {
+            top: 8%;
+            left: 31%;
+            --icon-size: 12cqw;
+        }
+        > :nth-child(7) {
+            top: 9%;
+            left: 56%;
+            --icon-size: 14cqw;
+        }
+        > :nth-child(8) {
+            top: 34%;
+            left: 62%;
+            --icon-size: 21cqw;
+        }
+    }
+
+    .card[data-variation="3"] {
+        > :nth-child(1) {
+            top: 55%;
+            left: 13%;
+            --icon-size: 16cqw;
+        }
+        > :nth-child(2) {
+            top: 23%;
+            left: 8%;
+            --icon-size: 17cqw;
+        }
+        > :nth-child(3) {
+            top: 58%;
+            left: 63%;
+            --icon-size: 15cqw;
+        }
+        > :nth-child(4) {
+            top: 71%;
+            left: 40%;
+            --icon-size: 16cqw;
+        }
+        > :nth-child(5) {
+            top: 35%;
+            left: 40%;
+            --icon-size: 18cqw;
+        }
+        > :nth-child(6) {
+            top: 8%;
+            left: 31%;
+            --icon-size: 16cqw;
+        }
+        > :nth-child(7) {
+            top: 12%;
+            left: 58%;
+            --icon-size: 14cqw;
+        }
+        > :nth-child(8) {
+            top: 33%;
+            left: 73%;
+            --icon-size: 15cqw;
+        }
+    }
+
+    .card[data-variation="4"] {
+        > :nth-child(1) {
+            top: 48%;
+            left: 10%;
+            --icon-size: 17cqw;
+        }
+        > :nth-child(2) {
+            top: 24%;
+            left: 11%;
+            --icon-size: 13cqw;
+        }
+        > :nth-child(3) {
+            top: 56%;
+            left: 59%;
+            --icon-size: 16cqw;
+        }
+        > :nth-child(4) {
+            top: 65%;
+            left: 31%;
+            --icon-size: 20cqw;
+        }
+        > :nth-child(5) {
+            top: 37%;
+            left: 40%;
+            --icon-size: 15cqw;
+        }
+        > :nth-child(6) {
+            top: 6%;
+            left: 31%;
+            --icon-size: 20cqw;
+        }
+        > :nth-child(7) {
+            top: 17%;
+            left: 62%;
+            --icon-size: 12cqw;
+        }
+        > :nth-child(8) {
+            top: 36%;
+            left: 73%;
+            --icon-size: 13cqw;
+        }
+    }
+
+    .card[data-variation="5"] {
+        > :nth-child(1) {
+            top: 40%;
+            left: 25%;
+            --icon-size: 17cqw;
+        }
+        > :nth-child(2) {
+            top: 24%;
+            left: 9%;
+            --icon-size: 13cqw;
+        }
+        > :nth-child(3) {
+            top: 61%;
+            left: 65%;
+            --icon-size: 12cqw;
+        }
+        > :nth-child(4) {
+            top: 69%;
+            left: 40%;
+            --icon-size: 15cqw;
+        }
+        > :nth-child(5) {
+            top: 38%;
+            left: 54%;
+            --icon-size: 15cqw;
+        }
+        > :nth-child(6) {
+            top: 8%;
+            left: 31%;
+            --icon-size: 14cqw;
+        }
+        > :nth-child(7) {
+            top: 12%;
+            left: 58%;
+            --icon-size: 14cqw;
+        }
+        > :nth-child(8) {
+            top: 65%;
+            left: 16%;
+            --icon-size: 12cqw;
         }
     }
 }
