@@ -8,16 +8,14 @@ const game = section.querySelector("easter-egg-game")!;
 message.elsToHide = [game];
 
 section.addEventListener("sectionopen", async () => {
-    document.fonts.load(`400 1em "Material Symbols Outlined Easter Egg"`);
     message.status = "loading";
-    game.members = await Cache.members.get();
-    message.status =
-        game.members === null ? "error" : game.members.length == 0 ? "empty" : "success";
+    game.message = message;
+    await document.fonts
+        .load(`400 1em "Material Symbols Outlined Easter Egg"`)
+        .then(() => (message.status = "success"))
+        .catch(() => (message.status = "error"));
+    game.start();
     game.currentMember = await Cache.currentMember.get();
 });
 
-section.addEventListener("sectionclose", () => {
-    game.reset();
-    Cache.members.invalidate();
-    Cache.currentMember.invalidate();
-});
+section.addEventListener("sectionclose", async () => await game.reset());

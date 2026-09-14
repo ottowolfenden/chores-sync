@@ -6,6 +6,7 @@ import { updateEasterEggHighScore } from "../functions/db-set";
 import { formatOrdinal } from "../functions/num-utils";
 import materialSymbols from "../assets/material-symbols.json";
 import "../components/life-counter";
+import { Cache } from "../classes/cache";
 
 export type Symbol = { icon: string; rotation: number };
 export type Card = { symbols: Symbol[]; variation: 1 | 2 | 3 | 4 | 5; rotation: number };
@@ -25,6 +26,7 @@ export class EasterEggGame extends LitElement {
     @property({ type: String, reflect: true }) state: "new" | "running" | "finished" = "new";
     @property({ type: Array }) members?: UiMember[] | null;
     @property({ type: Object }) currentMember?: UiMember | null;
+    @property({ type: Object }) message?: StatusMessage;
 
     @state() private timeRemaining = this.duration;
     @state() private cards: Card[] = [];
@@ -49,15 +51,22 @@ export class EasterEggGame extends LitElement {
         if (this.currentMember && this.score > this.currentMember.easterEggHighScore) {
             this.currentMember.easterEggHighScore = this.score;
             updateEasterEggHighScore(this.currentMember);
+            Cache.members.refresh();
+            Cache.currentMember.invalidate();
         }
     };
 
-    reset = () => {
+    reset = async () => {
         this.stop();
         this.state = "new";
         this.timeRemaining = this.duration;
         this.lives = this.maxLives;
         this.score = 0;
+        if (!this.message) return;
+        this.message.status = "loading";
+        this.members = await Cache.members.get();
+        this.message.status =
+            this.members === null ? "error" : this.members.length == 0 ? "empty" : "success";
     };
 
     private generateCards = () => {
@@ -149,7 +158,7 @@ export class EasterEggGame extends LitElement {
                     </ol>
                 </div>
                 <button class="start filled" @click=${this.start}>
-                    <md-icon>play_arrow</md-icon><span>Start</span>
+                    <md-icon>play_arrow</md-icon><span>Play</span>
                 </button>
             `,
 
