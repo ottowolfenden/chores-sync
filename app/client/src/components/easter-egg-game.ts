@@ -98,8 +98,7 @@ export class EasterEggGame extends LitElement {
 
     private handleChoice = (symbol: Symbol) =>
         withTransition(this.cardsContainer.querySelector("button"), {
-            before: () => this.cardsContainer.classList.add("replacing"),
-            after: () => {
+            before: () => {
                 if (this.checkMatch(symbol)) {
                     this.score++;
                     this.timeRemaining = Math.min(
@@ -112,8 +111,10 @@ export class EasterEggGame extends LitElement {
                     this.timeRemaining = Math.max(this.timeRemaining - this.penalty, 0);
                     this.endTime = Math.max(this.endTime - this.penalty, 0);
                 }
-
                 if (this.lives == 0) this.stop();
+                this.cardsContainer.classList.add("replacing");
+            },
+            after: () => {
                 this.cardsContainer.classList.remove("replacing");
                 this.generateCards();
             }
