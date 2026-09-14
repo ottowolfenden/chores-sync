@@ -4,6 +4,7 @@ import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/ran
 import { withTransition } from "../functions/element-utils";
 import { updateEasterEggHighScore } from "../functions/db-set";
 import materialSymbols from "../assets/material-symbols.json";
+import "../components/life-counter";
 
 export type Symbol = { icon: string; rotation: number };
 export type Card = { symbols: Symbol[]; variation: 1 | 2 | 3 | 4 | 5; rotation: number };
@@ -13,7 +14,7 @@ export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     private readonly numPerCard = 8;
-    private readonly duration = 5_000;
+    private readonly duration = 60_000;
     private readonly maxLives = 3;
     private readonly penalty = 2000;
     private readonly boost = 2000;
@@ -163,18 +164,10 @@ export class EasterEggGame extends LitElement {
             ?hidden=${this.state == "new"}>
             <span>${Math.round(this.timeRemaining / 1000)}</span>
             <progress value=${this.timeRemaining} max=${this.duration}></progress>
-            <div class="lives">
-                ${Array.from(
-                    { length: this.lives },
-                    () => html`
-                        <md-icon class="life" ?shake=${this.checkDanger()}>favorite</md-icon>
-                    `
-                )}
-                ${Array.from(
-                    { length: this.maxLives - this.lives },
-                    () => html`<md-icon class="lost-life">heart_broken</md-icon>`
-                )}
-            </div>
+            <life-counter
+                max-lives=${this.maxLives}
+                lives=${this.lives}
+                ?shake=${this.checkDanger()}></life-counter>
         </div>
         <button class="reset tonal" @click=${this.reset} ?hidden=${this.state == "new"}>
             <md-icon>restart_alt</md-icon><span>Reset</span>

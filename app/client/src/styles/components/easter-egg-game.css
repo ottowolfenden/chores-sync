@@ -130,30 +130,9 @@ easter-egg-game {
             overflow: visible;
         }
 
-        .lives {
+        life-counter {
             flex-shrink: 0;
-            display: flex;
-            align-items: center;
             margin-right: 10px;
-
-            md-icon {
-                --opsz: 23;
-                margin: 0;
-            }
-
-            md-icon.life {
-                --fill: 1;
-                color: var(--primary);
-
-                &[shake] {
-                    animation-iteration-count: infinite;
-                    animation-duration: 220ms;
-                }
-            }
-
-            md-icon.lost-life {
-                color: rgb(from var(--on-surface-variant) r g b / 0.65);
-            }
         }
     }
 

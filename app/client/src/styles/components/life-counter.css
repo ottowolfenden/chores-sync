@@ -1,0 +1,22 @@
+life-counter {
+    display: flex;
+    align-items: center;
+
+    md-icon {
+        margin: 0;
+    }
+
+    md-icon.life {
+        --fill: 1;
+        color: var(--primary);
+
+        &[shake] {
+            animation-iteration-count: infinite;
+            animation-duration: 220ms;
+        }
+    }
+
+    md-icon.lost-life {
+        color: rgb(from var(--on-surface-variant) r g b / 0.65);
+    }
+}
