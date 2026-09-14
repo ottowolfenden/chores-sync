@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
 import { withTransition } from "../functions/element-utils";
 import { updateEasterEggHighScore } from "../functions/db-set";
@@ -29,8 +29,6 @@ export class EasterEggGame extends LitElement {
     @state() private cards: Card[] = [];
     @state() private score = 0;
     @state() private lives = this.maxLives;
-
-    @query(".cards-container") private cardsContainer!: HTMLDivElement;
 
     start = () => {
         if (this.state == "running") return;
@@ -85,6 +83,29 @@ export class EasterEggGame extends LitElement {
         }));
     };
 
+    private handleChoice = (symbol: Symbol) => {
+        const container = this.querySelector(".cards-container");
+        if (!container) return;
+        if (this.checkMatch(symbol)) {
+            this.score++;
+            this.timeRemaining = Math.min(this.timeRemaining + this.boost, this.duration);
+            this.endTime += this.boost;
+        } else {
+            this.lives--;
+            this.timeRemaining = Math.max(this.timeRemaining - this.penalty, 0);
+            this.endTime = Math.max(this.endTime - this.penalty, 0);
+        }
+        if (this.lives == 0) this.stop();
+
+        withTransition(container.querySelector("button"), {
+            before: () => container.classList.add("replacing"),
+            after: () => {
+                container.classList.remove("replacing");
+                this.generateCards();
+            }
+        });
+    };
+
     private checkMatch = (symbol: Symbol) =>
         this.cards.flatMap(c => c.symbols).filter(s => s.icon == symbol.icon).length == 2;
 
@@ -107,35 +128,12 @@ export class EasterEggGame extends LitElement {
                 return acc;
             }, []) ?? [];
 
-    private handleChoice = (symbol: Symbol) =>
-        withTransition(this.cardsContainer.querySelector("button"), {
-            before: () => {
-                if (this.checkMatch(symbol)) {
-                    this.score++;
-                    this.timeRemaining = Math.min(
-                        this.timeRemaining + this.boost,
-                        this.duration
-                    );
-                    this.endTime += this.boost;
-                } else {
-                    this.lives--;
-                    this.timeRemaining = Math.max(this.timeRemaining - this.penalty, 0);
-                    this.endTime = Math.max(this.endTime - this.penalty, 0);
-                }
-                if (this.lives == 0) this.stop();
-                this.cardsContainer.classList.add("replacing");
-            },
-            after: () => {
-                this.cardsContainer.classList.remove("replacing");
-                this.generateCards();
-            }
-        });
-
     render = () =>
         ({
             new: html`
                 <div><h2>Leaderboard</h2></div>
                 <ol class="leaderboard">
+                    test
                     ${this.getLeaderboard().map(
                         l => html`
                             <li>
