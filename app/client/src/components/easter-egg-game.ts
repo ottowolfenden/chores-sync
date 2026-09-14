@@ -120,9 +120,11 @@ export class EasterEggGame extends LitElement {
             </div>
             <div class="high-score">
                 <md-icon>trophy</md-icon>
-                <span>
-                    ${Math.max(this.currentMember?.easterEggHighScore ?? 0, this.score)}
-                </span>
+                ${this.currentMember
+                    ? html`<span>
+                          ${Math.max(this.currentMember.easterEggHighScore, this.score)}
+                      </span>`
+                    : html`<md-icon class="spin">sync</md-icon>`}
             </div>
         </div>
         <div class="cards-container">

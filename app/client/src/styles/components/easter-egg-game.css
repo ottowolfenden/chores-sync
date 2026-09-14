@@ -74,17 +74,6 @@ easter-egg-game {
         display: flex;
         justify-content: center;
 
-        .score {
-            margin-right: 15px;
-            transition-property: scale, margin-right;
-            transition-duration: 100ms;
-
-            @starting-style {
-                scale: 0;
-                margin-right: 0;
-            }
-        }
-
         .score,
         .high-score {
             display: flex;
@@ -97,7 +86,25 @@ easter-egg-game {
                 font-weight: 500;
                 text-overflow: clip;
                 text-align: center;
-                width: 4ch;
+                width: 47px;
+            }
+
+            md-icon.spin {
+                text-align: center;
+                width: 47px;
+                margin: 0;
+                color: rgb(from var(--on-surface-variant) r g b / 0.7);
+            }
+        }
+
+        .score {
+            margin-right: 15px;
+            transition-property: scale, margin-right;
+            transition-duration: 100ms;
+
+            @starting-style {
+                scale: 0;
+                margin-right: 0;
             }
         }
     }
