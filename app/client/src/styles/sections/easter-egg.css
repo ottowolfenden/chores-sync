@@ -3,5 +3,6 @@
         container: easter-egg-section / size;
         overflow-x: hidden;
         padding-top: 15px;
+        max-height: 925px;
     }
 }
