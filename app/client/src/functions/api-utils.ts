@@ -48,3 +48,9 @@ export const request = async <T = unknown, M extends Method = Method>(
             throw new Error("invalid method");
     }
 };
+
+export const buildEndpoint = (path: string | URL, params: Record<string, string | number>) => {
+    const url = new URL(path, location.origin);
+    Object.entries(params).forEach(([key, val]) => url.searchParams.set(key, val.toString()));
+    return `${url.pathname}${url.search}`;
+};
