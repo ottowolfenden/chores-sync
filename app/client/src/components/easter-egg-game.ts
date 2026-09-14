@@ -1,7 +1,6 @@
 import { LitElement, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
-import type { Conf } from "./state-actions";
 import { withTransition } from "../functions/element-utils";
 import { updateEasterEggHighScore } from "../functions/db-set";
 import materialSymbols from "../assets/material-symbols.json";
@@ -14,7 +13,7 @@ export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     private readonly numPerCard = 8;
-    private readonly duration = 60_000;
+    private readonly duration = 5_000;
     private readonly maxLives = 3;
     private readonly penalty = 2000;
     private readonly boost = 2000;
@@ -135,6 +134,9 @@ export class EasterEggGame extends LitElement {
             </div>
         </div>
         <div class="cards-container">
+            <button class="start filled" @click=${this.start} ?hidden=${this.state != "new"}>
+                <md-icon>play_arrow</md-icon><span>Start</span>
+            </button>
             ${this.cards.map(
                 c => html`
                     <div
@@ -156,7 +158,9 @@ export class EasterEggGame extends LitElement {
                 `
             )}
         </div>
-        <div class="stats ${this.checkDanger() ? "danger" : ""}">
+        <div
+            class="stats ${this.checkDanger() ? "danger" : ""}"
+            ?hidden=${this.state == "new"}>
             <span>${Math.round(this.timeRemaining / 1000)}</span>
             <progress value=${this.timeRemaining} max=${this.duration}></progress>
             <div class="lives">
@@ -172,23 +176,8 @@ export class EasterEggGame extends LitElement {
                 )}
             </div>
         </div>
-        <state-actions
-            state=${this.state == "running" ? "active" : "normal"}
-            .conf=${{
-                normal: {
-                    icon: "play_arrow",
-                    label: "Start",
-                    class: "filled",
-                    click: this.start
-                },
-                active: {
-                    icon: "restart_alt",
-                    label: "Reset",
-                    class: "tonal",
-                    withTransition: false,
-                    click: this.reset
-                }
-            } as Conf}>
-        </state-actions>
+        <button class="reset tonal" @click=${this.reset} ?hidden=${this.state == "new"}>
+            <md-icon>restart_alt</md-icon><span>Reset</span>
+        </button>
     `;
 }

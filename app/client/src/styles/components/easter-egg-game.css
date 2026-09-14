@@ -29,6 +29,10 @@ easter-egg-game {
             scale: 0;
         }
 
+        &.stopping button.start {
+            display: none;
+        }
+
         .card {
             width: min(50cqw, 100cqh);
             height: min(50cqw, 100cqh);
@@ -164,17 +168,22 @@ easter-egg-game {
         }
     }
 
-    state-actions {
+    button.start,
+    button.reset {
+        @starting-style {
+            scale: 0;
+        }
+    }
+
+    button.start {
+        --size: 18;
+    }
+
+    button.reset {
         align-self: center;
-
-        button {
-            --size: 18;
-        }
-
-        &[state="active"] button {
-            --background-color: var(--primary-container);
-            --color: var(--on-primary-container);
-        }
+        --size: 18;
+        --background-color: var(--primary-container);
+        --color: var(--on-primary-container);
     }
 
     .card[data-variation="1"] {
