@@ -39,7 +39,8 @@
             "favorite",
             "heart_broken",
             "numbers",
-            "trophy"
+            "trophy",
+            "schedule"
         ]
     },
     {
@@ -85,7 +86,6 @@
             "helicopter",
             "attachment",
             "flag",
-            "schedule",
             "landscape",
             "traffic",
             "pest_control_rodent",
