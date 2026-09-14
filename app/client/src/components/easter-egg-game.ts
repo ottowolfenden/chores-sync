@@ -21,7 +21,7 @@ export class EasterEggGame extends LitElement {
     private timer?: number;
     private endTime: number = Infinity;
 
-    @property({ type: String }) state: "new" | "running" | "finished" = "new";
+    @property({ type: String, reflect: true }) state: "new" | "running" | "finished" = "new";
     @property({ type: Array }) members?: UiMember[] | null;
     @property({ type: Object }) currentMember?: UiMember | null;
 
@@ -44,14 +44,9 @@ export class EasterEggGame extends LitElement {
     };
 
     stop = () => {
+        this.state = "finished";
         clearInterval(this.timer);
-        withTransition(this.cardsContainer.querySelector("button"), {
-            before: () => this.cardsContainer.classList.add("stopping"),
-            after: () => {
-                this.cards = [];
-                this.cardsContainer.classList.remove("stopping");
-            }
-        });
+        this.cards = [];
         if (this.currentMember && this.score > this.currentMember.easterEggHighScore) {
             this.currentMember.easterEggHighScore = this.score;
             updateEasterEggHighScore(this.currentMember);
@@ -59,8 +54,8 @@ export class EasterEggGame extends LitElement {
     };
 
     reset = () => {
-        this.state = "new";
         this.stop();
+        this.state = "new";
         this.timeRemaining = this.duration;
         this.lives = this.maxLives;
         this.score = 0;
@@ -120,7 +115,7 @@ export class EasterEggGame extends LitElement {
         });
 
     render = () => html`
-        <div class="scores">
+        <div class="scores" ?hidden=${this.state != "running"}>
             <div class="score" ?hidden=${this.state == "new"}>
                 <md-icon>numbers</md-icon>
                 <span>${this.score}</span>
@@ -134,10 +129,8 @@ export class EasterEggGame extends LitElement {
                     : html`<md-icon spin>sync</md-icon>`}
             </div>
         </div>
-        <div class="cards-container">
-            <button class="start filled" @click=${this.start} ?hidden=${this.state != "new"}>
-                <md-icon>play_arrow</md-icon><span>Start</span>
-            </button>
+
+        <div class="cards-container" ?hidden=${this.state != "running"}>
             ${this.cards.map(
                 c => html`
                     <div
@@ -159,9 +152,10 @@ export class EasterEggGame extends LitElement {
                 `
             )}
         </div>
+
         <div
             class="stats ${this.checkDanger() ? "danger" : ""}"
-            ?hidden=${this.state == "new"}>
+            ?hidden=${this.state != "running"}>
             <span>${Math.round(this.timeRemaining / 1000)}</span>
             <progress value=${this.timeRemaining} max=${this.duration}></progress>
             <life-counter
@@ -169,6 +163,41 @@ export class EasterEggGame extends LitElement {
                 lives=${this.lives}
                 ?shake=${this.checkDanger()}></life-counter>
         </div>
+
+        <div class="summary" ?hidden=${this.state != "finished"}>
+            <life-counter
+                max-lives=${this.maxLives}
+                lives=${this.lives}
+                size="55"></life-counter>
+            <ul>
+                <li class="time">
+                    <span class="title">
+                        <md-icon>schedule</md-icon><span>Time left</span>
+                    </span>
+                    <span class="num">${Math.round(this.timeRemaining / 1000)}s</span>
+                </li>
+                <li class="score">
+                    <span class="title"><md-icon>numbers</md-icon><span>Score</span></span>
+                    <span class="num">${this.score}</span>
+                </li>
+                <li class="high-score">
+                    <span class="title"><md-icon>trophy</md-icon><span>High score</span></span>
+                    <span class="num">
+                        ${this.currentMember
+                            ? html`${Math.max(
+                                  this.currentMember.easterEggHighScore,
+                                  this.score
+                              )}`
+                            : html`<md-icon spin>sync</md-icon>`}
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <button class="start filled" @click=${this.start} ?hidden=${this.state != "new"}>
+            <md-icon>play_arrow</md-icon><span>Start</span>
+        </button>
+
         <button class="reset tonal" @click=${this.reset} ?hidden=${this.state == "new"}>
             <md-icon>restart_alt</md-icon><span>Reset</span>
         </button>

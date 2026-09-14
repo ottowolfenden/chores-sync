@@ -9,8 +9,22 @@ easter-egg-game {
     min-height: 0;
     flex-shrink: 1;
 
-    > * {
+    &[state="running"] > * {
         margin-bottom: 15px;
+    }
+
+    &[state="new"] {
+        height: 100%;
+    }
+
+    .card,
+    .card button,
+    .scores,
+    button.reset,
+    button.start {
+        @starting-style {
+            scale: 0;
+        }
     }
 
     .cards-container {
@@ -23,14 +37,8 @@ easter-egg-game {
         align-items: center;
         gap: 20px;
 
-        &.replacing .card button,
-        &.stopping .card button,
-        &.stopping .card {
+        &.replacing .card button {
             scale: 0;
-        }
-
-        &.stopping button.start {
-            display: none;
         }
 
         .card {
@@ -41,17 +49,11 @@ easter-egg-game {
             border-radius: 50%;
             background-color: var(--surface-container-low);
             transition: scale 100ms;
-            @starting-style {
-                scale: 0;
-            }
 
             button {
                 --icon-size: 13cqw;
                 position: absolute;
                 padding: 4cqw;
-                @starting-style {
-                    scale: 0;
-                }
 
                 md-icon {
                     font-family: "Material Symbols Outlined Easter Egg";
@@ -76,6 +78,8 @@ easter-egg-game {
     .scores {
         display: flex;
         justify-content: center;
+        margin-top: 5px;
+        transition: scale 100ms;
 
         .score,
         .high-score {
@@ -102,13 +106,6 @@ easter-egg-game {
 
         .score {
             margin-right: 15px;
-            transition-property: scale, margin-right;
-            transition-duration: 100ms;
-
-            @starting-style {
-                scale: 0;
-                margin-right: 0;
-            }
         }
     }
 
@@ -147,22 +144,71 @@ easter-egg-game {
         }
     }
 
-    button.start,
-    button.reset {
-        @starting-style {
-            scale: 0;
-        }
+    button.start {
+        align-self: center;
+        justify-self: center;
+        margin: auto 0;
     }
 
-    button.start {
+    button.start,
+    button.reset {
         --size: 18;
     }
 
     button.reset {
         align-self: center;
-        --size: 18;
         --background-color: var(--primary-container);
         --color: var(--on-primary-container);
+    }
+
+    .summary {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: auto;
+        padding: 40px;
+        gap: 40px;
+
+        ul {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 5px;
+        }
+
+        li {
+            display: grid;
+            grid-column: 1 / -1;
+            grid-template-columns: subgrid;
+            gap: 4px;
+
+            md-icon[spin] {
+                color: rgb(from var(--on-surface-variant) r g b / 0.7);
+            }
+
+            > span {
+                background-color: var(--surface-container);
+                color: var(--on-surface);
+            }
+
+            .title {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                padding: 10px;
+                border-radius: 15px 5px 5px 15px;
+            }
+
+            .num {
+                display: grid;
+                place-content: center;
+                padding: 10px;
+                font-weight: 550;
+                font-size: 21px;
+                color: var(--primary);
+                border-radius: 5px 15px 15px 5px;
+            }
+        }
     }
 
     .card[data-variation="1"] {
