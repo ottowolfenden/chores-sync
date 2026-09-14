@@ -18,15 +18,11 @@ export class EasterEggGame extends LitElement {
     private readonly maxLives = 3;
     private readonly penalty = 2000;
     private readonly boost = 2000;
-    private readonly emptyCards: Card[] = [
-        { symbols: [], variation: 1, rotation: 0 },
-        { symbols: [], variation: 1, rotation: 0 }
-    ];
 
     @property({ type: Boolean }) running = false;
     @property({ type: Object }) currentMember?: UiMember | null;
     @state() private timeRemaining = this.duration;
-    @state() private cards: Card[] = this.emptyCards;
+    @state() private cards: Card[] = [];
     @state() private score = 0;
     @state() private lives = this.maxLives;
     @query(".cards-container") private cardsContainer!: HTMLDivElement;
@@ -51,10 +47,10 @@ export class EasterEggGame extends LitElement {
     stop = () => {
         clearInterval(this.timer);
         withTransition(this.cardsContainer.querySelector("button"), {
-            before: () => this.cardsContainer.classList.add("resetting"),
+            before: () => this.cardsContainer.classList.add("stopping"),
             after: () => {
-                this.cards = this.emptyCards;
-                this.cardsContainer.classList.remove("resetting");
+                this.cards = [];
+                this.cardsContainer.classList.remove("stopping");
             }
         });
         if (this.currentMember && this.score > this.currentMember.easterEggHighScore) {
@@ -71,22 +67,31 @@ export class EasterEggGame extends LitElement {
         this.score = 0;
     };
 
-    private handleChoice = (symbol: Symbol) => {
-        if (
-            this.cards.flatMap(c => c.symbols).filter(s => s.icon == symbol.icon).length == 2
-        ) {
-            this.score++;
-            this.timeRemaining = Math.min(this.timeRemaining + this.boost, this.duration);
-            this.endTime += this.boost;
-        } else {
-            this.lives--;
-            this.timeRemaining = Math.max(this.timeRemaining - this.penalty, 0);
-            this.endTime = Math.max(this.endTime - this.penalty, 0);
-        }
+    private handleChoice = (symbol: Symbol) =>
+        withTransition(this.cardsContainer.querySelector("button"), {
+            before: () => this.cardsContainer.classList.add("replacing"),
+            after: () => {
+                if (
+                    this.cards.flatMap(c => c.symbols).filter(s => s.icon == symbol.icon)
+                        .length == 2
+                ) {
+                    this.score++;
+                    this.timeRemaining = Math.min(
+                        this.timeRemaining + this.boost,
+                        this.duration
+                    );
+                    this.endTime += this.boost;
+                } else {
+                    this.lives--;
+                    this.timeRemaining = Math.max(this.timeRemaining - this.penalty, 0);
+                    this.endTime = Math.max(this.endTime - this.penalty, 0);
+                }
 
-        if (this.lives == 0) this.stop();
-        this.generateCards();
-    };
+                if (this.lives == 0) this.stop();
+                this.cardsContainer.classList.remove("replacing");
+                this.generateCards();
+            }
+        });
 
     private generateCards = () => {
         let symbols = [

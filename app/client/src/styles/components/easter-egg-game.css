@@ -23,7 +23,9 @@ easter-egg-game {
         align-items: center;
         gap: 20px;
 
-        &.resetting .card button {
+        &.replacing .card button,
+        &.stopping .card button,
+        &.stopping .card {
             scale: 0;
         }
 
@@ -34,6 +36,10 @@ easter-egg-game {
             container-type: inline-size;
             border-radius: 50%;
             background-color: var(--surface-container-low);
+            transition: scale 100ms;
+            @starting-style {
+                scale: 0;
+            }
 
             button {
                 --icon-size: 13cqw;
