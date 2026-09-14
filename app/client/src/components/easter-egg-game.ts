@@ -44,15 +44,16 @@ export class EasterEggGame extends LitElement {
         }, 200);
     };
 
-    stop = () => {
+    stop = async () => {
+        this.finishTime = Date.now();
         this.state = "finished";
         clearInterval(this.timer);
         this.cards = [];
         if (this.currentMember && this.score > this.currentMember.easterEggHighScore) {
             this.currentMember.easterEggHighScore = this.score;
-            updateEasterEggHighScore(this.currentMember);
+            await updateEasterEggHighScore(this.currentMember);
             Cache.members.refresh();
-            Cache.currentMember.invalidate();
+            Cache.currentMember.refresh();
         }
     };
 
