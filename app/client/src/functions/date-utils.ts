@@ -1,3 +1,5 @@
+import { formatOrdinal } from "./num-utils";
+
 export const getDateString = (date: Date | string = new Date()): string =>
     new Date(date).toISOString().split("T")[0]!;
 
@@ -31,11 +33,6 @@ export const getNextDate = (dayName: string) => {
     throw new Error("no date found");
 };
 
-export const formatDayOfMonth = (date: Date) => {
-    const n = date.getUTCDate();
-    return `${n}${n >= 11 && n <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[n % 10] ?? "th")}`;
-};
-
 export const formatDateRelative = (
     date: Date | string,
     { collapseDayName = false, collapseMonth = false, collapseDayNum = false } = {}
@@ -56,7 +53,7 @@ export const formatDateRelative = (
         return formatDate(date, { weekday: "long" });
     return [
         ...(yrSame ? [formatDate(date, { weekday: collapseDayName ? "short" : "long" })] : []),
-        collapseDayNum ? date.getUTCDate() : formatDayOfMonth(date),
+        collapseDayNum ? date.getUTCDate() : formatOrdinal(date.getUTCDate()),
         ...(!monthSame ? [formatDate(date, { month: collapseMonth ? "short" : "long" })] : []),
         ...(!yrSame ? [formatDate(date, { year: "numeric" })] : [])
     ].join(" ");
