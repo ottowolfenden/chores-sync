@@ -7,6 +7,7 @@ const game = section.querySelector("easter-egg-game")!;
 section.addEventListener("sectionopen", async () => {
     document.fonts.load(`400 1em "Material Symbols Outlined Easter Egg"`);
     const message = game.querySelector("status-message")!;
+    message.elsToHide = [game.querySelector(".leaderboard")];
     message.status = "loading";
     game.members = await Cache.members.get();
     message.status =
