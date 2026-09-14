@@ -49,7 +49,7 @@ export const request = async <T = unknown, M extends Method = Method>(
     }
 };
 
-export const buildEndpoint = (path: string | URL, params: Record<string, string | number>) => {
+export const addParams = (path: string | URL, params: Record<string, string | number>) => {
     const url = new URL(path, location.origin);
     Object.entries(params).forEach(([key, val]) => url.searchParams.set(key, val.toString()));
     return `${url.pathname}${url.search}`;
