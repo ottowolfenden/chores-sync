@@ -1,6 +1,7 @@
 @scope (#easter-egg) {
     :scope {
-        container-type: size;
+        container: easter-egg-section / size;
         overflow-x: hidden;
+        padding-top: 15px;
     }
 }

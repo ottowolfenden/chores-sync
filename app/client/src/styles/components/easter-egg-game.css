@@ -6,66 +6,61 @@
 easter-egg-game {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    min-height: 0;
+    flex-shrink: 1;
+
+    > * {
+        margin-bottom: 15px;
+    }
 
     .cards-container {
+        background-color: blue;
         display: flex;
         align-self: center;
         width: 100%;
-        gap: 10px;
-        padding: 0 10px;
+        height: 50cqw;
+        container-type: size;
+        justify-content: center;
+        align-items: center;
 
-        button {
-            @starting-style {
-                scale: 0;
-            }
-        }
-
-        &.resetting button {
+        &.resetting .card button {
             scale: 0;
         }
-    }
 
-    @container (max-aspect-ratio: 3 / 4) {
-        .cards-container {
-            flex-direction: column;
-            height: calc(100cqh - 160px);
-            align-items: center;
-        }
         .card {
-            width: auto;
-            height: 50%;
-            aspect-ratio: 1 / 1;
-            flex-shrink: 0;
-            flex-basis: 50%;
-        }
-    }
+            width: min(50cqw, 100cqh);
+            height: min(50cqw, 100cqh);
+            position: relative;
+            container-type: inline-size;
+            border-radius: 50%;
+            background-color: var(--surface-container-low);
 
-    @container (min-aspect-ratio: 3 / 4) {
-        @media ((height <= 490px) and (width >= 735px)) {
-            .cards-container {
-                width: 140cqh;
+            button {
+                --icon-size: 13cqw;
+                position: absolute;
+                padding: 4cqw;
+                @starting-style {
+                    scale: 0;
+                }
+
+                md-icon {
+                    font-family: "Material Symbols Outlined Easter Egg";
+                    font-size: var(--icon-size);
+                }
             }
         }
     }
 
-    .card {
-        background-color: var(--surface-container-low);
-        flex-grow: 1;
-        flex-basis: 0;
-        aspect-ratio: 1 / 1;
-        border-radius: 50%;
-        position: relative;
-        container-type: inline-size;
+    @container easter-egg-section (max-aspect-ratio: 3 / 4) {
+        .cards-container {
+            flex-direction: column;
+            background-color: red;
+            height: 200cqw;
 
-        > button {
-            --icon-size: 13cqw;
-            position: absolute;
-            padding: 4cqw;
-
-            md-icon {
-                font-family: "Material Symbols Outlined Easter Egg";
-                font-size: var(--icon-size);
+            .card {
+                background-color: blue !important;
+                width: 50cqh !important;
+                height: 50cqh !important;
             }
         }
     }
@@ -167,7 +162,6 @@ easter-egg-game {
 
     state-actions {
         align-self: center;
-        margin-bottom: 10px;
 
         button {
             --size: 18;
