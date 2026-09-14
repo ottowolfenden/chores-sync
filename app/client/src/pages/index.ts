@@ -34,11 +34,11 @@ const updateManifest = () =>
 updateManifest();
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateManifest);
 
-// if (location.hash) {
-//     if (location.hash != "#count") await Cache.counts.get();
-//     if (location.hash != "#today") await Cache.turnsToday.get();
-//     await Cache.assignmentsToday.get();
-// }
+if (location.hash) {
+    if (location.hash != "#count") await Cache.counts.get();
+    if (location.hash != "#today") await Cache.turnsToday.get();
+    await Cache.assignmentsToday.get();
+}
 
 document.addEventListener("visibilitychange", () => {
     if (document.visibilityState != "visible") return;
