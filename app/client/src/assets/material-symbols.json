@@ -35,13 +35,13 @@
             "sentiment_stressed",
             "sentiment_very_dissatisfied",
             "play_arrow",
-            "restart_alt",
             "favorite",
             "heart_broken",
             "numbers",
             "trophy",
             "schedule",
-            "arrow_back"
+            "arrow_back",
+            "arrow_forward"
         ]
     },
     {

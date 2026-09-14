@@ -194,7 +194,7 @@ export class EasterEggGame extends LitElement {
                         ?shake=${this.checkDanger()}></life-counter>
                 </div>
                 <button class="reset tonal" @click=${this.reset}>
-                    <md-icon>restart_alt</md-icon><span>Reset</span>
+                    <md-icon>arrow_back</md-icon><span>Back</span>
                 </button>
             `,
 
@@ -230,7 +230,7 @@ export class EasterEggGame extends LitElement {
                     </ul>
                 </div>
                 <button class="reset tonal" @click=${this.reset}>
-                    <md-icon>arrow_back</md-icon><span>Back</span>
+                    <md-icon>arrow_forward</md-icon><span>Continue</span>
                 </button>
             `
         })[this.state];
