@@ -131,7 +131,7 @@ export class EasterEggGame extends LitElement {
                     ? html`<span>
                           ${Math.max(this.currentMember.easterEggHighScore, this.score)}
                       </span>`
-                    : html`<md-icon class="spin">sync</md-icon>`}
+                    : html`<md-icon spin>sync</md-icon>`}
             </div>
         </div>
         <div class="cards-container">
@@ -163,9 +163,7 @@ export class EasterEggGame extends LitElement {
                 ${Array.from(
                     { length: this.lives },
                     () => html`
-                        <md-icon class="life ${this.checkDanger() ? "shake" : ""}">
-                            favorite
-                        </md-icon>
+                        <md-icon class="life" ?shake=${this.checkDanger()}>favorite</md-icon>
                     `
                 )}
                 ${Array.from(

@@ -3,7 +3,6 @@ import { customElement, property } from "lit/decorators.js";
 import { refresh } from "../functions/routing";
 import type { CacheData } from "../classes/cache";
 import { vibrate } from "../functions/haptics";
-import { addAnimClass } from "../functions/element-utils";
 
 export type Status = "loading" | "empty" | "error" | "success";
 export type Message = {
@@ -60,10 +59,15 @@ export class StatusMessage extends LitElement {
 
     private handleEasterEggClick = (e: Event) => {
         vibrate(3 ** (this.easterEggClicks + 1));
-        if (this.easterEggClicks == this.easterEggIcons.length - 1)
+        if (this.easterEggClicks == this.easterEggIcons.length - 1) {
             location.hash = "#easter-egg";
-        addAnimClass(e.target as HTMLElement, "shake");
-        this.easterEggClicks = (this.easterEggClicks + 1) % this.easterEggIcons.length;
+            setTimeout(() => (this.easterEggClicks = 0), 500);
+            return;
+        }
+        const target = e.target as MdIcon;
+        target.shake = true;
+        target.addEventListener("animationend", () => (target.shake = false));
+        this.easterEggClicks++;
     };
 
     updated = () => {
@@ -90,7 +94,7 @@ export class StatusMessage extends LitElement {
             ? html`<span></span>`
             : html`
                   <span>
-                      <md-icon class="large ${this.messages[this.status].spin ? "spin" : ""}">
+                      <md-icon class="large" ?spin=${this.messages[this.status].spin}>
                           ${this.messages[this.status].icon}
                       </md-icon>
                       <span class="content">${this.getContent()}</span>

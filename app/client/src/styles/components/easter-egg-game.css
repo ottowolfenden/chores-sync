@@ -88,7 +88,7 @@ easter-egg-game {
                 width: 47px;
             }
 
-            md-icon.spin {
+            md-icon[spin] {
                 text-align: center;
                 width: 47px;
                 margin: 0;
@@ -141,7 +141,7 @@ easter-egg-game {
                 --fill: 1;
                 color: var(--primary);
 
-                &.shake {
+                &[shake] {
                     animation-iteration-count: infinite;
                     animation-duration: 220ms;
                 }
