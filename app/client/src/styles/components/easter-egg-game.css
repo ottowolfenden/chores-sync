@@ -14,7 +14,49 @@ easter-egg-game {
     }
 
     &[state="new"] {
-        height: 100%;
+        height: min(100%, 410px);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .leaderboard {
+        margin-top: 5px;
+        width: fit-content;
+
+        ol {
+            display: grid;
+            width: 100%;
+            grid-template-columns: auto auto auto;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        li {
+            display: grid;
+            grid-column: 1 / -1;
+            grid-template-columns: subgrid;
+            gap: 30px;
+            background-color: var(--surface-container);
+            color: var(--on-surface);
+            padding: 8px 14px;
+            border-radius: 6px;
+
+            .score {
+                display: flex;
+                align-items: center;
+                gap: 3px;
+                span {
+                    font-weight: 550;
+                }
+                md-icon {
+                    --opsz: 21;
+                }
+            }
+        }
+    }
+
+    button.start {
+        margin-top: 30px;
     }
 
     .cards-container {
@@ -135,12 +177,6 @@ easter-egg-game {
             --background-color: var(--error-container);
             --color: var(--error);
         }
-    }
-
-    button.start {
-        align-self: center;
-        justify-self: center;
-        margin: auto 0;
     }
 
     button.start,

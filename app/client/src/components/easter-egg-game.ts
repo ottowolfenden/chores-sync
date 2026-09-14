@@ -3,6 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
 import { withTransition } from "../functions/element-utils";
 import { updateEasterEggHighScore } from "../functions/db-set";
+import { formatOrdinal } from "../functions/num-utils";
 import materialSymbols from "../assets/material-symbols.json";
 import "../components/life-counter";
 
@@ -131,20 +132,22 @@ export class EasterEggGame extends LitElement {
     render = () =>
         ({
             new: html`
-                <div><h2>Leaderboard</h2></div>
-                <ol class="leaderboard">
-                    test
-                    ${this.getLeaderboard().map(
-                        l => html`
-                            <li>
-                                <span>${l.pos}</span>
-                                <span>${l.name}</span>
-                                <span>${l.score}</span>
-                            </li>
-                        `
-                    )}
-                </ol>
-                <status-message></status-message>
+                <div class="leaderboard">
+                    <div><h2>Leaderboard</h2></div>
+                    <ol>
+                        ${this.getLeaderboard().map(
+                            l => html`
+                                <li>
+                                    <span class="pos">${formatOrdinal(l.pos)}</span>
+                                    <span class="name">${l.name}</span>
+                                    <span class="score">
+                                        <md-icon>trophy</md-icon><span>${l.score}</span>
+                                    </span>
+                                </li>
+                            `
+                        )}
+                    </ol>
+                </div>
                 <button class="start filled" @click=${this.start}>
                     <md-icon>play_arrow</md-icon><span>Start</span>
                 </button>
