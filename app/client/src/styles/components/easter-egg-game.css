@@ -17,16 +17,6 @@ easter-egg-game {
         height: 100%;
     }
 
-    .card,
-    .card button,
-    .scores,
-    button.reset,
-    button.start {
-        @starting-style {
-            scale: 0;
-        }
-    }
-
     .cards-container {
         display: flex;
         align-self: center;
@@ -54,6 +44,9 @@ easter-egg-game {
                 --icon-size: 13cqw;
                 position: absolute;
                 padding: 4cqw;
+                @starting-style {
+                    scale: 0;
+                }
 
                 md-icon {
                     font-family: "Material Symbols Outlined Easter Egg";
