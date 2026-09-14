@@ -5,8 +5,8 @@ import { withTransition } from "../functions/element-utils";
 import { updateEasterEggHighScore } from "../functions/db-set";
 import { formatOrdinal } from "../functions/num-utils";
 import materialSymbols from "../assets/material-symbols.json";
-import "../components/life-counter";
 import { Cache } from "../classes/cache";
+import "../components/life-counter";
 
 export type Symbol = { icon: string; rotation: number };
 export type Card = { symbols: Symbol[]; variation: 1 | 2 | 3 | 4 | 5; rotation: number };
@@ -21,7 +21,9 @@ export class EasterEggGame extends LitElement {
     private readonly penalty = 2000;
     private readonly boost = 3000;
     private timer?: number;
-    private endTime: number = Infinity;
+    private startTime = 0;
+    private forceEndTime = 0;
+    private finishTime = 0;
 
     @property({ type: String, reflect: true }) state: "new" | "running" | "finished" = "new";
     @property({ type: Array }) members?: UiMember[] | null;
@@ -37,9 +39,10 @@ export class EasterEggGame extends LitElement {
         if (this.state == "running") return;
         this.generateCards();
         this.state = "running";
-        this.endTime = Date.now() + this.duration;
+        this.startTime = Date.now();
+        this.forceEndTime = this.startTime + this.duration;
         this.timer = setInterval(() => {
-            this.timeRemaining = Math.max(this.endTime - Date.now(), 0);
+            this.timeRemaining = Math.max(this.forceEndTime - Date.now(), 0);
             if (this.timeRemaining == 0) this.stop();
         }, 200);
     };
@@ -62,7 +65,7 @@ export class EasterEggGame extends LitElement {
         this.state = "new";
         this.timeRemaining = this.duration;
         this.lives = this.maxLives;
-        this.score = 0;
+        this.score = this.startTime = this.finishTime = this.forceEndTime = 0;
         if (!this.message) return;
         this.message.status = "loading";
         this.members = await Cache.members.get();
@@ -100,11 +103,11 @@ export class EasterEggGame extends LitElement {
         if (this.checkMatch(symbol)) {
             this.score++;
             this.timeRemaining = Math.min(this.timeRemaining + this.boost, this.duration);
-            this.endTime += this.boost;
+            this.forceEndTime += this.boost;
         } else {
             this.lives--;
             this.timeRemaining = Math.max(this.timeRemaining - this.penalty, 0);
-            this.endTime = Math.max(this.endTime - this.penalty, 0);
+            this.forceEndTime = Math.max(this.forceEndTime - this.penalty, 0);
         }
         if (this.lives == 0) this.stop();
 
@@ -220,9 +223,11 @@ export class EasterEggGame extends LitElement {
                     <ul>
                         <li class="time">
                             <span class="title">
-                                <md-icon>schedule</md-icon><span>Time left</span>
+                                <md-icon>schedule</md-icon><span>Time</span>
                             </span>
-                            <span class="num">${Math.round(this.timeRemaining / 1000)}s</span>
+                            <span class="num">
+                                ${Math.round((this.finishTime - this.startTime) / 1000)}s
+                            </span>
                         </li>
                         <li class="score">
                             <span class="title">
