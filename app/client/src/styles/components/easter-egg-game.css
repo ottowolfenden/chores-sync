@@ -14,14 +14,14 @@ easter-egg-game {
     }
 
     .cards-container {
-        background-color: blue;
         display: flex;
         align-self: center;
         width: 100%;
-        height: 50cqw;
+        height: calc(50cqw - 20px);
         container-type: size;
         justify-content: center;
         align-items: center;
+        gap: 20px;
 
         &.resetting .card button {
             scale: 0;
@@ -54,13 +54,11 @@ easter-egg-game {
     @container easter-egg-section (max-aspect-ratio: 3 / 4) {
         .cards-container {
             flex-direction: column;
-            background-color: red;
             height: 200cqw;
 
             .card {
-                background-color: blue !important;
-                width: 50cqh !important;
-                height: 50cqh !important;
+                width: calc(50cqh - 10px);
+                height: 50cqh;
             }
         }
     }
