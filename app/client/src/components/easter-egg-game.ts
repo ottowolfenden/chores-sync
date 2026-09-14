@@ -96,6 +96,17 @@ export class EasterEggGame extends LitElement {
             ? Math.max(this.currentMember.easterEggHighScore, this.score)
             : null;
 
+    private getLeaderboard = () =>
+        this.members
+            ?.map(m => ({ name: m.name, score: m.easterEggHighScore }))
+            .sort((a, b) => b.score - a.score)
+            .reduce<{ name: string; score: number; pos: number }[]>((acc, m) => {
+                const prev = acc.at(-1);
+                if (prev === undefined) acc.push({ ...m, pos: 1 });
+                else acc.push({ ...m, pos: m.score === prev.score ? prev.pos : prev.pos + 1 });
+                return acc;
+            }, []) ?? [];
+
     private handleChoice = (symbol: Symbol) =>
         withTransition(this.cardsContainer.querySelector("button"), {
             before: () => {
@@ -123,6 +134,19 @@ export class EasterEggGame extends LitElement {
     render = () =>
         ({
             new: html`
+                <div><h2>Leaderboard</h2></div>
+                <ol class="leaderboard">
+                    ${this.getLeaderboard().map(
+                        l => html`
+                            <li>
+                                <span>${l.pos}</span>
+                                <span>${l.name}</span>
+                                <span>${l.score}</span>
+                            </li>
+                        `
+                    )}
+                </ol>
+                <status-message></status-message>
                 <button class="start filled" @click=${this.start}>
                     <md-icon>play_arrow</md-icon><span>Start</span>
                 </button>

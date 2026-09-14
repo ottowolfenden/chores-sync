@@ -6,9 +6,14 @@ const game = section.querySelector("easter-egg-game")!;
 
 section.addEventListener("sectionopen", async () => {
     document.fonts.load(`400 1em "Material Symbols Outlined Easter Egg"`);
+    const message = game.querySelector("status-message")!;
+    message.status = "loading";
     game.members = await Cache.members.get();
+    message.status =
+        game.members === null ? "error" : game.members.length == 0 ? "empty" : "success";
     game.currentMember = await Cache.currentMember.get();
 });
+
 section.addEventListener("sectionclose", () => {
     game.reset();
     Cache.members.invalidate();
