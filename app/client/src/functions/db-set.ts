@@ -1,4 +1,4 @@
-import { request } from "./api-utils";
+import { buildEndpoint, request } from "./api-utils";
 import { toDbAssignment } from "./assignments";
 import { getDateString } from "./date-utils";
 
@@ -28,3 +28,15 @@ export const replaceAssignments = (
         `/api/assignments?action=replace&date=${date}`,
         uiAssignments.map(toDbAssignment)
     ).then(r => r.ok);
+
+export const updateEasterEggHighScore = (
+    data: Partial<UiMember> & Pick<UiMember, "id" | "easterEggHighScore">
+) =>
+    request(
+        "PUT",
+        buildEndpoint("/api/members", {
+            "action": "update-high-score",
+            "id": data.id,
+            "high-score": data.easterEggHighScore
+        })
+    );
