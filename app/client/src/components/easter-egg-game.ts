@@ -91,6 +91,11 @@ export class EasterEggGame extends LitElement {
     private checkDanger = () =>
         this.timeRemaining <= 0.2 * this.duration && this.timeRemaining != 0;
 
+    private getHighScore = () =>
+        this.currentMember
+            ? Math.max(this.currentMember.easterEggHighScore, this.score)
+            : null;
+
     private handleChoice = (symbol: Symbol) =>
         withTransition(this.cardsContainer.querySelector("button"), {
             before: () => this.cardsContainer.classList.add("replacing"),
@@ -114,92 +119,96 @@ export class EasterEggGame extends LitElement {
             }
         });
 
-    render = () => html`
-        <div class="scores" ?hidden=${this.state != "running"}>
-            <div class="score" ?hidden=${this.state == "new"}>
-                <md-icon>numbers</md-icon>
-                <span>${this.score}</span>
-            </div>
-            <div class="high-score">
-                <md-icon>trophy</md-icon>
-                ${this.currentMember
-                    ? html`<span>
-                          ${Math.max(this.currentMember.easterEggHighScore, this.score)}
-                      </span>`
-                    : html`<md-icon spin>sync</md-icon>`}
-            </div>
-        </div>
+    render = () =>
+        ({
+            new: html`
+                <button class="start filled" @click=${this.start}>
+                    <md-icon>play_arrow</md-icon><span>Start</span>
+                </button>
+            `,
 
-        <div class="cards-container" ?hidden=${this.state != "running"}>
-            ${this.cards.map(
-                c => html`
-                    <div
-                        class="card"
-                        data-variation=${c.variation}
-                        style="rotate:${c.rotation}deg">
-                        ${c.symbols.map(
-                            s => html`
-                                <button
-                                    class="transparent"
-                                    @click=${() => this.handleChoice(s)}>
-                                    <md-icon style="rotate:${s.rotation}deg">
-                                        ${s.icon}
-                                    </md-icon>
-                                </button>
-                            `
-                        )}
+            running: html`
+                <div class="scores">
+                    <div class="score">
+                        <md-icon>numbers</md-icon>
+                        <span>${this.score}</span>
                     </div>
-                `
-            )}
-        </div>
-
-        <div
-            class="stats ${this.checkDanger() ? "danger" : ""}"
-            ?hidden=${this.state != "running"}>
-            <span>${Math.round(this.timeRemaining / 1000)}</span>
-            <progress value=${this.timeRemaining} max=${this.duration}></progress>
-            <life-counter
-                max-lives=${this.maxLives}
-                lives=${this.lives}
-                ?shake=${this.checkDanger()}></life-counter>
-        </div>
-
-        <div class="summary" ?hidden=${this.state != "finished"}>
-            <life-counter
-                max-lives=${this.maxLives}
-                lives=${this.lives}
-                size="55"></life-counter>
-            <ul>
-                <li class="time">
-                    <span class="title">
-                        <md-icon>schedule</md-icon><span>Time left</span>
-                    </span>
-                    <span class="num">${Math.round(this.timeRemaining / 1000)}s</span>
-                </li>
-                <li class="score">
-                    <span class="title"><md-icon>numbers</md-icon><span>Score</span></span>
-                    <span class="num">${this.score}</span>
-                </li>
-                <li class="high-score">
-                    <span class="title"><md-icon>trophy</md-icon><span>High score</span></span>
-                    <span class="num">
+                    <div class="high-score">
+                        <md-icon>trophy</md-icon>
                         ${this.currentMember
-                            ? html`${Math.max(
-                                  this.currentMember.easterEggHighScore,
-                                  this.score
-                              )}`
+                            ? html`<span>${this.getHighScore()}</span>`
                             : html`<md-icon spin>sync</md-icon>`}
-                    </span>
-                </li>
-            </ul>
-        </div>
+                    </div>
+                </div>
+                <div class="cards-container">
+                    ${this.cards.map(
+                        c => html`
+                            <div
+                                class="card"
+                                data-variation=${c.variation}
+                                style="rotate:${c.rotation}deg">
+                                ${c.symbols.map(
+                                    s => html`
+                                        <button
+                                            class="transparent"
+                                            @click=${() => this.handleChoice(s)}>
+                                            <md-icon style="rotate:${s.rotation}deg">
+                                                ${s.icon}
+                                            </md-icon>
+                                        </button>
+                                    `
+                                )}
+                            </div>
+                        `
+                    )}
+                </div>
+                <div class="stats" ?data-danger=${this.checkDanger()}>
+                    <span>${Math.round(this.timeRemaining / 1000)}</span>
+                    <progress value=${this.timeRemaining} max=${this.duration}></progress>
+                    <life-counter
+                        max-lives=${this.maxLives}
+                        lives=${this.lives}
+                        ?shake=${this.checkDanger()}></life-counter>
+                </div>
+                <button class="reset tonal" @click=${this.reset}>
+                    <md-icon>restart_alt</md-icon><span>Reset</span>
+                </button>
+            `,
 
-        <button class="start filled" @click=${this.start} ?hidden=${this.state != "new"}>
-            <md-icon>play_arrow</md-icon><span>Start</span>
-        </button>
-
-        <button class="reset tonal" @click=${this.reset} ?hidden=${this.state == "new"}>
-            <md-icon>restart_alt</md-icon><span>Reset</span>
-        </button>
-    `;
+            finished: html`
+                <div class="summary">
+                    <life-counter
+                        max-lives=${this.maxLives}
+                        lives=${this.lives}
+                        size="55"></life-counter>
+                    <ul>
+                        <li class="time">
+                            <span class="title">
+                                <md-icon>schedule</md-icon><span>Time left</span>
+                            </span>
+                            <span class="num">${Math.round(this.timeRemaining / 1000)}s</span>
+                        </li>
+                        <li class="score">
+                            <span class="title">
+                                <md-icon>numbers</md-icon><span>Score</span>
+                            </span>
+                            <span class="num">${this.score}</span>
+                        </li>
+                        <li class="high-score">
+                            <span class="title">
+                                <md-icon>trophy</md-icon><span>High score</span>
+                            </span>
+                            <span class="num">
+                                ${this.currentMember
+                                    ? this.getHighScore()
+                                    : html`<md-icon spin>sync</md-icon>`}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <button class="reset tonal" @click=${this.reset}>
+                    <md-icon>arrow_back</md-icon><span>Back</span>
+                </button>
+            `
+        })[this.state];
 }

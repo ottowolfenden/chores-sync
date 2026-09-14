@@ -133,7 +133,7 @@ easter-egg-game {
         }
     }
 
-    .stats.danger {
+    .stats[data-danger] {
         span,
         md-icon.life {
             color: var(--error);
@@ -180,7 +180,7 @@ easter-egg-game {
             display: grid;
             grid-column: 1 / -1;
             grid-template-columns: subgrid;
-            gap: 4px;
+            gap: 5px;
 
             md-icon[spin] {
                 color: rgb(from var(--on-surface-variant) r g b / 0.7);
