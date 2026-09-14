@@ -16,7 +16,7 @@ export class EasterEggGame extends LitElement {
     private readonly numPerCard = 8;
     private readonly duration = 60_000;
     private readonly maxLives = 3;
-    private readonly penalty = 3000;
+    private readonly penalty = 2000;
     private readonly boost = 2000;
     private readonly emptyCards: Card[] = [
         { symbols: [], variation: 1, rotation: 0 },
