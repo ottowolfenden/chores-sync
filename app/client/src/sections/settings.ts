@@ -1,4 +1,4 @@
-import "../components/toggle-switch";
+import "../components/members-list";
 
 const section = document.querySelector("section#settings")!;
 

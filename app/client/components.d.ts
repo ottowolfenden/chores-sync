@@ -6,6 +6,7 @@ declare global {
     type EasterEggGame = import("./src/components/easter-egg-game").EasterEggGame;
     type LifeCounter = import("./src/components/life-counter").LifeCounter;
     type MdIcon = import("./src/components/md-icon").MdIcon;
+    type MembersList = import("./src/components/members-list").MembersList;
     type StateActions = import("./src/components/state-actions").StateActions;
     type NumInput = import("./src/components/num-input").NumInput;
     type SectionNav = import("./src/components/section-nav").SectionNav;
@@ -21,6 +22,7 @@ declare global {
         "easter-egg-game": EasterEggGame;
         "life-counter": LifeCounter;
         "md-icon": MdIcon;
+        "members-list": MembersList;
         "state-actions": StateActions;
         "num-input": NumInput;
         "section-nav": SectionNav;
