@@ -196,7 +196,7 @@ timeline-list {
             }
         }
 
-        &::focus-visible {
+        &:focus-visible {
             outline: none;
         }
 
@@ -219,6 +219,17 @@ timeline-list {
 
         @media (width < 550px) {
             width: 100%;
+        }
+    }
+}
+
+@supports (-webkit-touch-callout: none) {
+    timeline-list dialog {
+        opacity: 1;
+        translate: none;
+
+        &::backdrop {
+            background-color: rgb(0 0 0 / 0.3);
         }
     }
 }
