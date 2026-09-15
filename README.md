@@ -24,12 +24,24 @@ Icons used are [Material Symbols](https://fonts.google.com/icons).
 
 ### Screenshots
 <div align="center">
-    <img src="screenshots/dark-mobile.png" width="49%" alt="Editing assignments in the today section in dark mode" align="top"/>
-    <img src="screenshots/light-mobile.png" width="49%" alt="Count section in light mode" />
+    <img
+        src="screenshots/mobile-dark.png"
+        width="49%"
+        alt="Editing assignments in the timeline section in dark mode" />
+    <img
+        src="screenshots/mobile-light.png"
+        width="49%"
+        alt="Today section in light mode" />
 </div>
 <div align="center">
-    <img src="screenshots/dark-desktop.png" width="49%" alt="Timeline section in dark mode" />
-    <img src="screenshots/light-desktop.png" width="49%" alt="Today section with no assigned chores in light mode" align="top"/>
+    <img
+        src="screenshots/desktop-dark.png"
+        width="49%"
+        alt="Timeline section in dark mode" />
+    <img
+        src="screenshots/desktop-light.png"
+        width="49%"
+        alt="Editing counts in Count section" />
 </div>
 
 ### Todo
