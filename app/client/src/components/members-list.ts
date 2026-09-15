@@ -10,6 +10,14 @@ export class MembersList extends LitElement {
     @property({ type: Array }) members: UiMember[] = [];
     @property({ type: Object }) currentMember?: UiMember;
 
+    private toggleAdmin = (on: boolean) => {
+        console.log(on);
+    };
+
+    private toggleActive = (on: boolean) => {
+        console.log(on);
+    };
+
     render = () =>
         repeat(
             this.members,
@@ -20,11 +28,15 @@ export class MembersList extends LitElement {
                     <toggle-switch
                         text="Admin"
                         .on=${m.isAdmin}
-                        ?disabled=${!this.currentMember?.isAdmin}></toggle-switch>
+                        ?disabled=${!this.currentMember?.isAdmin}
+                        @change=${(e: CustomEvent) =>
+                            this.toggleAdmin(e.detail.on)}></toggle-switch>
                     <toggle-switch
                         text="Active"
                         .on=${m.isActive}
-                        ?disabled=${!this.currentMember?.isAdmin}></toggle-switch>
+                        ?disabled=${!this.currentMember?.isAdmin}
+                        @change=${(e: CustomEvent) =>
+                            this.toggleActive(e.detail.on)}></toggle-switch>
                 </div>
             `
         );
