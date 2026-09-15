@@ -1,18 +1,16 @@
-<br>
-
 <div align="center">
     <picture>
         <source
             media="(prefers-color-scheme: light)"
             srcset="app/client/src/assets/icons/light/word-logo.svg" 
             width="500" 
-            height="140"></source>
+            height="135"></source>
         <source
             media="(prefers-color-scheme: dark)"
             srcset="app/client/src/assets/icons/dark/word-logo.svg" 
             width="500" 
-            height="140"></source>
-        <img src="app/client/src/assets/icons/light/word-logo.svg" alt="Chores Sync" height="140">
+            height="135"></source>
+        <img src="app/client/src/assets/icons/light/word-logo.svg" alt="Chores Sync" height="135">
     </picture>
     <h3>Chores Sync is a simple web app for sharing chores (work in progress).</h3>
 </div>
