@@ -1,0 +1,22 @@
+members-list {
+    margin-top: 5px;
+    display: grid;
+    grid-template-columns: auto min-content min-content;
+    gap: 5px;
+
+    .member {
+        display: grid;
+        grid-column: 1 / -1;
+        grid-template-columns: subgrid;
+        background-color: var(--surface-container-low);
+        padding: 10px 13px;
+        border-radius: 6px;
+        gap: 35px;
+
+        .name {
+            display: flex;
+            align-items: center;
+            font-size: 21px;
+        }
+    }
+}
