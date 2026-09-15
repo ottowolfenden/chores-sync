@@ -1,3 +1,5 @@
+import "../components/toggle-switch";
+
 const section = document.querySelector("section#settings")!;
 
 section.addEventListener("sectionopen", () => console.log("settings opened"));

@@ -11,6 +11,7 @@ declare global {
     type SectionNav = import("./src/components/section-nav").SectionNav;
     type StatusMessage = import("./src/components/status-message").StatusMessage;
     type TimelineList = import("./src/components/timeline-list").TimelineList;
+    type ToggleSwitch = import("./src/components/toggle-switch").ToggleSwitch;
     type TurnsList = import("./src/components/turns-list").TurnsList;
 
     interface HTMLElementTagNameMap {
@@ -25,6 +26,7 @@ declare global {
         "section-nav": SectionNav;
         "status-message": StatusMessage;
         "timeline-list": TimelineList;
+        "toggle-switch": ToggleSwitch;
         "turns-list": TurnsList;
     }
 }

@@ -8,6 +8,7 @@
 @import "components/state-actions.css";
 @import "components/status-message.css";
 @import "components/timeline-list.css";
+@import "components/toggle-switch.css";
 @import "components/turns-list.css";
 
 @import "sections/count.css";
@@ -232,37 +233,6 @@ label:has(input[type="password"]) span {
 
     &:has(+ input[data-invalid]) {
         color: var(--error);
-    }
-}
-
-input[type="checkbox"] {
-    appearance: none;
-    margin-right: 15px;
-    width: 19px;
-    height: 19px;
-    border: 2px solid var(--outline);
-    border-radius: 3px;
-    display: grid;
-    place-content: center;
-    cursor: pointer;
-    transition-property: background-color, color, border-color;
-    transition-duration: 200ms;
-
-    &:checked {
-        background-color: var(--primary);
-        border-color: var(--primary);
-
-        &::before {
-            content: "check";
-            color: var(--on-primary);
-            font-family: "Material Symbols";
-            font-size: 20px;
-            font-variation-settings:
-                "FILL" 0,
-                "wght" 550,
-                "GRAD" 0,
-                "opsz" 20;
-        }
     }
 }
 

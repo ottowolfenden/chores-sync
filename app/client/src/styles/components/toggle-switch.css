@@ -1,0 +1,101 @@
+toggle-switch {
+    width: fit-content;
+
+    input[type="checkbox"] {
+        appearance: none;
+
+        &:focus-visible {
+            outline: none;
+        }
+    }
+
+    label {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        cursor: pointer;
+    }
+
+    .toggle {
+        width: 56px;
+        height: 31px;
+        border: solid 2px;
+        border-radius: calc(infinity * 1px);
+        transition-property: background-color, border-color, outline-color;
+        transition-duration: 150ms;
+        display: flex;
+        align-items: center;
+        outline-offset: 2px;
+    }
+
+    .handle {
+        width: 26px;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        transition-property: translate, color, background-color, box-shadow, scale;
+        transition-duration: 150ms;
+        display: grid;
+        place-content: center;
+        margin: 0 3px;
+
+        md-icon {
+            --opsz: 19;
+            transition: scale 150ms;
+        }
+    }
+
+    &:active .handle {
+        scale: 1.2;
+
+        md-icon {
+            scale: calc(1 / 1.2);
+        }
+    }
+
+    &:has(input:not(:checked)) {
+        .toggle {
+            background-color: var(--surface-container-highest);
+            border-color: var(--outline);
+        }
+
+        .handle {
+            background-color: var(--outline);
+            color: var(--surface-container-highest);
+        }
+
+        @media (hover: hover) {
+            &:hover .handle {
+                background-color: var(--on-surface-variant);
+                box-shadow: 0 0 0 10px rgb(from var(--on-surface-variant) r g b / 0.2);
+            }
+        }
+
+        &:has(:focus-visible) .toggle {
+            outline: solid 2px var(--on-surface);
+        }
+    }
+
+    &:has(input:checked) {
+        .toggle {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .handle {
+            background-color: var(--on-primary);
+            color: var(--primary);
+            translate: 24px 0;
+        }
+
+        @media (hover: hover) {
+            &:hover .handle {
+                background-color: var(--primary-container);
+                box-shadow: 0 0 0 10px rgb(from var(--primary) r g b / 0.2);
+            }
+        }
+
+        &:has(:focus-visible) .toggle {
+            outline: solid 2px var(--primary);
+        }
+    }
+}
