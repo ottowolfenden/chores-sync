@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { queryClosest } from "../functions/element-utils";
+import { queryClosest, withTransition } from "../functions/element-utils";
 import "../components/toggle-switch";
 
 @customElement("members-list")
@@ -25,9 +25,17 @@ export class MembersList extends LitElement {
         const settingsEl = queryClosest(e, ".member")?.querySelector<HTMLElement>(".settings");
         if (!settingsEl) return;
         collapse ??= !settingsEl.inert;
-        settingsEl.inert = collapse;
         const icon = settingsEl.parentElement?.querySelector<MdIcon>(".expand md-icon");
-        icon?.setIcon(settingsEl.inert ? "keyboard_arrow_down" : "keyboard_arrow_up");
+        icon?.setIcon(collapse ? "keyboard_arrow_down" : "keyboard_arrow_up");
+        if (collapse)
+            withTransition(settingsEl, {
+                before: () => settingsEl.classList.add("collapsing"),
+                after: () => {
+                    settingsEl.inert = true;
+                    settingsEl.classList.remove("collapsing");
+                }
+            });
+        else settingsEl.inert = false;
     };
 
     render = () =>
