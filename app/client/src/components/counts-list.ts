@@ -114,9 +114,9 @@ export class CountsList extends LitElement {
                                 beforeTransition: this.invalidate,
                                 click: async () => this.saveEdit(countDiv, c)
                             },
-                            loading: {},
-                            success: {},
-                            error: {},
+                            loading: { class: "small" },
+                            success: { class: "small" },
+                            error: { class: "small" },
                             cancel: {
                                 class: "outlined small",
                                 click: async () => this.cancelEdit(countDiv)

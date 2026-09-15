@@ -45,11 +45,10 @@ Icons used are [Material Symbols](https://fonts.google.com/icons).
 </div>
 
 ### Todo
-1.  Fix state actions transitioning scale when saving a count edit.
-2.  Begin settings section (initially just for setting user active state).
-3.  Make quantity in assignments edit mode editable.
-4.  Set up individual user authentication rather than having a shared secret.
-5.  Make caching more tightly linked to db functions.
-6.  Add notifications.
-7.  Add order column to chores table so they can be grouped in a way that makes sense.
-8.  Set up sign up so anyone can create an account, invite people etc.
+1.  Begin settings section (initially just for setting user active state).
+2.  Make quantity in assignments edit mode editable.
+3.  Set up individual user authentication rather than having a shared secret.
+4.  Make caching more tightly linked to db functions.
+5.  Add notifications.
+6.  Add order column to chores table so they can be grouped in a way that makes sense.
+7.  Set up sign up so anyone can create an account, invite people etc.
