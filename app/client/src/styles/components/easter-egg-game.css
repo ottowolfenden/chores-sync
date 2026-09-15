@@ -248,6 +248,10 @@ easter-egg-game {
                 }
             }
         }
+
+        life-counter md-icon.life {
+            color: var(--secondary);
+        }
     }
 
     .card[data-variation="1"] {
