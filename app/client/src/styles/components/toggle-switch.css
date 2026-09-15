@@ -12,8 +12,9 @@ toggle-switch {
     label {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 15px;
         cursor: pointer;
+        color: var(--on-surface-variant);
     }
 
     .toggle {
@@ -44,7 +45,7 @@ toggle-switch {
         }
     }
 
-    &:active .handle {
+    &:active:not(:has(:disabled)) .handle {
         scale: 1.2;
 
         md-icon {
@@ -52,7 +53,7 @@ toggle-switch {
         }
     }
 
-    &:has(input:not(:checked)) {
+    &:not(:has(:checked)) {
         .toggle {
             background-color: var(--surface-container-highest);
             border-color: var(--outline);
@@ -64,7 +65,7 @@ toggle-switch {
         }
 
         @media (hover: hover) {
-            &:hover .handle {
+            &:hover:not(:has(:disabled)) .handle {
                 background-color: var(--on-surface-variant);
                 box-shadow: 0 0 0 10px rgb(from var(--on-surface-variant) r g b / 0.2);
             }
@@ -75,7 +76,7 @@ toggle-switch {
         }
     }
 
-    &:has(input:checked) {
+    &:has(:checked) {
         .toggle {
             background-color: var(--primary);
             border-color: var(--primary);
@@ -88,7 +89,7 @@ toggle-switch {
         }
 
         @media (hover: hover) {
-            &:hover .handle {
+            &:hover:not(:has(:disabled)) .handle {
                 background-color: var(--primary-container);
                 box-shadow: 0 0 0 10px rgb(from var(--primary) r g b / 0.2);
             }
@@ -96,6 +97,18 @@ toggle-switch {
 
         &:has(:focus-visible) .toggle {
             outline: solid 2px var(--primary);
+        }
+    }
+
+    &:has(:disabled) {
+        label {
+            pointer-events: none;
+            cursor: unset;
+        }
+
+        .toggle {
+            filter: grayscale(1);
+            opacity: 0.4;
         }
     }
 }
