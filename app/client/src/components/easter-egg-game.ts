@@ -16,10 +16,11 @@ export class EasterEggGame extends LitElement {
     protected createRenderRoot = () => this;
 
     private readonly numPerCard = 8;
-    private readonly duration = 60_000;
+    private readonly duration = 50_000;
     private readonly maxLives = 3;
-    private readonly penalty = 2000;
+    private readonly penalty = 1000;
     private readonly boost = 3000;
+
     private timer?: number;
     private startTime = 0;
     private forceEndTime = 0;
