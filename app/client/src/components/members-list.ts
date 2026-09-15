@@ -47,16 +47,10 @@ export class MembersList extends LitElement {
                     <div class="details" @click=${this.toggleCollapse}>
                         <div class="left-items">
                             <span class="name">${m.name}</span>
-                            ${m.isAdmin
-                                ? html`
-                                      <span class="admin">
-                                          <md-icon>
-                                              ${m.isAdmin ? "shield_person" : ""}
-                                          </md-icon>
-                                          <span>${m.isAdmin ? "Admin" : ""}</span>
-                                      </span>
-                                  `
-                                : ""}
+                            <span class="admin" ?hidden=${!m.isAdmin}>
+                                <md-icon>shield_person</md-icon>
+                                <span>Admin</span>
+                            </span>
                         </div>
                         <div class="right-items">
                             <span class="active-state" ?data-active=${m.isActive}>
