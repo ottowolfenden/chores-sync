@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
 import { withTransition } from "../functions/element-utils";
-import { updateEasterEggHighScore } from "../functions/db-set";
+import { updateHighScore } from "../functions/db-set";
 import { formatOrdinal } from "../functions/num-utils";
 import materialSymbols from "../assets/material-symbols.json";
 import { Cache } from "../classes/cache";
@@ -53,9 +53,9 @@ export class EasterEggGame extends LitElement {
         this.state = "finished";
         clearInterval(this.timer);
         this.cards = [];
-        if (this.currentMember && this.score > this.currentMember.easterEggHighScore) {
-            this.currentMember.easterEggHighScore = this.score;
-            await updateEasterEggHighScore(this.currentMember);
+        if (this.currentMember && this.score > this.currentMember.highScore) {
+            this.currentMember.highScore = this.score;
+            await updateHighScore(this.currentMember);
             Cache.members.refresh();
             Cache.currentMember.refresh();
         }
@@ -128,13 +128,11 @@ export class EasterEggGame extends LitElement {
         this.timeRemaining <= 0.2 * this.duration && this.timeRemaining != 0;
 
     private getHighScore = () =>
-        this.currentMember
-            ? Math.max(this.currentMember.easterEggHighScore, this.score)
-            : null;
+        this.currentMember ? Math.max(this.currentMember.highScore, this.score) : null;
 
     private getLeaderboard = () =>
         this.members
-            ?.map(m => ({ name: m.name, score: m.easterEggHighScore }))
+            ?.map(m => ({ name: m.name, score: m.highScore }))
             .sort((a, b) => b.score - a.score)
             .reduce<{ name: string; score: number; pos: number }[]>((acc, m) => {
                 const prev = acc.at(-1);

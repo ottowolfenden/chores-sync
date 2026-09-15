@@ -45,7 +45,7 @@ export const getMembers = async (): Promise<UiMember[] | null> => {
             isActive: d["is_active"],
             isAdmin: d["is_admin"],
             dateOfBirth: d["date_of_birth"] ? new Date(d["date_of_birth"]) : null,
-            easterEggHighScore: d["easter_egg_high_score"]
+            highScore: d["easter_egg_high_score"]
         })
     );
 };
@@ -57,7 +57,7 @@ export const getAssignments = async (
     date: string = getDateString(),
     turns: UiTurn[] | null = null
 ): Promise<UiAssignment[] | null> => {
-    const { ok, data } = await request<DbAssignment[]>("GET", `/api/assignments?date=${date}`);
+    const { ok, data } = await request<DbAssignment[]>("GET", ["/api/assignments", { date }]);
     if (!ok || !data) return null;
 
     const chores = await Cache.chores.get();
@@ -90,7 +90,7 @@ export const getAssignments = async (
 };
 
 export const getTurns = async (date: string = getDateString()): Promise<UiTurn[] | null> => {
-    const { ok, data } = await request<DbTurn[]>("GET", `/api/turns?date=${date}`);
+    const { ok, data } = await request<DbTurn[]>("GET", ["/api/turns", { date }]);
     if (!ok || !data) return null;
     const chores = await Cache.chores.get();
     const members = await Cache.members.get();

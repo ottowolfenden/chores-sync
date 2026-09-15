@@ -11,7 +11,7 @@ type Data<M extends Method> = {
 
 export const request = async <T = unknown, M extends Method = Method>(
     method: M,
-    endpoint: string,
+    endpoint: string | [string, Record<string, string | number>],
     data?: Data<M>
 ): Promise<{ ok: boolean; data?: T | null }> => {
     const timeout = 10000;
@@ -24,6 +24,7 @@ export const request = async <T = unknown, M extends Method = Method>(
         headers: { "Authorization": guess, "Content-Type": "application/json" },
         signal: AbortSignal.timeout(timeout)
     };
+    endpoint = Array.isArray(endpoint) ? addParams(...endpoint) : endpoint;
 
     switch (method) {
         case "GET":

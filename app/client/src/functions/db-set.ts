@@ -1,4 +1,4 @@
-import { addParams, request } from "./api-utils";
+import { request } from "./api-utils";
 import { toDbAssignment } from "./assignments";
 import { getDateString } from "./date-utils";
 
@@ -15,9 +15,11 @@ export const setCount = (uiCount: UiCount): Promise<boolean> =>
     ).then(r => r.ok);
 
 export const addAssignment = (uiAssignment: UiAssignment): Promise<boolean> =>
-    request("POST", "/api/assignments?action=add", toDbAssignment(uiAssignment)).then(
-        r => r.ok
-    );
+    request(
+        "POST",
+        ["/api/assignments", { "action": "add" }],
+        toDbAssignment(uiAssignment)
+    ).then(r => r.ok);
 
 export const replaceAssignments = (
     uiAssignments: UiAssignment[],
@@ -25,16 +27,12 @@ export const replaceAssignments = (
 ): Promise<boolean> =>
     request(
         "POST",
-        `/api/assignments?action=replace&date=${date}`,
+        ["/api/assignments", { "action": "replace", date }],
         uiAssignments.map(toDbAssignment)
     ).then(r => r.ok);
 
-export const updateEasterEggHighScore = (uiMember: UiMember) =>
-    request(
-        "PUT",
-        addParams("/api/members", {
-            "action": "update-high-score",
-            "id": uiMember.id,
-            "high-score": uiMember.easterEggHighScore
-        })
-    );
+export const updateHighScore = (uiMember: UiMember) =>
+    request("PUT", [
+        "/api/members",
+        { "action": "update-high-score", "id": uiMember.id, "high-score": uiMember.highScore }
+    ]).then(r => r.ok);

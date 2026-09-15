@@ -1,4 +1,4 @@
-import { getMembers, setEasterEggHighScore } from "../../services/members";
+import { getMembers, setHighScore } from "../../services/members";
 import { error, response } from "../../utils";
 
 export const onRequestGet: PagesFunction<Env> = async ctx => {
@@ -11,7 +11,7 @@ export const onRequestPut: PagesFunction<Env> = async ctx => {
     const toInt = (param: string | null) => (param === null ? null : parseInt(param));
     return response(
         params.get("action") == "update-high-score"
-            ? await setEasterEggHighScore(ctx.env, {
+            ? await setHighScore(ctx.env, {
                   id: toInt(params.get("id")),
                   highScore: toInt(params.get("high-score"))
               })

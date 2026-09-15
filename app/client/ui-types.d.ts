@@ -4,7 +4,7 @@ type UiMember = {
     isActive: boolean;
     isAdmin: boolean;
     dateOfBirth: Date | null;
-    easterEggHighScore: number;
+    highScore: number;
 };
 
 type UiChore = {

@@ -20,7 +20,7 @@ export const getMembers = async (
     }
 };
 
-export const setEasterEggHighScore = async (
+export const setHighScore = async (
     env: Env,
     { id, highScore }: { id: number | null; highScore: number | null }
 ): Promise<Result> => {
