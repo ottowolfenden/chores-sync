@@ -1,22 +1,84 @@
 members-list {
     margin-top: 5px;
-    display: grid;
-    grid-template-columns: auto min-content min-content;
+    display: flex;
+    flex-direction: column;
     gap: 5px;
 
+    button.expand {
+        --collapse: 1;
+        --size: 16;
+        color: var(--secondary);
+        padding: 4px;
+    }
+
     .member {
-        display: grid;
-        grid-column: 1 / -1;
-        grid-template-columns: subgrid;
         background-color: var(--surface-container-low);
         padding: 10px 13px;
         border-radius: 6px;
-        gap: 35px;
 
-        .name {
+        .details {
             display: flex;
             align-items: center;
+            gap: 35px;
+            justify-content: space-between;
+
+            .left-items,
+            .right-items {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+        }
+
+        .name {
             font-size: 21px;
+        }
+
+        .active-state,
+        .admin {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .admin {
+            background-color: var(--surface-container-highest);
+            color: var(--on-surface);
+            padding: 4px 7px;
+            font-weight: 500;
+            border-radius: calc(infinity * 1px);
+            overflow: visible;
+
+            md-icon {
+                --opsz: 20;
+            }
+
+            span {
+                font-size: 15px;
+                margin-right: 3px;
+            }
+        }
+
+        .active-state {
+            color: var(--on-surface-variant);
+
+            &[data-active] {
+                color: var(--secondary);
+            }
+
+            md-icon {
+                --opsz: 21;
+            }
+
+            span {
+                font-size: 17px;
+            }
+        }
+
+        .settings {
+            &[inert] {
+                display: none;
+            }
         }
     }
 }
