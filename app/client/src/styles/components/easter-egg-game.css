@@ -156,13 +156,26 @@ easter-egg-game {
 
         > span {
             flex-shrink: 0;
-            width: 2ch;
-            text-align: center;
-            color: var(--primary);
-            font-weight: 570;
-            white-space: normal;
-            text-overflow: clip;
-            overflow: visible;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+
+            span {
+                width: 2ch;
+                text-align: center;
+                color: var(--primary);
+                font-weight: 570;
+                flex-shrink: 0;
+                white-space: normal;
+                text-overflow: clip;
+                overflow: visible;
+            }
+
+            md-icon {
+                color: var(--primary);
+                --opsz: 21;
+                --wght: 520;
+            }
         }
 
         life-counter {
@@ -173,6 +186,7 @@ easter-egg-game {
 
     .stats[data-danger] {
         span,
+        span > md-icon,
         md-icon.life {
             color: var(--error);
         }

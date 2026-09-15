@@ -202,7 +202,10 @@ export class EasterEggGame extends LitElement {
                     )}
                 </div>
                 <div class="stats" ?data-danger=${this.checkDanger()}>
-                    <span>${Math.round(this.timeRemaining / 1000)}</span>
+                    <span>
+                        <md-icon>schedule</md-icon
+                        ><span> ${Math.round(this.timeRemaining / 1000)}</span>
+                    </span>
                     <progress value=${this.timeRemaining} max=${this.duration}></progress>
                     <life-counter
                         max-lives=${this.maxLives}
