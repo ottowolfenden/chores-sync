@@ -216,16 +216,21 @@ export class EasterEggGame extends LitElement {
 
             finished: html`
                 <div class="summary">
-                    <life-counter
-                        max-lives=${this.maxLives}
-                        lives=${this.lives}
-                        size="55"></life-counter>
+                    <div><h2>Summary</h2></div>
                     <ul>
+                        <li class="lives">
+                            <span class="title"><md-icon>favorite</md-icon>Lives</span>
+                            <span class="value">
+                                <life-counter
+                                    max-lives=${this.maxLives}
+                                    lives=${this.lives}></life-counter>
+                            </span>
+                        </li>
                         <li class="time">
                             <span class="title">
                                 <md-icon>schedule</md-icon><span>Time</span>
                             </span>
-                            <span class="num">
+                            <span class="value">
                                 ${Math.round((this.finishTime - this.startTime) / 1000)}s
                             </span>
                         </li>
@@ -233,13 +238,13 @@ export class EasterEggGame extends LitElement {
                             <span class="title">
                                 <md-icon>numbers</md-icon><span>Score</span>
                             </span>
-                            <span class="num">${this.score}</span>
+                            <span class="value">${this.score}</span>
                         </li>
                         <li class="high-score">
                             <span class="title">
                                 <md-icon>trophy</md-icon><span>High score</span>
                             </span>
-                            <span class="num">
+                            <span class="value">
                                 ${this.currentMember
                                     ? this.getHighScore()
                                     : html`<md-icon spin>sync</md-icon>`}

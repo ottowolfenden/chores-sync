@@ -13,7 +13,8 @@ easter-egg-game {
         margin-bottom: 15px;
     }
 
-    &[state="new"] {
+    &[state="new"],
+    &[state="finished"] {
         height: min(100%, 410px);
         align-items: center;
         justify-content: center;
@@ -38,13 +39,14 @@ easter-egg-game {
             gap: 30px;
             background-color: var(--surface-container);
             color: var(--on-surface);
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: 6px;
 
             .score {
                 display: flex;
                 align-items: center;
                 gap: 3px;
+                color: var(--secondary);
                 span {
                     font-weight: 550;
                 }
@@ -55,6 +57,7 @@ easter-egg-game {
         }
     }
 
+    .summary + button.reset,
     button.start {
         margin-top: 30px;
     }
@@ -191,18 +194,14 @@ easter-egg-game {
     }
 
     .summary {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: auto;
-        padding: 40px;
+        width: fit-content;
         gap: 40px;
 
         ul {
             display: grid;
             grid-template-columns: 1fr auto;
             gap: 5px;
+            margin-top: 5px;
         }
 
         li {
@@ -210,32 +209,29 @@ easter-egg-game {
             grid-column: 1 / -1;
             grid-template-columns: subgrid;
             gap: 5px;
-
-            md-icon[spin] {
-                color: rgb(from var(--on-surface-variant) r g b / 0.7);
-            }
-
-            > span {
-                background-color: var(--surface-container);
-                color: var(--on-surface);
-            }
+            background-color: var(--surface-container);
+            color: var(--on-surface);
+            border-radius: 6px;
+            padding: 8px;
+            gap: 30px;
 
             .title {
                 display: flex;
                 align-items: center;
                 gap: 5px;
-                padding: 10px;
-                border-radius: 15px 5px 5px 15px;
+                md-icon {
+                    --opsz: 21;
+                }
             }
 
-            .num {
-                display: grid;
-                place-content: center;
-                padding: 10px;
+            .value {
+                display: flex;
+                align-items: center;
                 font-weight: 550;
-                font-size: 21px;
-                color: var(--primary);
-                border-radius: 5px 15px 15px 5px;
+                color: var(--secondary);
+                md-icon[spin] {
+                    color: rgb(from var(--on-surface-variant) r g b / 0.7);
+                }
             }
         }
     }
