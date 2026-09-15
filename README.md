@@ -4,17 +4,18 @@
             media="(prefers-color-scheme: light)"
             srcset="app/client/src/assets/icons/light/word-logo.svg" 
             width="500" 
-            height="170"></source>
+            height="160"></source>
         <source
             media="(prefers-color-scheme: dark)"
             srcset="app/client/src/assets/icons/dark/word-logo.svg" 
             width="500" 
-            height="170"></source>
-        <img src="app/client/src/assets/icons/light/word-logo.svg" alt="Chores Sync" height="170">
+            height="160"></source>
+        <img src="app/client/src/assets/icons/light/word-logo.svg" alt="Chores Sync" height="160">
     </picture>
+    <h4>Chores Sync is a simple web app for sharing chores (still a work in progress).</h4>
 </div>
 
-Chores Sync is a web app for sharing chores (work in progress).
+<br>
 
 Client and server is written in [TypeScript](https://www.typescriptlang.org/).
 [Lit](https://lit.dev/) is used for web components.
@@ -22,10 +23,14 @@ Client and server is written in [TypeScript](https://www.typescriptlang.org/).
 Icons used are [Material Symbols](https://fonts.google.com/icons).
 
 ### Screenshots
-<img src="screenshots/dark-mobile.png" width="49%" alt="Editing assignments in the today section in dark mode" align="top"/>
-<img src="screenshots/light-mobile.png" width="49%" alt="Count section in light mode" />
-<img src="screenshots/dark-desktop.png" width="49%" alt="Timeline section in dark mode" />
-<img src="screenshots/light-desktop.png" width="49%" alt="Today section with no assigned chores in light mode" align="top"/>
+<div align="center">
+    <img src="screenshots/dark-mobile.png" width="49%" alt="Editing assignments in the today section in dark mode" align="top"/>
+    <img src="screenshots/light-mobile.png" width="49%" alt="Count section in light mode" />
+</div>
+<div align="center">
+    <img src="screenshots/dark-desktop.png" width="49%" alt="Timeline section in dark mode" />
+    <img src="screenshots/light-desktop.png" width="49%" alt="Today section with no assigned chores in light mode" align="top"/>
+</div>
 
 ### Todo
 1.  Fix state actions transitioning scale when saving a count edit.
