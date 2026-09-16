@@ -1,10 +1,10 @@
 import { getAllChores } from "../services/chores";
 import { getTurns } from "../services/turns";
 import { getAssignments, replaceAssignments } from "../services/assignments";
+import { getDateToday } from "../utils";
 
 const autoAssign = async (env: Env) => {
-    const today = new Date().toISOString().split("T")[0]!;
-    const turnsResult = await getTurns(env, today);
+    const turnsResult = await getTurns(env, getDateToday());
     const choresResult = await getAllChores(env);
     const turns = turnsResult.ok ? turnsResult.data : null;
     const chores = choresResult.ok ? choresResult.data : null;
@@ -16,7 +16,7 @@ const autoAssign = async (env: Env) => {
     )
         return;
 
-    const result = await getAssignments(env, { date: today });
+    const result = await getAssignments(env, { date: getDateToday() });
     const existingAssignments = result.ok ? result.data : null;
     if (!existingAssignments) return;
 
@@ -33,7 +33,7 @@ const autoAssign = async (env: Env) => {
         .filter(a => !existingAssignments.some(ea => ea["chore_id"] == a["chore_id"]))
         .concat(existingAssignments);
 
-    await replaceAssignments(env, assignments, today);
+    await replaceAssignments(env, assignments, getDateToday());
 };
 
 export default {
