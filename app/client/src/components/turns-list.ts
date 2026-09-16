@@ -6,6 +6,9 @@ import { Cache } from "../classes/cache";
 import { queryClosest, ref } from "../functions/element-utils";
 import { vibrate } from "../functions/haptics.js";
 import { getDateString } from "../functions/date-utils.js";
+import { UiMember } from "../classes/ui-member";
+import { UiTurn } from "../classes/ui-turn";
+import { UiAssignment } from "../classes/ui-assignment.js";
 
 @customElement("turns-list")
 export class TurnsList extends LitElement {
@@ -33,14 +36,14 @@ export class TurnsList extends LitElement {
         chosenMember: UiMember = turn.member
     ): Promise<boolean> => {
         this.dispatchEvent(new Event("loading-assignment-add"));
-        const assignment = {
+        const assignment = new UiAssignment({
             uuid: crypto.randomUUID(),
             date: new Date(this.date),
             quantity: 1,
             chore: turn.chore,
             turnMember: turn.member,
             chosenMember: chosenMember
-        };
+        });
         const success = await addAssignment(assignment);
         vibrate(success);
         this.dispatchEvent(

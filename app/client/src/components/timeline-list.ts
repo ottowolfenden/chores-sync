@@ -4,7 +4,8 @@ import { repeat } from "lit/directives/repeat.js";
 import { instantly, queryClosest, ref } from "../functions/element-utils";
 import { Cache } from "../classes/cache";
 import { getAssignments, getTurns } from "../functions/db-get";
-import { cloneAndSum } from "../functions/assignments";
+import { UiAssignment } from "../classes/ui-assignment";
+import { UiMember } from "../classes/ui-member";
 import {
     getDateRange,
     getDateString,
@@ -202,7 +203,7 @@ export class TimelineList extends LitElement {
         else {
             message.status = "success";
             if (stateActions) Object.assign(stateActions, { assignments, turns });
-            assignmentsList.assignments = cloneAndSum(assignments);
+            assignmentsList.assignments = UiAssignment.cloneAndSum(assignments);
             setTimeout(() => assignmentsList.classList.add("animate"), 150);
         }
         addButton?.toggleAttribute("disabled", false);

@@ -2,10 +2,12 @@ import { LitElement, html } from "lit";
 import { customElement, property, queryAll, state } from "lit/decorators.js";
 import { ref } from "../functions/element-utils";
 import { repeat } from "lit/directives/repeat.js";
-import type { Conf } from "./state-actions";
 import { Cache } from "../classes/cache";
 import { setCount } from "../functions/db-set.js";
 import { vibrate } from "../functions/haptics";
+import { UiCount } from "../classes/ui-count";
+import { UiMember } from "../classes/ui-member";
+import type { Conf } from "./state-actions";
 
 @customElement("counts-list")
 export class CountsList extends LitElement {
@@ -47,7 +49,7 @@ export class CountsList extends LitElement {
 
     private readonly startEdit = (countDiv: HTMLElement) => {
         countDiv.toggleAttribute("data-edit-mode", true);
-        this.oldCounts = structuredClone(this.counts);
+        this.oldCounts = this.counts.map(c => c.clone());
     };
 
     private readonly invalidate = () =>
@@ -57,7 +59,7 @@ export class CountsList extends LitElement {
         countDiv.toggleAttribute("data-edit-mode", false);
         const success = await setCount(c);
         vibrate(success);
-        if (!success && this.oldCounts) this.counts = structuredClone(this.oldCounts);
+        if (!success && this.oldCounts) this.counts = this.oldCounts.map(c => c.clone());
         this.oldCounts = null;
         [Cache.turnsToday, Cache.counts, Cache.assignmentsToday].forEach(c => c.refresh());
         return success;
@@ -66,7 +68,7 @@ export class CountsList extends LitElement {
     private readonly cancelEdit = async (countDiv: HTMLElement) => {
         countDiv.toggleAttribute("data-edit-mode", false);
         if (this.oldCounts) {
-            this.counts = structuredClone(this.oldCounts);
+            this.counts = this.oldCounts.map(c => c.clone());
             this.oldCounts = null;
         }
     };

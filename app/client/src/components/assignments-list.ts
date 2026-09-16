@@ -3,7 +3,8 @@ import { customElement, state, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { Cache } from "../classes/cache";
 import { queryClosest, withTransition } from "../functions/element-utils.js";
-import { cloneAndSum } from "../functions/assignments";
+import { UiAssignment } from "../classes/ui-assignment";
+import { UiMember } from "../classes/ui-member";
 
 @customElement("assignments-list")
 export class AssignmentsList extends LitElement {
@@ -24,7 +25,7 @@ export class AssignmentsList extends LitElement {
     }
 
     addAssignment = (e: Event) =>
-        (this.assignments = cloneAndSum([
+        (this.assignments = UiAssignment.cloneAndSum([
             ...this.assignments,
             (e as CustomEvent).detail.assignment
         ]));

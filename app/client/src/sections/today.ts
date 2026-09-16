@@ -1,6 +1,7 @@
 import { html } from "lit";
 import { Cache } from "../classes/cache.js";
-import { cloneAndSum } from "../functions/assignments.js";
+import { UiAssignment } from "../classes/ui-assignment.js";
+import { UiTurn } from "../classes/ui-turn.js";
 import "../components/assignments-list.js";
 import "../components/assignments-state-actions.js";
 import "../components/turns-list.js";
@@ -84,7 +85,7 @@ section.addEventListener("sectionopen", async () => {
             else {
                 ui.assignments.message.status = "success";
                 ui.assignments.stateActions.assignments = assignments;
-                ui.assignments.list.assignments = cloneAndSum(assignments);
+                ui.assignments.list.assignments = UiAssignment.cloneAndSum(assignments);
                 setTimeout(() => ui.assignments.list.classList.add("animate"), 150);
             }
         })()

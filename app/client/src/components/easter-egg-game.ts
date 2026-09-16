@@ -4,8 +4,9 @@ import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/ran
 import { withTransition } from "../functions/element-utils";
 import { updateMember } from "../functions/db-set";
 import { formatOrdinal } from "../functions/num-utils";
-import materialSymbols from "../assets/material-symbols.json";
 import { Cache } from "../classes/cache";
+import { UiMember } from "../classes/ui-member";
+import materialSymbols from "../assets/material-symbols.json";
 import "../components/life-counter";
 
 export type Symbol = { icon: string; rotation: number };

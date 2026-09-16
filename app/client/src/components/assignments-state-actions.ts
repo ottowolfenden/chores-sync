@@ -2,9 +2,10 @@ import { customElement, property } from "lit/decorators.js";
 import { StateActions, type Conf, type State } from "./state-actions";
 import { Cache, type CacheData } from "../classes/cache";
 import { replaceAssignments } from "../functions/db-set";
-import { cloneAndSum } from "../functions/assignments";
 import { vibrate } from "../functions/haptics";
 import { getDayDiff } from "../functions/date-utils";
+import { UiAssignment } from "../classes/ui-assignment";
+import { UiTurn } from "../classes/ui-turn";
 
 @customElement("assignments-state-actions")
 export class AssignmentsStateActions extends StateActions {
@@ -45,7 +46,7 @@ export class AssignmentsStateActions extends StateActions {
                 );
                 vibrate(success);
                 this.turnsList.allDisabled = false;
-                this.assignmentsList.assignments = cloneAndSum(
+                this.assignmentsList.assignments = UiAssignment.cloneAndSum(
                     success ? this.assignmentsList.assignments : this.assignments
                 );
                 this.assignmentsList.requestUpdate();
@@ -65,7 +66,7 @@ export class AssignmentsStateActions extends StateActions {
             click: () => {
                 this.assignmentsList.editMode = this.turnsList.allDisabled = false;
                 this.addButton?.toggleAttribute("hidden", false);
-                this.assignmentsList.assignments = cloneAndSum(this.assignments);
+                this.assignmentsList.assignments = UiAssignment.cloneAndSum(this.assignments);
             }
         },
         loading: {},

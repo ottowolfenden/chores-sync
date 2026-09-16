@@ -2,8 +2,7 @@ import { LitElement, html } from "lit";
 import { customElement, property, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { queryClosest } from "../functions/element-utils";
-import { Cache } from "../classes/cache";
-import { updateMember } from "../functions/db-set";
+import { UiMember } from "../classes/ui-member";
 import "../components/toggle-switch";
 
 @customElement("members-list")
@@ -22,14 +21,15 @@ export class MembersList extends LitElement {
     }
 
     private toggle = async (key: "isAdmin" | "isActive", on: boolean, member: UiMember) => {
-        member[key] = on;
-        this.requestUpdate();
-        [Cache.members, Cache.currentMember, Cache.turnsToday, Cache.assignmentsToday].forEach(
-            c => c.invalidate()
-        );
-        const success = await updateMember(member);
-        if (!success) member[key] = !on;
-        this.requestUpdate();
+        // member[key] = on;
+        // this.requestUpdate();
+        // [Cache.members, Cache.currentMember, Cache.turnsToday, Cache.assignmentsToday].forEach(
+        //     c => c.invalidate()
+        // );
+        // const success = await updateMember(member);
+        // if (!success) member[key] = !on;
+        // this.requestUpdate();
+        throw new Error("todo");
     };
 
     private toggleCollapse = (el: Event | HTMLElement | null, collapse?: boolean) => {
@@ -58,9 +58,9 @@ export class MembersList extends LitElement {
                             </span>
                         </div>
                         <div class="right-items">
-                            <span class="active-state" ?data-active=${m.isActive}>
-                                <md-icon>${m.isActive ? "check" : "close"}</md-icon>
-                                <span>${m.isActive ? "Active" : "Inactive"}</span>
+                            <span class="active-state" ?data-active=${m.inactivePeriods}>
+                                <md-icon>${m.inactivePeriods ? "check" : "close"}</md-icon>
+                                <span>${m.inactivePeriods ? "Active" : "Inactive"}</span>
                             </span>
                             <button class="expand transparent">
                                 <md-icon>keyboard_arrow_down</md-icon>
@@ -78,7 +78,7 @@ export class MembersList extends LitElement {
                                 this.toggle("isAdmin", e.detail.on, m)}></toggle-switch>
                         <toggle-switch
                             text="Active"
-                            .on=${m.isActive}
+                            .on=${m.inactivePeriods}
                             ?disabled=${!this.currentMember?.isAdmin}
                             @change=${(e: CustomEvent) =>
                                 this.toggle("isActive", e.detail.on, m)}></toggle-switch>

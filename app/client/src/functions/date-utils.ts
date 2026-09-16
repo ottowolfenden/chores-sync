@@ -1,3 +1,4 @@
+import { UiMember } from "../classes/ui-member";
 import { formatOrdinal } from "./num-utils";
 
 export const getDateString = (date: Date | string = new Date()): string =>

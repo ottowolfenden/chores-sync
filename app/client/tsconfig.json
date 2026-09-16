@@ -20,6 +20,6 @@
         "noUnusedLocals": true,
         "experimentalDecorators": true,
         "useDefineForClassFields": false,
-        "types": ["../server/db-types.d.ts", "./ui-types.d.ts"]
+        "types": ["../server/types.d.ts"]
     }
 }

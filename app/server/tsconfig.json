@@ -16,7 +16,7 @@
         "moduleDetection": "force",
         "skipLibCheck": true,
         "noUnusedLocals": true,
-        "types": ["@cloudflare/workers-types", "./db-types.d.ts", "./server-types.d.ts"],
+        "types": ["@cloudflare/workers-types", "./types.d.ts"],
         "lib": ["ESNext"]
     }
 }

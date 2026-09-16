@@ -1,4 +1,9 @@
 import { Cache } from "../classes/cache";
+import { UiAssignment } from "../classes/ui-assignment";
+import { UiChore } from "../classes/ui-chore";
+import { UiCount } from "../classes/ui-count";
+import { UiMember } from "../classes/ui-member";
+import { UiTurn } from "../classes/ui-turn";
 import { request } from "./api-utils";
 import { getDateString } from "./date-utils";
 
@@ -6,12 +11,13 @@ export const getChores = async (): Promise<UiChore[] | null> => {
     const { ok, data } = await request<DbChore[]>("GET", "/api/chores");
     if (!ok || !data) return null;
     return data.map(
-        (d): UiChore => ({
-            id: d["chore_id"],
-            name: d["chore_name"],
-            isDaily: d["is_daily"],
-            limitPerDay: d["limit_per_day"]
-        })
+        d =>
+            new UiChore({
+                id: d["chore_id"],
+                name: d["chore_name"],
+                isDaily: d["is_daily"],
+                limitPerDay: d["limit_per_day"]
+            })
     );
 };
 
@@ -20,33 +26,41 @@ export const getCounts = async (): Promise<UiCount[] | null> => {
     if (!ok || !data) return null;
     const choreNames = [...new Set(data.map(d => d["chore_name"]))];
     const memberNames = [...new Set(data.map(d => d["member_name"]))];
-    return choreNames.map(cn => ({
-        choreName: cn,
-        memberCounts: memberNames.map(mn => {
-            const records = data.filter(d => d["member_name"] == mn && d["chore_name"] == cn);
-            const offsetCount = Number(records.find(r => r["is_offset"])?.total ?? 0);
-            const nonOffsetCount = Number(records.find(r => !r["is_offset"])?.total ?? 0);
-            return {
-                memberName: mn,
-                total: offsetCount + nonOffsetCount,
-                offset: offsetCount
-            };
-        })
-    }));
+    return choreNames.map(
+        cn =>
+            new UiCount({
+                choreName: cn,
+                memberCounts: memberNames.map(mn => {
+                    const records = data.filter(
+                        d => d["member_name"] == mn && d["chore_name"] == cn
+                    );
+                    const offsetCount = Number(records.find(r => r["is_offset"])?.total ?? 0);
+                    const nonOffsetCount = Number(
+                        records.find(r => !r["is_offset"])?.total ?? 0
+                    );
+                    return {
+                        memberName: mn,
+                        total: offsetCount + nonOffsetCount,
+                        offset: offsetCount
+                    };
+                })
+            })
+    );
 };
 
 export const getMembers = async (): Promise<UiMember[] | null> => {
     const { ok, data } = await request<DbMember[]>("GET", "/api/members");
     if (!ok || !data) return null;
     return data.map(
-        (d): UiMember => ({
-            id: d["member_id"],
-            name: d["member_name"],
-            isActive: d["is_active"],
-            isAdmin: d["is_admin"],
-            dateOfBirth: d["date_of_birth"] ? new Date(d["date_of_birth"]) : null,
-            highScore: d["easter_egg_high_score"]
-        })
+        d =>
+            new UiMember({
+                id: d["member_id"],
+                name: d["member_name"],
+                dateOfBirth: d["date_of_birth"] ? new Date(d["date_of_birth"]) : null,
+                isAdmin: d["is_admin"],
+                inactivePeriods: d["inactive_periods"],
+                highScore: d["easter_egg_high_score"]
+            })
     );
 };
 
@@ -78,14 +92,15 @@ export const getAssignments = async (
         return null;
 
     return data.map(
-        (d): UiAssignment => ({
-            uuid: d["assignment_uuid"],
-            date: d["assign_date"],
-            quantity: d["quantity"],
-            chore: chores.find(c => c.id == d["chore_id"])!,
-            turnMember: turns.find(t => t.chore.id == d["chore_id"])!.member,
-            chosenMember: members.find(m => m.id == d["member_id"])!
-        })
+        d =>
+            new UiAssignment({
+                uuid: d["assignment_uuid"],
+                date: d["assign_date"],
+                quantity: d["quantity"],
+                chore: chores.find(c => c.id == d["chore_id"])!,
+                turnMember: turns.find(t => t.chore.id == d["chore_id"])!.member,
+                chosenMember: members.find(m => m.id == d["member_id"])!
+            })
     );
 };
 
@@ -107,9 +122,10 @@ export const getTurns = async (date: string = getDateString()): Promise<UiTurn[]
         return null;
 
     return data.map(
-        (d): UiTurn => ({
-            chore: chores.find(c => c.id == d["chore_id"])!,
-            member: members.find(m => m.id == d["member_id"])!
-        })
+        d =>
+            new UiTurn({
+                chore: chores.find(c => c.id == d["chore_id"])!,
+                member: members.find(m => m.id == d["member_id"])!
+            })
     );
 };
