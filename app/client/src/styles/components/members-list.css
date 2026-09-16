@@ -72,6 +72,11 @@ members-list {
             }
         }
 
+        &:not(:has(.active-state[data-active])) .name {
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+
         .name {
             font-size: 21px;
         }
