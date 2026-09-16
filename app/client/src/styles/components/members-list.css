@@ -44,15 +44,31 @@ members-list {
             justify-content: space-between;
             cursor: pointer;
 
-            .left-items {
-                margin-left: 5px;
-            }
-
             .left-items,
             .right-items {
                 display: flex;
                 align-items: center;
                 gap: 15px;
+            }
+
+            .left-items {
+                margin-left: 5px;
+            }
+
+            .right-items {
+                gap: 7px;
+
+                @media (width <= 350px) {
+                    .active-state {
+                        background-color: var(--surface-container-high);
+                        padding: 4px;
+                        border-radius: calc(infinity * 1px);
+
+                        span {
+                            display: none;
+                        }
+                    }
+                }
             }
         }
 
@@ -82,6 +98,10 @@ members-list {
             span {
                 font-size: 15px;
                 margin-right: 3px;
+
+                @media (width <= 450px) {
+                    display: none;
+                }
             }
         }
 
@@ -112,6 +132,11 @@ members-list {
             overflow: hidden;
             transition-property: height, margin-top, margin-bottom;
             transition-duration: 150ms;
+
+            @media (width <= 400px) {
+                flex-direction: column;
+                height: 150px;
+            }
 
             &[inert] {
                 height: 0;
