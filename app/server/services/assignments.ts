@@ -91,7 +91,7 @@ export const replaceAssignments = async (
         const uuids = summedAssignments.map(a => a["assignment_uuid"]);
 
         await sql.transaction([
-            uuids.length == 0
+            uuids.length === 0
                 ? sql`DELETE FROM assignments WHERE assign_date = ${date};`
                 : sql`
                     DELETE FROM assignments
@@ -103,7 +103,7 @@ export const replaceAssignments = async (
                     assignment_uuid, assign_date, quantity, chore_id, member_id
                 )
                 SELECT input.*
-                FROM JSON_TO_RECORDSET(${JSON.stringify(summedAssignments)}::json)
+                FROM JSON_TO_RECORDSET(${JSON.stringify(summedAssignments)}::JSON)
                 AS input (
                     assignment_uuid UUID,
                     assign_date DATE,

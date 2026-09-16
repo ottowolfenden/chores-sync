@@ -37,7 +37,7 @@ export const changeCounts = async (env: Env, counts: DbCount[]): Promise<Result>
         const sql = neon(atob(env["DATABASE_URL"]));
 
         if (counts.some(c => !c["is_offset"])) return error(400, "only offset values allowed");
-        if (counts.some(c => typeof c["total"] != "number" || isNaN(c["total"])))
+        if (counts.some(c => typeof c["total"] !== "number" || isNaN(c["total"])))
             return error(400, "total not a number");
         if (counts.some(c => Math.abs(c["total"]) >= 10000))
             return error(400, "offset magnitude must be < 10000");
@@ -45,7 +45,7 @@ export const changeCounts = async (env: Env, counts: DbCount[]): Promise<Result>
         await sql`
             INSERT INTO assignments (assign_date, quantity, chore_id, member_id)
             SELECT '-infinity', input.total, c.chore_id, m.member_id
-            FROM JSON_TO_RECORDSET(${JSON.stringify(counts)}::json)
+            FROM JSON_TO_RECORDSET(${JSON.stringify(counts)}::JSON)
             AS input (chore_name TEXT, member_name TEXT, total INT)
             JOIN chores c ON c.chore_name = input.chore_name
             JOIN members m ON m.member_name = input.member_name
