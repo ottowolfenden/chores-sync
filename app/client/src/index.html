@@ -40,7 +40,7 @@
                 <div id="assignments">
                     <div>
                         <h2>Assigned<span class="suffix"> chores</span></h2>
-                        <assignments-state-actions></state-actions>
+                        <assignments-state-actions></assignments-state-actions>
                     </div>
                     <assignments-list></assignments-list>
                     <status-message></status-message>
@@ -70,8 +70,12 @@
             </section>
 
             <section id="settings" hidden>
-                <div><h2>Settings</h2></div>
-                <toggle-switch text="test"></toggle-switch>
+                <div>
+                    <h2>Members</h2>
+                    <state-actions></state-actions>
+                </div>
+                <members-list></members-list>
+                <status-message></status-message>
             </section>
 
             <section id="easter-egg" hidden>

@@ -45,7 +45,7 @@ Icons used are [Material Symbols](https://fonts.google.com/icons).
 </div>
 
 ### Todo
-1.  Begin settings section (initially just for setting user active state).
+1.  Add automatic offsetting of inactive members to cron worker.
 2.  Make quantity in assignments edit mode editable.
 3.  Set up individual user authentication rather than having a shared secret.
 4.  Make caching more tightly linked to db functions.

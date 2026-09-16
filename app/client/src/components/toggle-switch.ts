@@ -6,7 +6,14 @@ export class ToggleSwitch extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: Boolean, reflect: true }) on = false;
+    @property({ type: Boolean, reflect: true }) disabled = false;
     @property({ type: String }) text?: string;
+
+    private handleChange = (e: Event) => {
+        e.stopPropagation();
+        this.on = (e.target as HTMLInputElement).checked;
+        this.dispatchEvent(new CustomEvent("change", { detail: { on: this.on } }));
+    };
 
     render = () => html`
         <label>
@@ -16,8 +23,9 @@ export class ToggleSwitch extends LitElement {
                 <input
                     type="checkbox"
                     .checked=${this.on}
-                    @change=${(e: Event) =>
-                        (this.on = (e.target as HTMLInputElement).checked)} />
+                    ?disabled=${this.disabled}
+                    ?inert=${this.disabled}
+                    @change=${this.handleChange} />
             </div>
         </label>
     `;

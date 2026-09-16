@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { getRandFrom, getRandInt, getRandsFrom, shuffle } from "../functions/rand-utils";
 import { withTransition } from "../functions/element-utils";
-import { updateHighScore } from "../functions/db-set";
+import { updateMember } from "../functions/db-set";
 import { formatOrdinal } from "../functions/num-utils";
 import materialSymbols from "../assets/material-symbols.json";
 import { Cache } from "../classes/cache";
@@ -55,7 +55,7 @@ export class EasterEggGame extends LitElement {
         this.cards = [];
         if (this.currentMember && this.score > this.currentMember.highScore) {
             this.currentMember.highScore = this.score;
-            await updateHighScore(this.currentMember);
+            await updateMember(this.currentMember);
             Cache.members.refresh();
             Cache.currentMember.refresh();
         }

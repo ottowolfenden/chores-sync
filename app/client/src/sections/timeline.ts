@@ -7,14 +7,15 @@ const section = document.querySelector("section#timeline")!;
 const ui = {
     timelineList: section.querySelector("timeline-list")!,
     recentreButton: section.querySelector<HTMLButtonElement>("#recentre")!,
-    recentreIcon: section.querySelector("#recentre md-icon")!
+    recentreIcon: section.querySelector<MdIcon>("#recentre md-icon")!
 };
 
 const inactiveRecentreButtonStyle = { opacity: "0", scale: "0.4" };
 
 const refreshRecentreIcon = () =>
-    (ui.recentreIcon.textContent =
-        ui.timelineList.getScrolledDirection() == "up" ? "arrow_downward" : "arrow_upward");
+    ui.recentreIcon.setIcon(
+        ui.timelineList.getScrolledDirection() == "up" ? "arrow_downward" : "arrow_upward"
+    );
 
 ui.timelineList.addEventListener("scrollend", refreshRecentreIcon);
 ui.timelineList.addEventListener("scroll", throttle(refreshRecentreIcon, 200));

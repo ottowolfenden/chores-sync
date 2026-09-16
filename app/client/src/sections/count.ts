@@ -29,7 +29,7 @@ ui.message.caches = [Cache.counts, Cache.members];
 const refreshStateActions = () =>
     (ui.stateActions.state = ui.list.allCollapsed ? "normal" : "active");
 
-window.addEventListener("count-collapse-toggle", refreshStateActions);
+ui.list.addEventListener("collapsetoggle", refreshStateActions);
 
 section.addEventListener("sectionopen", async () => {
     refreshStateActions();

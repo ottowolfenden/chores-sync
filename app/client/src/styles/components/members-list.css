@@ -1,0 +1,160 @@
+members-list {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    button.expand {
+        --collapse: 1;
+        --size: 16;
+        color: var(--secondary);
+        padding: 4px;
+    }
+
+    .member {
+        background-color: var(--surface-container-low);
+        border-radius: 6px;
+        transition-property: background-color, color, scale;
+        transition-duration: 100ms;
+
+        &:has(.details:focus-visible):not(:has(button.expand:hover)),
+        &:has(.details:active):not(:has(button.expand:hover)) {
+            background-color: color-mix(
+                in srgb,
+                var(--on-surface) 5%,
+                var(--surface-container-low)
+            );
+        }
+
+        @media (hover: hover) {
+            &:has(.details:hover:not(:active)):not(:has(button.expand:hover)) {
+                background-color: color-mix(
+                    in srgb,
+                    var(--on-surface) 3%,
+                    var(--surface-container-low)
+                );
+            }
+        }
+
+        .details {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+            padding: 12px;
+            justify-content: space-between;
+            cursor: pointer;
+
+            .left-items,
+            .right-items {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .left-items {
+                margin-left: 5px;
+            }
+
+            .right-items {
+                gap: 7px;
+
+                @media (width <= 350px) {
+                    .active-state {
+                        background-color: var(--surface-container-high);
+                        padding: 4px;
+                        border-radius: calc(infinity * 1px);
+
+                        span {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        &:not(:has(.active-state[data-active])) .name {
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+
+        .name {
+            font-size: 21px;
+        }
+
+        .active-state,
+        .admin {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .admin {
+            background-color: var(--surface-container-highest);
+            color: var(--on-surface);
+            padding: 4px 7px;
+            font-weight: 500;
+            border-radius: calc(infinity * 1px);
+            overflow: visible;
+
+            md-icon {
+                --opsz: 20;
+            }
+
+            span {
+                font-size: 15px;
+                margin-right: 3px;
+
+                @media (width <= 450px) {
+                    display: none;
+                }
+            }
+        }
+
+        .active-state {
+            color: var(--on-surface-variant);
+
+            &[data-active] {
+                color: var(--secondary);
+            }
+
+            md-icon {
+                --opsz: 21;
+            }
+
+            span {
+                font-size: 17px;
+            }
+        }
+
+        .settings {
+            margin: 0 12px 12px 12px;
+            background-color: rgb(from var(--surface-container-lowest) r g b / 0.6);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 70px;
+            overflow: hidden;
+            transition-property: height, margin-top, margin-bottom;
+            transition-duration: 150ms;
+
+            @media (width <= 400px) {
+                flex-direction: column;
+                height: 150px;
+            }
+
+            &[inert] {
+                height: 0;
+                margin: 0 12px;
+
+                toggle-switch {
+                    opacity: 0;
+                }
+            }
+
+            toggle-switch {
+                transition: opacity 100ms;
+            }
+        }
+    }
+}

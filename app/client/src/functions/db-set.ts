@@ -1,5 +1,5 @@
 import { request } from "./api-utils";
-import { toDbAssignment } from "./assignments";
+import { toDbAssignment, toDbMember } from "./type-conversions";
 import { getDateString } from "./date-utils";
 
 export const setCount = (uiCount: UiCount): Promise<boolean> =>
@@ -31,8 +31,5 @@ export const replaceAssignments = (
         uiAssignments.map(toDbAssignment)
     ).then(r => r.ok);
 
-export const updateHighScore = (uiMember: UiMember) =>
-    request("PUT", [
-        "/api/members",
-        { "action": "update-high-score", "id": uiMember.id, "high-score": uiMember.highScore }
-    ]).then(r => r.ok);
+export const updateMember = (uiMember: UiMember) =>
+    request("PUT", "api/members", toDbMember(uiMember)).then(r => r.ok);

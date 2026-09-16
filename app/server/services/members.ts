@@ -20,17 +20,18 @@ export const getMembers = async (
     }
 };
 
-export const setHighScore = async (
-    env: Env,
-    { id, highScore }: { id: number | null; highScore: number | null }
-): Promise<Result> => {
+export const updateMember = async (env: Env, member: DbMember): Promise<Result> => {
     try {
-        if (id === null || highScore === null) return error(400);
         const sql = neon(atob(env["DATABASE_URL"]));
         const ids = await sql`
             UPDATE members
-            SET easter_egg_high_score = ${highScore}
-            WHERE member_id = ${id}
+            SET
+                member_name = ${member["member_name"]},
+                is_active = ${member["is_active"]},
+                is_admin = ${member["is_admin"]},
+                date_of_birth = ${member["date_of_birth"]},
+                easter_egg_high_score = ${member["easter_egg_high_score"]}
+            WHERE member_id = ${member["member_id"]}
             RETURNING member_id;
         `;
         return ids.length == 0 ? error(404) : ok();
