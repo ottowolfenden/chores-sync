@@ -1,10 +1,11 @@
 type UiMember = {
     id: number;
     name: string;
-    isActive: boolean;
     isAdmin: boolean;
     dateOfBirth: Date | null;
     highScore: number;
+    isActive: boolean;
+    inactivePeriods: [Date, Date | null][];
 };
 
 type UiChore = {
@@ -25,11 +26,7 @@ type UiAssignment = {
 
 type UiCount = {
     choreName: string;
-    memberCounts: {
-        memberName: string;
-        total: number;
-        offset: number;
-    }[];
+    memberCounts: { memberName: string; total: number; offset: number }[];
 };
 
 type UiTurn = { chore: UiChore; member: UiMember };
