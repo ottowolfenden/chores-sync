@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { queryClosest, withTransition } from "../functions/element-utils";
+import { queryClosest } from "../functions/element-utils";
 import "../components/toggle-switch";
 
 @customElement("members-list")
@@ -10,6 +10,14 @@ export class MembersList extends LitElement {
 
     @property({ type: Array }) members: UiMember[] = [];
     @property({ type: Object }) currentMember?: UiMember;
+    @queryAll(".settings") settingsEls!: NodeListOf<HTMLElement>;
+
+    get allCollapsed() {
+        return [...this.settingsEls].every(el => el.inert);
+    }
+    set allCollapsed(collapse: boolean) {
+        this.settingsEls.forEach(el => this.toggleCollapse(el, collapse));
+    }
 
     private toggleAdmin = async (on: boolean, member: UiMember) => {
         member.isAdmin = on;
@@ -21,21 +29,15 @@ export class MembersList extends LitElement {
         this.requestUpdate();
     };
 
-    private toggleCollapse = (e: Event, collapse?: boolean) => {
-        const settingsEl = queryClosest(e, ".member")?.querySelector<HTMLElement>(".settings");
-        if (!settingsEl) return;
-        collapse ??= !settingsEl.inert;
-        const icon = settingsEl.parentElement?.querySelector<MdIcon>(".expand md-icon");
-        icon?.setIcon(collapse ? "keyboard_arrow_down" : "keyboard_arrow_up");
-        if (collapse)
-            withTransition(settingsEl, {
-                before: () => settingsEl.classList.add("collapsing"),
-                after: () => {
-                    settingsEl.inert = true;
-                    settingsEl.classList.remove("collapsing");
-                }
-            });
-        else settingsEl.inert = false;
+    private toggleCollapse = (el: Event | HTMLElement | null, collapse?: boolean) => {
+        if (el instanceof Event)
+            el = queryClosest(el, ".member")?.querySelector<HTMLElement>(".settings") ?? null;
+        if (!el) return;
+        collapse ??= !el.inert;
+        const icon = el.parentElement?.querySelector<MdIcon>(".expand md-icon");
+        el.inert = collapse;
+        this.dispatchEvent(new Event("collapsetoggle"));
+        icon?.setIcon(el.inert ? "keyboard_arrow_down" : "keyboard_arrow_up");
     };
 
     render = () =>

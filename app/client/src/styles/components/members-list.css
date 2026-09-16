@@ -113,16 +113,7 @@ members-list {
             transition-property: height, margin-top, margin-bottom;
             transition-duration: 150ms;
 
-            @starting-style {
-                height: 0;
-                margin: 0 12px;
-
-                toggle-switch {
-                    opacity: 0;
-                }
-            }
-
-            &.collapsing {
+            &[inert] {
                 height: 0;
                 margin: 0 12px;
 
@@ -134,10 +125,6 @@ members-list {
             toggle-switch {
                 transition: opacity 100ms;
             }
-        }
-
-        .settings[inert] {
-            display: none;
         }
     }
 }
