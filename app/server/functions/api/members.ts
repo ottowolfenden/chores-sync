@@ -1,9 +1,10 @@
-import { getMembers, updateMember } from "../../services/members";
+import { getMember, getMembers, updateMember } from "../../services/members";
 import { error, response } from "../../utils";
 
 export const onRequestGet: PagesFunction<Env> = async ctx => {
     const name = new URL(ctx.request.url).searchParams.get("name");
-    return response(await getMembers(ctx.env, name));
+    if (name) return response(await getMember(ctx.env, name));
+    return response(await getMembers(ctx.env));
 };
 
 export const onRequestPut: PagesFunction<Env> = async ctx => {
