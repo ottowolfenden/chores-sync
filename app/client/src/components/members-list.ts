@@ -2,6 +2,8 @@ import { LitElement, html } from "lit";
 import { customElement, property, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { queryClosest } from "../functions/element-utils";
+import { Cache } from "../classes/cache";
+import { updateMember } from "../functions/db-set";
 import "../components/toggle-switch";
 
 @customElement("members-list")
@@ -19,14 +21,13 @@ export class MembersList extends LitElement {
         this.settingsEls.forEach(el => this.toggleCollapse(el, collapse));
     }
 
-    private toggleAdmin = async (on: boolean, member: UiMember) => {
-        member.isAdmin = on;
+    private toggle = async (key: "isAdmin" | "isActive", on: boolean, member: UiMember) => {
+        member[key] = on;
         this.requestUpdate();
-    };
-
-    private toggleActive = async (on: boolean, member: UiMember) => {
-        member.isActive = on;
-        this.requestUpdate();
+        [Cache.members, Cache.currentMember, Cache.turnsToday, Cache.assignmentsToday].forEach(
+            c => c.invalidate()
+        );
+        await updateMember(member);
     };
 
     private toggleCollapse = (el: Event | HTMLElement | null, collapse?: boolean) => {
@@ -72,13 +73,13 @@ export class MembersList extends LitElement {
                             ?disabled=${!this.currentMember?.isAdmin ||
                             m.id == this.currentMember.id}
                             @change=${(e: CustomEvent) =>
-                                this.toggleAdmin(e.detail.on, m)}></toggle-switch>
+                                this.toggle("isAdmin", e.detail.on, m)}></toggle-switch>
                         <toggle-switch
                             text="Active"
                             .on=${m.isActive}
                             ?disabled=${!this.currentMember?.isAdmin}
                             @change=${(e: CustomEvent) =>
-                                this.toggleActive(e.detail.on, m)}></toggle-switch>
+                                this.toggle("isActive", e.detail.on, m)}></toggle-switch>
                     </div>
                 </div>
             `
