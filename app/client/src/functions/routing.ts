@@ -1,4 +1,5 @@
 const sections = [...document.querySelectorAll("section")];
+const nav = document.querySelector("section-nav")!;
 
 export const route = async () => {
     if (!sections.map(s => `#${s.id}`).includes(location.hash)) location.hash = "#today";
@@ -9,6 +10,7 @@ export const route = async () => {
         s.hidden = !isTarget;
         document.querySelector("main")?.scroll(0, 0);
     });
+    nav.activeHash = location.hash;
 };
 
 export const refresh = () => {

@@ -1,28 +1,18 @@
 import { LitElement, html } from "lit";
-import { customElement, state } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 
 @customElement("section-nav")
 export class SectionNav extends LitElement {
     protected createRenderRoot = () => this;
 
-    @state() private activeHash = location.hash || "#today";
+    @property({ type: String }) activeHash = location.hash || "#today";
     private readonly sections = [
         { name: "Today", icon: "today", fragment: "#today" },
         { name: "Timeline", icon: "timeline", fragment: "#timeline" },
         { name: "Count", icon: "bar_chart", fragment: "#count" },
         { name: "Settings", icon: "settings", fragment: "#settings" }
     ];
-    private readonly handleHashChange = () => (this.activeHash = location.hash);
-
-    connectedCallback() {
-        super.connectedCallback();
-        window.addEventListener("hashchange", this.handleHashChange);
-    }
-    disconnectedCallback() {
-        super.disconnectedCallback();
-        window.removeEventListener("hashchange", this.handleHashChange);
-    }
 
     render = () =>
         repeat(
