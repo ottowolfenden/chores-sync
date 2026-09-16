@@ -5,7 +5,7 @@ export const getTurns = async (env: Env, date: string | null): Promise<Result<Db
     try {
         const sql = neon(atob(env["DATABASE_URL"]));
 
-        if (date != null && !getDateIsValid(date)) return error(400, "date invalid");
+        if (date !== null && !getDateIsValid(date)) return error(400, "date invalid");
 
         const turnData = (await sql`
                 SELECT 
@@ -19,28 +19,27 @@ export const getTurns = async (env: Env, date: string | null): Promise<Result<Db
                     ON a.chore_id = c.chore_id
                     AND a.member_id = m.member_id
                     AND a.assign_date < ${date ?? new Date()}
+                WHERE m.is_active
                 GROUP BY c.chore_id, m.member_id
                 ORDER BY c.chore_name;
             `) as DbTurnData[];
 
-        if (turnData.length == 0) return ok([]);
+        if (turnData.length === 0) return ok([]);
 
         const choreIds = [...new Set(turnData.map(td => td["chore_id"]))];
         const toNum = (date: number | Date) =>
             date instanceof Date ? date.getTime() : -Infinity;
 
         const turns: DbTurn[] = choreIds.map(cId => {
-            let possible = turnData.filter(td => td["chore_id"] == cId);
+            let possible = turnData.filter(td => td["chore_id"] === cId);
 
             const minTotal = Math.min(...possible.map(p => p["total"]));
-            possible = possible.filter(p => p["total"] == minTotal);
-            if (possible.length == 1 && possible[0])
+            possible = possible.filter(p => Number(p["total"]) === minTotal);
+            if (possible.length === 1 && possible[0])
                 return { "chore_id": cId, "member_id": possible[0]["member_id"] };
 
-            const oldestTimestamp = Math.min(
-                ...possible.map(p => toNum(p["last_assign_date"]))
-            );
-            possible = possible.filter(p => toNum(p["last_assign_date"]) == oldestTimestamp);
+            const oldestDate = Math.min(...possible.map(p => toNum(p["last_assign_date"])));
+            possible = possible.filter(p => toNum(p["last_assign_date"]) === oldestDate);
             if (possible[0]) return { "chore_id": cId, "member_id": possible[0]["member_id"] };
             else throw new Error("failed to determine turn");
         });
