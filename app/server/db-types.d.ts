@@ -2,6 +2,7 @@ type DbMember = {
     "member_id": number;
     "member_name": string;
     "is_admin": boolean;
+    "inactive_periods": string;
     "date_of_birth": Date | null;
     "easter_egg_high_score": number;
 };
@@ -27,12 +28,6 @@ type DbCount = {
     "member_name": string;
     "is_offset": boolean;
     "total": number;
-};
-
-type DbInactivePeriod = {
-    "inactive_history_id": number;
-    "member_id": number;
-    "inactive_period": string;
 };
 
 type DbTurnData = {

@@ -2,6 +2,7 @@ CREATE TABLE members (
     member_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     member_name TEXT NOT NULL UNIQUE,
     is_admin BOOLEAN NOT NULL DEFAULT true,
+    inactive_periods DATEMULTIRANGE,
     date_of_birth DATE,
     easter_egg_high_score INT NOT NULL DEFAULT 0
 );
@@ -23,11 +24,4 @@ CREATE TABLE assignments (
     member_id INT NOT NULL REFERENCES members (member_id) ON DELETE CASCADE,
     UNIQUE (member_id, chore_id, assign_date),
     CHECK (assign_date = '-infinity' OR quantity >= 1)
-);
-
-CREATE TABLE inactive_periods (
-    inactive_history_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    member_id INT NOT NULL REFERENCES members (member_id) ON DELETE CASCADE,
-    inactive_period DATERANGE NOT NULL,
-    UNIQUE (member_id, inactive_period)
 );

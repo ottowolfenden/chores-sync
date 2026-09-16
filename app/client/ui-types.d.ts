@@ -2,10 +2,10 @@ type UiMember = {
     id: number;
     name: string;
     isAdmin: boolean;
-    dateOfBirth: Date | null;
-    highScore: number;
     isActive: boolean;
     inactivePeriods: [Date, Date | null][];
+    dateOfBirth: Date | null;
+    highScore: number;
 };
 
 type UiChore = {
