@@ -27,7 +27,9 @@ export class MembersList extends LitElement {
         [Cache.members, Cache.currentMember, Cache.turnsToday, Cache.assignmentsToday].forEach(
             c => c.invalidate()
         );
-        await updateMember(member);
+        const success = await updateMember(member);
+        if (!success) member[key] = !on;
+        this.requestUpdate();
     };
 
     private toggleCollapse = (el: Event | HTMLElement | null, collapse?: boolean) => {
