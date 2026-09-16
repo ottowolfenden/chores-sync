@@ -2,7 +2,7 @@ CREATE TABLE members (
     member_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     member_name TEXT NOT NULL UNIQUE,
     is_admin BOOLEAN NOT NULL DEFAULT true,
-    inactive_periods DATEMULTIRANGE,
+    inactive_periods DATEMULTIRANGE NOT NULL DEFAULT '{}',
     date_of_birth DATE,
     easter_egg_high_score INT NOT NULL DEFAULT 0
 );
