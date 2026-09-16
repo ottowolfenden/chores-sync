@@ -1,4 +1,4 @@
-import { getMembers, setHighScore } from "../../services/members";
+import { getMembers, updateMember } from "../../services/members";
 import { error, response } from "../../utils";
 
 export const onRequestGet: PagesFunction<Env> = async ctx => {
@@ -7,14 +7,7 @@ export const onRequestGet: PagesFunction<Env> = async ctx => {
 };
 
 export const onRequestPut: PagesFunction<Env> = async ctx => {
-    const params = new URL(ctx.request.url).searchParams;
-    const toInt = (param: string | null) => (param === null ? null : parseInt(param));
-    return response(
-        params.get("action") == "update-high-score"
-            ? await setHighScore(ctx.env, {
-                  id: toInt(params.get("id")),
-                  highScore: toInt(params.get("high-score"))
-              })
-            : error(400, "invalid action")
-    );
+    const data = (await ctx.request.json().catch(() => null)) as DbMember | null;
+    if (!data) return response(error(400, "no member provided"));
+    return response(await updateMember(ctx.env, data));
 };
