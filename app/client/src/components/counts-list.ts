@@ -38,9 +38,9 @@ export class CountsList extends LitElement {
         if (!stateActions) return;
         collapse ??= !detailsUL.inert;
         detailsUL.inert = collapse;
-        const icon = detailsUL.parentElement?.querySelector(".expand md-icon");
-        if (icon)
-            icon.textContent = detailsUL.inert ? "keyboard_arrow_down" : "keyboard_arrow_up";
+        detailsUL.parentElement
+            ?.querySelector<MdIcon>(".expand md-icon")
+            ?.setIcon(detailsUL.inert ? "keyboard_arrow_down" : "keyboard_arrow_up");
         this.dispatchEvent(new Event("collapsetoggle"));
         if (stateActions.state == "active") stateActions.cancel();
     };
