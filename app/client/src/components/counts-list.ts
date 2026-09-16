@@ -41,11 +41,7 @@ export class CountsList extends LitElement {
         const icon = detailsUL.parentElement?.querySelector(".expand md-icon");
         if (icon)
             icon.textContent = detailsUL.inert ? "keyboard_arrow_down" : "keyboard_arrow_up";
-        window.dispatchEvent(
-            new CustomEvent("count-collapse-toggle", {
-                detail: { allCollapsed: this.allCollapsed }
-            })
-        );
+        this.dispatchEvent(new Event("collapsetoggle"));
         if (stateActions.state == "active") stateActions.cancel();
     };
 
