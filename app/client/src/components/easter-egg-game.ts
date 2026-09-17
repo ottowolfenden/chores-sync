@@ -20,7 +20,7 @@ export class EasterEggGame extends LitElement {
     private readonly duration = 50_000;
     private readonly maxLives = 3;
     private readonly penalty = 1000;
-    private readonly boost = 3000;
+    private readonly boost = 4000;
 
     private timer?: number;
     private startTime = 0;
