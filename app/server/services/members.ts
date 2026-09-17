@@ -25,6 +25,25 @@ export const getMembers = async (env: Env): Promise<Result<DbMember[]>> => {
     }
 };
 
+export const getMembersWithIsActive = async (
+    env: Env
+): Promise<Result<(DbMember & { "is_active": boolean })[]>> => {
+    try {
+        const sql = neon(atob(env["DATABASE_URL"]));
+        return ok(
+            (await sql`
+                SELECT
+                    m.*,
+                    NOT (m.inactive_periods @> CURRENT_DATE) is_active
+                FROM members m;
+            `) as (DbMember & { "is_active": boolean })[]
+        );
+    } catch (err) {
+        console.error(err);
+        return error();
+    }
+};
+
 export const updateMember = async (env: Env, member: DbMember): Promise<Result> => {
     try {
         const sql = neon(atob(env["DATABASE_URL"]));
