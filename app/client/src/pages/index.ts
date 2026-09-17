@@ -45,5 +45,3 @@ document.addEventListener("visibilitychange", () => {
     Cache.caches.forEach(c => c.invalidate());
     refresh();
 });
-
-document.querySelector("section-nav");
