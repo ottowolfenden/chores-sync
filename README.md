@@ -22,7 +22,7 @@ Client and server is written in [TypeScript](https://www.typescriptlang.org/).
 [Neon Postgres](https://neon.com/) is used for the database, with [Cloudflare Workers](https://www.cloudflare.com/products/workers/).
 Icons used are [Material Symbols](https://fonts.google.com/icons).
 
-### Screenshots
+## Screenshots
 <div align="center">
     <img
         src="screenshots/narrow-dark.png"
@@ -44,7 +44,7 @@ Icons used are [Material Symbols](https://fonts.google.com/icons).
         alt="Editing counts in Count section" />
 </div>
 
-### To do
+## To do
 1.  Fix desync between assignments list in `<assignments-list>` and `<turns-list>` components.
 2.  Make quantity in assignments edit mode editable.
 3.  Show dialog when there is an error rather than showing a loading then success/error state to remove need for saving changes (they can be autosaved and reverted on an error instead)
