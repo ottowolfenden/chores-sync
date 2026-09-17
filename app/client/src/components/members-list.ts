@@ -3,6 +3,8 @@ import { customElement, property, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { queryClosest } from "../functions/element-utils";
 import { UiMember } from "../classes/ui-member";
+import { Cache } from "../classes/cache";
+import { updateMember } from "../functions/db-set";
 import "../components/toggle-switch";
 
 @customElement("members-list")
@@ -20,16 +22,20 @@ export class MembersList extends LitElement {
         this.settingsEls.forEach(el => this.toggleCollapse(el, collapse));
     }
 
-    private toggle = async (key: "isAdmin" | "isActive", on: boolean, member: UiMember) => {
-        // member[key] = on;
-        // this.requestUpdate();
-        // [Cache.members, Cache.currentMember, Cache.turnsToday, Cache.assignmentsToday].forEach(
-        //     c => c.invalidate()
-        // );
-        // const success = await updateMember(member);
-        // if (!success) member[key] = !on;
-        // this.requestUpdate();
-        throw new Error("todo");
+    private toggleAdmin = async (isAdmin: boolean, member: UiMember) => {
+        member.isAdmin = isAdmin;
+        this.requestUpdate();
+        [Cache.members, Cache.currentMember].forEach(c => c.invalidate());
+        await updateMember(member);
+    };
+
+    private toggleActive = async (isActive: boolean, member: UiMember) => {
+        member.setActive(isActive);
+        this.requestUpdate();
+        [Cache.members, Cache.currentMember, Cache.turnsToday, Cache.assignmentsToday].forEach(
+            c => c.invalidate()
+        );
+        await updateMember(member);
     };
 
     private toggleCollapse = (el: Event | HTMLElement | null, collapse?: boolean) => {
@@ -58,9 +64,9 @@ export class MembersList extends LitElement {
                             </span>
                         </div>
                         <div class="right-items">
-                            <span class="active-state" ?data-active=${m.isActiveToday}>
-                                <md-icon>${m.isActiveToday ? "check" : "close"}</md-icon>
-                                <span>${m.isActiveToday ? "Active" : "Inactive"}</span>
+                            <span class="active-state" ?data-active=${m.checkActive()}>
+                                <md-icon>${m.checkActive() ? "check" : "close"}</md-icon>
+                                <span>${m.checkActive() ? "Active" : "Inactive"}</span>
                             </span>
                             <button class="expand transparent">
                                 <md-icon>keyboard_arrow_down</md-icon>
@@ -75,13 +81,13 @@ export class MembersList extends LitElement {
                             ?disabled=${!this.currentMember?.isAdmin ||
                             m.id == this.currentMember.id}
                             @change=${(e: CustomEvent) =>
-                                this.toggle("isAdmin", e.detail.on, m)}></toggle-switch>
+                                this.toggleAdmin(e.detail.on, m)}></toggle-switch>
                         <toggle-switch
                             text="Active"
-                            .on=${m.isActiveToday}
+                            .on=${m.checkActive()}
                             ?disabled=${!this.currentMember?.isAdmin}
                             @change=${(e: CustomEvent) =>
-                                this.toggle("isActive", e.detail.on, m)}></toggle-switch>
+                                this.toggleActive(e.detail.on, m)}></toggle-switch>
                     </div>
                 </div>
             `
