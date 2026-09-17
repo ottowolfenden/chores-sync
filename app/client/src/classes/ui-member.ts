@@ -1,10 +1,10 @@
-import { getDateOnlyVal, getDateString } from "../functions/date-utils";
+import { getDateOnlyVal, getDateString, offsetDate } from "../functions/date-utils";
 
 export class UiMember {
     private readonly _id: number;
     private readonly _name: string;
     private readonly _dateOfBirth: Date | null;
-    inactivePeriods: { first: number; last: number }[];
+    private inactivePeriods: { first: number; last: number }[];
     isAdmin: boolean;
     highScore: number;
 
@@ -36,14 +36,6 @@ export class UiMember {
         return this._dateOfBirth;
     }
 
-    get isActiveToday() {
-        return this.checkActive();
-    }
-
-    set isActiveToday(value: boolean) {
-        (value ? this.makeActive : this.makeInactive)();
-    }
-
     toDbMember = (): DbMember => ({
         "member_id": this.id,
         "member_name": this.name,
@@ -58,7 +50,16 @@ export class UiMember {
             p => p.first <= getDateOnlyVal(date) && p.last >= getDateOnlyVal(date)
         );
 
-    private makeActive = (date: Date | string = getDateString()) => {};
-
-    private makeInactive = (date: Date | string = getDateString()) => {};
+    setActive = (active: boolean) => {
+        const today = getDateOnlyVal();
+        const yesterday = getDateOnlyVal(offsetDate(new Date(), -1));
+        if (active)
+            this.inactivePeriods = this.inactivePeriods
+                .filter(p => p.first < today)
+                .map(p =>
+                    p.first <= today && p.last >= today ? { ...p, last: yesterday } : p
+                );
+        else if (!active && this.checkActive())
+            this.inactivePeriods.push({ first: today, last: Infinity });
+    };
 }
