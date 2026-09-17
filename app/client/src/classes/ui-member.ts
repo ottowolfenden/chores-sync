@@ -1,4 +1,9 @@
-import { getDateOnlyVal, getDateString, offsetDate } from "../functions/date-utils";
+import {
+    getDateOnlyVal,
+    getDateString,
+    offsetDate,
+    toDateMultiRange
+} from "../functions/date-utils";
 
 export class UiMember {
     private readonly _id: number;
@@ -40,7 +45,7 @@ export class UiMember {
         "member_id": this.id,
         "member_name": this.name,
         "is_admin": this.isAdmin,
-        "inactive_periods": "CONVERT this.inactivePeriods HERE",
+        "inactive_periods": toDateMultiRange(this.inactivePeriods),
         "date_of_birth": this.dateOfBirth,
         "easter_egg_high_score": this.highScore
     });

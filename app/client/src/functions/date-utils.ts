@@ -1,7 +1,9 @@
 import { UiMember } from "../classes/ui-member";
 import { formatOrdinal } from "./num-utils";
 
-export const getDateString = (date: Date | string = new Date()): string =>
+export const msPerDay = 86_400_000;
+
+export const getDateString = (date: Date | string | number = new Date()): string =>
     new Date(date).toISOString().split("T")[0]!;
 
 export const offsetDate = (date: Date | string, days: number) => {
@@ -97,3 +99,10 @@ export const getTimestampRanges = (
         last: r[1] == "infinity" ? Infinity : getDateOnlyVal(offsetDate(r[1]!, -1))
     }));
 };
+export const toDateMultiRange = (timestampRange: { first: number; last: number }[]): string =>
+    `{${timestampRange
+        .map(
+            p =>
+                `[${getDateString(p.first)},${p.last == Infinity ? "infinity" : getDateString(p.last + msPerDay)})`
+        )
+        .join(",")}}`;
