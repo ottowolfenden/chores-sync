@@ -25,21 +25,21 @@ Icons used are [Material Symbols](https://fonts.google.com/icons).
 ### Screenshots
 <div align="center">
     <img
-        src="screenshots/mobile-dark.png"
+        src="screenshots/narrow-dark.png"
         width="49%"
         alt="Editing assignments in the timeline section in dark mode" />
     <img
-        src="screenshots/mobile-light.png"
+        src="screenshots/narrow-light.png"
         width="49%"
         alt="Today section in light mode" />
 </div>
 <div align="center">
     <img
-        src="screenshots/desktop-dark.png"
+        src="screenshots/wide-dark.png"
         width="49%"
         alt="Timeline section in dark mode" />
     <img
-        src="screenshots/desktop-light.png"
+        src="screenshots/wide-light.png"
         width="49%"
         alt="Editing counts in Count section" />
 </div>
