@@ -103,6 +103,8 @@ export const toDateMultiRange = (timestampRange: { first: number; last: number }
     `{${timestampRange
         .map(
             p =>
-                `[${getDateString(p.first)},${p.last == Infinity ? "infinity" : getDateString(p.last + msPerDay)})`
+                `[${getDateString(p.first)},${
+                    p.last == Infinity ? "infinity" : getDateString(p.last + msPerDay)
+                })`
         )
         .join(",")}}`;
