@@ -369,7 +369,7 @@ export class TimelineList extends LitElement {
                                     <md-icon>keyboard_arrow_down</md-icon>
                                 </button>
                             </div>
-                            <assignments-list></assignments-list>
+                            <assignments-list date=${d}></assignments-list>
                             <status-message hide-retry easter-egg></status-message>
                         </li>
                     `;

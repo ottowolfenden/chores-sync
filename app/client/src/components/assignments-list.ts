@@ -5,12 +5,14 @@ import { Cache } from "../classes/cache";
 import { queryClosest, withTransition } from "../functions/element-utils.js";
 import { UiAssignment } from "../classes/ui-assignment";
 import { UiMember } from "../classes/ui-member";
+import { getDateString } from "../functions/date-utils";
 
 @customElement("assignments-list")
 export class AssignmentsList extends LitElement {
     protected createRenderRoot = () => this;
 
     @property({ type: Array }) assignments: UiAssignment[] = [];
+    @property({ type: String }) date: string = getDateString();
     @property({ type: Boolean, attribute: "edit-mode", reflect: true }) editMode = false;
     @state() private members: UiMember[] = [];
 
@@ -21,7 +23,8 @@ export class AssignmentsList extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback();
-        this.members = (await Cache.members.get()) ?? [];
+        const members = await Cache.members.get();
+        this.members = members?.filter(m => m.checkActive(this.date)) ?? [];
     }
 
     addAssignment = (e: Event) =>

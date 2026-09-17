@@ -21,7 +21,8 @@ export class TurnsList extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback();
-        this.members = (await Cache.members.get()) ?? [];
+        const members = await Cache.members.get();
+        this.members = members?.filter(m => m.checkActive(this.date)) ?? [];
     }
 
     get allDisabled() {
