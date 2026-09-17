@@ -13,6 +13,7 @@ export class AssignmentsList extends LitElement {
 
     @property({ type: Array }) assignments: UiAssignment[] = [];
     @property({ type: String }) date: string = getDateString();
+    @property({ type: String }) section = "today";
     @property({ type: Boolean, attribute: "edit-mode", reflect: true }) editMode = false;
     @state() private members: UiMember[] = [];
 
@@ -60,15 +61,15 @@ export class AssignmentsList extends LitElement {
                     <div class="dropdown">
                         <button
                             class="tonal"
-                            popovertarget="today-assignment-popover-${a.uuid}"
-                            style="anchor-name: --today-assignment-anchor-${a.uuid}">
+                            popovertarget="${this.section}-a-popover-${a.uuid}"
+                            style="anchor-name: --${this.section}-a-anchor-${a.uuid}">
                             <span class="member-name">${a.chosenMember.name}</span>
                             <md-icon>arrow_drop_down</md-icon>
                         </button>
                         <div
                             popover
-                            id="today-assignment-popover-${a.uuid}"
-                            style="position-anchor: --today-assignment-anchor-${a.uuid}">
+                            id="${this.section}-a-popover-${a.uuid}"
+                            style="position-anchor: --${this.section}-a-anchor-${a.uuid}">
                             ${this.members
                                 .filter(m => m.id != a.chosenMember.id)
                                 .map(

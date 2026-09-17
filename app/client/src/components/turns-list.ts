@@ -16,6 +16,7 @@ export class TurnsList extends LitElement {
 
     @property({ type: Array }) turns: UiTurn[] = [];
     @property({ type: String }) date: string = getDateString();
+    @property({ type: String }) section = "today";
     @state() private members: UiMember[] = [];
     @queryAll("button") buttons!: NodeListOf<HTMLButtonElement>;
 
@@ -94,15 +95,15 @@ export class TurnsList extends LitElement {
                 </state-actions>
                 <button
                     class="transparent small"
-                    popovertarget="turn-popover-${id}"
-                    style="anchor-name: --turn-anchor-${id}">
+                    popovertarget="${this.section}-t-popover-${id}"
+                    style="anchor-name: --${this.section}-t-anchor-${id}">
                     <md-icon>arrow_drop_down</md-icon>
                 </button>
                 <div class="dropdown">
                     <div
                         popover
-                        id="turn-popover-${id}"
-                        style="position-anchor: --turn-anchor-${id}">
+                        id="${this.section}-t-popover-${id}"
+                        style="position-anchor: --${this.section}-t-anchor-${id}">
                         ${this.members.map(
                             m => html`
                                 <button
