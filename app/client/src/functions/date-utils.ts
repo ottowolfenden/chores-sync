@@ -74,3 +74,26 @@ export const getBirthdaysMatch = (members: UiMember[], date: string | Date): boo
                 b.getUTCDate() == new Date(date).getUTCDate() &&
                 b.getUTCMonth() == new Date(date).getUTCMonth()
         );
+
+export const getDateIsValid = (date: string): boolean =>
+    /^\d{4}-\d{2}-\d{2}$/.test(date) && !isNaN(Date.parse(date));
+
+export const getTimestampRanges = (
+    dateMultiRange: string
+): { first: number; last: number }[] => {
+    const ranges = [...dateMultiRange.matchAll(/\[([^,]+),([^)]+)\)/g)].map(
+        ([_, start, end]) => [start, end]
+    );
+
+    if (
+        !ranges.every(
+            r => r.length == 2 && r.every(s => s && (getDateIsValid(s) || s == "infinity"))
+        )
+    )
+        throw new Error("invalid datemultirange");
+
+    return ranges.map(r => ({
+        first: r[0] == "infinity" ? Infinity : getDateOnlyVal(r[0]),
+        last: r[1] == "infinity" ? Infinity : getDateOnlyVal(offsetDate(r[1]!, -1))
+    }));
+};

@@ -5,7 +5,7 @@ import { UiCount } from "../classes/ui-count";
 import { UiMember } from "../classes/ui-member";
 import { UiTurn } from "../classes/ui-turn";
 import { request } from "./api-utils";
-import { getDateString } from "./date-utils";
+import { getDateString, getTimestampRanges } from "./date-utils";
 
 export const getChores = async (): Promise<UiChore[] | null> => {
     const { ok, data } = await request<DbChore[]>("GET", "/api/chores");
@@ -58,7 +58,7 @@ export const getMembers = async (): Promise<UiMember[] | null> => {
                 name: d["member_name"],
                 dateOfBirth: d["date_of_birth"] ? new Date(d["date_of_birth"]) : null,
                 isAdmin: d["is_admin"],
-                inactivePeriods: d["inactive_periods"],
+                inactivePeriods: getTimestampRanges(d["inactive_periods"]),
                 highScore: d["easter_egg_high_score"]
             })
     );

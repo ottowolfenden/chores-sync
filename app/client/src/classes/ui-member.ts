@@ -1,9 +1,11 @@
+import { getDateOnlyVal, getDateString } from "../functions/date-utils";
+
 export class UiMember {
     private readonly _id: number;
     private readonly _name: string;
     private readonly _dateOfBirth: Date | null;
+    inactivePeriods: { first: number; last: number }[];
     isAdmin: boolean;
-    inactivePeriods: string;
     highScore: number;
 
     constructor(uiMember: {
@@ -11,7 +13,7 @@ export class UiMember {
         name: string;
         dateOfBirth: Date | null;
         isAdmin: boolean;
-        inactivePeriods: string;
+        inactivePeriods: { first: number; last: number }[];
         highScore: number;
     }) {
         this._id = uiMember.id;
@@ -34,12 +36,29 @@ export class UiMember {
         return this._dateOfBirth;
     }
 
+    get isActiveToday() {
+        return this.checkActive();
+    }
+
+    set isActiveToday(value: boolean) {
+        (value ? this.makeActive : this.makeInactive)();
+    }
+
     toDbMember = (): DbMember => ({
         "member_id": this.id,
         "member_name": this.name,
         "is_admin": this.isAdmin,
-        "inactive_periods": this.inactivePeriods,
+        "inactive_periods": "CONVERT this.inactivePeriods HERE",
         "date_of_birth": this.dateOfBirth,
         "easter_egg_high_score": this.highScore
     });
+
+    checkActive = (date: Date | string = getDateString()) =>
+        !this.inactivePeriods.some(
+            p => p.first <= getDateOnlyVal(date) && p.last >= getDateOnlyVal(date)
+        );
+
+    private makeActive = (date: Date | string = getDateString()) => {};
+
+    private makeInactive = (date: Date | string = getDateString()) => {};
 }

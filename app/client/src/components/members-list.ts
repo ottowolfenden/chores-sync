@@ -58,9 +58,9 @@ export class MembersList extends LitElement {
                             </span>
                         </div>
                         <div class="right-items">
-                            <span class="active-state" ?data-active=${m.inactivePeriods}>
-                                <md-icon>${m.inactivePeriods ? "check" : "close"}</md-icon>
-                                <span>${m.inactivePeriods ? "Active" : "Inactive"}</span>
+                            <span class="active-state" ?data-active=${m.isActiveToday}>
+                                <md-icon>${m.isActiveToday ? "check" : "close"}</md-icon>
+                                <span>${m.isActiveToday ? "Active" : "Inactive"}</span>
                             </span>
                             <button class="expand transparent">
                                 <md-icon>keyboard_arrow_down</md-icon>
@@ -78,7 +78,7 @@ export class MembersList extends LitElement {
                                 this.toggle("isAdmin", e.detail.on, m)}></toggle-switch>
                         <toggle-switch
                             text="Active"
-                            .on=${m.inactivePeriods}
+                            .on=${m.isActiveToday}
                             ?disabled=${!this.currentMember?.isAdmin}
                             @change=${(e: CustomEvent) =>
                                 this.toggle("isActive", e.detail.on, m)}></toggle-switch>
