@@ -19,9 +19,7 @@ export const getTurns = async (env: Env, date: string | null): Promise<Result<Db
                     ON a.chore_id = c.chore_id
                     AND a.member_id = m.member_id
                     AND a.assign_date < ${date}
-                WHERE
-                    m.inactive_periods IS NULL
-                    OR NOT (m.inactive_periods @> ${date}::DATE)
+                WHERE NOT (m.inactive_periods @> ${date}::DATE)
                 GROUP BY c.chore_id, m.member_id
                 ORDER BY c.chore_name;
             `) as DbTurnData[];
