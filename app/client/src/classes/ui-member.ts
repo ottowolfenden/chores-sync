@@ -6,39 +6,27 @@ import {
 } from "../functions/date-utils";
 
 export class UiMember {
-    private readonly _id: number;
-    private readonly _name: string;
-    private readonly _dateOfBirth: Date | null;
-    private inactivePeriods: { first: number; last: number }[];
+    id: number;
+    name: string;
+    dateOfBirth: Date | null;
     isAdmin: boolean;
     highScore: number;
+    private inactivePeriods: { first: number; last: number }[];
 
     constructor(uiMember: {
         id: number;
         name: string;
         dateOfBirth: Date | null;
         isAdmin: boolean;
-        inactivePeriods: { first: number; last: number }[];
         highScore: number;
+        inactivePeriods: { first: number; last: number }[];
     }) {
-        this._id = uiMember.id;
-        this._name = uiMember.name;
-        this._dateOfBirth = uiMember.dateOfBirth;
+        this.id = uiMember.id;
+        this.name = uiMember.name;
+        this.dateOfBirth = uiMember.dateOfBirth;
         this.isAdmin = uiMember.isAdmin;
-        this.inactivePeriods = uiMember.inactivePeriods;
         this.highScore = uiMember.highScore;
-    }
-
-    get id() {
-        return this._id;
-    }
-
-    get name() {
-        return this._name;
-    }
-
-    get dateOfBirth() {
-        return this._dateOfBirth;
+        this.inactivePeriods = uiMember.inactivePeriods;
     }
 
     clone = () =>

@@ -1,17 +1,13 @@
 export class UiCount {
-    private readonly _choreName: string;
+    choreName: string;
     memberCounts: { memberName: string; total: number; offset: number }[];
 
     constructor(uiCount: {
         choreName: string;
         memberCounts: { memberName: string; total: number; offset: number }[];
     }) {
-        this._choreName = uiCount.choreName;
+        this.choreName = uiCount.choreName;
         this.memberCounts = uiCount.memberCounts;
-    }
-
-    get choreName() {
-        return this._choreName;
     }
 
     clone = () =>

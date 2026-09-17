@@ -3,8 +3,8 @@ import type { UiChore } from "./ui-chore";
 import type { UiMember } from "./ui-member";
 
 export class UiAssignment {
-    private readonly _uuid: string;
-    private readonly _date: Date;
+    uuid: string;
+    date: Date;
     quantity: number;
     chore: UiChore;
     turnMember: UiMember;
@@ -18,20 +18,12 @@ export class UiAssignment {
         turnMember: UiMember;
         chosenMember: UiMember;
     }) {
-        this._uuid = uiAssignment.uuid;
-        this._date = uiAssignment.date;
+        this.uuid = uiAssignment.uuid;
+        this.date = uiAssignment.date;
         this.quantity = uiAssignment.quantity;
         this.chore = uiAssignment.chore;
         this.turnMember = uiAssignment.turnMember;
         this.chosenMember = uiAssignment.chosenMember;
-    }
-
-    get uuid() {
-        return this._uuid;
-    }
-
-    get date() {
-        return this._date;
     }
 
     toDbAssignment = (): DbAssignment => ({
