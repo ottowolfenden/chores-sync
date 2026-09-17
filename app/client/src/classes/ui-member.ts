@@ -41,6 +41,16 @@ export class UiMember {
         return this._dateOfBirth;
     }
 
+    clone = () =>
+        new UiMember({
+            id: this.id,
+            name: this.name,
+            dateOfBirth: this.dateOfBirth,
+            isAdmin: this.isAdmin,
+            inactivePeriods: structuredClone(this.inactivePeriods),
+            highScore: this.highScore
+        });
+
     toDbMember = (): DbMember => ({
         "member_id": this.id,
         "member_name": this.name,
